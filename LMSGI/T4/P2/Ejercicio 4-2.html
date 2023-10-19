@@ -16,7 +16,7 @@
         
         <form id="formularioPedido">
 
-            <div>Datos Cliente:</div>
+            <div><strong>Datos Cliente:</strong></div>
 
             <div>
 
@@ -26,7 +26,7 @@
             </div>
 
                 <label for="password">  Contraseña: </label>
-                <input type="password" name="paswword" id="password" minlength> </input>
+                <input type="password" name="password" id="password" minlength="6"> </input>
 
                 </br>
 
@@ -35,9 +35,37 @@
             </div>
 
             <div>
+                
+                <span>Tipo de cliente</span>
 
+                <input type ="radio" name="civil_status" id="particular" value="particular"> </input>
+                <label for="particular"> Particular </label>
 
+                <input type ="radio" name="civil_status" id="asociacion" value="asociacion"> </input>
+                <label for="asociacion"> Asociación </label>
 
+                <input type ="radio" name="civil_status" id="empresa" value="empresa"> </input>
+                <label for="empresa"> Empresa </label> 
+                
+            </div>
+
+            </br>
+
+            <div><strong>Datos de Productos:</strong></div>
+
+            <div>
+                
+                <select name="products" multiple size="5">
+                    
+                    <option value="products"> AR001 Oro Reluciente </option>
+                    <option value="products"> AR002 Plata Pulida </option>
+                    <option value="products"> AR003 Bronce Reforzado </option>
+                    <option value="products"> EX001 Escudo </option>
+                    <option value="products"> EX002 Invisibilidad </option>
+
+                </select>
+
+            </div>
 
 
 
