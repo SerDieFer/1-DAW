@@ -21,75 +21,58 @@ namespace Ejercicio_28
 
         private void btnCal_Click(object sender, EventArgs e)
         {
-            int mult,num1, num2;
-            string txt, txtSuma, txtNum1, txtNum2;
+            int resultado, num1, num2;
+            string txt, suma, txtNum1, txtNum2;
 
-            mult = 0;
+            resultado = 0;
             txtNum1 = Interaction.InputBox("Introduzca el número a multiplicar");
             txtNum2 = Interaction.InputBox("Introduzca el número a multiplicar");
-            txtSuma = "";
-            txt = "La multiplicación de " + txtNum1 + " x " + txtNum2 + " sería: \n\n";
+
+            suma = "";
+            txt = "La multiplicación de (" + txtNum1 + ") x (" + txtNum2 + ") sería: \n\n";
 
             num1 = int.Parse(txtNum1);
             num2 = int.Parse(txtNum2);
 
-            if (num1 < 0 || num2 < 0)
+
+            if (num1 < 0)
+
+            {
+                num1 = -num1;
+                num2 = -num2;
+
+            }
+
+
+            if (num1 > 0)
 
             {
 
-            num1 = -num1;
-            num2 = -num2;
-
-                for (int i = 0; i < num2; i++)
+                for (int i = 0; i < num1; i++)
 
                 {
 
-                    if (i == num2 - 1)
+                    resultado += num2;
+
+                    if (i == (num1 - 1))
 
                     {
-                    txtSuma += num1.ToString();
+                        suma += "( " + num2 + " )";
                     }
 
                     else
 
                     {
-                    txtSuma += num1 + " + ";
+                        suma += "( " + num2 + " )" + " + ";
                     }
 
                 }
 
             }
 
-            else
-
-            {
-
-                for (int i = 0; i < num2; i++)
-
-                {
-                    if (i == num2 - 1)
-
-                    {
-                    txtSuma += num1.ToString(); ;   
-                    }
-
-                    else
-
-                    {
-                    txtSuma += num1 + " + ";
-                    }
-
-                }
-
-            }
-
-            mult = int.Parse(txtNum1) * int.Parse(txtNum2);
-            txt += num1 + " * " + num2 + " = " + txtSuma + " = " +  mult;
+            txt += "( " + txtNum1 + " )" + " * " + "( " + txtNum2 + " )" + " = " + suma + " = " + resultado;
 
             MessageBox.Show(txt);
-
-
-
 
         }
     }
