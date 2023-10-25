@@ -21,7 +21,7 @@ namespace Ejercicio_28
 
         private void btnCal_Click(object sender, EventArgs e)
         {
-            double num, suma, res, numerador;
+            double num, suma, res;
             string txtInput, txtSuma;
 
             txtSuma = "La suma sería: \n\n";
@@ -30,41 +30,55 @@ namespace Ejercicio_28
 
             res = 0;
             num = double.Parse(txtInput);
- 
 
-            if (num > 1)
+
+            if (num > 0)
 
             {
-                suma = 0;
 
-                   for (double i = 1; i <= num; i++)
+                if (num >= 1)
 
-                   {
+                {
 
-                    numerador = 1.0 / i;
+                    txtSuma += 1.ToString();
+                    suma = 1;
+
+                    for (int i = 2; i <= num; i++)
+
+                    {
 
                         if (i % 2 == 0)
 
                         {
-                            suma -= numerador;
+                            suma -= (1 / (double)i);
                             txtSuma += " - ";
                         }
 
                         else
 
                         {
-                            suma += numerador;
+                            suma += (1 / (double)i);
                             txtSuma += " + ";
                         }
 
 
-                    txtSuma += suma.ToString();
+                        txtSuma += (1 / (double)i);
 
+                    }
+
+                    res = suma;
+                    MessageBox.Show(txtSuma + " = " + res);
 
                 }
 
-                 res = suma;
-                 MessageBox.Show("1 " + txtSuma + " = " + res);
+                else if (num < 0 || num == 0)
+
+                {
+
+                MessageBox.Show("Introduzca un valor superior a 0");
+
+                }
+
             }
         }
     }

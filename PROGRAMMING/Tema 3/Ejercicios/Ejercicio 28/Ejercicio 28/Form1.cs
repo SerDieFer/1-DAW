@@ -35,15 +35,6 @@ namespace Ejercicio_28
             num2 = int.Parse(txtNum2);
 
 
-            if (num1 < 0)
-
-            {
-                num1 = -num1;
-                num2 = -num2;
-
-            }
-
-
             if (num1 > 0)
 
             {
@@ -68,12 +59,42 @@ namespace Ejercicio_28
 
                 }
 
+            txt += "( " + txtNum1 + " )" + " * " + "( " + txtNum2 + " )" + " = " + suma + " = " + resultado;
+
             }
+
+            else
+
+            {
+
+                for (int i = 0; i > num1; i--)
+
+                {
+
+                    resultado -= num2;
+
+                    if (i == (num1 - (-1)))
+
+                    {
+                        suma += "( " + num2*-1 + " )";
+                    }
+
+                    else
+
+                    {
+                        suma += "( " + num2*-1 + " )" + " + ";
+                    }
+
+                }
 
             txt += "( " + txtNum1 + " )" + " * " + "( " + txtNum2 + " )" + " = " + suma + " = " + resultado;
 
-            MessageBox.Show(txt);
+            }
+
+
+        MessageBox.Show(txt);
 
         }
     }
 }
+
