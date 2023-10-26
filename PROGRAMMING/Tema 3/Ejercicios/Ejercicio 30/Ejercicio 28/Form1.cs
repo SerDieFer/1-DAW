@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 
-namespace Ejercicio_28
+namespace Ejercicio_30
 {
     public partial class Form1 : Form
     {
@@ -19,13 +19,13 @@ namespace Ejercicio_28
             InitializeComponent();
         }
 
-        private void btnCal_Click(object sender, EventArgs e)
+        private void btnAcceso_Click(object sender, EventArgs e)
         {
-            int numIntentos, sumaIntentos;
+            int numIntentos;
             string inputNombre, inputContraseña, usuario, contraseña;
+            bool sistema = false;
 
-
-            numIntentos = 4;
+            numIntentos = 5;
 
             inputNombre = Interaction.InputBox("Introduzca el nombre del Usuario: ");
             inputContraseña = Interaction.InputBox("Introduzca la contraseña del Usuario: ");
@@ -33,43 +33,42 @@ namespace Ejercicio_28
             usuario = "root";
             contraseña = "1234";
 
-            while(numIntentos > 0)
 
+            // Asi sería si lo realizamos con un bucle do/while:
+
+            while (numIntentos > 0)
             {
 
-                while (inputNombre != usuario || inputContraseña != contraseña)
-
+                do
                 {
-                  
-                    MessageBox.Show("Te quedan: " + numIntentos);
-                    numIntentos --;
+                numIntentos--;
 
-                    inputNombre = Interaction.InputBox("Introduzca el nombre del Usuario: ");
-                    inputContraseña = Interaction.InputBox("Introduzca la contraseña del Usuario: ");
-
-                    if (numIntentos == 0 ) 
-
+                    if (inputNombre == usuario && inputContraseña == contraseña)
                     {
-
-                        MessageBox.Show("No te quedan más intentos");
-
-                    }
-
-                }
-                 
-                if (inputNombre == usuario && inputContraseña == contraseña)
-
-                {
-
                     MessageBox.Show("Bienvenido al sistema");
                     numIntentos = 0;
+                    sistema = true;
+                    }
 
-                }
+                    if (numIntentos == 0 && sistema == false)
+                    {
+                    MessageBox.Show("No te quedan más intentos, el acceso esta bloqueado.");
+                    numIntentos = 0;
+                    }
+
+                    else if (numIntentos > 0)
+                    {
+                    MessageBox.Show("Te quedan: " + numIntentos + " intentos");
+                    inputNombre = Interaction.InputBox("Introduzca el nombre del Usuario: ");
+                    inputContraseña = Interaction.InputBox("Introduzca la contraseña del Usuario: ");
+                    }
+
+                } while (numIntentos != 0);
 
             }
-          
         }
     }
 }
+
 
 
