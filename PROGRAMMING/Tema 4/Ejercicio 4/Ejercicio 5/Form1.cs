@@ -18,19 +18,18 @@ namespace Ejercicio_5
         }
 
 
-        int absoluto (int n1)
+        double absoluto (double num)
         {
-           int res;
+           double res;
+           res = num;
 
-           if (n1 < 0 )
+           if (num < 0 )
             
            {
 
-             n1 = n1 * (-1);   
+             res = -num;   
 
            }
-
-            res = n1;
 
             return res;
 
@@ -38,12 +37,12 @@ namespace Ejercicio_5
 
         private void btnCal_Click(object sender, EventArgs e)
         {
-            int num1, res;
+            double num, res;
 
-            num1 = int.Parse(txtBoxN1.Text);
-            res = absoluto(num1);
+            num = double.Parse(txtBoxN1.Text);
+            res = absoluto(num);
 
-            MessageBox.Show("El número " + num1 + " tendría como valor absoluto: " + res);
+            MessageBox.Show("El número " + num + " tendría como valor absoluto: " + res);
         }
 
 
