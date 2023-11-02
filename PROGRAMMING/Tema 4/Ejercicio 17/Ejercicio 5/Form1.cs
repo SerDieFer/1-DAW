@@ -26,14 +26,11 @@ namespace Ejercicio_5
 
             while (n1 >= n2)
             {
-
                 n1 -= n2;
                 res++;
-
             }
         
             return res;
-
 
         }
 
@@ -44,11 +41,7 @@ namespace Ejercicio_5
 
             return resto;
 
-
         }
-
-
-
 
         private void btnCal_Click(object sender, EventArgs e)
         {

@@ -21,33 +21,26 @@ namespace Ejercicio_5
         int factorial (int num)
         {
 
-            int res = num;
+            int fac = num;
 
             for (int i = 1; i < num; i++)
             {
-
-                res *= i;
-
+                fac *= i;
             }
 
-            return res;
-
+            return fac;
 
         }
 
         private void btnCal_Click(object sender, EventArgs e)
         {
-            int num, res;
+            int num, fac;
 
             num = int.Parse(txtBoxN1.Text);
+            fac = factorial(num);
 
-            res = factorial(num);
-
-            MessageBox.Show("El factorial del  " + num + " sería: " + res);
+            MessageBox.Show("El factorial del  " + num + " sería: " + fac);
         }
-
-
-
     }
 }
 
