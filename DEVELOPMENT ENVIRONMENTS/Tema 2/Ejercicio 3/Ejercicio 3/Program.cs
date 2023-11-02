@@ -37,7 +37,7 @@ namespace Ejercicio_3
                 }
 
                 // Almaceno los menores y mayores (solo para letras entre 'A' y 'Z' en mayúsculas y minúsculas).
-
+                
                 if ((letraAux >= 'A' && letraAux <= 'Z') || (letraAux >= 'a' && letraAux <= 'z'))
                 {
 
