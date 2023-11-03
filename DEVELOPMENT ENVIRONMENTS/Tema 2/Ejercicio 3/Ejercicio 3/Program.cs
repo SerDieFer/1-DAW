@@ -31,7 +31,10 @@ namespace Ejercicio_3
                 Console.WriteLine("");
                 Console.WriteLine("-------");
 
-                if (letraAux == '0')
+                if (letraAux == '0') 
+
+                //Lee si la letra es igual a 0 o no, y en caso de ser 0 cambia a verdadero el bool salir.
+
                 {
                     salir = true;
                 }
@@ -43,7 +46,7 @@ namespace Ejercicio_3
 
                     //Almaceno los menores y mayores. 
 
-                    if (minLetra > letraAux && letraAux != '0')
+                    if (minLetra > letraAux)
                     {
                         minLetra = letraAux;
                     }
@@ -56,6 +59,10 @@ namespace Ejercicio_3
                     //Si la letra es mayusculas la contabiliza
 
                     if (char.IsUpper(letraAux))
+
+                    //Esto detecta si es true or false directamente, viendo si es mayúscula.
+                    //También funcionaría el método anterior ((letraAux > 'A') && (letraAux < 'Z'))
+
                     {
                         numMayusculas++;
 
