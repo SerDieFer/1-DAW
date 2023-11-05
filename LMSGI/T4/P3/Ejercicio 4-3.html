@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es-es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Ejercicio 4-3</title>
+            <h1>Encuesta al profesorado</h1>
+    </head>     
+    <body>      
+        <p><strong>por favor, si es usted docente responda a las cuestiones:</strong></p>     
+            <div>
+                <form id="orderForm" method="post">
+                    <fieldset>
+                        <legend>1. Información Personal</legend>
+                        <div>
+                            <label for="name_surname">Apellidos y nombre: </label>
+                            <input type="text" name="name_surname" id="name_surname" size="55" placeholder="Sergio Diez Fernández"> </input>
+                        </div>
+                        <div>
+                            <span>Sexo</span>
+                            <input type ="radio" name="sex" id="male" value="male"> </input>
+                            <label for="male">hombre </label>
+                            <input type ="radio" name="sex" id="female" value="female"> </input>
+                            <label for="female">mujer </label>       
+                        </div>
+                        <div>
+                            <label for="phone_number">Teléfono: </label>
+                            <input type="tel" name="phone_number" id="phone_number" minlength="9" size="9" placeholder="999999999"> </input>
+                            <label for="email">E-mail: </label>
+                            <input type="email" name="email" id="email" size="15" placeholder="serdiefer@alu.edu.gva.es"> </input>
+                        </div>
+                    </fieldset>
+                    </br>
+                    <fieldset>
+                        <legend>2. Datos profesionales</legend>
+                        <div>
+                            <label for="adress">Centro de trabajo: </label>
+                            <input type="text" name="adress" id="adress" minlength="9" size="30" placeholder="IES Mare Nostrum"> </input>
+                            <label for="city">Localidad: </label>
+                            <input type="text" name="city" id="city" size="35" placeholder="Alicante"> </input>
+                        </div>
+                        <div>
+                            <div>
+                            <label for="department">Especialidad:</label>
+                            </div>
+                                <select name="department" multiple size="4">
+                                    <option value="department"> Lengua y literatura </option>
+                                    <option value="department"> Matemáticas </option>
+                                    <option value="department"> Informática </option>
+                                    <option value="department"> Geografía e historia </option>
+                                </select>
+                            </div>
+                    </fieldset>
+                    </br>
+                    <fieldset>
+                        <legend>3. Por favor, facilítanos la siguiente información:</legend>
+                        <table>
+                            <tr>
+                                <td>
+                                    <label for="question">¿Cómo llegó hasta aquí?:</label>
+                                    <select name="question" style="width: 29%;">
+                                        <option value="question">Desde un buscador</option>
+                                        <option value="question">Desde una URL</option>
+                                        <option value="question">Desde un e-mail</option>
+                                    </select>
+                                </td>
+                                <td rowspan="3">
+                                    <img src="C:\Users\astur\Desktop\Repository\1-DAW\LMSGI\T4\P3\img\9e50f9203080c65d7dd4fdf79d2e6b31.jpg" alt="Buen meme" style="width: 250px; height: 200px;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="width: 50%;">
+                                        <label for="comments">Comentarios:</label>
+                                        <textarea name="comments" rows="4" cols="50" id="comments" placeholder="Escriba aquí sus comentarios..." style="resize: none;"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span>¿Desearía recibir más información sobre...? </span>
+                                    <div>
+                                        <input type ="checkbox" name="info" id="audiovisual_material" value="audiovisual_material"> </input>
+                                        <label for="audiovisual_material">Material audiovisual </label>
+                                    </div>
+                                    <div>
+                                        <input type ="checkbox" name="info" id="e-texts" value="e-texts"> </input>
+                                        <label for="e-texts">Textos electrónicos </label> 
+                                    </div>
+                                    <div>
+                                        <input type ="checkbox" name="info" id="books" value="books"> </input>
+                                        <label for="books">Libros de texto </label>  
+                                    </div>
+                                    </br>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                    </br>
+                    <div style="text-align: center;">
+                        <input name="form" type="submit" value="Enviar datos"> </input>
+                        <input name="form" type="reset" value="Borrar datos"> </input>
+                    </div>
+                </form>
+            </div>
+    </body>
+</html>
