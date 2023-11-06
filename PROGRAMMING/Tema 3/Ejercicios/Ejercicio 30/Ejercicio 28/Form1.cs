@@ -30,41 +30,43 @@ namespace Ejercicio_30
             inputNombre = Interaction.InputBox("Introduzca el nombre del Usuario: ");
             inputContraseña = Interaction.InputBox("Introduzca la contraseña del Usuario: ");
 
-            usuario = "root";
-            contraseña = "1234";
-
 
             // Asi sería si lo realizamos con un bucle do/while:
 
-            while (numIntentos > 0)
+            while (numIntentos > 0 && sistema == false)
             {
+                usuario = "root";
+                contraseña = "1234";
 
-                do
-                {
                 numIntentos--;
 
-                    if (inputNombre == usuario && inputContraseña == contraseña)
-                    {
+                if (inputNombre == usuario && inputContraseña == contraseña)
+                {
                     MessageBox.Show("Bienvenido al sistema");
-                    numIntentos = 0;
                     sistema = true;
-                    }
+                }
 
+                else
+                {
                     if (numIntentos == 0 && sistema == false)
                     {
-                    MessageBox.Show("No te quedan más intentos, el acceso esta bloqueado.");
-                    numIntentos = 0;
+                        MessageBox.Show("No te quedan más intentos, el acceso esta bloqueado.");
                     }
 
-                    else if (numIntentos > 0)
+                    else if (numIntentos == 1)
                     {
-                    MessageBox.Show("Te quedan: " + numIntentos + " intentos");
-                    inputNombre = Interaction.InputBox("Introduzca el nombre del Usuario: ");
-                    inputContraseña = Interaction.InputBox("Introduzca la contraseña del Usuario: ");
+                        MessageBox.Show("Te queda: " + numIntentos + " intento");
+                        inputNombre = Interaction.InputBox("Introduzca el nombre del Usuario: ");
+                        inputContraseña = Interaction.InputBox("Introduzca la contraseña del Usuario: ");
                     }
 
-                } while (numIntentos != 0);
-
+                    else
+                    {
+                        MessageBox.Show("Te quedan: " + numIntentos + " intentos");
+                        inputNombre = Interaction.InputBox("Introduzca el nombre del Usuario: ");
+                        inputContraseña = Interaction.InputBox("Introduzca la contraseña del Usuario: ");
+                    }
+                }   
             }
         }
     }
