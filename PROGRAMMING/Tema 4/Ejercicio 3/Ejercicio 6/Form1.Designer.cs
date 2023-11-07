@@ -1,4 +1,4 @@
-﻿namespace Ejercicio_5
+﻿namespace Ejercicio_6
 {
     partial class Form1
     {
@@ -33,9 +33,10 @@
             // 
             // btnCal
             // 
+            this.btnCal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCal.Location = new System.Drawing.Point(12, 12);
             this.btnCal.Name = "btnCal";
-            this.btnCal.Size = new System.Drawing.Size(341, 34);
+            this.btnCal.Size = new System.Drawing.Size(528, 83);
             this.btnCal.TabIndex = 0;
             this.btnCal.Text = "Calcular";
             this.btnCal.UseVisualStyleBackColor = true;
@@ -45,10 +46,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 59);
+            this.ClientSize = new System.Drawing.Size(552, 107);
             this.Controls.Add(this.btnCal);
             this.Name = "Form1";
-            this.Text = "Ejercicio 8";
+            this.Text = "Ejercicio 6";
             this.ResumeLayout(false);
 
         }

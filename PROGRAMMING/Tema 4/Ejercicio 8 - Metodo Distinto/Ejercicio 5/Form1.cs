@@ -27,15 +27,15 @@ namespace Ejercicio_5
 
         bool NumeroCorrecto (double nota)
         {
+            bool valido = false;
+
             if (nota >= 0 && nota <= 10)
             {
-            return true;
+            valido = true;
             }
 
-            else
-            {
-            return false;
-            }
+            return valido;
+
         }
 
         private void btnCal_Click(object sender, EventArgs e)

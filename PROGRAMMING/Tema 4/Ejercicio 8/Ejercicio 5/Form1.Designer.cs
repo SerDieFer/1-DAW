@@ -48,7 +48,7 @@
             this.ClientSize = new System.Drawing.Size(365, 59);
             this.Controls.Add(this.btnCal);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Ejercicio 8";
             this.ResumeLayout(false);
 
         }

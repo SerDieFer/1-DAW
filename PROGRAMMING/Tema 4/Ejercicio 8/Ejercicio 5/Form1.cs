@@ -35,7 +35,7 @@ namespace Ejercicio_5
                 else
                 {
                 MessageBox.Show("La nota debe estar entre 0 y 10.");
-                i--;
+                i--; //no es correcto, es lioso
                 }
             }
 
@@ -51,15 +51,13 @@ namespace Ejercicio_5
 
     bool NumeroCorrecto (double nota)
         {
+            bool valido = false;
+
             if (nota >= 0 && nota <= 10)
             {
-            return true;
+            valido = true;
             }
-
-            else
-            {
-            return false;
-            }
+            return valido;
         }
 
 
