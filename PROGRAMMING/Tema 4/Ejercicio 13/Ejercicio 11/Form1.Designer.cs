@@ -50,7 +50,6 @@
             this.Controls.Add(this.btnCal);
             this.Name = "Form1";
             this.Text = "Ejercicio 13";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

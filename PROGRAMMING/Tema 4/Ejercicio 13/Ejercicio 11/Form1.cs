@@ -117,10 +117,5 @@ namespace Ejercicio_11
             MessageBox.Show("La siguiente fecha sería:\n\n\n\nDia: " + diaPlus + "\n\nMes: " + mesPlus + "\n\nAño: " + yearPlus);
             
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
