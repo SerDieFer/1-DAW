@@ -78,14 +78,31 @@ namespace Ejercicio_11
             return esBisiesto;
         }
 
+        void SiguienteFecha (int dia, int mes, int year, out int diaPlus, out int mesPlus, out int yearPlus)
+        {
+            bool esBisiesto = Bisiesto(year);
+
+            if (mes == 2 && esBisiesto)
+            {
+                diaPlus = dia++;
+            }
+            else
+            {
+                diaPlus = dia++;
+                mesPlus = mes++;
+            }
+
+           
+
+        }
+
+
         private void btnCal_Click(object sender, EventArgs e)
         {
-            int year, dia, mes;
+            int year, dia, mes, diaPlus, mesPlus, yearPlus;
             bool fechaValidada;
             fechaValidada = false;
-            string txtS, txtN;
-            txtS = "Sería válido";
-            txtN = "No sería válido";
+     
 
             year = int.Parse(Interaction.InputBox("Introduce el año: "));
             mes = int.Parse(Interaction.InputBox("Introduce el mes: "));
@@ -93,16 +110,12 @@ namespace Ejercicio_11
 
             Bisiesto (year);
             fechaValidada = ValidarFecha( dia, mes, year);
-  
-            if (fechaValidada == true)
-            {
-            MessageBox.Show("Dia: " + dia + "\n\nMes: " + mes + "\n\nAño: " + year + "\n\n" + txtS);
-            }
 
-            else
-            {
-            MessageBox.Show("Dia: " + dia + "\n\nMes: " + mes + "\n\nAño: " + year + "\n\n" + txtN);
-            }
+            SiguienteFecha(dia, mes, year, out diaPlus, out mesPlus, out yearPlus);
+
+
+            MessageBox.Show("La siguiente fecha sería:\n\n\n\nDia: " + diaPlus + "\n\nMes: " + mesPlus + "\n\nAño: " + yearPlus);
+            
         }
     }
 }
