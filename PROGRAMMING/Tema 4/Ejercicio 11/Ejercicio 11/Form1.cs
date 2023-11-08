@@ -18,41 +18,44 @@ namespace Ejercicio_11
             InitializeComponent();
         }
 
-        void Bisiesto (out int fecha, out bool esBisiesto)
+        bool Bisiesto(int year)
         {
-    
-            fecha = int.Parse(Interaction.InputBox("Introduce el año, para saber si este es bisiesto"));
-            esBisiesto = false;
+            bool bisiesto = false;
 
-            if (fecha % 4 == 0)
+            if (year % 4 == 0)
             {
-            esBisiesto = true;
+                bisiesto = true;
 
-                if (fecha % 400 != 0 && fecha % 100 == 0)
-                { 
-                esBisiesto = false;
+                if (year % 400 != 0 && year % 100 == 0)
+                {
+                    bisiesto = false;
                 }
             }
+            return bisiesto;
         }
 
         private void btnCal_Click(object sender, EventArgs e)
         {
-            int fecha;
+            int year;
+
             bool esBisiesto;
+            esBisiesto = false;
+
             string txtY, txtN;
             txtY = " es bisiesto";
             txtN = " no es bisiesto";
 
-            Bisiesto(out fecha, out esBisiesto);
+            year = int.Parse(Interaction.InputBox("Introduce el año: "));
+            esBisiesto = Bisiesto(year);
 
             if (esBisiesto == true)
             {
-            MessageBox.Show("El año " + fecha + txtY);
+            MessageBox.Show("El año " + year + txtY);
             }
 
             else
             {
-            MessageBox.Show("El año " + fecha + txtN);
+            MessageBox.Show("El año " + year + txtN);
             }
         }
     }
