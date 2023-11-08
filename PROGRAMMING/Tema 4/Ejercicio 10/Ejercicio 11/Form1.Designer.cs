@@ -38,7 +38,7 @@
             this.btnCal.Name = "btnCal";
             this.btnCal.Size = new System.Drawing.Size(382, 57);
             this.btnCal.TabIndex = 0;
-            this.btnCal.Text = "Calcular si es bisiesto";
+            this.btnCal.Text = "Calcular";
             this.btnCal.UseVisualStyleBackColor = true;
             this.btnCal.Click += new System.EventHandler(this.btnCal_Click);
             // 
@@ -49,7 +49,7 @@
             this.ClientSize = new System.Drawing.Size(406, 82);
             this.Controls.Add(this.btnCal);
             this.Name = "Form1";
-            this.Text = "Ejercicio 12";
+            this.Text = "Ejercicio 10";
             this.ResumeLayout(false);
 
         }

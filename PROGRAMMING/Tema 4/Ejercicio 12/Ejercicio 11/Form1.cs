@@ -18,80 +18,83 @@ namespace Ejercicio_11
             InitializeComponent();
         }
 
-        void diaMes(out int dia, out int mes, out bool validarDia, out bool validarMes, ref bool validarBisiesto)
+        bool ValidarFecha(int dia, int mes, int year)
         {
-            mes = int.Parse(Interaction.InputBox("Introduce el mes: "));
-            dia = int.Parse(Interaction.InputBox("Introduce el día: "));
-            validarDia = validarMes = false;
 
+            bool fechaValida = false;
+            bool esBisiesto = Bisiesto(year);
 
-            if (mes >= 1 && mes <= 12)
+            if (mes == 2)
             {
-                validarMes = true;
-
-                if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12)
-                {
-                    if (dia >= 1 && dia <= 31)
-                    {
-                        validarDia = true;
-                    }
-                }
-
-                if (mes == 4 || mes == 6 || mes == 9 || mes == 11)
-                {
-                    if (dia >= 1 && dia <= 30)
-                    {
-                        validarDia = true;
-                    }
-                }
-
-                if (mes == 2 && validarBisiesto == true)
+                if (esBisiesto == true)
                 {
                     if (dia >= 1 && dia <= 29)
                     {
-                        validarDia = true;
+                    fechaValida = true;
                     }
                 }
 
-                if (mes == 2 && validarBisiesto == false)
+                else
                 {
                     if (dia >= 1 && dia <= 28)
                     {
-                        validarDia = true;
+                    fechaValida = true;
                     }
                 }
             }
+
+            else if (mes == 4 || mes == 6 || mes == 9 || mes == 11)
+            {
+                if (dia >= 1 && dia <= 30)
+                {
+                fechaValida = true;
+                }
+            }
+
+            else 
+            {
+                if (dia >= 1 && dia <= 31)
+                {
+                fechaValida = true;
+                }
+            }
+
+        return fechaValida;
         }
 
-        void Bisiesto (out int year, out bool validarBisiesto)
+        bool Bisiesto (int year)
         {
-    
-            year = int.Parse(Interaction.InputBox("Introduce el año: "));
-            validarBisiesto = false;
+            bool esBisiesto = false;
 
             if (year % 4 == 0)
             {
-                validarBisiesto = true;
+            esBisiesto = true;
 
                 if (year % 400 != 0 && year % 100 == 0)
                 {
-                validarBisiesto = false;
+                esBisiesto = false;
                 }
             }
+            return esBisiesto;
         }
 
         private void btnCal_Click(object sender, EventArgs e)
         {
             int year, dia, mes;
-            bool validarBisiesto, validarDia, validarMes;
+            bool fechaValidada;
+            fechaValidada = false;
             string txtS, txtN;
             txtS = "Sería válido";
             txtN = "No sería válido";
 
-            Bisiesto(out year, out validarBisiesto);
-            diaMes(out dia, out mes, out validarDia, out validarMes , ref validarBisiesto);
+            year = int.Parse(Interaction.InputBox("Introduce el año: "));
+            mes = int.Parse(Interaction.InputBox("Introduce el mes: "));
+            dia = int.Parse(Interaction.InputBox("Introduce el día: "));
+
+            Bisiesto (year);
+            fechaValidada = ValidarFecha( dia, mes, year);
   
-            if (validarDia && validarMes == true)
+            if (fechaValidada == true)
             {
             MessageBox.Show("Dia: " + dia + "\n\nMes: " + mes + "\n\nAño: " + year + "\n\n" + txtS);
             }
