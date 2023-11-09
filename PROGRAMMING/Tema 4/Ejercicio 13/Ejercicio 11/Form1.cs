@@ -78,31 +78,76 @@ namespace Ejercicio_11
             return esBisiesto;
         }
 
-        void SiguienteFecha (int dia, int mes, int year, out int diaPlus, out int mesPlus, out int yearPlus)
+        void SiguienteFecha (ref int dia, ref int mes, ref int year)
         {
-            bool esBisiesto = Bisiesto(year);
-
-            if (mes == 2 && esBisiesto)
-            {
-                diaPlus = dia++;
-            }
-            else
-            {
-                diaPlus = dia++;
-                mesPlus = mes++;
-            }
 
            
 
+            bool esBisiesto = Bisiesto(year);
+            bool esValido = ValidarFecha(dia, mes, year);
+
+            if (esValido == true)
+            {
+
+                if (esBisiesto == true)
+                {
+                    if (mes == 2 && dia == 29)
+                    {
+                    dia = 1;
+                    mes = mes + 1;
+                    }
+                    else
+                    {
+                    dia = dia + 1;
+                    }
+                }
+
+                else
+                {
+                    if (mes == 2 && dia == 28)
+                    {
+                    dia = 1;
+                    mes = mes + 1;
+                    }
+                    else
+                    {
+                    dia = dia + 1;
+                    }
+                }
+          
+                if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia == 30)
+                {
+                dia = 1;
+                mes = mes + 1;
+                }
+
+                else if (dia == 31 && mes != 12)
+                {
+                dia = 1;
+                mes = mes + 1;
+                }
+                
+                if (mes == 12 && dia == 31)
+                {
+                    dia = 1;
+                    mes = 1;
+                    year = year + 1;
+                }
+            }
+
+          else
+            {
+            MessageBox.Show("La fecha no es válida");
+            }
         }
 
 
         private void btnCal_Click(object sender, EventArgs e)
         {
-            int year, dia, mes, diaPlus, mesPlus, yearPlus;
+            int year, dia, mes;
+
             bool fechaValidada;
             fechaValidada = false;
-     
 
             year = int.Parse(Interaction.InputBox("Introduce el año: "));
             mes = int.Parse(Interaction.InputBox("Introduce el mes: "));
@@ -111,10 +156,10 @@ namespace Ejercicio_11
             Bisiesto (year);
             fechaValidada = ValidarFecha( dia, mes, year);
 
-            SiguienteFecha(dia, mes, year, out diaPlus, out mesPlus, out yearPlus);
+            SiguienteFecha(ref dia, ref mes, ref year);
 
 
-            MessageBox.Show("La siguiente fecha sería:\n\n\n\nDia: " + diaPlus + "\n\nMes: " + mesPlus + "\n\nAño: " + yearPlus);
+            MessageBox.Show("La siguiente fecha sería:\n\n\nDia: " + dia + "\n\nMes: " + mes + "\n\nAño: " + year);
             
         }
     }

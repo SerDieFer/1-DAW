@@ -1,0 +1,11 @@
+body {
+    color: red;
+    border: solid 3px;
+}
+
+div {
+    border:inherit
+}
+
+/* Lo hago en el div ya que he divido los párrafos en secciones por si luego quiero crear clases para cada div,
+el concepto sería similar, es simplemente entender que el siguiente sucesor heredaría el valor del antepasado. */
