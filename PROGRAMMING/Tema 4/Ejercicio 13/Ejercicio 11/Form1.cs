@@ -24,38 +24,42 @@ namespace Ejercicio_11
             bool fechaValida = false;
             bool esBisiesto = Bisiesto(year);
 
-            if (mes == 2)
+            if (mes >= 1 && mes <= 12)
             {
-                if (esBisiesto == true)
+
+                if (mes == 2)
                 {
-                    if (dia >= 1 && dia <= 29)
+                    if (esBisiesto == true)
                     {
-                    fechaValida = true;
+                        if (dia >= 1 && dia <= 29)
+                        {
+                            fechaValida = true;
+                        }
+                    }
+
+                    else
+                    {
+                        if (dia >= 1 && dia <= 28)
+                        {
+                            fechaValida = true;
+                        }
+                    }
+                }
+
+                else if (mes == 4 || mes == 6 || mes == 9 || mes == 11)
+                {
+                    if (dia >= 1 && dia <= 30)
+                    {
+                        fechaValida = true;
                     }
                 }
 
                 else
                 {
-                    if (dia >= 1 && dia <= 28)
+                    if (dia >= 1 && dia <= 31)
                     {
-                    fechaValida = true;
+                        fechaValida = true;
                     }
-                }
-            }
-
-            else if (mes == 4 || mes == 6 || mes == 9 || mes == 11)
-            {
-                if (dia >= 1 && dia <= 30)
-                {
-                fechaValida = true;
-                }
-            }
-
-            else 
-            {
-                if (dia >= 1 && dia <= 31)
-                {
-                fechaValida = true;
                 }
             }
 
@@ -78,92 +82,81 @@ namespace Ejercicio_11
             return esBisiesto;
         }
 
-        void SiguienteFecha (ref int dia, ref int mes, ref int year)
+        void CalcularSiguiente(ref int dia, ref int mes, ref int year)
         {
 
-            int diaPlus = dia;
-            int mesPlus = mes;
-            int yearPlus = year;
-
             bool esBisiesto = Bisiesto(year);
-            bool esValido = ValidarFecha(dia, mes, year);
+            bool fechaValida = ValidarFecha(dia, mes, year);
 
-            if (esValido == true)
+            if (fechaValida == true)
             {
-                diaPlus = dia + 1;
+                dia++;
 
-                if (esBisiesto == true)
+                if (mes == 2)
                 {
-                    if (mes == 2 && dia == 29)
+                    if (esBisiesto == true)
                     {
-                    diaPlus = 1;
-                    mesPlus = mes + 1;
+                        if (dia > 29)
+                        {
+                            dia = 1;
+                            mes++;
+                        }
                     }
                     else
                     {
-                    diaPlus = dia + 1;
+                        if (dia > 28)
+                        {
+                            dia = 1;
+                            mes++;
+                        }
                     }
                 }
 
-                else
+                else if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
                 {
-                    if (mes == 2 && dia == 28)
-                    {
-                    diaPlus = 1;
-                    mesPlus = mes + 1;
-                    }
-                    else
-                    {
-                    diaPlus = dia + 1;
-                    }
-                }
-          
-                if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia == 30)
-                {
-                diaPlus = 1;
-                mesPlus = mes + 1;
+                    dia = 1;
+                    mes++;
                 }
 
-                else if (dia == 31 && mes != 12)
+                else if (dia > 31)
                 {
-                diaPlus = 1;
-                mesPlus = mes + 1;
-                }
-                
-                if (mes == 12 && dia == 31)
-                {
-                    diaPlus = 1;
-                    mesPlus = 1;
-                    yearPlus = year + 1;
+                    dia = 1;
+                    mes++;
+
+                    if (mes > 12)
+                    {
+                        mes = 1;
+                        year++;
+                    }
                 }
             }
 
-          else
+            else
             {
-            MessageBox.Show("La fecha no es válida");
+                MessageBox.Show("La fecha introducida no es válida");
             }
         }
 
 
-        private void btnCal_Click(object sender, EventArgs e)
+            private void btnCal_Click(object sender, EventArgs e)
         {
-            int year, dia, mes, diaPlus;
-            bool fechaValidada;
-            fechaValidada = false;
+            int year, dia, mes;
+            bool fechaIntroducida, fechaSiguiente, bisiestoSN;
      
-
             year = int.Parse(Interaction.InputBox("Introduce el año: "));
             mes = int.Parse(Interaction.InputBox("Introduce el mes: "));
             dia = int.Parse(Interaction.InputBox("Introduce el día: "));
 
-            Bisiesto (year);
-            fechaValidada = ValidarFecha( dia, mes, year);
+            bisiestoSN = Bisiesto(year);
+            fechaIntroducida = ValidarFecha( dia, mes, year);
+            CalcularSiguiente(ref dia, ref mes, ref year);
 
-            SiguienteFecha(ref dia, ref mes, ref year);
+            fechaSiguiente = ValidarFecha(dia, mes, year);
 
-
-            MessageBox.Show("La siguiente fecha sería:\n\n\nDia: " + diaPlus + "\n\nMes: " + mesPlus + "\n\nAño: " + yearPlus);
-            
+            if (fechaSiguiente == true)
+            {
+                MessageBox.Show("La siguiente fecha sería:\n\n\nDia: " + dia + "\n\nMes: " + mes + "\n\nAño: " + year);
+            }
         }
     }
 }
