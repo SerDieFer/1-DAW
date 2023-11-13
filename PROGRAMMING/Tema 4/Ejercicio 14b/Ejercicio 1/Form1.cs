@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Ejercicio_1
 {
@@ -12,44 +13,60 @@ namespace Ejercicio_1
 
 
 
-        string CalcularBilletes(ref int cantidadPesetas, int valorBillete, string nombreBillete)
+        void CalcularBilletes(ref int cantidadPesetas, int valorTipo, ref string txt)
         {
-            int cantidadBilletes = cantidadPesetas / valorBillete;
-            string resultado = "";
+            int cantidadTipos = cantidadPesetas / valorTipo;
 
-            if (cantidadBilletes > 0)
+            string tipoBillete = " billetes de ";
+            string nombreBillete = tipoBillete + valorTipo;
+            string tipoMoneda = " monedas de ";
+            string nombreMoneda = tipoMoneda + valorTipo;
+
+
+            if (cantidadTipos > 0)
             {
-                resultado = cantidadBilletes + nombreBillete;
-                cantidadPesetas %= valorBillete;
+                if (cantidadPesetas < 1000)
+                {
+                    txt += cantidadTipos + nombreMoneda + "\n";
+                    cantidadPesetas %= valorTipo;
+
+                    if (cantidadPesetas <= 100)
+                    {
+                        tipoMoneda = " moneda de ";
+                      
+                    }
+
+
+                }
+
+                else
+                {
+                    txt += cantidadTipos + nombreBillete + "\n";
+                    cantidadPesetas %= valorTipo;
+                }
+
+
             }
 
-            return resultado;
         }
 
-        string ValorBilletes (ref int cantidadPesetas)
-            {
-
-                string txt = "Le corresponden:\n\n";
-
-                txt += CalcularBilletes(ref cantidadPesetas, 10000, " billetes de 10000\n");
-                txt += CalcularBilletes(ref cantidadPesetas, 5000, " billetes de 5000\n");
-                txt += CalcularBilletes(ref cantidadPesetas, 2000, " billetes de 2000\n");
-                txt += CalcularBilletes(ref cantidadPesetas, 1000, " billetes de 1000\n");
-                txt += CalcularBilletes(ref cantidadPesetas, 100, " monedas de 100\n");
-                txt += CalcularBilletes(ref cantidadPesetas, 25, " monedas de 25\n");
-
-                return txt;
-
-            }
-            
         private void btnCalcular_Click(object sender, EventArgs e)
             {
              
-                int cantidadPesetas;
+            int cantidadPesetas;
+            string txt ="";
+            
 
-                cantidadPesetas = int.Parse(txtValor.Text);
-               
-                lblResultados.Text = ValorBilletes(ref cantidadPesetas);
+            cantidadPesetas = int.Parse(txtValor.Text);
+
+            CalcularBilletes(ref cantidadPesetas, 10000, ref txt);
+            CalcularBilletes(ref cantidadPesetas, 5000, ref txt);
+            CalcularBilletes(ref cantidadPesetas, 2000, ref txt);
+            CalcularBilletes(ref cantidadPesetas, 1000, ref txt);
+            CalcularBilletes(ref cantidadPesetas, 100, ref txt);
+            CalcularBilletes(ref cantidadPesetas, 25, ref txt);
+
+            lblResultados.Text = txt;
 
             }
         }
