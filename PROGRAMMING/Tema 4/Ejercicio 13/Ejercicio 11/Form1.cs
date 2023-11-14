@@ -82,7 +82,7 @@ namespace Ejercicio_11
             return esBisiesto;
         }
 
-        void CalcularSiguiente(ref int dia, ref int mes, ref int year)
+        void CalcularSiguienteFecha(ref int dia, ref int mes, ref int year)
         {
 
             bool esBisiesto = Bisiesto(year);
@@ -149,7 +149,7 @@ namespace Ejercicio_11
 
             bisiestoSN = Bisiesto(year);
             fechaIntroducida = ValidarFecha( dia, mes, year);
-            CalcularSiguiente(ref dia, ref mes, ref year);
+            CalcularSiguienteFecha(ref dia, ref mes, ref year);
 
             fechaSiguiente = ValidarFecha(dia, mes, year);
 

@@ -12,31 +12,28 @@ namespace Ejercicio_1
         }
 
 
-
         void CalcularBilletes(ref int cantidadPesetas, int valorTipo, ref string txt)
         {
             int cantidadTipos = cantidadPesetas / valorTipo;
 
-            string tipoBillete = " billetes de ";
-            string nombreBillete = tipoBillete + valorTipo;
-            string tipoMoneda = " monedas de ";
-            string nombreMoneda = tipoMoneda + valorTipo;
+            string tipoBillete = "";
+            string tipoMoneda = "";
+  
+   
 
-
-            if (cantidadTipos > 0)
+            if (cantidadTipos > 0 && cantidadTipos != 1)
             {
+                tipoBillete += " billetes de ";
+                tipoMoneda += " monedas de ";
+
+                string nombreBillete = tipoBillete + valorTipo;
+                string nombreMoneda = tipoMoneda + valorTipo;
+ 
+
                 if (cantidadPesetas < 1000)
                 {
                     txt += cantidadTipos + nombreMoneda + "\n";
                     cantidadPesetas %= valorTipo;
-
-                    if (cantidadPesetas <= 100)
-                    {
-                        tipoMoneda = " moneda de ";
-                      
-                    }
-
-
                 }
 
                 else
@@ -44,8 +41,28 @@ namespace Ejercicio_1
                     txt += cantidadTipos + nombreBillete + "\n";
                     cantidadPesetas %= valorTipo;
                 }
+            }
+
+            if (cantidadTipos == 1)
+            {
+                tipoBillete += " billete de ";
+                tipoMoneda += " moneda de ";
+
+                string nombreBillete = tipoBillete + valorTipo;
+                string nombreMoneda = tipoMoneda + valorTipo;
 
 
+                if (cantidadPesetas < 1000)
+                {
+                    txt += cantidadTipos + nombreMoneda + "\n";
+                    cantidadPesetas %= valorTipo;
+                }
+
+                else
+                {
+                    txt += cantidadTipos + nombreBillete + "\n";
+                    cantidadPesetas %= valorTipo;
+                }
             }
 
         }

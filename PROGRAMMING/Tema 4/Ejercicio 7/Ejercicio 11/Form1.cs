@@ -21,9 +21,37 @@ namespace Ejercicio_11
         int MaximoComunDivisor (ref int n1, ref int n2)
         {
 
-        int resto;
+            int resto = 0;
+            bool encontrado = false;
 
-            while (n2 != 0)
+            if (n1 > n2)
+            {
+                for (int i = n1; encontrado == false; i--)
+                {
+                    if (n1 % i == 0 && n2 % i == 0)
+                    {
+                        resto = i;
+                        encontrado = true;
+                    }
+                }
+            }
+
+            else
+            {
+                for (int i = n2; encontrado == false; i--)
+                {
+                    if (n1 % i == 0 && n2 % i == 0)
+                    {
+                        resto = i;
+                        encontrado = true;
+                    }
+                }
+            }
+
+            return resto;
+
+
+           /* while (n2 != 0)
             {
                 resto = n1 % n2;
                 n1 = n2;
@@ -31,7 +59,7 @@ namespace Ejercicio_11
             }
 
             return n1;
-
+           */
         }
 
         private void btnCal_Click(object sender, EventArgs e)
