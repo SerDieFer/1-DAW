@@ -10,77 +10,77 @@ namespace Ejercicio_1
             InitializeComponent();
         }
 
-        void CalcularBilletes(ref int valorIntroducido, int valorTipo, ref string txt)
+        // Creamos una función que designa el valorInroducido a un tipo de Billete/Moneda/Céntimo concreto.
+        void CalcularBilletes(ref int valorIntroducido, int valorTipo, ref string txtRes)
         {
-            int cantidadTipo = valorIntroducido / valorTipo;
 
-            string tipoBillete = "";
-            string tipoMoneda = "";
-            string tipoCentimo = " ";
+            double cantidadTipo = valorIntroducido / valorTipo;
 
-                if (cantidadTipo > 0)
+            if (cantidadTipo > 0)
+            {
+                string tipo = "";
+
+                if (valorTipo >= 5) 
                 {
-                    tipoBillete += " billetes de ";
-                    tipoMoneda += " monedas de ";
-                    tipoCentimo += " céntimos de ";
-
-                    string nombreBillete = tipoBillete + valorTipo;
-                    string nombreMoneda = tipoMoneda + valorTipo;
-                    string nombreCentimo = tipoCentimo + valorTipo;
-
-                    if (valorIntroducido >= 5)
-                    {
-                        txt += cantidadTipo + nombreBillete + "\n";
-                        valorIntroducido %= valorTipo;
-                    }
-
-                    else if (valorIntroducido >= 1)
-                    {
-
-                        txt += cantidadTipo + nombreMoneda + "\n";
-                        valorIntroducido %= valorTipo;
-                    }
-
-                    else
-                    {
-                        txt += cantidadTipo + nombreCentimo + "\n";
-                        valorIntroducido %= valorTipo;
-                    }
-                }             
+                    tipo = " billetes de ";
+                    txtRes += cantidadTipo + tipo + valorTipo + "\n";
+                    valorIntroducido %= valorTipo;
+                }
+                else if (valorTipo <= 2)
+                {
+                    tipo = " monedas de ";
+                    txtRes += cantidadTipo + tipo + valorTipo + "\n";
+                    valorIntroducido %= valorTipo;
+                }
+                else
+                {   
+                    tipo = " céntimos de ";
+                    txtRes += cantidadTipo + tipo + valorTipo + "\n";
+                    valorIntroducido %= valorTipo;
+                }
             }
+        }
 
-        private void btnCalcular_Click(object sender, EventArgs e)
-        {
-            string txtValorIntroducido = txtValor.Text;
+            private void btnCalcular_Click(object sender, EventArgs e)
+            {
+                // Con esto igualamos el valor del string al valor introducido en el input.
+                string txtValorIntroducido = txtValor.Text;
+                string txtRes = "";
 
-            double valorIntroducido;
-            valorIntroducido = double.Parse(txtValorIntroducido);
+                // Esto es debido a que queremos introducir céntimos en el input del valor.
+                double valorIntroducido;
+                valorIntroducido = double.Parse(txtValorIntroducido);
 
-            string txt = "";
+                // Designamos el valor de los euros (billetes y monedas) en un número entero, dejando los céntimos de lado.
+                int valorEuros = (int)valorIntroducido;
 
-            int valorEuros = (int)valorIntroducido;
-            int valorCentimos = (int)((valorIntroducido - valorEuros) * 100);
+                /* Designamos el valor de los céntimos en un número entero, mediante la obtención del valor restante, al hacer la
+                  resta entre el ValorIntroducido inicial - el valor de este sin decimales, dejandonos simplemente con los decimales
+                  que multiplicaremos por 100, obteniendo nuevamente un valor entero asignado a los decimales (céntimos). */
+                int valorCentimos = (int)Math.Round(((double)valorIntroducido - valorEuros) * 100);
 
-                CalcularBilletes(ref valorEuros, 500, ref txt);
-                CalcularBilletes(ref valorEuros, 200, ref txt);
-                CalcularBilletes(ref valorEuros, 100, ref txt);
-                CalcularBilletes(ref valorEuros, 50, ref txt);
-                CalcularBilletes(ref valorEuros, 20, ref txt);
-                CalcularBilletes(ref valorEuros, 10, ref txt);
-                CalcularBilletes(ref valorEuros, 5, ref txt);
-                CalcularBilletes(ref valorEuros, 2, ref txt);
-                CalcularBilletes(ref valorEuros, 1, ref txt);
-            
-                CalcularBilletes(ref valorCentimos, 50, ref txt);
-                CalcularBilletes(ref valorCentimos, 20, ref txt);
-                CalcularBilletes(ref valorCentimos, 10, ref txt);
-                CalcularBilletes(ref valorCentimos, 5, ref txt);
-                CalcularBilletes(ref valorCentimos, 2, ref txt);
-                CalcularBilletes(ref valorCentimos, 1, ref txt);
+                //Aqui calculo el valor de cada tipo distinto de billetes/monedas de euro
+                CalcularBilletes(ref valorEuros, 500, ref txtRes);
+                CalcularBilletes(ref valorEuros, 200, ref txtRes);
+                CalcularBilletes(ref valorEuros, 100, ref txtRes);
+                CalcularBilletes(ref valorEuros, 50, ref txtRes);
+                CalcularBilletes(ref valorEuros, 20, ref txtRes);
+                CalcularBilletes(ref valorEuros, 10, ref txtRes);
+                CalcularBilletes(ref valorEuros, 5, ref txtRes);
+                CalcularBilletes(ref valorEuros, 2, ref txtRes);
+                CalcularBilletes(ref valorEuros, 1, ref txtRes);
 
-            lblResultados.Text = txt;
+                //Aqui calculo el valor de cada tipo distinto de céntimos de euro
+                CalcularBilletes(ref valorCentimos, 50/, ref txtRes);
+                CalcularBilletes(ref valorCentimos, 20, ref txtRes);
+                CalcularBilletes(ref valorCentimos, 10, ref txtRes);
+                CalcularBilletes(ref valorCentimos, 5, ref txtRes);
+                CalcularBilletes(ref valorCentimos, 2, ref txtRes);
+                CalcularBilletes(ref valorCentimos, 1, ref txtRes);
+           
+                lblResultados.Text = txtRes;
 
+            }
         }
     }
-}
 
