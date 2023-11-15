@@ -15,7 +15,7 @@ namespace Ejercicio_1
         {
 
             /* Inicializamos la cantidad de billetes/monedas/céntimos que tendremos, mediante el valor inicial de euros
-            entre el valor que tiene el tipo de billete/moneda/céntimo. */
+             entre el valor que tiene el tipo de billete/moneda/céntimo. */
             int cantidadTipo = valorIntroducido / valorTipo;
 
             // Comprobamos si este valor es mayor que 0 y que no sea uno (Para asignar el nombre en plural).
@@ -30,28 +30,32 @@ namespace Ejercicio_1
                     nombreTipo = " billetes de ";
 
                     /* Resultado de la suma entre la cantidad de tipo (BILLETE) + su nombre asignado al string + el 
-                    valor designado para este tipo. */
+                      valor designado para este tipo. */
                     res += cantidadTipo + nombreTipo + valorTipo + "\n";
 
                     /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                    al tipo. */
+                      al tipo. */
                     valorIntroducido %= valorTipo;
+
                 }
 
                 // Si es tipo del valor asignado es una moneda.
                 else if (tipoValor == 'm')
                 {
+
                     // String del nombre del tipo.
                     nombreTipo = " monedas de ";
 
                     /* Resultado de la suma entre la cantidad de tipo (MONEDA) + su nombre asignado al string + el 
-                    valor designado para este tipo. */
+                      valor designado para este tipo. */
                     res += cantidadTipo + nombreTipo + valorTipo + "\n";
 
                     /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                    al tipo. */
+                      al tipo. */
                     valorIntroducido %= valorTipo;
+
                 }
+
                 // Si es tipo del valor asignado es un céntimo.
                 else
                 {
@@ -59,12 +63,13 @@ namespace Ejercicio_1
                     nombreTipo = " céntimos de ";
 
                     /* Resultado de la suma entre la cantidad de tipo (CÉNTIMO) + su nombre asignado al string + el 
-                    valor designado para este tipo. */
+                      valor designado para este tipo. */
                     res += cantidadTipo + nombreTipo + valorTipo + "\n";
 
                     /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                    al tipo. */
+                      al tipo. */
                     valorIntroducido %= valorTipo;
+
                 }
             }
 
@@ -80,28 +85,32 @@ namespace Ejercicio_1
                     nombreTipo = " billete de ";
 
                     /* Resultado de la suma entre la cantidad de tipo (BILLETE) + su nombre asignado al string + el 
-                    valor designado para este tipo. */
+                       valor designado para este tipo. */
                     res += cantidadTipo + nombreTipo + valorTipo + "\n";
 
                     /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                    al tipo. */
+                      al tipo. */
                     valorIntroducido %= valorTipo;
+
                 }
 
                 // Si es tipo del valor asignado es una moneda.
                 else if (tipoValor == 'm')
                 {
+
                     // String del nombre del tipo.
                     nombreTipo = " moneda de ";
 
                     /* Resultado de la suma entre la cantidad de tipo (MONEDA) + su nombre asignado al string + el 
-                    valor designado para este tipo. */
+                       valor designado para este tipo. */
                     res += cantidadTipo + nombreTipo + valorTipo + "\n";
 
                     /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                    al tipo. */
+                      al tipo. */
                     valorIntroducido %= valorTipo;
+
                 }
+
                 // Si es tipo del valor asignado es un céntimo.
                 else
                 {
@@ -109,12 +118,13 @@ namespace Ejercicio_1
                     nombreTipo = " céntimo de ";
 
                     /* Resultado de la suma entre la cantidad de tipo (CÉNTIMO) + su nombre asignado al string + el 
-                    valor designado para este tipo. */
+                      valor designado para este tipo. */
                     res += cantidadTipo + nombreTipo + valorTipo + "\n";
 
                     /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                    al tipo. */
+                      al tipo. */
                     valorIntroducido %= valorTipo;
+
                 }
             }
         }
@@ -135,10 +145,10 @@ namespace Ejercicio_1
             int valorEur = (int)valorIni;
 
             /* Designamos el valor de los céntimos en un número entero, mediante la obtención del valor restante, al hacer la
-            resta entre el valor inicial - el valor de este con decimales a 0 (x.00), dejandonos simplemente con los
-            decimales que multiplicaremos por 100, obteniendo nuevamente un valor entero asignado a los decimales (Céntimos).
+              resta entre el valor inicial - el valor de este con decimales a 0 (x.00), dejandonos simplemente con los
+              decimales que multiplicaremos por 100, obteniendo nuevamente un valor entero asignado a los decimales (Céntimos).
 
-            En caso de no hacer math round me quita un céntimo por culpa del Int*/
+              En caso de no hacer math round me quita un céntimo por culpa del Int*/
             int valorCent = (int)Math.Round(((double)valorIni - valorEur) * 100);
 
             // Aqui calculo el valor de cada tipo distinto de billetes/monedas de euro.

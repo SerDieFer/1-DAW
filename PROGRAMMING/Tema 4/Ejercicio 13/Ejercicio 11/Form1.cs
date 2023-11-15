@@ -72,13 +72,14 @@ namespace Ejercicio_11
 
             if (year % 4 == 0)
             {
-            esBisiesto = true;
+                esBisiesto = true;
 
                 if (year % 400 != 0 && year % 100 == 0)
                 {
-                esBisiesto = false;
+                    esBisiesto = false;
                 }
             }
+
             return esBisiesto;
         }
 

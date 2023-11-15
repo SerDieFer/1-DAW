@@ -82,7 +82,7 @@
             this.Controls.Add(this.txtValor);
             this.Controls.Add(this.lblValor);
             this.Name = "Form1";
-            this.Text = "Ejercicio 10";
+            this.Text = "Ejercicio 15";
             this.ResumeLayout(false);
             this.PerformLayout();
 
