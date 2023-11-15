@@ -139,7 +139,7 @@ namespace Ejercicio_1
             decimales que multiplicaremos por 100, obteniendo nuevamente un valor entero asignado a los decimales (Céntimos).
 
             En caso de no hacer math round me quita un céntimo por culpa del Int*/
-            int valorCent = (int)(((double)valorIni - valorEur) * 100);
+            int valorCent = (int)Math.Round(((double)valorIni - valorEur) * 100);
 
             // Aqui calculo el valor de cada tipo distinto de billetes/monedas de euro.
             CalcularResultado(ref valorEur, 500, ref res, 'b');
