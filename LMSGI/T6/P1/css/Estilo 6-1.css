@@ -1,0 +1,22 @@
+.header { 
+    background-color: rgb(163, 14, 14); 
+    position: static;
+}
+
+.aside {
+    position: relative;
+    left:20%;
+    top:5%;
+    bottom: 90%;
+    right: 10%;
+    border: 2px solid gray;
+}
+
+.main{
+    position: relative;
+    left: 40%;
+    top:5%;
+    bottom: 90%;
+    right: 10%;
+    border: 2px solid rgb(114, 21, 21);
+}
