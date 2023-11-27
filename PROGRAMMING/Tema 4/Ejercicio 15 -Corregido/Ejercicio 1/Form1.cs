@@ -18,24 +18,20 @@ namespace Ejercicio_1
              entre el valor que tiene el tipo de billete/moneda/céntimo. */
             int cantidadTipo = valorIntroducido / valorTipo;
 
+            string nombreTipo = "";
+
+            // String del nombre de la divisa (euros/cent)
+            string nombreDivisa = " euros";
+
+
             // Comprobamos si este valor es mayor que 0 y que no sea uno (Para asignar el nombre en plural).
             if (cantidadTipo > 0 && cantidadTipo != 1)
             {
-                string nombreTipo = "";
-
                 // Si es tipo del valor asignado es un billete.
                 if (tipoValor == 'b')
                 {
                     // String del nombre del tipo.
                     nombreTipo = " billetes de ";
-
-                    /* Resultado de la suma entre la cantidad de tipo (BILLETE) + su nombre asignado al string + el 
-                      valor designado para este tipo. */
-                    res += cantidadTipo + nombreTipo + valorTipo + "\n";
-
-                    /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                      al tipo. */
-                    valorIntroducido %= valorTipo;
 
                 }
 
@@ -46,13 +42,10 @@ namespace Ejercicio_1
                     // String del nombre del tipo.
                     nombreTipo = " monedas de ";
 
-                    /* Resultado de la suma entre la cantidad de tipo (MONEDA) + su nombre asignado al string + el 
-                      valor designado para este tipo. */
-                    res += cantidadTipo + nombreTipo + valorTipo + "\n";
-
-                    /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                      al tipo. */
-                    valorIntroducido %= valorTipo;
+                    if (valorTipo == 1)
+                    {
+                        nombreDivisa = " euro";
+                    }
 
                 }
 
@@ -60,15 +53,16 @@ namespace Ejercicio_1
                 else
                 {
                     // String del nombre del tipo.
-                    nombreTipo = " céntimos de ";
+                    nombreTipo = " monedas de ";
 
-                    /* Resultado de la suma entre la cantidad de tipo (CÉNTIMO) + su nombre asignado al string + el 
-                      valor designado para este tipo. */
-                    res += cantidadTipo + nombreTipo + valorTipo + "\n";
+                    // String del nombre de la divisa (euros/cent)
+                    nombreDivisa = " céntimos";
 
-                    /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                      al tipo. */
-                    valorIntroducido %= valorTipo;
+                    if (valorTipo == 1)
+                    {
+                        nombreDivisa = " céntimo";
+                    }
+
 
                 }
             }
@@ -76,21 +70,12 @@ namespace Ejercicio_1
             // Comprobamos si este valor es uno (Para asignar el nombre en singular).
             if (cantidadTipo == 1)
             {
-                string nombreTipo = "";
 
                 // Si es tipo del valor asignado es un billete.
                 if (tipoValor == 'b')
                 {
                     // String del nombre del tipo.
                     nombreTipo = " billete de ";
-
-                    /* Resultado de la suma entre la cantidad de tipo (BILLETE) + su nombre asignado al string + el 
-                       valor designado para este tipo. */
-                    res += cantidadTipo + nombreTipo + valorTipo + "\n";
-
-                    /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                      al tipo. */
-                    valorIntroducido %= valorTipo;
 
                 }
 
@@ -101,13 +86,10 @@ namespace Ejercicio_1
                     // String del nombre del tipo.
                     nombreTipo = " moneda de ";
 
-                    /* Resultado de la suma entre la cantidad de tipo (MONEDA) + su nombre asignado al string + el 
-                       valor designado para este tipo. */
-                    res += cantidadTipo + nombreTipo + valorTipo + "\n";
-
-                    /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                      al tipo. */
-                    valorIntroducido %= valorTipo;
+                    if (valorTipo == 1)
+                    {
+                        nombreDivisa = " euro";
+                    }
 
                 }
 
@@ -115,18 +97,32 @@ namespace Ejercicio_1
                 else
                 {
                     // String del nombre del tipo.
-                    nombreTipo = " céntimo de ";
+                    nombreTipo = " moneda de ";
 
-                    /* Resultado de la suma entre la cantidad de tipo (CÉNTIMO) + su nombre asignado al string + el 
-                      valor designado para este tipo. */
-                    res += cantidadTipo + nombreTipo + valorTipo + "\n";
+                    // String del nombre de la divisa (euros/cent)
+                    nombreDivisa = " céntimos";
 
-                    /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
-                      al tipo. */
-                    valorIntroducido %= valorTipo;
+                    if (valorTipo == 1)
+                    {
+                        nombreDivisa = " céntimo";
+                    }
 
                 }
+
             }
+
+            // Siempre y cuando tengamos una cantidad de billetes, monedas o céntimos.
+            if (cantidadTipo != 0)
+            {
+                /* Resultado de la suma entre la cantidad de tipo (BILLETE/MONEDA/CENT) + su nombre asignado al string + el
+                valor designado para este tipo. */
+                res += cantidadTipo + nombreTipo + valorTipo + nombreDivisa +  "\n";
+
+                /* Al valor inicial introducido le dejamos el resto despues de dividirlo entre el valor designado
+                al tipo. */
+                valorIntroducido %= valorTipo;
+            }
+
         }
 
 

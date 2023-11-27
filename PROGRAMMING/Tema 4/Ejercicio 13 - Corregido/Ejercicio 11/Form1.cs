@@ -22,14 +22,13 @@ namespace Ejercicio_11
         {
 
             bool fechaValida = false;
-            bool esBisiesto = Bisiesto(year);
 
             if (mes >= 1 && mes <= 12)
             {
 
                 if (mes == 2)
                 {
-                    if (esBisiesto == true)
+                    if (Bisiesto(year) == true)
                     {
                         if (dia >= 1 && dia <= 29)
                         {
@@ -86,16 +85,11 @@ namespace Ejercicio_11
         void CalcularSiguienteFecha(ref int dia, ref int mes, ref int year)
         {
 
-            bool esBisiesto = Bisiesto(year);
-            bool fechaValida = ValidarFecha(dia, mes, year);
-
-            if (fechaValida == true)
-            {
                 dia++;
 
                 if (mes == 2)
                 {
-                    if (esBisiesto == true)
+                    if (Bisiesto(year) == true)
                     {
                         if (dia > 29)
                         {
@@ -132,31 +126,27 @@ namespace Ejercicio_11
                 }
             }
 
-            else
-            {
-                MessageBox.Show("La fecha introducida no es válida");
-            }
-        }
-
-
             private void btnCal_Click(object sender, EventArgs e)
         {
             int year, dia, mes;
-            bool fechaIntroducida, fechaSiguiente, bisiestoSN;
+            bool fechaIntroducida, fechaSiguiente;
      
             year = int.Parse(Interaction.InputBox("Introduce el año: "));
             mes = int.Parse(Interaction.InputBox("Introduce el mes: "));
             dia = int.Parse(Interaction.InputBox("Introduce el día: "));
 
-            bisiestoSN = Bisiesto(year);
             fechaIntroducida = ValidarFecha( dia, mes, year);
-            CalcularSiguienteFecha(ref dia, ref mes, ref year);
-
             fechaSiguiente = ValidarFecha(dia, mes, year);
 
             if (fechaSiguiente == true)
             {
+                CalcularSiguienteFecha(ref dia, ref mes, ref year);
                 MessageBox.Show("La siguiente fecha sería:\n\n\nDia: " + dia + "\n\nMes: " + mes + "\n\nAño: " + year);
+            }
+
+            else
+            {
+                MessageBox.Show("La fecha introducida es errónea, introducela de nuevo");
             }
         }
     }
