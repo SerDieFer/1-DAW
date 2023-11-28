@@ -20,7 +20,7 @@ namespace Extra___1
             InitializeComponent();
         }
 
-        void mcmCalculo(ref int n1, ref int n2, out int res)
+        void mcmCalculo( int n1, int n2, out int res)
         {
 
             // Para averiguar el mcm necesitamos obtener el número común más cercano, siempre que los numeros aportados se multipliquen x2.
@@ -40,10 +40,10 @@ namespace Extra___1
                 n2 = -n2;
             }
 
-            // Mientras que los divisores sean mayores o iguales a los números designados.
+            // Mientras que los divisores sean menores o iguales a los números designados.
             while (div <= n1 || div <= n2)
             {
-                // Mientras que los divisores sean mayores o iguales a los números designados además de que la division
+                // Mientras que los divisores sean menores o iguales a los números designados además de que la division
                 // del número entre el divisor tenga como resto un número entero, siendo por ende div un factor común en n1 o n2.
                 while (div <= n1 && n1 % div == 0 || div <= n2 && n2 % div == 0)
                 {
@@ -83,7 +83,7 @@ namespace Extra___1
             n1 = int.Parse(Interaction.InputBox("Número 1 a calcular el m.c.m"));
             n2 = int.Parse(Interaction.InputBox("Número 2 a calcular el m.c.m"));
 
-            mcmCalculo(ref n1, ref n2, out int res);
+            mcmCalculo(n1,  n2, out int res);
 
             MessageBox.Show(res.ToString());
         }

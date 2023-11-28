@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -23,11 +24,11 @@ namespace Extra___1
         {
             string txt = "";
        
-                for (int i = 1; i <= num; i++)
+                for (int i = 2; i < num; i++)
                 {
                     if (ComprobarPrimo(i, true))
                     {
-                        if (num == i)
+                        if (num == i + 1)
                         {
                             txt += i;
                         }
@@ -37,7 +38,7 @@ namespace Extra___1
                         }
                     }
 
-                    else if (i == num)
+                    else if (num == i + 1)
                     {
                         // He tenido que buscar como
                         txt = txt.TrimEnd('-', ' ');
@@ -65,24 +66,34 @@ namespace Extra___1
         private void btnPrimo_Click(object sender, EventArgs e)
         {
             string txtResultado;
-            string numInicial = Interaction.InputBox("Introduzca un número (>= 1) para mostrar " +
-            "los números primos que sean menor a este");
-            int numCalculable = int.Parse(numInicial);
+            int num = int.Parse(Interaction.InputBox("Introduzca un número (>= 1) para mostrar " +
+            "los números primos que sean menor a este"));
 
-            bool esPrimo = true;
+            if (num >= 3)
+            {
+                bool esPrimo = true;
+                esPrimo = ComprobarPrimo(num, esPrimo);
+                ImprimirPrimos(num, esPrimo, out txtResultado);
+                MessageBox.Show("Los números primos anteriores al " + num + " serían: \n\n" + txtResultado);
+            }
 
-            esPrimo = ComprobarPrimo(numCalculable, esPrimo);
-            ImprimirPrimos(numCalculable, esPrimo, out txtResultado);
+            else if (num == 2)
+            {
+                MessageBox.Show("El número 2 no tiene números primos anteriores");
+            }
 
-            if (numCalculable >= 1)
-            { 
-                MessageBox.Show("Los números primos serían: \n\n" + txtResultado);
+            else if (num < 2 && num >= 1)
+            {
+                MessageBox.Show("El número 1 no es un número primo");
+
             }
 
             else
             {
-                MessageBox.Show("Introduzca un valor válido");
+                MessageBox.Show("Introduzca un valor válido mayor que 0");
             }
+
+            
         }
     }
 }
