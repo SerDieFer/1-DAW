@@ -20,8 +20,7 @@ namespace Extra___1
             InitializeComponent();
         }
 
-        void mcmCalculo( int n1, int n2, out int res)
-        {
+            /* De esta forma no
 
             // Para averiguar el mcm necesitamos obtener el número común más cercano, siempre que los numeros aportados se multipliquen x2.
             int mcm, div;
@@ -75,7 +74,35 @@ namespace Extra___1
 
             // Igualamos el resultado a sacar de la función con el mcm obtenido del bucle.
             res = mcm;
+
+            */
+        
+        int Calculomcm(int n1, int n2)
+        {
+            /* Método Santi
+              
+            int mcm = 0;
+            bool encontrado = false;
+
+            for (int i = 1; !encontrado; i++)
+            {
+                for (int j = 1; j <= (n1 * i) && !encontrado; j++)
+                {
+                    if ((n1 * i) == (n2 * j))
+                    {
+                        encontrado = true;
+                        mcm = (n1 * i);
+                    }
+                }
+            }
+
+            */
+
+            return mcm;
+
         }
+
+
 
         private void btnmcm_Click(object sender, EventArgs e)
         {
@@ -83,9 +110,9 @@ namespace Extra___1
             n1 = int.Parse(Interaction.InputBox("Número 1 a calcular el m.c.m"));
             n2 = int.Parse(Interaction.InputBox("Número 2 a calcular el m.c.m"));
 
-            mcmCalculo(n1,  n2, out int res);
+            string mcm = Calculomcm(n1, n2).ToString();
 
-            MessageBox.Show(res.ToString());
+            MessageBox.Show(mcm.ToString());
         }
     }
 }
