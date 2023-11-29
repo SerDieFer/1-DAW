@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,10 @@ namespace Extra___1
             InitializeComponent();
         }
 
-            /* De esta forma no
+        // Muy rara esta forma, no usar.
+        int FormaDemasiadoComplejaCalculoMCM(int n1, int n2)
+        {
+            // Olvida este método, muy retorcido.
 
             // Para averiguar el mcm necesitamos obtener el número común más cercano, siempre que los numeros aportados se multipliquen x2.
             int mcm, div;
@@ -71,35 +75,103 @@ namespace Extra___1
                 // esto aumenta el divisor en 1 en 1 hasta que las condiciones del bucle no se puedan seguir cumpliendo.
                 div++;
             }
+            return mcm;
+        }
 
-            // Igualamos el resultado a sacar de la función con el mcm obtenido del bucle.
-            res = mcm;
-
-            */
-        
-        int Calculomcm(int n1, int n2)
+        // Hayas el MCD para calcular con este el MCM.
+        int FormaHayarMCDCalculoMCM(int n1, int n2)
         {
-            /* Método Santi
-              
-            int mcm = 0;
-            bool encontrado = false;
+            // Hayamos el MCD (Máximo común divisor)
+            int MCD = 1;
 
-            for (int i = 1; !encontrado; i++)
+            if (n1 > n2)
             {
-                for (int j = 1; j <= (n1 * i) && !encontrado; j++)
+                // Si n1 es mayor, realiza un bucle desde 2 hasta n2-1
+                for (int i = 2; i < n2; i++)
                 {
-                    if ((n1 * i) == (n2 * j))
+                    // Comprueba si i es un divisor común de n1 y n2
+                    if (n1 % i == 0 && n2 % i == 0)
                     {
-                        encontrado = true;
-                        mcm = (n1 * i);
+                        // Si i es divisor común, actualiza el MCD
+                        MCD = i;
                     }
                 }
             }
+            else
+            {
+                // Si n2 es mayor o igual a n1, realiza un bucle desde 2 hasta n1-1
+                for (int i = 2; i < n1; i++)
+                {
+                    // Comprueba si i es un divisor común de n1 y n2
+                    if (n1 % i == 0 && n2 % i == 0)
+                    {
+                        // Si i es divisor común, actualiza el MCD
+                        MCD = i;
+                    }
+                }
+            }
+            return MCD;
+        }
 
-            */
+        // Calculas el MCM.
+        int FormaMedianteMCDCalculoMCM(int n1, int n2)
+        {
+            // A continuación mediante el MCD obtenemos el resultado del MCM.
+            int MCD = FormaHayarMCDCalculoMCM(n1, n2);
 
+            int MCM = (n1 * n2) / MCD;
+
+            return MCM;
+        }
+
+        // Forma con 2 bucles.
+        int Forma2CalculoMCM(int n1, int n2)
+        {
+
+            //Método Santi con 2 bucles
+            int mcm = 0;
+            bool encontrado = false;
+
+            // Comienza un bucle que se ejecuta hasta que se encuentra el MCM.
+            for (int i = 1; !encontrado; i++)
+            {
+                /* Dentro del bucle externo, se inicia otro bucle con 'j'.
+                 Este bucle se ejecuta mientras 'j' sea menor o igual a (i * n1)
+                 y mientras no se haya encontrado aún el MCM. */
+                for (int j = 1; j <= (n1 * i) && !encontrado; j++)
+                {
+                    // Comprueba si 'n1 * i' es igual a 'n2 * j'.
+                    // Si es así, significa que ha encontrado el MCM.
+                    if ((n1 * i) == (n2 * j))
+                    {
+                        // Asigna el valor del MCM a la variable 'mcm'.
+                        mcm = (n1 * i);
+                        encontrado = true;
+                    }
+                }
+            }
             return mcm;
+        }
 
+        // Forma con 1 sólo bucle.
+        int Forma1CalculoMCM(int n1, int n2)
+        {
+            //Método más corto
+            int mcm = 0;
+            bool encontrado = false;
+
+            // Comienza un bucle que se ejecuta hasta que se encuentra el MCM.
+            for (int i = 1; !encontrado; i++)
+            {
+                // Verifica si al multiplicar 'n1' por 'i' se obtiene un número divisible por 'n2'.
+                if ((n1 * i) % n2 == 0)
+                {
+                    // Si es divisible, asigna ese número a la variable 'mcm'.
+                    mcm = n1 * i;
+                    encontrado = true;
+                    }
+                }
+            return mcm;
         }
 
 
@@ -110,7 +182,7 @@ namespace Extra___1
             n1 = int.Parse(Interaction.InputBox("Número 1 a calcular el m.c.m"));
             n2 = int.Parse(Interaction.InputBox("Número 2 a calcular el m.c.m"));
 
-            string mcm = Calculomcm(n1, n2).ToString();
+            string mcm = Forma1CalculoMCM(n1, n2).ToString();
 
             MessageBox.Show(mcm.ToString());
         }
