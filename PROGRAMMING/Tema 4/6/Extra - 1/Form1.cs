@@ -20,28 +20,23 @@ namespace Extra___1
             InitializeComponent();
         }
 
-        string Calculo(ref int n1, ref int n2, ref string resultado)
+        void Calculo(int n1, int n2, out int division, out int resto)
         {
-            int division = n1 / n2;
-            int resto = n1 % n2;
 
-            resultado = "La división da como resultado: " + division + "\n\nMientras que su resto sería: " + resto;
+            division = n1 / n2;
+            resto = n1 % n2;
 
-            return resultado;
         }
 
         private void btnmcm_Click(object sender, EventArgs e)
         {
-            int n1, n2;
-            string resultado;
-            resultado = "";
+            int n1, n2, division, resto;
             n1 = int.Parse(Interaction.InputBox("Número 1"));
             n2 = int.Parse(Interaction.InputBox("Número 2"));
-    
 
-            Calculo(ref n1, ref n2, ref resultado);
+            Calculo(n1, n2, out division, out resto);
 
-            MessageBox.Show(resultado.ToString());
+            MessageBox.Show(division + " " + resto);
 
         }
     }

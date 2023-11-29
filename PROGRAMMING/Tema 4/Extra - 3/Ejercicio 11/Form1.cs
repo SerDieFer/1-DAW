@@ -49,7 +49,7 @@ namespace Ejercicio_11
             bool encontrado = false;
 
           
-                for (int i = calcularNúmeroMenor(n1,n2,n3); encontrado == false; i--)
+                for (int i = calcularNúmeroMenor(n1,n2,n3); !encontrado; i--)
                 {
                     if (n1 % i == 0 && n2 % i == 0 && n3 % i == 0)
                     {
