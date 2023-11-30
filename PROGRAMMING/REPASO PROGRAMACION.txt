@@ -1,0 +1,127 @@
+
+Calcular serie que se repite de x1 a x2:
+
+	double/int resultado= 0;
+
+	//Este bucle va desde x1 = 1 ( i = 1) mientras que esta sea igual a x2 (n).
+
+	for(int i = 1; i <= n;i++)
+	{
+		// Esto porque es relativo a que se calcula, podrían ser sumas
+		// o restas, etc.
+
+    		resultado += (double) Potencia(num, i) / Factorial(i);
+	}
+	return resultado;
+
+Calcular potencia de un número:
+	
+  	int resultado = 1; / resultado = num;
+
+	// Este bucle va desde la i = 1, hasta que lo quieras cortar en x.
+
+  	for(int i = 1; i <= num; i++) / for(int i = 2; i <= num; i++)
+  	{
+		
+		// Esto se debe a que al inicializar el valor pot en x, en el bucle
+		// lo multiplicas cada itineración de este.
+
+      		resultado *= num;
+  	}
+  	return resultado;
+
+Calcular factorial de un número:
+
+	int resultado = 1;
+
+	// Este bucle irá desde i = 1 hasta que sea mayor o igual al número
+ 	// el cual desea sacar el factorial.
+
+	for (int i = 1; i <= num; i++)
+	{
+	
+		// Esto se debe a que deseamos multiplicar desde el numero 1
+		// hasta el numero indicado (5! = 5*4*3*2*1 = 120)
+
+		resultado *= i;
+	}
+	return resultado;
+
+Calcular MCD (Máximo Común Divisor):
+
+	int MCD = 0;
+	bool encontrado = false
+
+	// Bucle que comienza desde el valor más pequeño entre numMenor y numMayor, 
+	// y continúa hasta que el MCD sea encontrado.
+
+	for (int i = numMenor; !encontrado; i++)
+	{
+		// Comprobar si i es divisor común de numMenor y numMayor
+			
+		if (numMenor % i == 0 && numMayor % i == 0)
+		{
+			// Si i es divisor común, actualizar el valor del MCD y 
+			// marcar como encontrado	
+				
+			MCD = i;
+			encontrado = true;
+		}
+	}
+	return MCD;
+
+Calcular MCM (Mínimo Común Múltiplo)
+
+	int MCM = 0;
+	bool encontrado = false;
+
+	// Bucle que comienza desde 1 y continúa hasta que se encuentra el MCM
+
+	for (int i = 1; !encontrado; i++) 
+	{
+    		// Comprobar si el producto de num1 por i es un múltiplo de num2
+
+    		if ((num1 * i) % num2 == 0) 
+		{
+        		// Si es un múltiplo, actualizar el valor del MCM y 
+			// marcar como encontrado.
+
+       			MCM = num1 * i;
+        		encontrado = true;
+    		}
+	}
+	return MCM;
+
+Calcular Serie v2:
+
+	// Verifica si el número ingresado es mayor que 0
+
+	if (num > 0)
+	{
+
+    	suma = 1;  // Inicializa la suma con el primer término
+    	txtSuma = "1";  // Inicializa la cadena que mostrará la serie
+
+    	// Bucle que recorre desde el segundo término hasta el número ingresado
+
+    	for (double i = 2; i <= num; i++)
+    	{
+
+        	// Verifica si i es par o impar para determinar la operación a realizar
+
+        	if (i % 2 == 0)
+        	{
+            		suma -= 1 / i;  // Resta si i es par
+            		txtSuma += " - ";
+        	}
+        	else
+        	{
+            		suma += 1 / i;  // Suma si i es impar
+            		txtSuma += " + ";
+        	}	
+
+        txtSuma += (1 / i).ToString();  // Agrega el término actual a la cadena
+    	}
+    	res = suma;  // Guarda el resultado final de la serie
+
+

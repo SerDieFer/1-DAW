@@ -24,7 +24,7 @@ namespace Extra___1
         // sabremos que el MCD no puede ser menor al número más pequeño, por ende deberemos encontrar un caso en el que
         // el resto de ambos sea un número entero respecto al número del bucle (empezando este por el número más pequeño)
         // mediante las itineraciones posteriores del bucle.
-        string Calculo(ref int n1, ref int n2, ref string resultado)
+        string Calculo(int n1, int n2, ref string resultado)
         {
             // Inicialización de variables
             int MCD = 0;
@@ -78,7 +78,7 @@ namespace Extra___1
             n2 = int.Parse(Interaction.InputBox("Número 2"));
     
 
-            Calculo(ref n1, ref n2, ref resultado);
+            Calculo(n1, n2, ref resultado);
 
             MessageBox.Show(resultado.ToString());
 

@@ -19,6 +19,20 @@ namespace Ejercicio_28
             InitializeComponent();
         }
 
+        double Factorial (double num)
+        {
+            double fact = 1;
+
+            for(int i = 1; i<= num;i++)
+            {
+                fact *= i;
+
+            }
+
+            return fact;
+        }
+
+
         private void btnCal_Click(object sender, EventArgs e)
         {
             double num, suma, res;
@@ -31,57 +45,38 @@ namespace Ejercicio_28
             res = 0;
             num = double.Parse(txtInput);
 
-
-            if (num > 0)
-
+            if(num > 0)
             {
+                suma = 1;
+                txtSuma += 1;
 
-                if (num >= 1)
-
+                for (double i = 2; i <= num; i++)
                 {
-
-                    txtSuma += 1;
-                    suma = 1;
-
-                    for (int i = 2; i <= num; i++)
-
+                    if(i % 2 == 0)
                     {
-
-                        if (i % 2 == 0)
-
-                        {
-                            suma -= (1 / (double)i);
-                            txtSuma += " - ";
-                        }
-
-                        else
-
-                        {
-                            suma += (1 / (double)i);
-                            txtSuma += " + ";
-                        }
-
-
-                        txtSuma += (1 / (double)i);
-
+                        suma -= 1 / Factorial(i);
+                        txtSuma += " - ";
+                    }
+                    else
+                    {
+                        suma += 1 / Factorial(i);
+                        txtSuma += " + ";
                     }
 
-                    res = suma;
-                    MessageBox.Show(txtSuma + " = " + res);
-
+                    txtSuma += (1 / Factorial(i)).ToString();
+                    
                 }
 
-                else if (num < 0 || num == 0)
+                res = suma;
 
-                {
-
-                MessageBox.Show("Introduzca un valor superior a 0");
-
-                }
-
+                MessageBox.Show(txtSuma + " = " + res);
             }
+
         }
+
     }
 }
+
+
 
 

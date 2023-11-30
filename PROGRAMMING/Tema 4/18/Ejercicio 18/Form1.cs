@@ -21,38 +21,40 @@ namespace Ejercicio_18
 
         double Serie (int m, int n)
         {
-            double suma = 0;
+            double sumatotal = 0;
 
             for(int i = 1; i <= n;i++)
             {
-                suma += (double) Potencia(m, i) / Factorial(i);
-
+                sumatotal += (double) Potencia(m, i) / Factorial(i);
             }
-            return suma;
+            return sumatotal;
         }
+
 
         int Potencia (int m, int n)
         {
-            int pot = 1;
 
-            for(int i = 1; i <= n; i++)
+            int pot = m;
+
+            for(int i = 2; i <= n; i++)
             {
-                pot *= m;
 
+                pot *= m;
             }
+
             return pot;
         }
 
+
         int Factorial (int n)
         {
-            int resfact = 1;
+            int fact = 1;
 
-            for(int i = 1; i <= n; i++)
+            for(int i = 2; i <= n; i++)
             {
-                resfact *= i;
-
+                fact *= i;
             }
-            return resfact;
+            return fact;
         }
 
         private void btnSerie_Click(object sender, EventArgs e)
@@ -62,7 +64,7 @@ namespace Ejercicio_18
             n = int.Parse(Interaction.InputBox("Introduce el número n para la siguiente serie:\nm + m^2/ 2! + m^3/ 3! + m^4/ 4! + ….+m^n/n!"));
             string res = "";
 
-            res = Serie(m , n).ToString();
+            res = Potencia(m,n).ToString();
 
             MessageBox.Show(res);
         }

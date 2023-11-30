@@ -157,21 +157,19 @@ namespace Extra___1
         int Forma1CalculoMCM(int n1, int n2)
         {
             //Método más corto
-            int mcm = 0;
+            int MCD = 0;
             bool encontrado = false;
 
-            // Comienza un bucle que se ejecuta hasta que se encuentra el MCM.
-            for (int i = 1; !encontrado; i++)
+            for (int i = n2; !encontrado; i++)
             {
-                // Verifica si al multiplicar 'n1' por 'i' se obtiene un número divisible por 'n2'.
-                if ((n1 * i) % n2 == 0)
+                if (n1 % i == 0 && n2 % i == 0)
                 {
-                    // Si es divisible, asigna ese número a la variable 'mcm'.
-                    mcm = n1 * i;
+                    MCD = i;
                     encontrado = true;
-                    }
                 }
-            return mcm;
+            }
+
+            return MCD;
         }
 
 
