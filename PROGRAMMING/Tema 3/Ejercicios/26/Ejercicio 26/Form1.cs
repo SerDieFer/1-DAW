@@ -33,14 +33,15 @@ namespace Ejercicio_26
                 }
                 else
                 {
-                    txt += i + ", ";
+                    if (i == 99)
+                    {
+                        txt += i + ".";
+                    }
+                    else
+                    {
+                        txt += i + ", ";
+                    }
                 }
-
-                if (i == 99)
-                {
-                    txt += i + ".";
-                }
-
 
                 suma += i;
            }
