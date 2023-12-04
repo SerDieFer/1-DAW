@@ -49,8 +49,8 @@ p {
     grid-column-end: 2;
     grid-row-start: 2;
     grid-row-end: 2;   
-    border-right: 1px solid  rgb(49, 49, 49);
-    border-left: 1px solid  rgb(49, 49, 49);
+    border-right: 1px solid  rgb(92, 92, 92);
+    border-left: 1px solid  rgb(92, 92, 92);
     padding: 10%; 
 }
 
@@ -61,6 +61,7 @@ p {
     grid-column-end: 5;
     grid-row-start: 2;
     grid-row-end: 2;   
+    border-right: 1px solid  rgb(92, 92, 92);
 }
 
 .footer {
@@ -70,7 +71,7 @@ p {
     grid-row-end: 3;  
 
     color: white;
-    border-top: solid 1px grey;
+    border-top: 5px solid  rgb(92, 92, 92);
     background-color: rgb(49, 49, 49);
     text-align: center;
     min-height:75px; 
