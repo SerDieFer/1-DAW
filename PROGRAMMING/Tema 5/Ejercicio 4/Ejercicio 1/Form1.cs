@@ -70,11 +70,12 @@ namespace Ejercicio_1
         private void btnLeer_Click(object sender, EventArgs e)
         {
             LeerVector(vector);
+            CambioNegativo(vector);
         }
 
         private void btnMostrar_Click(object sender, EventArgs e)
         {
-            string txtVector = MostrarVector(CambioNegativo(vector)).ToString();
+            string txtVector = MostrarVector(vector).ToString();
             MessageBox.Show(txtVector);
         }
     }

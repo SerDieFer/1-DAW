@@ -48,7 +48,7 @@
             this.btnMostrar.Name = "btnMostrar";
             this.btnMostrar.Size = new System.Drawing.Size(218, 39);
             this.btnMostrar.TabIndex = 1;
-            this.btnMostrar.Text = "Mostrar Negativos";
+            this.btnMostrar.Text = "Mostrar Suma";
             this.btnMostrar.UseVisualStyleBackColor = true;
             this.btnMostrar.Click += new System.EventHandler(this.btnMostrar_Click);
             // 
@@ -60,7 +60,7 @@
             this.Controls.Add(this.btnMostrar);
             this.Controls.Add(this.btnLeer);
             this.Name = "Form1";
-            this.Text = "Ejercicio 4";
+            this.Text = "Ejercicio 5";
             this.ResumeLayout(false);
 
         }
