@@ -1,208 +1,177 @@
-html, body {
-    border:0; 
-    margin:0; 
-    padding:0; 
-    background:#F2F5FE; 
-    font:"verdana", sans-serif; 
-    color:#192666; 
+/* Reset de estilos para quitar márgenes y rellenos predeterminados */
+body, h1, h2, p, ul, li {
+    margin: 0;
+    padding: 0;
 }
 
-div {
-    display:grid;
+/* Estilo general del body */
+body {
+    font-family: "Verdana", sans-serif;
+    color: #192666;
+    background: #F2F5FE;
 }
 
-
-main {
+/* Contenedor principal con display grid */
+.grid-container {
+    display: grid;
+    gap: 0;
     height: 100vh;
     max-height: 100vh;
     width: 100vw;
     max-width: 100vw;
+    margin: 0 auto;
+}
 
+.container {
     display: grid;
-    grid-template-rows: auto 1fr auto;
-}
+    grid-template-columns: 1fr 1.4fr 0.9fr;
+    grid-template-rows: 0.6fr 2.1fr 0.3fr;
+    gap: 0;
+    grid-template-areas:
+      "Header Header Header"
+      "main main main"
+      "Footer Footer Footer";
+  }
+  
+  .Header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0;
+    grid-template-areas:
+      "title-h1 title-h1 title-h1"
+      "title-h1 title-h1 title-h1"
+      "nav nav nav";
+    grid-area: Header;
+    background-color: #192666;
+  }
+  
+  .nav { grid-area: nav; }
+  
+  .title-h1 { grid-area: title-h1; }
+  
+  .main {
+    display: grid;
+    grid-template-columns: 2.8fr 0.6fr 0.5fr;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0;
+    grid-template-areas:
+      "articles-container articles-container aside"
+      "article1 article1 aside"
+      "article2 article2 right-aside";
+    grid-area: main;
+  }
+  
+  .articles-container { grid-area: articles-container; }
+  
+  .article1 { grid-area: article1; }
+  
+  .article2 { grid-area: article2; }
+  
+  .aside { grid-area: aside; }
+  
+  .right-aside {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0;
+    grid-template-areas:
+      "about-container about-container about-container"
+      "category-container category-container category-container"
+      "links-container links-container links-container";
+    grid-area: right-aside;
+  }
+  
+  .about-container { grid-area: about-container; }
+  
+  .category-container { grid-area: category-container; }
+  
+  .links-container { grid-area: links-container; }
+  
+  .Footer { grid-area: Footer; }
 
-header {
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 1;
-
-    min-height:75px; 
-}
-
-main .title-h1{
-    margin-bottom: 30px;
-    background:#F2F5FE; 
-}
-
-nav {
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 1;
-    
-    background: #192666;
-    color: white;
-    margin: 0;
-    min-height: 50px;
-    display: flex;
-    align-items: flex-end;
-}
-
-.articles-container {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 3;
-    grid-row-end: 3;   
-    padding: 0; 
-}
-
-
-aside {
-    grid-column-start: 3;
-    grid-column-end: 4;
-    grid-row-start: 3;
-    grid-row-end: 3;  
-
-    background:#CEDBF9
-}
-
-footer {
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 4;
-    grid-row-end: 4;  
-
-    color:#6685CC;
-    min-height:25px; 
-}
-
+/* Estilos generales para la navegación */
 nav ul {
     padding-left: 10px;
     margin: 0;
     display: flex;
     list-style: none;
 }
+
 nav ul li {
-    margin-right: 5px;
-    margin-left: 5px;
-    padding-top:10px;
-    padding-bottom:5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    background:#233C9B;
+    margin: 0 5px;
+    padding: 10px 5px;
+    background: #233C9B;
 }
 
 nav ul li a {
     text-decoration: none;
-    color:#ffffff;
+    color: #ffffff;
 }
 
-a:hover {
-    color:#4F6AD7;
+nav ul li a:hover {
+    color: #4F6AD7;
 }
 
+/* Estilos generales para los elementos de texto */
 p {
-    border:0; 
-    margin:15px; 
-    padding:0;
+    margin: 1%;
 }
 
 h1, h2, h3 {
-    border:0; 
-    margin:15px 0 10px 0; 
-    padding:0; 
-    font-weight:bold;
+    font-weight: bold;
 }
 
-ul {
-    display:block; 
-    border:0;
-    padding:0;
-}
-
-li {
-    display:list-item; 
-    border:0; 
-    margin:0; 
-    padding:0; 
-}
-
+/* Estilos específicos para los artículos */
 .article h2 {
-    background:#DEE5FD; 
-    color:#192666;
+    color: #192666;
+    background: #FFA500;
+    margin-top: 0;
+    padding: 10px;
 }
 
+/* Estilos específicos para la información en los artículos */
 #page .info {
-    margin:10px 0; 
-    padding-bottom:8px; 
-    border-bottom:1px solid #DEE5FD;
-    color:#6685CC;
+    margin: 10px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #DEE5FD;
+    color: #6685CC;
 }
 
-#page .info span.date, #page .info text, #page .info span.user, #page .info span.comments {
-    padding-left:15px;
+/* Estilos generales para listas */
+ul, li {
+    padding: 0;
+    margin: 0;
 }
 
-#page .info span.user,  #page .info span.comments {
-    margin-left:8px;
+/* Estilos específicos para las listas en el aside */
+ul#about-me,
+ul#category,
+ul#links {
+    padding: 0;
+    list-style: none;
 }
 
-aside #right-aside {
-    padding:20px 10px; 
+ul#category li,
+ul#links li {
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #E0E8FA;
 }
 
-#right-aside h3 {
-
-    background:#A0B9F3;
-    color:#192666;
-}
-
-ul#about-me {
-
-    list-style:none;
-}
-
-ul#category {
-    list-style:none;
-}
-
-ul#category li {
-    margin:0;
-    padding:0; 
-    border-bottom:1px solid #E0E8FA;
-}
-
-ul#category li a {
-    display:block; 
-    padding:3px 0 3px 22px; 
-    text-decoration:none;
+ul#category li a,
+ul#links li a {
+    display: block;
+    padding: 3px 0 3px 22px;
+    text-decoration: none;
 }
 
 ul#category li#category-active a {
-    background:#E0E8FA; 
-    font-weight:bold;
-}
-
-ul#links {
-    list-style:none;
-}
-
-ul#links li {
-    margin:0; 
-    padding:0; 
-    border-bottom:1px solid #E0E8FA;
-}
-
-ul#links li a {
-    display:block; 
-    padding:3px 0 3px 22px; 
-    text-decoration:none;
+    background: #E0E8FA;
+    font-weight: bold;
 }
 
 ul#links li a:hover {
-    background-color:#D3DFF8; 
-    color:#192666;
+    background-color: #D3DFF8;
+    color: #192666;
 }
-
