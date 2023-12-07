@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es-es">
+    <head>  
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 6-3</title>
+        <link rel="stylesheet" type="text/css" href="./css/Estilo 6-3a.css"> 
+    </head> 
+        <body>     
+
+        <h1>INDUSTRIAS ACME. FORMULARIO DE PEDIDO</h1>
+
+            <form id="orderForm" method="post">
+                
+                <div id="formContainer">
+
+                    <div class="table">
+
+                        <div class="row">
+
+                            <div class="cell left">
+                                <p><strong>Datos Cliente:</strong></p>
+                            </div>
+
+                            <div class="cell right">
+                
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="cell left">
+                                <label for="client_name">Nombre</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="text" name="client_name" id="client_name" size="48" placeholder="Alumno">
+                            </div>
+
+                        </div>
+                    
+                        <div class="row"> 
+
+                            <div class="cell left">
+                                <label for="email">Correo Electrónico</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="email" name="email" id="email" size="30" placeholder="serdiefer@alu.edu.gva.es">
+                            </div>
+
+                        </div>        
+
+                        <div class="row">
+
+                            <div class="cell left">
+                                <label for="civil_status">Tipo de Cliente:</label>
+                            </div>
+
+                            <div class="cell right">
+                                <span>
+                                    <input type="radio" name="civil_status" id="particular" value="particular">
+                                    <label for="particular">Particular</label>
+                                    <br>
+                                    <input type="radio" name="civil_status" id="association" value="association">
+                                    <label for="association">Asociación</label> 
+                                    <br>
+                                    <input type="radio" name="civil_status" id="company" value="company">
+                                    <label for="company">Empresa</label>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="cell left">
+                                <p><strong>Datos de productos:</strong></p>
+                            </div>
+                            
+                            <div class="cell right">
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="cell left">
+                                <label for="products">Productos solicitados</label>
+                            </div>
+                            
+                            <div class="cell right">
+                                <select name="products" multiple size="5">                  
+                                    <option value="AR001">AR001 Oro Reluciente</option>
+                                    <option value="AR002">AR002 Plata Pulida</option>
+                                    <option value="AR003">AR003 Bronce Reforzado</option>
+                                    <option value="EX001">EX001 Escudo</option>
+                                    <option value="EX002">EX002 Invisibilidad</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row">    
+
+                            <div class="cell left">
+                                <p><strong>Datos del envío:</strong></p>
+                            </div>
+
+                            <div class="cell right">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="cell left">
+                                <label for="adress">Dirección</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="text" name="adress" id="adress" size="48" placeholder="Tipo de vía / Nombre / Número / Piso">
+                            </div>
+
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <label for="city">Ciudad</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="text" name="city" id="city" size="18" placeholder="Alicante">
+                            </div>
+                            
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <label for="postalcode">Código Postal</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="text" name="postalcode" id="postalcode" size="11" placeholder="03008">
+                            </div>
+
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <p><strong>Datos Bancarios:</strong></p>
+                            </div>
+
+                            <div class="cell right">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <label for="entity_name">Nombres de la Entidad</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="text" name="entity_name" id="entity_name" size="48" placeholder="Banco para gente que sabe HTML">
+                            </div>
+
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <label for="account">Nº de Cuenta</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="text" name="account" id="account" size="48" placeholder="ES 21 0000 0000 00 0000000000">
+                            </div>
+
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <p><strong>Otra información del pedido:</strong></p>
+                            </div>
+
+                            <div class="cell right">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <label for="comments">Comentarios</label>
+                            </div>
+
+                            <div class="cell right">
+                                <textarea name="comments" rows="4" cols="48" id="comments" placeholder="Escriba aquí sus comentarios..."></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="cell left">
+
+                            </div>
+
+                            <div class="cell right">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">  
+
+                            <div class="cell left">
+                                <label for="checkbox">Acepto recibir información publicitaria</label>
+                            </div>
+
+                            <div class="cell right">
+                                <input type="checkbox" name="agreement" value="a"> 
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="cell left">
+
+                            </div>
+
+                            <div class="cell right">
+
+                            </div>
+
+                        </div>
+                        
+                        <div class="row">
+                            
+                            <div class="cell left">
+                                <input name="form" type="submit" value="Enviar pedido">
+                            </div>
+
+                            <div class="cell right">
+                                <input name="form" type="reset" value="Cancelar">
+                            </div>
+
+                            <br/> 
+                            <br/>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+    </body>
+</html>

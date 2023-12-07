@@ -1,0 +1,3 @@
+No he realizado esta tarea puesto que en la 6-1 y la 6-2 ya he intentado aplicar conocimientos como el Grid y el Flex-Box
+en vez de usar Floats y Clears, y al final la tarea 6-4 resultaba en aplicar cosas similares a las que he hecho en los 
+ejercicios mencionados.

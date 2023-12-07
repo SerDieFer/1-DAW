@@ -1,177 +1,344 @@
-/* Reset de estilos para quitar márgenes y rellenos predeterminados */
-body, h1, h2, p, ul, li {
+/* Ajustes Generales */
+
+body {
     margin: 0;
     padding: 0;
-}
-
-/* Estilo general del body */
-body {
-    font-family: "Verdana", sans-serif;
+    font: 70%/160% "verdana", sans-serif;
     color: #192666;
-    background: #F2F5FE;
 }
 
-/* Contenedor principal con display grid */
-.grid-container {
-    display: grid;
-    gap: 0;
-    height: 100vh;
-    max-height: 100vh;
-    width: 100vw;
-    max-width: 100vw;
-    margin: 0 auto;
+a {
+    color:#192666;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr 0.9fr;
-    grid-template-rows: 0.6fr 2.1fr 0.3fr;
-    gap: 0;
-    grid-template-areas:
-      "Header Header Header"
-      "main main main"
-      "Footer Footer Footer";
-  }
-  
-  .Header {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 0;
-    grid-template-areas:
-      "title-h1 title-h1 title-h1"
-      "title-h1 title-h1 title-h1"
-      "nav nav nav";
-    grid-area: Header;
-    background-color: #192666;
-  }
-  
-  .nav { grid-area: nav; }
-  
-  .title-h1 { grid-area: title-h1; }
-  
-  .main {
-    display: grid;
-    grid-template-columns: 2.8fr 0.6fr 0.5fr;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 0;
-    grid-template-areas:
-      "articles-container articles-container aside"
-      "article1 article1 aside"
-      "article2 article2 right-aside";
-    grid-area: main;
-  }
-  
-  .articles-container { grid-area: articles-container; }
-  
-  .article1 { grid-area: article1; }
-  
-  .article2 { grid-area: article2; }
-  
-  .aside { grid-area: aside; }
-  
-  .right-aside {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 0;
-    grid-template-areas:
-      "about-container about-container about-container"
-      "category-container category-container category-container"
-      "links-container links-container links-container";
-    grid-area: right-aside;
-  }
-  
-  .about-container { grid-area: about-container; }
-  
-  .category-container { grid-area: category-container; }
-  
-  .links-container { grid-area: links-container; }
-  
-  .Footer { grid-area: Footer; }
-
-/* Estilos generales para la navegación */
-nav ul {
-    padding-left: 10px;
-    margin: 0;
-    display: flex;
-    list-style: none;
+  a:hover {
+    color:#4F6AD7;
 }
-
-nav ul li {
-    margin: 0 5px;
-    padding: 10px 5px;
-    background: #233C9B;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #ffffff;
-}
-
-nav ul li a:hover {
-    color: #4F6AD7;
-}
-
-/* Estilos generales para los elementos de texto */
+  
 p {
-    margin: 1%;
+    margin: 1em 1em;
+    padding: 0;
 }
+  
 
 h1, h2, h3 {
-    font-weight: bold;
+    margin: 1em 0;
+    padding:0;
+}
+  
+h1 {
+    font-size: 260%;
+    font-family: "georgia", serif;
+    font-weight: normal;
+}
+  
+h2 {
+    font-size:180%;
+    font-family: "georgia", serif;
+    font-weight:normal;
+}
+  
+h3 {
+    font-size:120%;
+    font-weight:bold;
+}
+  
+ul, ol {
+    margin: 1em 2em 1em 2em;
+    padding:0;
 }
 
-/* Estilos específicos para los artículos */
-.article h2 {
-    color: #192666;
-    background: #FFA500;
-    margin-top: 0;
-    padding: 10px;
-}
+/* Parte del Container del Body */
 
-/* Estilos específicos para la información en los artículos */
-#page .info {
-    margin: 10px 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #DEE5FD;
-    color: #6685CC;
-}
+#container {
+    display: grid; 
+ 
+    grid-template-rows: 75px 40px 1fr 1fr 1fr 65px;
+    grid-template-columns: 1fr 1fr 200px;
+    
+    grid-template-areas: 
+    'title title title'
+    'nav nav nav'
+    'article1 article1 aside1'
+    'article2 article2 aside2'
+    'article3 article3 aside3'
+    'footer footer footer';
 
-/* Estilos generales para listas */
-ul, li {
-    padding: 0;
-    margin: 0;
-}
+    height: 100vh;
+    width: 100vw;
+ }
 
-/* Estilos específicos para las listas en el aside */
-ul#about-me,
-ul#category,
-ul#links {
-    padding: 0;
-    list-style: none;
-}
+ /* Parte del Header del Container */
+ 
+ /* No se arreglar el nav para que si reduces el ancho en px al visualizar la web
+ este se expanda hacia abajo y coloque las cajas del nav correctamente, me imagino
+ que con un diseño más responsivo usando JScript y otras variables, se podría llevar
+ acabo. Lo otro sería añadir un apartado para diseñar la web de otra manera, cuando
+ se alcance x tamaño concreto, por ende, haciendo 2 versiones para ser visualizadas
+ de distinta forma. Si pudieses explicarme o darme una referencia en clase o de manera
+ personal lo agradecería bastante. */
 
-ul#category li,
-ul#links li {
-    margin: 0;
-    padding: 0;
-    border-bottom: 1px solid #E0E8FA;
-}
-
-ul#category li a,
-ul#links li a {
+h1{
+    color: #00f;
     display: block;
-    padding: 3px 0 3px 22px;
-    text-decoration: none;
+    margin: 0 10px;
+    padding: 25px 0 0 0;
+
+    grid-area: title; 
 }
 
-ul#category li#category-active a {
-    background: #E0E8FA;
-    font-weight: bold;
+    h1 a:hover {
+        color: #B5C4E3;
+        text-decoration: underline;
+    }
+
+#nav {
+    min-height: 30px;
+    color: #FFF;
+    background: #192666;
+    margin: 0 10px;
+    padding: 15px 0 0 15px;
+    display: flex;  
+    flex-wrap:wrap;
+    
+    
+    grid-area: nav;
 }
 
-ul#links li a:hover {
-    background-color: #D3DFF8;
-    color: #192666;
+    #nav ul {
+   
+
+        margin: 0 10px;
+        padding: 0;
+        list-style:none;
+    }
+ 
+        #nav ul li {
+            margin: 0 5px 0 0;
+            padding: 0;
+            float:left;
+            
+        }
+
+            #nav ul li a {
+                display: block;
+                position:relative;
+                padding: 5px 20px 5px 20px;
+                border: 0;
+                background: #253575;
+                color: #E0E8FA;
+                font-weight: bold;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+                #nav ul li a:hover {
+                    background: #31479B;
+                }
+
+/* Parte del Main del Container */
+
+#article1 {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+
+    grid-area: article1;
 }
+
+    #article1 h2 {
+        margin: 0;
+        padding: 10px;
+        background: #FF9000;
+        color: #192666;
+    }
+
+        #article1 .extra-info {
+            margin: 10px 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #DEE5FD;
+            color:#6685CC;
+            display: flex;  
+            flex-wrap:wrap;
+    
+        }
+
+            #article1 .extra-info a { color:#6685CC; }
+                #article1 .extra-info a:hover { color:#FF9000; }
+                    #article1 .extra-info span.date, #article1 .extra-info span.category, #article1 .extra-info span.author, #article1 .extra-info span.comments {
+                        padding-left:15px;
+                    }
+                        #article1 .extra-info span.date, #article1 .extra-info span.category, #article1 .extra-info span.author, #article1 .extra-info span.comments {margin-left: 8px; }
+    
+#article2 {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+
+    grid-area: article2;
+}
+
+    #article2 h2 {
+        margin: 0;
+        padding: 10px;
+        background: #FF9000;
+        color: #192666;
+    }
+
+        #article2 .extra-info {
+            margin: 10px 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #DEE5FD;
+            color:#6685CC;
+            display: flex;  
+            flex-wrap:wrap;
+    
+        }
+        
+            #article2 .extra-info a { color:#6685CC; }
+                #article2 .extra-info a:hover { color:#FF9000; }
+                    #article2 .extra-info span.date, #article2 .extra-info span.category, #article2 .extra-info span.author, #article2 .extra-info span.comments {
+                        padding-left:15px;
+                    }
+                      #article2 .extra-info span.date, #article2 .extra-info span.category, #article2 .extra-info span.author, #article2 .extra-info span.comments {margin-left: 8px; }
+      
+
+#article3 {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+
+    grid-area: article3;
+}
+
+
+
+#about-me {
+    background: #CEDBF9;
+    margin: 20px 10px 0 0;
+    grid-area: aside1;
+}
+
+    #about-me h3 {
+        padding: 10px 0 10px 10px;
+        margin-top: 20px;
+        background: #A0B9F3;
+        color: #192666;
+    }
+
+        #about-me ul {
+            margin: 15px 0;
+            padding: 0;
+            list-style:none;
+        }
+
+            #about-me li {
+                margin: 0;
+                padding: 0;
+
+            }
+
+                #about-me li a {
+                    display: block;
+                    padding: 3px 0 3px 22px;
+                    text-decoration: none;
+                }
+
+                    #about-me li a:hover {
+                        background-color: #E0E8FA;
+                        color: #192666;
+                    }
+                        #about-me li.selected a {
+                            background: #E0E8FA;
+                            font-weight: bold;
+                        }
+
+#categories {
+    background: #CEDBF9;
+    margin: 0 10px 0 0;
+    grid-area: aside2;
+}
+
+    #categories h3 {
+        padding: 10px 0 10px 10px;
+        margin-top: 40px;
+        background: #A0B9F3;
+        color: #192666;
+    }
+
+        #categories ul {
+            margin: 15px 0;
+            padding: 0;
+            list-style:none;
+        }
+
+            #categories li {
+                margin: 0;
+                padding: 0;
+                border-bottom: 1px solid #E0E8FA;
+            }
+
+                #categories li a {
+                    display: block;
+                    padding: 3px 0 3px 22px;
+                    text-decoration: none;
+                }
+
+                    #categories li a:hover {
+                        background-color: #E0E8FA;
+                        color: #192666;
+                    }
+
+                        #categories li.selected a {
+                            background: #E0E8FA;
+                            font-weight: bold;
+                        }
+
+#links{
+    margin: 0 10px 0 0;
+    grid-area: aside3;
+    background: #CEDBF9;
+}
+
+    #links h3 {
+        padding: 10px 0 10px 10px;
+        margin-top: 40px;
+        background: #A0B9F3;
+        color: #192666;
+    }
+
+        #links ul {
+            margin: 15px 0;
+            padding: 0;
+            list-style:none;
+        }
+
+            #links li {
+                margin: 0;
+                padding: 0;
+                border-bottom: 1px solid #E0E8FA;
+            }
+
+                #links li a {
+                    display: block;
+                    padding: 3px 0 3px 22px;
+
+                    text-decoration: none;
+                }
+
+                    #links li a:hover {
+                        background-color: #E0E8FA;
+                        color: #192666;
+                    }
+
+/* Parte del Footer del Container */
+
+#copyright {
+    margin: 0 10px;
+    padding: 0;
+    min-height: 30px;
+    grid-area: footer;
+ }
