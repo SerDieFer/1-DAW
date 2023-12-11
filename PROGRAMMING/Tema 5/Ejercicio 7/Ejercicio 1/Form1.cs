@@ -18,8 +18,34 @@ namespace Ejercicio_1
             InitializeComponent();
         }
 
-        int[] vector1 = new int[10];
+        int[] vector1 = new int[5];
 
+        // FORMA CORRECTA CON WHILE
+        void LeerVector(int[] vector)
+        {
+
+            int i = 1;
+            vector[0] = int.Parse(Interaction.InputBox("Introduce el valor [" + (i-1) + "] del vector:"));
+
+            while (i < vector.Length)
+            {
+                vector[i] = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
+
+                if ((i > 0) && !(vector[i] < vector[i-1]))
+                {
+                    
+                    i++;
+                }
+
+                else
+                {
+                    MessageBox.Show("Introduce un número mayor al vector anterior");
+                }
+            }
+        }
+
+        /* FORMA QUE ACABA SI EL NÚMERO NUEVO ES MENOR AL ANTERIOR
+        
         void LeerVector(int[] vector)
         {
             bool incorrecto = false;
@@ -35,6 +61,8 @@ namespace Ejercicio_1
                 }
             }
         }
+
+        */
 
         /* FORMA QUE RELLENE CARÁCTERES RESTANTES AL CERRAR BUCLE
         

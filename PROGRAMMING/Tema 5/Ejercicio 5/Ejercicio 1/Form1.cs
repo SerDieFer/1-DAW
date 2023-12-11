@@ -43,7 +43,7 @@ namespace Ejercicio_1
 
         string MostrarSuma(int[] vectorSuma)
         {
-            string txt = "Los valores de los vectores son: ";
+            string txt = "La suma de los vectores sería: ";
             
 
             for (int i = 0; i < vectorSuma.Length; i++)
@@ -60,6 +60,25 @@ namespace Ejercicio_1
             return txt;
         }
 
+        string MostrarVector(int[] vector)
+        {
+            string txt = "Los valores de los vectores son: ";
+
+
+            for (int i = 0; i < vector.Length; i++)
+            {
+                if (i == 2)
+                {
+                    txt += vector[i] + ". ";
+                }
+                else
+                {
+                    txt += vector[i] + ", ";
+                }
+            }
+            return txt;
+        }
+
 
         private void btnLeer_Click(object sender, EventArgs e)
         {
@@ -70,8 +89,10 @@ namespace Ejercicio_1
 
         private void btnMostrar_Click(object sender, EventArgs e)
         {
-            string txtVector = MostrarSuma(vectorSuma).ToString();
-            MessageBox.Show(txtVector);
+            string txtSuma = MostrarSuma(vectorSuma).ToString();
+            string txtVectores = MostrarVector(vector1) + "\n" + MostrarVector(vector2) + "\n";
+            string txtRes = txtVectores + txtSuma;
+            MessageBox.Show(txtRes);
         }
     }
 }

@@ -18,60 +18,63 @@ namespace Ejercicio_1
             InitializeComponent();
         }
 
-        int[] vector = new int[10];
+        int[] vector1 = new int[3];
 
         void LeerVector(int[] vector)
         {
-            for(int i = 0; i < vector.Length; i++)
+            bool igual = false;
+            int i = 1;
+
+            vector[0] = int.Parse(Interaction.InputBox("Introduce el valor [" + (i-1) + "] del vector:"));
+
+            for (int i = 0; i < vector.Length 
             {
-                vector[i] = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "]:"));
+                vector[i] = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
+
+                if ()
+                {
+                    
+                    i++;
+                }
+
+                else
+                {
+                    MessageBox.Show("Introduce un número mayor al vector anterior");
+                }
             }
-        }
-
-        double CalcularMedia (int[] vector)
-        {
-
-            double valorMedia = 0;
-            int suma = 0;
-
-            for (int i = 0; i < vector.Length; i++)
-            {
-                suma += vector[i];
-            }
-
-            valorMedia = (double) suma / vector.Length;
-
-            return valorMedia;
         }
 
         string MostrarVector(int[] vector)
         {
             string txt = "Los valores del vector son: ";
-            
+
             for(int i = 0; i < vector.Length; i++)
             {
-                if (i == 9)
+            
+                if (i == (vector.Length - 1))
                 {
-                    txt += vector[i] + ". ";
+                    txt += vector[i] + ".";
                 }
                 else
                 {
                     txt += vector[i] + ", ";
                 }
             }
+
             return txt;
         }
 
-
         private void btnLeer_Click(object sender, EventArgs e)
         {
-            LeerVector(vector);
+            LeerVector(vector1);
         }
 
         private void btnMostrar_Click(object sender, EventArgs e)
         {
-            string txtVector = CalcularMedia(vector).ToString();
-            MessageBox.Show(txtVector);
+            string txtRes;
+            txtRes = MostrarVector(vector1);
+            MessageBox.Show(txtRes);
+        
         }
     }
 }
