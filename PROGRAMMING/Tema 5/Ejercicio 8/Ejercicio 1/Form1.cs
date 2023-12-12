@@ -18,7 +18,7 @@ namespace Ejercicio_1
             InitializeComponent();
         }
 
-        int[] vector1 = new int[8];
+        int[] vector1 = new int[4];
         void LeerVector(int[] vector)
         {
             for (int i = 0; i < vector.Length; i++)
@@ -79,8 +79,10 @@ namespace Ejercicio_1
         private void btnMostrar_Click(object sender, EventArgs e)
         {
 
-            string txtRes;
+           
             RecalcularPosicion(vector1);
+
+            string txtRes;
             txtRes = MostrarVector(vector1);
             MessageBox.Show(txtRes);
         
