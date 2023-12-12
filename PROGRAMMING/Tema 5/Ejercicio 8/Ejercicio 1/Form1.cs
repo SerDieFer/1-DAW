@@ -31,6 +31,8 @@ namespace Ejercicio_1
         // Debes de hacerlo aparte o es muy lioso, con este función lo que conseguimos es comparar las posiciones
         // ya declaradas del vector a leer, y lo que hace es comparar la posicion 1 con la siguiente, y en caso
         // de que sean iguales, cambia el número de la posición siguiente.
+
+        // TODO Probar más formas de lograrlo.
         void RecalcularPosicion(int[] vector)
         {
 
@@ -38,14 +40,15 @@ namespace Ejercicio_1
             {
                 for (int j = i + 1; j < vector.Length; j++)
                 {
+
+                    // No termino de entender como sustituye el vector mostrado.
+
                     if (vector[j] == vector[i])
                     {
                         vector[j] = -1;
                     }
                 }
-
             }
-
         }
 
         string MostrarVector(int[] vector)
