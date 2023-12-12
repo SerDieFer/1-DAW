@@ -18,30 +18,34 @@ namespace Ejercicio_1
             InitializeComponent();
         }
 
-        int[] vector1 = new int[3];
-
+        int[] vector1 = new int[8];
         void LeerVector(int[] vector)
         {
-            bool igual = false;
-            int i = 1;
-
-            vector[0] = int.Parse(Interaction.InputBox("Introduce el valor [" + (i-1) + "] del vector:"));
-
-            for (int i = 0; i < vector.Length 
+            for (int i = 0; i < vector.Length; i++)
             {
                 vector[i] = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
-
-                if ()
-                {
-                    
-                    i++;
-                }
-
-                else
-                {
-                    MessageBox.Show("Introduce un número mayor al vector anterior");
-                }
             }
+        }
+
+
+        // Debes de hacerlo aparte o es muy lioso, con este función lo que conseguimos es comparar las posiciones
+        // ya declaradas del vector a leer, y lo que hace es comparar la posicion 1 con la siguiente, y en caso
+        // de que sean iguales, cambia el número de la posición siguiente.
+        void RecalcularPosicion(int[] vector)
+        {
+
+            for (int i = 0; i < vector.Length; i++)
+            {
+                for (int j = i + 1; j < vector.Length; j++)
+                {
+                    if (vector[j] == vector[i])
+                    {
+                        vector[j] = -1;
+                    }
+                }
+
+            }
+
         }
 
         string MostrarVector(int[] vector)
@@ -71,7 +75,9 @@ namespace Ejercicio_1
 
         private void btnMostrar_Click(object sender, EventArgs e)
         {
+
             string txtRes;
+            RecalcularPosicion(vector1);
             txtRes = MostrarVector(vector1);
             MessageBox.Show(txtRes);
         

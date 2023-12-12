@@ -23,17 +23,21 @@ namespace Ejercicio_1
         // FORMA CORRECTA CON WHILE
         void LeerVector(int[] vector)
         {
-
+            int num;
             int i = 1;
             vector[0] = int.Parse(Interaction.InputBox("Introduce el valor [" + (i-1) + "] del vector:"));
 
             while (i < vector.Length)
             {
-                vector[i] = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
 
-                if ((i > 0) && !(vector[i] < vector[i-1]))
+                // Esto mejora el programa ya que elimina el factor de tener que comprobar todo el rato con el vector [i]
+                // actual con el anterior, puesto que permite simplificar el comprobante aplicandolo a una variable nueva
+
+                num = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
+
+                if (vector[i-1] < num)
                 {
-                    
+                    vector[i] = num;
                     i++;
                 }
 

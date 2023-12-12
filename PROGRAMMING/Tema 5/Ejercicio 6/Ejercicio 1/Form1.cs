@@ -18,8 +18,8 @@ namespace Ejercicio_1
             InitializeComponent();
         }
 
-        int[] vector1 = new int[10];
-        int[] vector2 = new int[10];
+        int[] vector1 = new int[3];
+        int[] vector2 = new int[3];
 
         void LeerVector(int[] vector)
         {
@@ -29,22 +29,20 @@ namespace Ejercicio_1
             }
         }
 
-        string ComprobarIgualdad(int[] vector1, int[] vector2)
+        // No hacer strings en funciones, melonsio
+        bool ComprobarIgualdad(int[] vector1, int[] vector2)
         {
-            string txt = "";
+            bool esIgual = true;
 
-            for (int i = 0; i < vector1.Length && i < vector2.Length; i++)
+            for (int i = 0; (i < vector1.Length && i < vector2.Length) && esIgual; i++)
             {
-                if (vector1[i] == vector2[i])
+                // TIENEN QUE SER DISTINTO PARA PARAR EL BUCLE
+                if (vector1[i] != vector2[i])
                 {
-                    txt = "Son iguales";
-                }
-                else
-                {
-                    txt = "No son iguales";
+                    esIgual = false;
                 }
             }
-            return txt;
+            return esIgual;
         }
 
 
@@ -57,8 +55,17 @@ namespace Ejercicio_1
 
         private void btnMostrar_Click(object sender, EventArgs e)
         {
-            string txtVector = ComprobarIgualdad(vector1, vector2);
-            MessageBox.Show(txtVector);
+            bool vectoresIguales = ComprobarIgualdad(vector1, vector2);
+
+            if (vectoresIguales)
+            {
+                MessageBox.Show("Los vectores son iguales");
+            }
+
+            else
+            {
+                MessageBox.Show("Los vectores no son iguales");
+            }
         }
     }
 }
