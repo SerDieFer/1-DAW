@@ -20,7 +20,7 @@ namespace Extra___1
             InitializeComponent();
         }
 
-        bool NotasValidas (ref double n1, ref double n2, ref double n3, ref bool validez)
+        bool NotasValidas (double n1, double n2, double n3, bool validez)
         { 
 
             if((n1 <= 10 && n1 >= 0) && (n2 <= 10 && n2 >= 0) && (n3 <= 10 && n3 >= 0))
@@ -37,20 +37,14 @@ namespace Extra___1
 
 
     
-        string CalculoMedia(ref double n1, ref double n2, ref double n3, ref bool validez, ref string resultado)
-        {
-            bool comprobar = NotasValidas(ref n1, ref n2, ref n3, ref validez);
-
-            if (comprobar == true)
+        string CalculoMedia( double n1,  double n2,  double n3,  bool validez,  string resultado)
+        { 
+            if (NotasValidas(n1, n2, n3, validez))
             {
                 double calculo = ((n1 + n2 + n3) / 3);
                 resultado = calculo.ToString();
             }
 
-            else
-            {
-                resultado = "Las notas introducidas no son válidas, introduce valores válidos (>= 0 & <= 10)";
-            }
             
             return resultado;
         }
@@ -65,10 +59,18 @@ namespace Extra___1
             bool validez = false;
             string resultado = "";
 
-            validez = NotasValidas(ref n1, ref n2, ref n3, ref validez);
-            CalculoMedia(ref n1, ref n2, ref n3, ref validez, ref resultado);
-            MessageBox.Show(resultado.ToString());
-       
+            validez = NotasValidas( n1,  n2,  n3,  validez);
+
+            if (validez == true)
+            {
+                CalculoMedia(n1, n2, n3, validez, resultado);
+                MessageBox.Show(resultado.ToString());
+            }
+
+            else
+            {
+                resultado = "Las notas introducidas no son válidas, introduce valores válidos (>= 0 & <= 10)";
+            }
         }
     }
 }
