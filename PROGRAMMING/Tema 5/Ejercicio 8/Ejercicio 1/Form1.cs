@@ -21,10 +21,49 @@ namespace Ejercicio_1
         int[] vector1 = new int[4];
         void LeerVector(int[] vector)
         {
-            for (int i = 0; i < vector.Length; i++)
+            // Forma 1
+
+            int i = 0;
+            int num;
+
+            while( i < vector.Length)
+            {
+                num = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
+
+                if(num <= 0)
+                {
+                    MessageBox.Show("Tiene que ser positivo");
+                }
+
+                else
+                {
+                    vector[i] = num;
+                    i++;
+                }
+            }
+
+
+            /* Forma 2 
+
+            int i = 0;
+
+            while (i < vector.Length)
             {
                 vector[i] = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
-            }
+
+                if (vector[i] <= 0)
+                {
+                    MessageBox.Show("Tiene que ser positivo");
+                }
+
+                else
+                {
+                    i++;
+                }
+            } 
+
+            */
+
         }
 
         // Debes de hacerlo aparte o es muy lioso, con este función lo que conseguimos es comparar las posiciones
@@ -32,8 +71,9 @@ namespace Ejercicio_1
         // de que sean iguales, cambia el número de la posición siguiente.
 
         // TODO Probar más formas de lograrlo.
-        void RecalcularPosicion(int[] vector)
+        int RecalcularPosicion(int[] vector)
         {
+            int modificado = 0;
 
             // Realiza iteraciones sobre el vector recorriendo su totalidad
             for (int i = 0; i < vector.Length; i++)
@@ -48,10 +88,12 @@ namespace Ejercicio_1
                         if (vector[j] == vector[i])
                         {
                             vector[j] = -1;
+                            modificado++;
                         }
                     }
                 }
             }
+            return modificado;
         }
 
             string MostrarVector(int[] vector)
@@ -82,11 +124,10 @@ namespace Ejercicio_1
         private void btnMostrar_Click(object sender, EventArgs e)
         {
 
-           
-            RecalcularPosicion(vector1);
-
+ 
+            string numModificados = "\n\nEl número de modificados es: " + RecalcularPosicion(vector1); 
             string txtRes;
-            txtRes = MostrarVector(vector1);
+            txtRes = MostrarVector(vector1) + numModificados;
             MessageBox.Show(txtRes);
         
         }
