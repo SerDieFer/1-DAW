@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="saludar">Hola</p>
+    
+    </br>
+
+    <canvas id = "pintar" height="300px" width="300px" style="border: 1px black solid">
+
+
+    </canvas>
+
+    </br>
+
+    <button onclick="paintCanvasCircle()">Pulsa</button>
+
+    <script>
+
+        function changeContent () {
+            let parrafo = document.getElementById("saludar")
+            parrafo.innerHTML = "Adios"
+            parrafo.style.color = "red"
+        }
+
+        function paintCanvasLine () {
+            let canvas = document.getElementById("pintar")
+            let ctx = canvas.getContext("2d")
+
+            ctx.moveTo(0,0)
+            ctx.lineTo(200,100)
+            ctx.stroke()
+        }
+
+        function paintCanvasCircle () {
+            let canvas = document.getElementById("pintar")
+            let ctx = canvas.getContext("2d")
+
+            ctx.beginPath()
+            ctx.arc(95, 50, 40, 0, 2 * Math.PI)
+            ctx.stroke()
+        }
+
+
+        //changeContent()
+
+    </script>
+</body>
+</html>
