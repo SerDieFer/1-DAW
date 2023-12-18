@@ -60,7 +60,7 @@
             this.Controls.Add(this.btnMostrar);
             this.Controls.Add(this.btnLeer);
             this.Name = "Form1";
-            this.Text = "Ejercicio 12";
+            this.Text = "Ejercicio 14";
             this.ResumeLayout(false);
 
         }

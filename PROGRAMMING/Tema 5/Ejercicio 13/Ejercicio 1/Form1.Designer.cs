@@ -36,9 +36,9 @@
             // 
             this.btnLeer.Location = new System.Drawing.Point(12, 12);
             this.btnLeer.Name = "btnLeer";
-            this.btnLeer.Size = new System.Drawing.Size(218, 41);
+            this.btnLeer.Size = new System.Drawing.Size(262, 41);
             this.btnLeer.TabIndex = 0;
-            this.btnLeer.Text = "Leer";
+            this.btnLeer.Text = "Leer 10 Números Enteros";
             this.btnLeer.UseVisualStyleBackColor = true;
             this.btnLeer.Click += new System.EventHandler(this.btnLeer_Click);
             // 
@@ -46,9 +46,9 @@
             // 
             this.btnMostrar.Location = new System.Drawing.Point(12, 75);
             this.btnMostrar.Name = "btnMostrar";
-            this.btnMostrar.Size = new System.Drawing.Size(218, 39);
+            this.btnMostrar.Size = new System.Drawing.Size(262, 39);
             this.btnMostrar.TabIndex = 1;
-            this.btnMostrar.Text = "Mostrar";
+            this.btnMostrar.Text = "Introducir Número y Comprobar si está en el Vector";
             this.btnMostrar.UseVisualStyleBackColor = true;
             this.btnMostrar.Click += new System.EventHandler(this.btnMostrar_Click);
             // 
@@ -56,7 +56,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(242, 126);
+            this.ClientSize = new System.Drawing.Size(286, 126);
             this.Controls.Add(this.btnMostrar);
             this.Controls.Add(this.btnLeer);
             this.Name = "Form1";

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace Ejercicio_1
 {
@@ -17,13 +10,13 @@ namespace Ejercicio_1
         {
             InitializeComponent();
         }
-
+       
         double[] horas = new double[24];
         void LeerVector(double[] vector)
         {
             for (int i = 0; i < vector.Length; i++)
             {
-                vector[i] = double.Parse(Interaction.InputBox("Introduce la temperatura a las [" + i + "]:"));
+                vector[i] = double.Parse(Interaction.InputBox("Introduce la temperatura en la hora [" + i + "]:"));
             }
         }  
    
@@ -50,15 +43,13 @@ namespace Ejercicio_1
                 sumaTemp += vector[i];
             }
 
-            tMedia = sumaTemp / vector.Length;
-            tMedia = Math.Round(tMedia, 2);
+            tMedia = Math.Round ((sumaTemp / (vector.Length - 1)) , 2);
 
         }
 
-
         string MostrarVector(double[] vector)
         {
-            string txt = "Los valores del vector son: ";
+            string txt = "Los valores del vector son: \n";
 
             for(int i = 0; i < vector.Length; i++)
             {
@@ -87,18 +78,13 @@ namespace Ejercicio_1
 
             TemperaturasMedia(horas, out tMax, out tMin, out tMedia);
 
-            string txtRes, txtResTemp;
+            string txtMostrar, txtResTemp;
 
-            txtRes = MostrarVector(horas);
+            txtMostrar = MostrarVector(horas);
             txtResTemp = "\n\nLa temperatura mínima será: " + tMin + "\nLa temperatura máxima será: " + tMax +
                 "\nLa temperatura media será: " + tMedia;
                  
-            MessageBox.Show(txtRes + txtResTemp);
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
+            MessageBox.Show(txtMostrar + txtResTemp);
 
         }
     }

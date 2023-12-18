@@ -18,7 +18,7 @@ namespace Ejercicio_1
             InitializeComponent();
         }
 
-        int[] numeros = new int[2];
+        int[] numeros = new int[10];
         void LeerVector(int[] vector)
         {
             for (int i = 0; i < vector.Length; i++)
@@ -85,10 +85,6 @@ namespace Ejercicio_1
             {
                 MessageBox.Show("El número NO está dentro del vector");
             }
-
-
-            
-
         }
     }
 }
