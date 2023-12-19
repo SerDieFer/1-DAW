@@ -12,8 +12,8 @@ namespace Ejercicio_1
             InitializeComponent();
         }
        
-        double[] horas = new double[8];
-        void LeerVector (double[] vector)
+        double[] horas = new double[3];
+        void leerVector (double[] vector)
         {
             for (int i = 0; i < vector.Length; i++)
             {
@@ -21,27 +21,28 @@ namespace Ejercicio_1
             }
         }  
    
-        void TemperaturasMedia (double[] vector, out double tMedia)
+        double temperaturaMedia (double[] vector)
         {
-            tMedia = vector[0];
+            double media = vector[0];
             double sumaTemp = vector[0];
 
             for (int i = 1; i < vector.Length; i++)
             {
                 sumaTemp += vector[i];
-
             }
 
-            tMedia = Math.Round ((sumaTemp / (vector.Length)) , 2);
+            media = Math.Round ((sumaTemp / (vector.Length)) , 2);
+            return media;
         }
 
-        string EsMayorIgualMedia(double[] vector, double tMedia)
+        string esMayorIgualMedia(double[] vector)
         {
             string txt = "";
+            double media = temperaturaMedia(horas);
 
             for (int i = 0; i < vector.Length; i++)
             {
-                if (vector[i] >= tMedia)
+                if (vector[i] >= media)
                 {
                     if (!string.IsNullOrEmpty(txt))
                     {
@@ -60,7 +61,7 @@ namespace Ejercicio_1
             return txt;
         }
 
-            string MostrarVector (double[] vector)
+            string mostrarVector (double[] vector)
         {
             string txt = "Los valores del vector son: \n";
 
@@ -82,7 +83,7 @@ namespace Ejercicio_1
 
         private void btnLeer_Click(object sender, EventArgs e)
         {
-            LeerVector(horas);
+            leerVector(horas);
         }
 
         private void btnMostrar_Click(object sender, EventArgs e)
@@ -90,10 +91,10 @@ namespace Ejercicio_1
             double tMedia;
             string txtMostrar, txtResTemp, tMayorIgual = "";
 
-            TemperaturasMedia(horas, out tMedia);
-            tMayorIgual = EsMayorIgualMedia(horas, tMedia);
+            tMedia = temperaturaMedia(horas);
+            tMayorIgual = esMayorIgualMedia(horas);
 
-            txtMostrar = MostrarVector(horas);
+            txtMostrar = mostrarVector(horas);
             txtResTemp = "\n\nLa temperatura media será: " + tMedia + "\nLas temperaturas iguales " +
                 "o mayores a la media serían: " + tMayorIgual;
                  
