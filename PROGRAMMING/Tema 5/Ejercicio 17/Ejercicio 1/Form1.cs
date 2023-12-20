@@ -11,9 +11,9 @@ namespace Ejercicio_1
         {
             InitializeComponent();
         }
-       
-        int[] num = new int[3];
-        void leerVector (int[] vector)
+      
+        int[] serie = new int[3];
+        void leerVector(int[] vector)
         {
             for (int i = 0; i < vector.Length; i++)
             {
@@ -21,45 +21,91 @@ namespace Ejercicio_1
             }
         }
 
-        void obtenerNumMayorMenor(int[] vector, out int nMayor, out int nMenor)
-        {
-            nMayor = nMenor = vector[0];
-
-            for (int i = 1; i < vector.Length; i++)
+            private void btnIntroducirVector_Click(object sender, EventArgs e)
             {
-                if (vector[i] > nMayor)
-                {
-                    nMayor = vector[i];
-                }
+                leerVector(serie);
+            }
 
-                if (vector[i] < nMenor)
+        int buscarVector(int[] vector, int numBusqueda)
+        {
+            bool encontrado = false;
+            int posicion;
+            int buscado = numBusqueda;
+            int i = 0;
+           
+            while(i < vector.Length && !encontrado)
+            {
+                if (buscado == vector[i])
                 {
-                    nMenor = vector[i];
+                    encontrado = true;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            if (encontrado)
+            {
+                posicion = i;
+            }
+
+            else
+            {
+                posicion = -1;
+            }
+
+            return posicion;
+        }
+
+
+            private void btnBuscarVector_Click(object sender, EventArgs e)
+            {
+                int numBusqueda = int.Parse(Interaction.InputBox("Introduce el número a buscar:"));
+                int numEncontrado = buscarVector(serie, numBusqueda);
+
+                if (numEncontrado == -1)
+                {
+                    MessageBox.Show("El número " + numBusqueda + " no está en el vector");
+                }
+                
+                else
+                {                                                         
+                    MessageBox.Show("El número " + numBusqueda + " tiene la posición " 
+                        + ((numEncontrado+1).ToString())); // Esto para que lo entienda un NO programador
+                }
+            }
+
+        void ordenarVector(int[] vector)
+        {
+            int numSustituto;
+
+            for (int i = 0; i < (vector.Length - 1); i++)
+            {
+                for (int j = i + 1; j < vector.Length; j++)
+                {
+                    if (vector[j] < vector[i])
+                    {
+                        numSustituto = vector[i];
+                        vector[i] = vector[j];
+                        vector[j] = numSustituto;
+                    }
                 }
             }
         }
-        int contarRepetidos(int[] vector, int numComprobar)
-        {
-            int repetido = 0;
 
-            for(int i = 0; i < vector.Length;i++)
-            {
-                if (vector[i] == numComprobar)
-                {
-                    repetido++;
-                }
-            }
-            repetido--;
-            return repetido;
+        private void btnOrdenarVector_Click(object sender, EventArgs e)
+        {
+            ordenarVector(serie);
         }
 
-        string mostrarVector (int[] vector)
+        string mostrarVector(int[] vector)
         {
             string txt = "Los valores del vector son: \n";
 
-            for(int i = 0; i < vector.Length; i++)
+            for (int i = 0; i < vector.Length; i++)
             {
-            
+
                 if (i == (vector.Length - 1))
                 {
                     txt += vector[i] + ".";
@@ -69,55 +115,18 @@ namespace Ejercicio_1
                     txt += vector[i] + ", ";
                 }
             }
+
             return txt;
         }
 
-        private void btnLeer_Click(object sender, EventArgs e)
-        {
-            leerVector(num);
-        }
-
-        private void btnMostrar_Click(object sender, EventArgs e)
-        {
-            int nMayor, nMenor, repetidoMayor, repetidoMenor;
-            obtenerNumMayorMenor(num, out nMayor, out nMenor);
-
-            repetidoMayor = contarRepetidos(num, nMayor);
-            repetidoMenor = contarRepetidos(num, nMenor);
-
-            string txtMostrar, txtRes = "";
-            txtMostrar = mostrarVector(num);
-
-            if (repetidoMayor > 0 && repetidoMenor > 0)
+            private void btnMostrarVector_Click(object sender, EventArgs e)
             {
-                txtRes = "\n\nEl número mayor será: " + nMayor +
-                         "\nSe repite " + repetidoMayor + " veces" +
-                         "\n\nEl número menor será: " + nMenor +
-                         "\nSe repite " + repetidoMenor + " veces";
+     
+                string txtMostrar = "";
+                txtMostrar = mostrarVector(serie);
+
+                MessageBox.Show(txtMostrar);
+
             }
-
-            else if (repetidoMayor == 0 && repetidoMenor > 0)
-            {
-                txtRes = "\n\nEl número mayor será: " + nMayor + " y no se repite"+
-                         "\n\nEl número menor será: " + nMenor +
-                         "\nSe repite " + repetidoMenor + " veces";
-            }
-
-            else if (repetidoMayor > 0 && repetidoMenor == 0)
-            {
-                txtRes = "\n\nEl número mayor será: " + nMayor +
-                         "\nSe repite " + repetidoMayor + " veces" +
-                         "\n\nEl número menor será: " + nMenor + " y no se repite";       
-            }
-
-            else
-            {
-                txtRes = "\n\nEl número mayor será: " + nMayor + " y no se repite" +
-                         "\n\nEl número menor será: " + nMenor + " y no se repite";
-            }
-
-            MessageBox.Show(txtMostrar + txtRes);
-
-        }
     }
 }
