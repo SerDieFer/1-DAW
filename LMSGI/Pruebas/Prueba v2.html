@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PACMAN</title>
+</head>
+<body>
+    <p id="parrafo">PACMAN GAME</p>
+    <button onclick="game.initGame()">START GAME</button>
+    <button onclick="game.pauseGame()">PAUSE GAME</button>
+    <br>
+    <canvas id="gameCanvas" width="600" height="600" style="border:1px solid #000000;"></canvas> 
+    <script>
+
+        var canvas = document.getElementById("gameCanvas");
+        var ctx = canvas.getContext("2d");
+
+        var pacman = { 
+            x: 300,
+            y: 300,
+            width: 40,
+            height: 40,
+            color: "yellow",
+            speed: 2
+        };
+
+        var keys = {
+            up: false,
+            down: false,
+            left: false,
+            right: false
+        };
+
+        var game = {
+
+            initGame() {
+                pacman.x = 300;
+                pacman.y = 300;
+                window.addEventListener('keydown', game.keyDown);
+                window.addEventListener('keyup', game.keyUp);
+                window.requestAnimationFrame(game.onFrame);
+            },
+            
+            pauseGame() {
+                game.paused = !game.paused;
+            },
+
+            keyDown(e) {
+                if (e.keyCode === 37)
+                    keys.left = true;
+
+                else if (e.keyCode === 38) 
+                    keys.up = true;
+
+                else if (e.keyCode === 39) 
+                    keys.right = true;
+                
+                else if (e.keyCode === 40) 
+                    keys.down = true;
+            },
+
+            keyUp(e) {
+                if (e.keyCode === 37)
+                    keys.left = false;
+
+                else if (e.keyCode === 38) 
+                    keys.up = false;
+
+                else if (e.keyCode === 39) 
+                    keys.right = false;
+
+                else if (e.keyCode === 40) 
+                    keys.down = false;
+            },
+
+            onFrame() {
+                if (!game.paused) {
+                    game.updatePacman();
+                    game.drawGame();
+                }
+
+                window.requestAnimationFrame(game.onFrame);
+            },
+
+            updatePacman() {
+                if (keys.left) 
+                pacman.x -= pacman.speed;
+            
+                else if (keys.up) 
+                pacman.y -= pacman.speed;
+
+                else if (keys.right) 
+                pacman.x += pacman.speed;
+
+                else if (keys.down) 
+                pacman.y += pacman.speed;
+            },
+
+            drawGame() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                game.renderCanvas();
+                game.renderPacman();
+            },
+
+            renderCanvas() {
+                ctx.fillStyle = "#191970";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            },
+            
+            renderPacman() {
+                ctx.fillStyle = pacman.color;
+                ctx.beginPath();
+                ctx.arc(pacman.x, pacman.y, pacman.width / 2, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        };
+
+    </script>
+</body>
+</html>
