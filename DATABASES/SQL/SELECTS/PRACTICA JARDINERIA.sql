@@ -66,3 +66,68 @@ SELECT codCliente,
   FROM PAGOS
 GROUP BY codCliente
 ORDER BY importeTotalPagos DESC
+
+-- 
+
+SELECT *
+FROM  PAGOS
+
+SELECT c.codCliente AS codigoCliente,
+       c.nombre_cliente AS nombreCliente, 
+       p.*
+  FROM PAGOS p, 
+       CLIENTES c
+ WHERE p.codCliente = c.codCliente
+
+-- 
+
+SELECT *
+FROM  PEDIDOS
+
+SELECT c.nombre_cliente, p.*
+ FROM PEDIDOS p,
+      CLIENTES c
+WHERE p.codCliente = c.codCliente;
+
+--
+
+SELECT e.codEmpleado,
+       e.nombre,
+       e.codEmplJefe,
+       j.nombre AS nombreJefe
+  FROM EMPLEADOS e, EMPLEADOS j
+ WHERE e.codEmplJefe = j.codEmpleado
+
+SELECT e.codEmpleado, 
+       e.nombre, 
+       e.codEmplJefe, 
+       ISNULL(j.nombre, e.nombre) AS nombreJefe
+  FROM EMPLEADOS e LEFT JOIN EMPLEADOS j
+    ON e.codEmplJefe = j.codEmpleado
+
+--
+
+SELECT *
+FROM  PEDIDOS
+
+SELECT *
+FROM  DETALLE_PEDIDOS
+
+SELECT *
+FROM  PRODUCTOS
+
+
+SELECT pe.codPedido AS codigoPedido, 
+       fecha_pedido AS fechaPedido, 
+       dp.codProducto AS codigoProducto, 
+       dp.cantidad AS cantidadProducto, 
+       pr.nombre AS nombreProducto, 
+       pr.codCategoria AS categoriaProducto,
+       cpr.nombre AS nombreCategoria
+  FROM PEDIDOS pe,
+       DETALLE_PEDIDOS dp,
+       PRODUCTOS pr,
+       CATEGORIA_PRODUCTOS cpr
+ WHERE dp.codPedido = pe.codPedido
+   AND dp.codPedido = pr.codProducto
+   AND pr.codCategoria = cpr.codCategoria
