@@ -1,13 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace WindowsFormsApp1
 {
@@ -26,23 +20,38 @@ namespace WindowsFormsApp1
         List<int> numbers = new List<int>();
         int num, pos;
 
-        private void btnInsert_Click(object sender, EventArgs e)
+        private void btnInsert_Click(object sender, EventArgs e) //DONE
         {
-            num = int.Parse(Interaction.InputBox("Enter the number"));
-            pos = int.Parse(Interaction.InputBox("Enter the position you want to insert."));
-            numbers.Insert(pos, num);
+            try
+            {
+                num = int.Parse(Interaction.InputBox("Enter the number"));
+                pos = int.Parse(Interaction.InputBox("Enter the position you want to insert."));
+                numbers.Insert(pos, num);
+            }
+            catch (FormatException.OutofRange)
+            {
+
+            }
+                MessageBox.Show("The number " + num + " has been inserted in position " + pos);
         }
 
         private void btnShowList_Click(object sender, EventArgs e)
         {
-            string text;
-            text = "The items in the list are: ";
+            string text = "The items in the list are: ";
+            int count = 0;
 
             foreach (int num in numbers)
             {
+                if (count == numbers.Count-1)
+                {
+                    text += num + ".";
+                }
+                else
+                {
                 text += num + ", ";
+                }
+            count++;
             }
-
             MessageBox.Show(text);
         }
 
@@ -71,21 +80,51 @@ namespace WindowsFormsApp1
 
         private void btnRemoveFirstValue_Click(object sender, EventArgs e)
         {
-            numbers.RemoveAt(0);
-            MessageBox.Show("The first position has been removed");
+            //TODO tiene que borrar el primer valor que valga x
+            int value = int.Parse(Interaction.InputBox("Enter the number to remove all from the list."));
+            int deletedPos = -1; // -1 means that the position is NULL
+            bool firstFound = false;
+
+            for (int i = 0; i <= numbers.Count - 1 && !firstFound; i++)
+            {
+                if (numbers[i] == value)
+                {
+                    numbers.RemoveAt(i);
+                    deletedPos = i;
+                    firstFound = true;
+                }
+            }
+
+            MessageBox.Show("The value: (" + value + ") at position: (" + deletedPos + ") has been removed");
         }
 
         private void btnRemoveValues_Click(object sender, EventArgs e)
         {
             int value = int.Parse(Interaction.InputBox("Enter the number to remove all from the list."));
-
+            // /* WAY #1
             for (int i = numbers.Count - 1; i >= 0; i--)
+             {
+                 if (numbers[i] == value)
+                 {
+                     numbers.RemoveAt(i);
+                 }
+             }
+            // */
+
+            /* WAY #2
+            int i = 0;
+            while(i < numbers.Count)
             {
                 if (numbers[i] == value)
                 {
                     numbers.RemoveAt(i);
                 }
+                else
+                {
+                    i++;
+                }
             }
+            */
 
             MessageBox.Show("The values that are " + value + " have been removed");
         }
@@ -105,16 +144,18 @@ namespace WindowsFormsApp1
 
         private void btnClearAll_Click(object sender, EventArgs e)
         {
+
+            // Comprobar que no haya nada
             numbers.Clear();
             MessageBox.Show("All list has been cleared");
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            // Comprobar que no haya nada
             int value = int.Parse(Interaction.InputBox("Enter the number"));
             numbers.Add(value);
             MessageBox.Show("The number " + value + " has been added to the list");
-
         }
     }
 }
