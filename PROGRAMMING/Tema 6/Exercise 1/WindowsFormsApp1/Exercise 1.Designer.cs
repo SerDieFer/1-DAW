@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp1
 {
-    partial class Form1
+    partial class Exercise_1
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -172,14 +172,14 @@
             this.btnRemoveFirstValue.UseVisualStyleBackColor = true;
             this.btnRemoveFirstValue.Click += new System.EventHandler(this.btnRemoveFirstValue_Click);
             // 
-            // Form1
+            // Exercise_1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 409);
             this.Controls.Add(this.gPanel2);
             this.Controls.Add(this.gPanel1);
-            this.Name = "Form1";
+            this.Name = "Exercise_1";
             this.Text = "Exercise 1";
             this.Load += new System.EventHandler(this.Exercise_1_Load);
             this.gPanel1.ResumeLayout(false);
