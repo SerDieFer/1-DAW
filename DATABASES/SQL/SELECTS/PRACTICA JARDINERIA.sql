@@ -131,3 +131,14 @@ SELECT pe.codPedido AS codigoPedido,
  WHERE dp.codPedido = pe.codPedido
    AND dp.codPedido = pr.codProducto
    AND pr.codCategoria = cpr.codCategoria
+
+
+USE JARDINERIA
+
+SELECT c.codCliente AS codigoCliente,
+       c.nombre_cliente AS nombreCliente, 
+       COUNT(p.codCliente) AS sumaPagosTotalesCliente,
+       ISNULL(SUM(importe_pago),0) AS ImportePagoTotal 
+  FROM PAGOS p RIGHT JOIN CLIENTES c
+    ON p.codCliente = c.codCliente
+GROUP BY c.codCliente, c.nombre_cliente
