@@ -22,14 +22,38 @@ namespace WindowsFormsApp1
         // ORIGINAL LIST
         List<int> originaList = new List<int>();
         // NEW LIST COPY METHOD
-        List<int> evenList = new List<int>();
+        List<int> primeList = new List<int>();
+
 
         // LIST ELEMENTS COUNTER 
-        private int listSize (List<int> list)
+        private int listSize(List<int> list)
         {
             int size = list.Count;
             return size;
         }
+
+        // IS PRIME NUMBER?
+
+        private bool primeNumber(int num)
+        {
+            bool isPrime = true;
+
+            if(num < 2)
+            {   
+                isPrime = false;
+            }
+
+            for(int i = 2; i <= (num/2) && isPrime; i++)
+            {
+                if (num % i == 0)
+                {
+                    isPrime = false;
+                }
+            }
+
+            return isPrime;
+        }   
+
 
         // ADD NUMBERS TO LIST
         private void addValuesToList(List<int> list) 
@@ -92,13 +116,14 @@ namespace WindowsFormsApp1
         // SHOWS VARIOUS LIST VALUES -- BUTTON --
         private void btnShowLists_Click(object sender, EventArgs e)
         {
-            if (listSize(originaList) != 0 && listSize(evenList) == 0)
+            if (listSize(originaList) != 0 && listSize(primeList) == 0)
             {
                 MessageBox.Show(singleListString(originaList, nameof(originaList)));
             }
-            else if(listSize(originaList) != 0 && listSize(evenList) != 0)
+            else if(listSize(originaList) != 0 && listSize(primeList) != 0)
             {
-                MessageBox.Show(listsStrings(originaList, evenList));
+                primeList.Sort();
+                MessageBox.Show(listsStrings(originaList, primeList));
             }
             else
             {
@@ -106,14 +131,14 @@ namespace WindowsFormsApp1
             }
         }
 
-        // REMOVES ALL THE EVEN NUMBERS FROM THE SELECTED LIST AND MOVES THEM TO OTHER LIST
-        private void removeNotEvenNumbersFromOriginalList(List<int> oldList, List<int> newList)
+        // REMOVES ALL THE PRIME NUMBERS FROM THE SELECTED LIST AND MOVES THEM TO OTHER LIST
+        private void removePrimeFromOriginalList(List<int> oldList, List<int> newList)
         {
             try
             {
                 for (int i = oldList.Count - 1; i >= 0; i--)
                 {
-                    if ((oldList[i] % 2) == 0)
+                    if (primeNumber(oldList[i]))
                     {
                         newList.Add(oldList[i]);
                         oldList.RemoveAt(i);
@@ -128,12 +153,12 @@ namespace WindowsFormsApp1
             }
         }
 
-        // EVEN REMOVER FROM ORIGINAL LIST -- BUTTON --
+        // PRIME REMOVER FROM ORIGINAL LIST -- BUTTON --
         private void btnRemoveEven_Click(object sender, EventArgs e)
         {
             if (listSize(originaList) != 0)
             {
-                removeNotEvenNumbersFromOriginalList(originaList,evenList);
+                removePrimeFromOriginalList(originaList,primeList);
             }
             else
             {
@@ -141,17 +166,18 @@ namespace WindowsFormsApp1
             }
         }
 
-        // COPY ALL THE EVEN NUMBERS FROM THE SELECTED LIST TO OTHER LIST
-        private void copyEvenNumbersIntoNewList(List<int> oldList, List<int> newList)
+        // COPY ALL THE PRIME NUMBERS FROM THE SELECTED LIST TO OTHER LIST
+        private void copyPrimeNumbersIntoNewList(List<int> oldList, List<int> newList)
         {
             try
             {
-                for (int i = oldList.Count - 1; i >= 0; i--)
+                for (int i = oldList.Count - 1 ; i >= 0; i--)
                 {
-                    if ((oldList[i] % 2) == 0)
+                    if (primeNumber(oldList[i]))
                     {
                         newList.Add(oldList[i]);
                     }
+                    
                 }
                 MessageBox.Show("All the even values have been moved into a new list");
             }
@@ -162,10 +188,10 @@ namespace WindowsFormsApp1
             }
         }
 
-        // COPY EVEN NUMBERS FROM ORIGINAL LIST TO EVEN LIST -- BUTTON --
-        private void btnCopyEven_Click(object sender, EventArgs e)
+        // COPY PRIME NUMBERS FROM ORIGINAL LIST TO EVEN LIST -- BUTTON --
+        private void btnCopyPrime_Click(object sender, EventArgs e)
         {
-            copyEvenNumbersIntoNewList(originaList, evenList);
+            copyPrimeNumbersIntoNewList(originaList, primeList);
         }
     }
 }

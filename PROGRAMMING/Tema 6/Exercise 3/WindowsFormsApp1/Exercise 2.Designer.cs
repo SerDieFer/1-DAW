@@ -30,8 +30,8 @@
         {
             this.gPanel = new System.Windows.Forms.GroupBox();
             this.btnShowLists = new System.Windows.Forms.Button();
-            this.btnCopyEven = new System.Windows.Forms.Button();
-            this.btnRemoveEven = new System.Windows.Forms.Button();
+            this.btnCopyPrime = new System.Windows.Forms.Button();
+            this.btnRemovePrime = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.gPanel.SuspendLayout();
             this.SuspendLayout();
@@ -39,8 +39,8 @@
             // gPanel
             // 
             this.gPanel.Controls.Add(this.btnShowLists);
-            this.gPanel.Controls.Add(this.btnCopyEven);
-            this.gPanel.Controls.Add(this.btnRemoveEven);
+            this.gPanel.Controls.Add(this.btnCopyPrime);
+            this.gPanel.Controls.Add(this.btnRemovePrime);
             this.gPanel.Controls.Add(this.btnAdd);
             this.gPanel.Location = new System.Drawing.Point(12, 12);
             this.gPanel.Name = "gPanel";
@@ -59,25 +59,25 @@
             this.btnShowLists.UseVisualStyleBackColor = true;
             this.btnShowLists.Click += new System.EventHandler(this.btnShowLists_Click);
             // 
-            // btnCopyEven
+            // btnCopyPrime
             // 
-            this.btnCopyEven.Location = new System.Drawing.Point(21, 162);
-            this.btnCopyEven.Name = "btnCopyEven";
-            this.btnCopyEven.Size = new System.Drawing.Size(224, 58);
-            this.btnCopyEven.TabIndex = 1;
-            this.btnCopyEven.Text = "Copy Even Numbers Into New List";
-            this.btnCopyEven.UseVisualStyleBackColor = true;
-            this.btnCopyEven.Click += new System.EventHandler(this.btnCopyEven_Click);
+            this.btnCopyPrime.Location = new System.Drawing.Point(21, 162);
+            this.btnCopyPrime.Name = "btnCopyPrime";
+            this.btnCopyPrime.Size = new System.Drawing.Size(224, 58);
+            this.btnCopyPrime.TabIndex = 1;
+            this.btnCopyPrime.Text = "Copy Prime Numbers Into New List";
+            this.btnCopyPrime.UseVisualStyleBackColor = true;
+            this.btnCopyPrime.Click += new System.EventHandler(this.btnCopyPrime_Click);
             // 
-            // btnRemoveEven
+            // btnRemovePrime
             // 
-            this.btnRemoveEven.Location = new System.Drawing.Point(21, 98);
-            this.btnRemoveEven.Name = "btnRemoveEven";
-            this.btnRemoveEven.Size = new System.Drawing.Size(224, 58);
-            this.btnRemoveEven.TabIndex = 0;
-            this.btnRemoveEven.Text = "Remove Even Numbers From Original List\r\n";
-            this.btnRemoveEven.UseVisualStyleBackColor = true;
-            this.btnRemoveEven.Click += new System.EventHandler(this.btnRemoveEven_Click);
+            this.btnRemovePrime.Location = new System.Drawing.Point(21, 98);
+            this.btnRemovePrime.Name = "btnRemovePrime";
+            this.btnRemovePrime.Size = new System.Drawing.Size(224, 58);
+            this.btnRemovePrime.TabIndex = 0;
+            this.btnRemovePrime.Text = "Remove Prime Numbers From Original List\r\n";
+            this.btnRemovePrime.UseVisualStyleBackColor = true;
+            this.btnRemovePrime.Click += new System.EventHandler(this.btnRemoveEven_Click);
             // 
             // btnAdd
             // 
@@ -106,8 +106,8 @@
         #endregion
 
         private System.Windows.Forms.GroupBox gPanel;
-        private System.Windows.Forms.Button btnCopyEven;
-        private System.Windows.Forms.Button btnRemoveEven;
+        private System.Windows.Forms.Button btnCopyPrime;
+        private System.Windows.Forms.Button btnRemovePrime;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnShowLists;
     }
