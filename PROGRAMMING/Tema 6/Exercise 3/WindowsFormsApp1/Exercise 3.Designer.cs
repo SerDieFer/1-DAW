@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp1
 {
-    partial class Exercise_2
+    partial class Exercise_3
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -89,15 +89,15 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // Exercise_2
+            // Exercise_3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 347);
             this.Controls.Add(this.gPanel);
-            this.Name = "Exercise_2";
-            this.Text = "Exercise 2";
-            this.Load += new System.EventHandler(this.Exercise_1_Load);
+            this.Name = "Exercise_3";
+            this.Text = "Exercise 3";
+            this.Load += new System.EventHandler(this.Exercise_3_Load);
             this.gPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
