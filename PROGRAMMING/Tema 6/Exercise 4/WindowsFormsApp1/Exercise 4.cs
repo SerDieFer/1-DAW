@@ -32,14 +32,13 @@ namespace WindowsFormsApp1
         }
 
         // POWER NUMBER
-        private int powerNumbers(List<int> baseList, List<int> exponentialList)
+        private int powerNumbers(int baseList, int exponentialList)
         {
-            int result = 0;
+            int result = 1;
 
-            for (int i = 0, j = 0; i < baseList.Count && j < exponentialList.Count ; i++, j++)
+            for (int i = 0; i < exponentialList ; i++)
             {
-                result = baseList[i];
-                result *= exponentialList[j]; 
+                result *= baseList; 
             }
             return result;
         }   
@@ -50,7 +49,7 @@ namespace WindowsFormsApp1
 
             for(int i = 0; i < exponentialList.Count; i++)
             {
-                int result = powerNumbers(baseList, exponentialList);
+                int result = powerNumbers(baseList[i], exponentialList[i]);
                 resultsList.Add(result);
             }
         }
