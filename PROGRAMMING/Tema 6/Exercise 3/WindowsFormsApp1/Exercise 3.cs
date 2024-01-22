@@ -7,14 +7,14 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public partial class Exercise_2 : Form
+    public partial class Exercise_3 : Form
     {
-        public Exercise_2()
+        public Exercise_3()
         {
             InitializeComponent();
         }
 
-        private void Exercise_1_Load(object sender, EventArgs e)
+        private void Exercise_3_Load(object sender, EventArgs e)
         {
 
         }
@@ -24,7 +24,6 @@ namespace WindowsFormsApp1
         // NEW LIST COPY METHOD
         List<int> primeList = new List<int>();
 
-
         // LIST ELEMENTS COUNTER 
         private int listSize(List<int> list)
         {
@@ -33,27 +32,22 @@ namespace WindowsFormsApp1
         }
 
         // IS PRIME NUMBER?
-
         private bool primeNumber(int num)
         {
             bool isPrime = true;
-
             if(num < 2)
             {   
                 isPrime = false;
             }
-
-            for(int i = 2; i <= (num/2) && isPrime; i++)
+            for (int i = 2; i <= (num / 2) && isPrime; i++)
             {
                 if (num % i == 0)
                 {
                     isPrime = false;
                 }
             }
-
             return isPrime;
         }   
-
 
         // ADD NUMBERS TO LIST
         private void addValuesToList(List<int> list) 
@@ -86,21 +80,19 @@ namespace WindowsFormsApp1
         private string singleListString (List<int> list, string listName)
         {
             string txtList = "The items in the " + listName + " are: ";
-          
-                int elementsCounted = 0;
-                foreach (int num in list)
+            int elementsCounted = 0;
+            foreach (int num in list)
+            {
+                if (elementsCounted == list.Count - 1)
                 {
-                    if (elementsCounted == list.Count - 1)
-                    {
-                        txtList += "(" + num + ").";
-                    }
-                    else
-                    {
-                        txtList += "(" + num + "), ";
-                    }
-                    elementsCounted++;
+                    txtList += "(" + num + ").";
                 }
-            
+                else
+                {
+                    txtList += "(" + num + "), ";
+                }
+                elementsCounted++;
+            }
             return txtList;
         }
 
@@ -191,7 +183,14 @@ namespace WindowsFormsApp1
         // COPY PRIME NUMBERS FROM ORIGINAL LIST TO EVEN LIST -- BUTTON --
         private void btnCopyPrime_Click(object sender, EventArgs e)
         {
-            copyPrimeNumbersIntoNewList(originaList, primeList);
+            if (listSize(originaList) != 0)
+            {
+                copyPrimeNumbersIntoNewList(originaList, primeList);
+            }
+            else
+            {
+                MessageBox.Show("ERROR, The list is empty. Add values to the list before copying even values.");
+            }
         }
     }
 }
