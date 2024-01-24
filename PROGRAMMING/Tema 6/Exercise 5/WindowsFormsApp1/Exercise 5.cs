@@ -24,8 +24,6 @@ namespace WindowsFormsApp1
         // RESULT LIST
         List<int> resultsList = new List<int>();
 
-        bool alreadyRemoved = false;
-
         // LIST ELEMENTS COUNTER 
         private int listSize(List<int> list)
         {
@@ -126,6 +124,7 @@ namespace WindowsFormsApp1
                     MessageBox.Show("The number (" + value + ") has been added to the list");
                     more = MessageBox.Show("Do you want to enter another value?", "Value", MessageBoxButtons.YesNo);
                 } while (more == DialogResult.Yes);
+                checkCopy = checkCopyRemove = false;
             }
             catch (FormatException)
             {
@@ -150,13 +149,26 @@ namespace WindowsFormsApp1
         // ADD BOTH LISTS INTO A NEW -- BUTTON --
         private void btnAddBothToNew_Click(object sender, EventArgs e)
         {
-            addBothListsToNewList(list1, list2, resultsList);
+            if (!checkCopy)
+            {
+                resultsList.Clear();
+                addBothListsToNewList(list1, list2, resultsList);
+                checkCopy = true;
+            }
         }
+    
+        bool checkCopy = false;
+        bool checkCopyRemove = false;
 
         // ADD BOTH LISTS INTO A NEW AND REMOVE FROM ORIGINALS -- BUTTON --
         private void btnAddBothToNewAndRemoveOriginals_Click(object sender, EventArgs e)
         {
-            CopyBothIntoNewListAndRemoveFromOriginalList(list1, list2, resultsList);
+            if (!checkCopyRemove)
+            {
+                resultsList.Clear();
+                CopyBothIntoNewListAndRemoveFromOriginalList(list1, list2, resultsList);
+                checkCopyRemove = true;
+            }
         }
 
         // THROWS LIST'S VALUES INTO A STRING
@@ -192,22 +204,55 @@ namespace WindowsFormsApp1
         // SHOWS BOTH LISTS AND THE RESULTS -- BUTTON --
         private void btnShowLists_Click(object sender, EventArgs e)
         {
-            if (listSize(list1) != 0 && listSize(list2) == 0)
+            bool checkList1NotZero, checkList2NotZero, checkResultsListNotZero;
+
+            checkList1NotZero = listSize(list1) != 0;
+            checkList2NotZero = listSize(list2) != 0;
+            checkResultsListNotZero = listSize(resultsList) != 0;
+
+            string singleList1, singleList2, singleResultsList, allLists;
+
+            singleList1 = singleListString(list1, nameof(list1));
+            singleList2 = singleListString(list2, nameof(list2));
+            singleResultsList = singleListString(resultsList, nameof(resultsList));
+            allLists = listsStrings(list1, list2, resultsList);
+
+            if (checkList1NotZero && !checkList2NotZero)
             {
-                MessageBox.Show(singleListString(list1, nameof(list1)));
+                if (!checkResultsListNotZero)
+                {
+                    MessageBox.Show(singleList1);
+                }
+                else
+                {
+                    MessageBox.Show(singleList1 + "\n\n" + singleResultsList);
+                }
             }
-            else if (listSize(list1) == 0 && listSize(list2) != 0)
+            else if (!checkList1NotZero && checkList2NotZero)
             {
-                MessageBox.Show(singleListString(list2, nameof(list2)));
+                if (!checkResultsListNotZero)
+                {
+                    MessageBox.Show(singleList2);
+                }
+                else
+                {
+                    MessageBox.Show(singleList2 + "\n\n" + singleResultsList);
+                }
             }
-            else if (listSize(list1) != 0 && listSize(list2) != 0)
+            else if (checkList1NotZero && checkList2NotZero)
             {
-                MessageBox.Show(listsStrings(list1, list2, resultsList));
-                alreadyRemoved = true;
+                if (checkResultsListNotZero)
+                {
+                    MessageBox.Show(allLists);
+                }
+                else
+                {
+                    MessageBox.Show(singleList1 + "\n\n" + singleList2);
+                }
             }
-            else if ((listSize(list1) == 0 && listSize(list2) == 0) && alreadyRemoved)
+            else if ((!checkList1NotZero && !checkList2NotZero) && checkResultsListNotZero)
             {
-                MessageBox.Show(singleListString(resultsList, nameof(resultsList)));
+                MessageBox.Show(singleResultsList);
             }
             else
             {
