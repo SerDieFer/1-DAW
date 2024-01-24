@@ -32,13 +32,13 @@ namespace WindowsFormsApp1
         }
 
         // POWER NUMBER
-        private int powerNumbers(int baseList, int exponentialList)
+        private int powerNumbers(int baseNum, int exponentialNum)
         {
             int result = 1;
 
-            for (int i = 0; i < exponentialList ; i++)
+            for (int i = 1; i <= exponentialNum ; i++)
             {
-                result *= baseList; 
+                result *= baseNum; 
             }
             return result;
         }   
@@ -46,11 +46,11 @@ namespace WindowsFormsApp1
         // CALCULATE RESULTS OF POWERED NUMBERS INTO NEW LIST
         private void calculatePoweredList(List<int> baseList, List<int> exponentialList, List<int> resultsList)
         {
-
-            for(int i = 0; i < exponentialList.Count; i++)
+            resultsList.Clear();
+            for (int i = exponentialList.Count - 1; i >= 0; i--)
             {
-                int result = powerNumbers(baseList[i], exponentialList[i]);
-                resultsList.Add(result);
+                int powered = powerNumbers(baseList[i], exponentialList[i]);
+                resultsList.Add(powered);
             }
         }
 
@@ -68,6 +68,7 @@ namespace WindowsFormsApp1
                     MessageBox.Show("The number (" + value + ") has been added to the list");
                     more = MessageBox.Show("Do you want to enter another value?", "Value", MessageBoxButtons.YesNo);
                 } while (more == DialogResult.Yes);
+                check = false;
             }
             catch (FormatException)
             {
@@ -117,9 +118,16 @@ namespace WindowsFormsApp1
             return txtFinal;
         }
 
+        bool check = false;
+
         // SHOWS BOTH LISTS AND THE RESULTS -- BUTTON --
         private void btnShowLists_Click(object sender, EventArgs e)
         {
+            if (!check)
+            {
+                calculatePoweredList(baseList, exponentialList, resultsList);
+                check = true;
+            }
             if (listSize(baseList) != 0 && listSize(exponentialList) == 0)
             {
                 baseList.Sort();
@@ -130,11 +138,10 @@ namespace WindowsFormsApp1
                 exponentialList.Sort();
                 MessageBox.Show(singleListString(exponentialList, nameof(exponentialList)));
             }
-            else if(listSize(baseList) != 0 && listSize(exponentialList) != 0)
+            else if (listSize(baseList) != 0 && listSize(exponentialList) != 0)
             {
-                calculatePoweredList(baseList, exponentialList, resultsList);
                 resultsList.Sort();
-                MessageBox.Show(listsStrings(baseList, exponentialList, exponentialList));
+                MessageBox.Show(listsStrings(baseList, exponentialList, resultsList));
             }
             else
             {
