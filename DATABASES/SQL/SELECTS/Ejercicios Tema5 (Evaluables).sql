@@ -311,7 +311,10 @@ HAVING COUNT(id_transaccion) > 2
 ----------------------------------------------------------------
 
 SELECT *
-FROM DETALLE_PEDIDOS
+FROM PAGOS
+
+SELECT *
+FROM CLIENTES
 
 -- 32. Obtén los nombres de los productos, la cantidad y el precio para los productos incluidos en los pedidos 3 y 5. Ordénalo por número de pedido y número de producto ascendentemente.
 
@@ -326,19 +329,64 @@ SELECT pr.codProducto,
 ORDER BY pe.codPedido, de.codProducto ASC
  
 -- 33. Obtén un listado con los nombres de los clientes que han realizado algún pago. Deben aparecer los campos nombre cliente, fecha de pago y total ordenado ascendentemente por cliente y fecha.
-SELECT ;
+
+SELECT cl.codCliente AS codigoCliente,
+       cl.nombre_cliente AS nombre,
+       pe.fechaHora_Pago AS fechaPago,
+       pe.importe_pago AS totalPago
+FROM CLIENTES cl, PAGOS pe
+WHERE cl.codCLiente = pe.codCliente
+ORDER BY cl.codCliente, pe.fechaHora_Pago
 
 -- 34. Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
-SELECT ;
+
+SELECT cl.nombre_cliente AS nombreCliente,
+       em.nombre AS nombreRepresentante,
+       CONCAT(em.apellido1, ' ', em.apellido2) AS apellidosRepresentante
+FROM CLIENTES cl, EMPLEADOS em
+WHERE cl.codEmpl_ventas = em.codEmpleado
+
 
 -- 35. Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas. Solo deben aparecer una vez.
-SELECT ;
+
+SELECT DISTINCT cl.nombre_cliente AS nombreCliente,
+       em.nombre AS nombreRepresentante
+FROM CLIENTES cl, 
+     EMPLEADOS em, 
+     PEDIDOS pe
+WHERE cl.codCliente = pe.codCliente
+AND cl.codEmpl_ventas = em.codEmpleado
 
 -- 36. Devuelve el nombre de los clientes que han hecho pedidos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
-SELECT ;
+
+select *
+from OFICINAS
+
+SELECT DISTINCT cl.nombre_cliente AS nombreCliente,
+       em.nombre AS nombreRepresentante,
+       ofi.ciudad AS ciudadOficina
+FROM CLIENTES cl, 
+     EMPLEADOS em, 
+     OFICINAS ofi, 
+     PEDIDOS pe
+WHERE cl.codCliente = pe.codCliente
+AND cl.codEmpl_ventas = em.codEmpleado
+AND em.codOficina = ofi.codOficina
 
 -- 37. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.
-SELECT ;
+
+SELECT *
+FROM OFICINAS -- ACABAR ESTA SIN ARREGLAR
+
+SELECT CONCAT(ofi.linea_direccion1, ',', ofi.linea_direccion2) AS direccionOficina,
+       ofi.ciudad,
+       cl.ciudad,
+       cl.codCliente
+FROM CLIENTES cl, 
+     EMPLEADOS em,
+     OFICINAS ofi
+WHERE cl.codEmpl_ventas = em.codEmpleado
+AND LOWER(cl.ciudad) = 'fuenlabrada'
 
 -- 38. Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes (debes utilizar dos alias para la tabla EMPLEADOS).
 SELECT ;
