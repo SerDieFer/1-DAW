@@ -389,17 +389,14 @@ WHERE cl.codEmpl_ventas = em.codEmpleado
 AND LOWER(cl.ciudad) = 'fuenlabrada'
 
 -- 38. Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes (debes utilizar dos alias para la tabla EMPLEADOS).
-SELECT ;
 
 -- 39. Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido. Si se han retrasado varios pedidos, el cliente solo debe aparecer una vez.
-SELECT ;
 
 -- 40. Muestra el nombre de los clientes y el número de pagos que han realizado.
+
 -- Deben aparecer todos, independientemente de si han realizado un pago o no.
-SELECT ;
 
 -- 41. Muestra el nombre de los clientes y el número de pedidos que han sido Entregados.
--- Deben aparecer todos, independientemente de si han realizado un pedido o no.
-SELECT ;
 
+-- Deben aparecer todos, independientemente de si han realizado un pedido o no.
 
