@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.gPanel = new System.Windows.Forms.GroupBox();
+            this.btnCheckResults = new System.Windows.Forms.Button();
             this.AddUserNumbers = new System.Windows.Forms.Button();
             this.btnShowLottery = new System.Windows.Forms.Button();
             this.AddWinnerNumbers = new System.Windows.Forms.Button();
@@ -37,15 +38,26 @@
             // 
             // gPanel
             // 
+            this.gPanel.Controls.Add(this.btnCheckResults);
             this.gPanel.Controls.Add(this.AddUserNumbers);
             this.gPanel.Controls.Add(this.btnShowLottery);
             this.gPanel.Controls.Add(this.AddWinnerNumbers);
             this.gPanel.Location = new System.Drawing.Point(12, 12);
             this.gPanel.Name = "gPanel";
-            this.gPanel.Size = new System.Drawing.Size(264, 242);
+            this.gPanel.Size = new System.Drawing.Size(264, 310);
             this.gPanel.TabIndex = 0;
             this.gPanel.TabStop = false;
             this.gPanel.Text = "Elements";
+            // 
+            // btnCheckResults
+            // 
+            this.btnCheckResults.Location = new System.Drawing.Point(21, 162);
+            this.btnCheckResults.Name = "btnCheckResults";
+            this.btnCheckResults.Size = new System.Drawing.Size(224, 58);
+            this.btnCheckResults.TabIndex = 5;
+            this.btnCheckResults.Text = "Check Results From User Numbers";
+            this.btnCheckResults.UseVisualStyleBackColor = true;
+            this.btnCheckResults.Click += new System.EventHandler(this.btnCheckResults_Click);
             // 
             // AddUserNumbers
             // 
@@ -55,11 +67,11 @@
             this.AddUserNumbers.TabIndex = 4;
             this.AddUserNumbers.Text = "Add User Numbers";
             this.AddUserNumbers.UseVisualStyleBackColor = true;
-            this.AddUserNumbers.Click += new System.EventHandler(this.AddWinnerNumbers_Click);
+            this.AddUserNumbers.Click += new System.EventHandler(this.AddUserNumbers_Click);
             // 
             // btnShowLottery
             // 
-            this.btnShowLottery.Location = new System.Drawing.Point(21, 162);
+            this.btnShowLottery.Location = new System.Drawing.Point(21, 226);
             this.btnShowLottery.Name = "btnShowLottery";
             this.btnShowLottery.Size = new System.Drawing.Size(224, 58);
             this.btnShowLottery.TabIndex = 2;
@@ -75,13 +87,13 @@
             this.AddWinnerNumbers.TabIndex = 0;
             this.AddWinnerNumbers.Text = "Add Winner Numbers";
             this.AddWinnerNumbers.UseVisualStyleBackColor = true;
-            this.AddWinnerNumbers.Click += new System.EventHandler(this.AddUserNumbers_Click);
+            this.AddWinnerNumbers.Click += new System.EventHandler(this.AddWinnersNumbers_Click);
             // 
             // Exercise_8
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 284);
+            this.ClientSize = new System.Drawing.Size(299, 343);
             this.Controls.Add(this.gPanel);
             this.Name = "Exercise_8";
             this.Text = "Exercise 8";
@@ -97,6 +109,7 @@
         private System.Windows.Forms.Button AddWinnerNumbers;
         private System.Windows.Forms.Button btnShowLottery;
         private System.Windows.Forms.Button AddUserNumbers;
+        private System.Windows.Forms.Button btnCheckResults;
     }
 }
 
