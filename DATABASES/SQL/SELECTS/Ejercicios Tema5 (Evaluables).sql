@@ -76,7 +76,7 @@ SELECT codEstado
 GROUP BY codEstado
 
 -- 8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2023.
--- Ten en cuenta que deberás eliminar aquellos códigos de cliente que aparezcan repetidos.
+  -- Ten en cuenta que deberás eliminar aquellos códigos de cliente que aparezcan repetidos.
 
 SELECT *
 FROM PAGOS
@@ -101,7 +101,7 @@ WHERE fecha_entrega != fecha_esperada
 -- 10. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los 
 -- pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
 
--- Utilizando la función DATEADD
+  -- Utilizando la función DATEADD
 
 SELECT codPedido AS codigoPedido,
        codCliente AS codigoCliente,
@@ -154,7 +154,7 @@ from PAGOS
 
 
 -- 16. Devuelve un listado con todos los productos que pertenecen a la categoría Ornamentales y que tienen más de 100 unidades en stock.
--- El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
+  -- El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
 
 SELECT *
 FROM PRODUCTOS
@@ -221,7 +221,7 @@ FROM PEDIDOS
 GROUP BY codEstado
 ORDER BY COUNT(codEstado) DESC
 
--- HACER REPLACE /
+-- HACER REPLACE / ???
 
 -- 22. Calcula el precio de venta del producto más caro y más barato en una misma consulta.
 
@@ -275,7 +275,7 @@ FROM DETALLE_PEDIDOS
 GROUP BY codPedido
 
 -- 29. Devuelve un listado de los 20 productos más vendidos y el número total de unidades que se han vendido de cada uno.
--- El listado deberá estar ordenado por el número total de unidades vendidas.
+  -- El listado deberá estar ordenado por el número total de unidades vendidas.
 
 SELECT TOP(20) codProducto,
        cantidad
@@ -294,7 +294,7 @@ GROUP BY codOficina
 HAVING COUNT(codEmpleado) > 4
 
 -- 31. Obtener los clientes que hayan realizado más de dos pagos de mínimo 1000 euros.
--- Mostrar también el número de pagos realizados.
+  -- Mostrar también el número de pagos realizados.
 
 SELECT *
 FROM PAGOS
@@ -376,27 +376,82 @@ AND em.codOficina = ofi.codOficina
 -- 37. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.
 
 SELECT *
-FROM OFICINAS -- ACABAR ESTA SIN ARREGLAR
+FROM OFICINAS
 
-SELECT CONCAT(ofi.linea_direccion1, ',', ofi.linea_direccion2) AS direccionOficina,
-       ofi.ciudad,
-       cl.ciudad,
-       cl.codCliente
-FROM CLIENTES cl, 
-     EMPLEADOS em,
-     OFICINAS ofi
-WHERE cl.codEmpl_ventas = em.codEmpleado
-AND LOWER(cl.ciudad) = 'fuenlabrada'
+SELECT DISTINCT CONCAT(ofi.linea_direccion1, ',', ofi.linea_direccion2) AS direccionOficina,
+       ofi.ciudad AS ciudadOficina,
+       cl.ciudad AS ciudadCliente
+  FROM CLIENTES cl, 
+       EMPLEADOS em,
+       OFICINAS ofi
+ WHERE cl.codEmpl_ventas = em.codEmpleado
+   AND em.codOficina = ofi.codOficina
+   AND LOWER(cl.ciudad) = 'fuenlabrada'
+
 
 -- 38. Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes (debes utilizar dos alias para la tabla EMPLEADOS).
 
+SELECT *
+FROM EMPLEADOS tra, EMPLEADOS jef
+
+SELECT tra.nombre AS nombreTrabajador,
+       ISNULL(jef.nombre, 'Es el Jefazo') AS nombreJefe
+FROM EMPLEADOS tra LEFT JOIN EMPLEADOS jef
+ON tra.codEmplJefe = jef.codEmpleado
+
+
 -- 39. Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido. Si se han retrasado varios pedidos, el cliente solo debe aparecer una vez.
+
+SELECT *
+FROM PEDIDOS
+
+SELECT DISTINCT cl.nombre_cliente AS nombreCliente
+FROM CLIENTES cl,
+     PEDIDOS pe
+WHERE pe.fecha_entrega > pe.fecha_esperada
+AND cl.codCliente = pe.codCliente
 
 -- 40. Muestra el nombre de los clientes y el número de pagos que han realizado.
 
--- Deben aparecer todos, independientemente de si han realizado un pago o no.
+  -- Deben aparecer todos, independientemente de si han realizado un pago o no.
+
+SELECT cl.codCliente AS codigoCliente,
+       cl.nombre_cliente AS nombreCliente,
+       COUNT(pa.id_transaccion) AS numTotalPagos
+  FROM CLIENTES cl LEFT JOIN PAGOS pa
+  ON cl.codCliente = pa.codCliente
+  GROUP BY cl.codCliente, cl.nombre_cliente
+  ORDER BY cl.codCliente ASC
+
+SELECT cl.nombre_cliente AS nombreCliente,
+       COUNT(pa.id_transaccion) AS numTotalPagos
+  FROM CLIENTES cl LEFT JOIN PAGOS pa
+  ON cl.codCliente = pa.codCliente
+  GROUP BY cl.nombre_cliente
+  ORDER BY cl.codCliente ASC
+-- ?????? HAY 2 CLIENTES QUE TIENEN DISTINTO CODIGO PERO MISMO NOMBRE
+
 
 -- 41. Muestra el nombre de los clientes y el número de pedidos que han sido Entregados.
+  -- Deben aparecer todos, independientemente de si han realizado un pedido o no.
 
--- Deben aparecer todos, independientemente de si han realizado un pedido o no.
+SELECT *
+FROM DETALLE_PEDIDOS
 
+SELECT cl.nombre_cliente AS nombreCliente,
+       COUNT(pe.codPedido) AS numTotalPedidosEntregados
+  FROM CLIENTES cl LEFT JOIN PEDIDOS pe
+    ON cl.codCliente = pe.codCliente
+   AND pe.codEstado = (SELECT codEstado
+                         FROM ESTADOS_PEDIDO
+                        WHERE UPPER(descripcion) = 'entregado')
+GROUP BY cl.nombre_cliente
+ORDER BY numTotalPedidosEntregados ASC
+
+SELECT cl.nombre_cliente AS nombreCliente,
+       COUNT(pe.codPedido) AS numTotalPedidosEntregados
+  FROM CLIENTES cl LEFT JOIN PEDIDOS pe
+    ON cl.codCliente = pe.codCliente
+   AND pe.codEstado IN ('E')
+GROUP BY cl.nombre_cliente
+ORDER BY numTotalPedidosEntregados ASC
