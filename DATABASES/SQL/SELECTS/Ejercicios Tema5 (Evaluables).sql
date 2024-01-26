@@ -402,6 +402,7 @@ ON tra.codEmplJefe = jef.codEmpleado
 
 -- 39. Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido. Si se han retrasado varios pedidos, el cliente solo debe aparecer una vez.
 
+USE JARDINERIA
 SELECT *
 FROM PEDIDOS
 
@@ -410,6 +411,13 @@ FROM CLIENTES cl,
      PEDIDOS pe
 WHERE pe.fecha_entrega > pe.fecha_esperada
 AND cl.codCliente = pe.codCliente
+
+SELECT DISTINCT cl.nombre_cliente AS nombreCliente
+FROM CLIENTES cl,
+     PEDIDOS pe
+WHERE cl.codCliente = pe.codCliente
+AND DATEDIFF(DAY, pe.fecha_esperada, pe.fecha_entrega) > 0
+-- DUDA CUAL ES MÁS EFICIENTE??
 
 -- 40. Muestra el nombre de los clientes y el número de pagos que han realizado.
 
