@@ -85,14 +85,13 @@
 //     sum += i;
 // }
 
+// debugger;
 // const randNum = Math.floor(Math.random()*10)+1;
 // var error = false;
 // var count = 0;
-
 // while(!error)
 // {
 //     var num = prompt('Adivina el número aleatorio: ');
-
 //     if(num != randNum)
 //     {
 //         count++;
@@ -108,3 +107,36 @@
 //         error = true;
 //     }
 // }
+
+// Crear funciones que devuelvan el último y el primer elemento del vector
+
+// function lastValueArray(array)
+// {
+//     return array[array.length-1];
+// }
+
+// var answer = lastValueArray([4,8,5]);
+// document.write(answer);
+
+// function firstValueArray(array)
+// {
+//     return array[0];
+// }
+
+// var answer = lastValueArray([4,8,5]);
+// document.write(answer);
+
+// Que sume todos los datos
+
+let array = [1,2,3,4,5,6,7,8,9,10];
+function addValues(array)
+{
+    let sum = 0;
+    for(let i = 0; i < array.Length;i++)
+    {
+        sum += array[i];
+    }
+    return sum;
+}
+document.write(addValues(array));
+
