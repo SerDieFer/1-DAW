@@ -15,26 +15,20 @@ public class Avion
 
     public float Altura
     {
-        get 
-        { 
-            return altura; 
-        }
+        get { return this.altura; }
+        set { this.altura = altura }
     }
 
     public int Orientacion
     {
-        get
-        {
-            return orientación;
-        }
+        get { return this.orientación; }
+        set { this.orientacion = orientación }
     }
 
     public float Combustible
     { 
-        get 
-        { 
-            return combustible; 
-        } 
+        get { return this.combustible; }
+        set { this.combustible = combustible }
     }
 
     //Metodo que sirve para girar respecto a los grados indicados.
