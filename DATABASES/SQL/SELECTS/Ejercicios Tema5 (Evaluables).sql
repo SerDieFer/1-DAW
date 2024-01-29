@@ -15,9 +15,9 @@ USE JARDINERIA
 
 -- 1. Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
 
-SELECT  codOficina AS codigoOficina, 
-        ciudad AS ciudadOficina
-   FROM OFICINAS
+SELECT codOficina AS codigoOficina, 
+       ciudad AS ciudadOficina
+  FROM OFICINAS
 
 -- 2. Devuelve un listado con la ciudad y el teléfono de las oficinas del país España.
 
@@ -32,7 +32,7 @@ SELECT nombre,
        CONCAT(apellido1, ' ', apellido2) AS apellidos,
        email
   FROM EMPLEADOS
-WHERE  codEmplJefe = 7
+ WHERE codEmplJefe = 7
 
 -- 4. Devuelve el nombre del puesto, nombre, apellidos y email del empleado que NO tiene ningún jefe/a
 
@@ -41,7 +41,7 @@ SELECT puesto_cargo AS nombrePuesto,
        CONCAT(apellido1, ' ', apellido2) AS apellidos,
        email
   FROM EMPLEADOS
-WHERE  codEmplJefe IS NULL
+ WHERE codEmplJefe IS NULL
 
 -- 5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.
 
@@ -49,19 +49,19 @@ SELECT nombre,
        CONCAT(apellido1, ' ', apellido2) AS apellidos,
        puesto_cargo AS puestoEmpleado
   FROM EMPLEADOS
-WHERE  LOWER(puesto_cargo) != 'representante ventas'
+ WHERE LOWER(puesto_cargo) != 'representante ventas'
 
 -- 6. Devuelve un listado con el nombre de los todos los clientes españoles.
 
 SELECT nombre_cliente
   FROM CLIENTES
-WHERE UPPER(pais) = 'SPAIN'
+ WHERE UPPER(pais) = 'SPAIN'
 
 -- 7. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
 
 SELECT codEstado
   FROM PEDIDOS 
-GROUP BY codEstado
+ GROUP BY codEstado
 
   -- Otra forma
 
@@ -97,7 +97,7 @@ SELECT codPedido AS codigoPedido,
        fecha_esperada AS fechaEntregaEsperada,
        fecha_entrega AS fechaEntrega
   FROM PEDIDOS 
-WHERE  DATEADD(day,2,fecha_entrega) <= fecha_esperada
+ WHERE DATEADD(day,2,fecha_entrega) <= fecha_esperada
 
 -- 11. Misma consulta pero utilizando la función DATEDIFF
 
@@ -134,7 +134,7 @@ SELECT *
 -- 15. Devuelve un listado con todas las formas de pago que aparecen en la tabla PAGOS. Ten en cuenta que no deben aparecer formas de pago repetidas.
 
 SELECT DISTINCT codFormaPago
-from PAGOS
+  FROM PAGOS
 
 -- 16. Devuelve un listado con todos los productos que pertenecen a la categoría Ornamentales y que tienen más de 100 unidades en stock.
   -- El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
@@ -161,7 +161,7 @@ SELECT *
 -- 18. ¿Cuántos empleados hay en la compañía?
 
 SELECT COUNT(codEmpleado) AS numEmpleados
-FROM EMPLEADOS
+  FROM EMPLEADOS
 
 -- 19. ¿Cuántos clientes tiene cada país?
 
@@ -190,13 +190,13 @@ SELECT codEstado AS estadoPedido,
 
 SELECT MAX(precio_venta) AS productoMasCaro,
        MIN(precio_venta) AS productoMasBarato
-FROM PRODUCTOS
+  FROM PRODUCTOS
 
 -- 23. ¿Cuántos clientes tiene la ciudad de Madrid?
 
 SELECT COUNT(codCliente) AS numClientesMadrid
-FROM CLIENTES
-WHERE LOWER(ciudad) = 'madrid'
+  FROM CLIENTES
+ WHERE LOWER(ciudad) = 'madrid'
 
 -- 24. ¿Calcula cuántos clientes tiene cada una de las ciudades que empiezan por M?
 
@@ -332,9 +332,9 @@ SELECT DISTINCT CONCAT(ofi.linea_direccion1, ',', ofi.linea_direccion2) AS direc
 -- 38. Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes (debes utilizar dos alias para la tabla EMPLEADOS).
 
 SELECT CONCAT(tra.nombre, ' ', tra.apellido1, ' ', tra.apellido2) AS nombreTrabajador,
-       ISNULL(jef.nombre, 'Es el Jefazo') AS nombreJefe
-FROM EMPLEADOS tra LEFT JOIN EMPLEADOS jef
-ON tra.codEmplJefe = jef.codEmpleado
+       CONCAT(ISNULL(jef.nombre, '-- Él es el Jefazo --'), ' ', jef.apellido1, ' ', jef.apellido2) AS nombreJefe
+  FROM EMPLEADOS tra LEFT JOIN EMPLEADOS jef
+    ON tra.codEmplJefe = jef.codEmpleado
 
   --Forma menos completa
 
@@ -355,7 +355,7 @@ SELECT DISTINCT cl.nombre_cliente AS nombreCliente
 
 SELECT DISTINCT cl.nombre_cliente AS nombreCliente
   FROM CLIENTES cl,
-     PEDIDOS pe
+       PEDIDOS pe
  WHERE cl.codCliente = pe.codCliente
    AND DATEDIFF(DAY, pe.fecha_esperada, pe.fecha_entrega) > 0
   -- DUDA CUAL ES MÁS EFICIENTE??
@@ -399,5 +399,5 @@ SELECT cl.codCliente,
   FROM CLIENTES cl LEFT JOIN PEDIDOS pe
     ON cl.codCliente = pe.codCliente
    AND pe.codEstado IN ('E')
-GROUP BY cl.nombre_cliente, cl.codCliente
-ORDER BY numTotalPedidosEntregados ASC
+ GROUP BY cl.nombre_cliente, cl.codCliente
+ ORDER BY numTotalPedidosEntregados ASC

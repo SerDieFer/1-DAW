@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
@@ -23,56 +24,57 @@ namespace WindowsFormsApp1
         // LIST WHICH INCLUDES ALL THE SELECTED STRINGS BY THE USER
         List<string> strings = new List<string>();
 
-        // LIST ELEMENTS COUNTER 
-        private int ListSize(List<string> list)
-        {
-            int size = list.Count;
-            return size;
-        }
-
         // ADD WORDS INTO A LIST IN ORDER
         private void AddValuesToList(List<string> list)
         {
             string word;
             DialogResult more;
-            bool alreadyInserted = false;
-
-            word = Interaction.InputBox("Enter the word you want to add", "Add Word");
-            list.Add(word);
-            MessageBox.Show("The word (" + word + ") has been added to the list");
-            more = MessageBox.Show("Do you want to keep adding more words?", "Add Word", MessageBoxButtons.YesNo);
-
-            while (more == DialogResult.Yes)
+            do
             {
-                try
+                bool alreadyInserted = false;
+
+                /* EXTRA OPTIONS IF YOU DONT WANT TO GET EMPTY AND NUMERIC STRING VALUES
+                do
                 {
-                    for (int i = 1; i < list.Count && !alreadyInserted; i++)
+                    word = Interaction.InputBox("Enter the word you want to add", "Add Word");
+                    
+                    if (string.IsNullOrWhiteSpace(word)) // THIS CHECKS WHEN THE STRING IS EMPTY
                     {
-                        if (string.Compare(word, list[i]) <= 0)
-                        {
-                            word = Interaction.InputBox("Enter the word you want to add", "Add Word");
-                            list.Insert(i, word);
-                            MessageBox.Show("The word (" + word + ") has been added to the list");
-                            more = MessageBox.Show("Do you want to keep adding more words?", "Add Word", MessageBoxButtons.YesNo);
-                            alreadyInserted = true;
-                        }
+                        MessageBox.Show("ERROR: Please enter a valid word.");
                     }
-                    if(!alreadyInserted)
+                    else if (word.Any(char.IsDigit)) // THIS CHECKS WHEN A NUMERIC VALUE IS IN THE STRING
                     {
-                        list.Add(word);
+                        MessageBox.Show("ERROR: Numbers are not allowed. Please enter a valid word.");
+                    }
+                } while (string.IsNullOrWhiteSpace(word) || word.Any(char.IsDigit));
+                */
+
+                // IN CASE EXTRA OPTIONS ARE LEFT COMMENTED
+                word = Interaction.InputBox("Enter the word you want to add", "Add Word");
+
+                for (int i = 0; i < list.Count && !alreadyInserted; i++)
+                {
+                    if (string.Compare(word, list[i]) <= 0)
+                    {
+                        list.Insert(i, word);
                         MessageBox.Show("The word (" + word + ") has been added to the list");
-                        more = MessageBox.Show("Do you want to keep adding more words?", "Add Word", MessageBoxButtons.YesNo);
+                        alreadyInserted = true;
                     }
                 }
-                catch (FormatException)
+
+                if (!alreadyInserted)
                 {
-                    MessageBox.Show("ERROR, the input string is not in the correct format");
+                    list.Add(word);
+                    MessageBox.Show("The word (" + word + ") has been added to the list");
                 }
-            }
+
+                more = MessageBox.Show("Do you want to keep adding more words?", "Add Word", MessageBoxButtons.YesNo);
+            } while (more == DialogResult.Yes);
         }
 
         private void btnAddWords_Click(object sender, EventArgs e)
         {
+            strings.Clear();
             AddValuesToList(strings);
         }
 
@@ -80,32 +82,38 @@ namespace WindowsFormsApp1
         private string SingleListString(List<string> list, string listName)
         {
             string txtList = "The words in the " + listName + " are: ";
-            int elementsCounted = 0;
-            foreach (string words in list)
+            if (list.Count > 0)
             {
-                if (elementsCounted == list.Count - 1)
+                int elementsCounted = 0;
+                foreach (string word in list)
                 {
-                    txtList += "(" + words + ").";
+                    txtList += "(" + word + ")";
+                    if (elementsCounted < list.Count - 1)
+                    {
+                        txtList += ", ";
+                    }
+                    elementsCounted++;
                 }
-                else
-                {
-                    txtList += "(" + words + "), ";
-                }
-                elementsCounted++;
+                txtList += ".";
+            }
+            else
+            {
+                txtList += "(No words in the list).";
             }
             return txtList;
         }
+        
 
         // SHOWS BOTH LISTS AND THE RESULTS -- BUTTON --
         private void btnShowList_Click(object sender, EventArgs e)
         {
             bool listSizeNotZero;
-            listSizeNotZero = ListSize(strings) != 0;
+            listSizeNotZero = strings.Count > 0;
 
             string listString;
             listString = SingleListString(strings, nameof(strings));
 
-            if (!listSizeNotZero)
+            if (listSizeNotZero)
             {
                     MessageBox.Show(listString);
             }
