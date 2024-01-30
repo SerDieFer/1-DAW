@@ -1,9 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace Exercise_1
@@ -12,45 +14,17 @@ namespace Exercise_1
     {
         private string pName;
         private int pAge;
-        private int pPhone;
-        private string pGender;
-        private string pMarried;
+        private string pPhone;
+        private char pGender;
+        private bool pMarried;
 
         // CONSTRUCTOR 
-        public Person(string name, int age, int phone, string gender, string married)
+        public Person()
         {
-            pName = name;
-            pAge = age;
-
-            // PHONE VALIDATION
-            if (phone >= 0 && phone <= 999999999)
-            {
-                pPhone = phone;
-            }
-            else
-            {
-                throw new ArgumentException("The phone number can only have a 9 digits maximum.");
-            }
-
-            // GENDER VALIDATION (MALE OR FEMALE)
-            if (gender.ToLower() == "male" || gender.ToLower() == "female")
-            {
-                pGender = gender.ToLower();
-            }
-            else
-            {
-                throw new ArgumentException("You must select 'male' or 'female'.");
-            }
-
-            // CIVIL STATUS VALIDATION
-            if (married.ToLower() == "yes" || married.ToLower() == "no")
-            {
-                pMarried = married.ToLower();
-            }
-            else
-            {
-                throw new ArgumentException("The civil status must be selected with 'yes' or 'no'.");
-            }
+            pName = "";
+            pAge = 0;
+            pPhone = "";
+            pMarried = false;
         }
 
         public string ShowData()
@@ -61,7 +35,16 @@ namespace Exercise_1
             txt += "Age: " + pAge + "\n";
             txt += "Phone: " + pPhone + "\n";
             txt += "Gender: " + pGender + "\n";
-            txt += "Married: " + pMarried + "\n";
+
+            //txt += "Married " + (pMarried ? "Yes" : "No") + "\n"; -- FAST WAY?
+            if (pMarried)
+            {
+                txt += "Married: Yes\n";
+            }
+            else
+            {
+                txt += "Married: No\n";
+            }
             return txt;
         }
 
@@ -74,25 +57,49 @@ namespace Exercise_1
         public int Age
         {
             get { return pAge; }
-            set { pAge = value; }
+            set {
+                if (value >= 0 && value <= 120)
+                {
+                    pAge = value;
+                }
+            }   
         }
 
-        public int Phone
+        public string Phone
         {
             get { return pPhone; }
-            set { pPhone = value; }
+            set {
+                if (value.All(char.IsDigit) && value.Length <= 9)
+                {
+                    pPhone = value;
+                }
+                else
+                {
+                    throw new ArgumentException("The phone number can only have a 9 digits maximum.");
+                }
+            }
         }
 
-        public string Gender
+        public char Gender
         {
             get { return pGender; }
-            set { pGender = value; }
+            set { 
+                if (char.ToUpper(value) == 'M' || char.ToUpper(value) == 'F')
+                { 
+                    pGender = value; 
+                }
+                else
+                {
+                    throw new ArgumentException("You must select 'Male (M)' or 'Female (F)'.");
+                }
+            }             
         }
 
-        public string Married
+        public bool Married
         {
             get { return pMarried; }
-            set { pMarried = value; }
+            set {  pMarried = value; }
         }
     }
 }
+
