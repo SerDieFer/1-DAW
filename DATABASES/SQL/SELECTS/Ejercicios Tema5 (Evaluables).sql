@@ -376,7 +376,6 @@ SELECT cl.nombre_cliente AS nombreCliente,
   FROM CLIENTES cl LEFT JOIN PAGOS pa
     ON cl.codCliente = pa.codCliente
  GROUP BY cl.nombre_cliente
- ORDER BY cl.codCliente ASC
   -- ?????? HAY 2 CLIENTES QUE TIENEN DISTINTO CODIGO PERO MISMO NOMBRE
 
 -- 41. Muestra el nombre de los clientes y el número de pedidos que han sido Entregados.

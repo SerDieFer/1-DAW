@@ -128,15 +128,30 @@
 
 // Que sume todos los datos
 
-let array = [1,2,3,4,5,6,7,8,9,10];
-function addValues(array)
-{
-    let sum = 0;
-    for(let i = 0; i < array.Length;i++)
-    {
-        sum += array[i];
-    }
-    return sum;
-}
-document.write(addValues(array));
+// let array = [1,2,3,4,5,6,7,8,9,10];
+// function addValues(array)
+// {
+//     let sum = 0;
+//     for(let i = 0; i < array.Length;i++)
+//     {
+//         sum += array[i];
+//     }
+//     return sum;
+// }
+// document.write(addValues(array))
 
+// function create()
+// {
+//     var nodeTitle = document.createElement('title');
+//     var txtTitle = document.createTextNode('Hello');
+//     nodeTitle.appendChild(txtTitle);
+//     document.head.appendChild(nodeTitle);
+// }
+
+function create()
+{
+    var newH1 = document.createElement("h1");
+    var txtH1 = document.createTextNode('SANTI NOT TRUE^FALSE');
+    newH1.appendChild(txtH1);
+    document.body.appendChild(newH1);
+}
