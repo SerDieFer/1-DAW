@@ -148,10 +148,35 @@
 //     document.head.appendChild(nodeTitle);
 // }
 
-function create()
+// function create()
+// {
+//     var newH1 = document.createElement("h1");
+//     var txtH1 = document.createTextNode('SANTI NOT TRUE^FALSE');
+//     newH1.appendChild(txtH1);
+//     document.body.appendChild(newH1);
+// }
+
+// function create() {
+//     let preToothless = document.getElementById("T1");
+
+//     preToothless.addEventListener("load", () => {
+//         console.log("Image loaded");
+//         if (preToothless.alt === "T1") {
+//             preToothless.src = "Toothless.gif";
+//             preToothless.alt = "T2";
+//         } else {
+//             preToothless.src = "previousToothless.gif";
+//             preToothless.alt = "T1";
+//         }
+//     });
+// }
+
+
+let preToothless = document.getElementById("T1");
+
+function changeImg()
 {
-    var newH1 = document.createElement("h1");
-    var txtH1 = document.createTextNode('SANTI NOT TRUE^FALSE');
-    newH1.appendChild(txtH1);
-    document.body.appendChild(newH1);
+windows.setTimeout(function(){
+    preToothless.src = "Toothless.gif";
+}, 500);
 }
