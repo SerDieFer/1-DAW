@@ -73,6 +73,7 @@ namespace Ejercicio_1
             
 
             string txtRes;
+            InvertirPosicion1(vector1);
             txtRes = MostrarVector(vector1);
             MessageBox.Show(txtRes);
         

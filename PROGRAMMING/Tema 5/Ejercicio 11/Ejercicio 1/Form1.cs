@@ -25,45 +25,21 @@ namespace Ejercicio_1
             {
                 vector[i] = int.Parse(Interaction.InputBox("Introduce el valor [" + i + "] del vector:"));
             }
-        }
-        // Forma 1
-        void InvertirPosicion1(int[] vector)
+        }  
+   
+        void MoveToRight(int[] vector)
         {
-            // Actua sobre la mitad del array
-            for (int i = 0; i < vector.Length / 2; i++)
-            {
-                // Guarda temporalmente el valor actual del array en la posición 'i'
-                int temporal = vector[i];
+          
+            int lastP = vector[vector.Length - 1];
 
-                // Intercambia el valor actual en la posición 'i' con su equivalente desde el final
-                vector[i] = vector[vector.Length - i - 1];
-
-                // Restaura el valor original en la posición desde el final
-                vector[vector.Length - i - 1] = temporal;
+            for (int i = vector.Length-1; i>= 1; i--)
+            { 
+                vector[i] = vector[i-1];  
             }
+            vector[0] = lastP;
+
         }
 
-        // Forma2
-        void InvertirPosicion2(int[] vector)
-        {
-            // Definir los índices de inicio y final del vector
-            int inicio = 0;
-            int final = vector.Length - 1;
-
-            // Mientras el índice de inicio sea menor que el índice de final
-            while (inicio < final)
-            {
-                // Intercambiar los elementos desde el principio con sus equivalentes desde el final
-                int temporal = vector[inicio];
-                vector[inicio] = vector[final];
-                vector[final] = temporal;
-
-                // Mover los índices hacia el centro del array para que sus posiciones sean intercambiadas.
-                inicio++;
-                final--;
-            }
-
-        }
         string MostrarVector(int[] vector)
         {
             string txt = "Los valores del vector son: ";
@@ -87,7 +63,6 @@ namespace Ejercicio_1
         private void btnLeer_Click(object sender, EventArgs e)
         {
             LeerVector(vector1);
-            InvertirPosicion2(vector1);
         }
 
         private void btnMostrar_Click(object sender, EventArgs e)
@@ -95,6 +70,7 @@ namespace Ejercicio_1
             
 
             string txtRes;
+            MoveToRight(vector1);
             txtRes = MostrarVector(vector1);
             MessageBox.Show(txtRes);
         

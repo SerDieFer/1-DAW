@@ -21,10 +21,10 @@ namespace Ejercicio_1
             }
         }
 
-            private void btnIntroducirVector_Click(object sender, EventArgs e)
-            {
-                leerVector(serie);
-            }
+        private void btnIntroducirVector_Click(object sender, EventArgs e)
+        {
+            leerVector(serie);
+        }
 
         int buscarVector(int[] vector, int numBusqueda)
         {
@@ -59,22 +59,22 @@ namespace Ejercicio_1
         }
 
 
-            private void btnBuscarVector_Click(object sender, EventArgs e)
-            {
-                int numBusqueda = int.Parse(Interaction.InputBox("Introduce el número a buscar:"));
-                int numEncontrado = buscarVector(serie, numBusqueda);
+        private void btnBuscarVector_Click(object sender, EventArgs e)
+        {
+            int numBusqueda = int.Parse(Interaction.InputBox("Introduce el número a buscar:"));
+            int numEncontrado = buscarVector(serie, numBusqueda);
 
-                if (numEncontrado == -1)
-                {
-                    MessageBox.Show("El número " + numBusqueda + " no está en el vector");
-                }
-                
-                else
-                {                                                         
-                    MessageBox.Show("El número " + numBusqueda + " tiene la posición " 
-                        + ((numEncontrado+1).ToString())); // Esto para que lo entienda un NO programador
-                }
+            if (numEncontrado == -1)
+            {
+                MessageBox.Show("El número " + numBusqueda + " no está en el vector");
             }
+                
+            else
+            {                                                         
+                MessageBox.Show("El número " + numBusqueda + " tiene la posición " 
+                    + ((numEncontrado+1).ToString())); // Esto para que lo entienda un NO programador
+            }
+        }
 
         void ordenarVector(int[] vector)
         {
