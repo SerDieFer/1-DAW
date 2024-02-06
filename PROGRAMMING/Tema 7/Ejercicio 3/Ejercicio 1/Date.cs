@@ -20,19 +20,85 @@ namespace Exercise_3
         // CONSTRUCTOR 
         public Date()
         {
-            dDay = 01;
-            dMonth = 01;
-            dYear = 0;
         }
+        public bool IsLeapYear(int dYear)
+        {
+            bool isLeap = false;
+
+            if (dYear % 4 == 0)
+            {
+                isLeap = true;
+
+                if (dYear % 100 == 0 && dYear % 400 != 0)
+                {
+                    isLeap = false;
+                }
+            }
+            return isLeap;
+        }
+
+        public bool ValidateData()
+        {
+            bool isValid = false;
+
+            if (dMonth == 2)
+            {
+                if (IsLeapYear(dYear))
+                {
+                    if (dDay <= 29 && dDay >= 1)
+                    {
+                        isValid = true;
+                    }
+                }
+                else
+                {
+                    if (dDay <= 28 && dDay >= 1)
+                    {
+                        isValid = true;
+                    }
+                }
+            }
+
+            else if ((dMonth == 4 || dMonth == 6 || dMonth == 9 || dMonth == 11))
+            {
+                if (dDay <= 30 && dDay >= 1)
+                {
+                    isValid = true;
+                }
+            }
+            else
+            {
+                if (dDay <= 31 && dDay >= 1)
+                {
+                    isValid = true;
+                }
+            }
+            return isValid;
+        }
+
 
         public string ShowData()
         {
-            string txt;
-            txt = "Data of this date:\n";
-            DateTime date = new DateTime(dYear, dMonth, dDay);
-            txt += "Day: " + date.ToString("d, dddd", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
-            txt += "Month: " + date.ToString("M, MMMM", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
-            txt += "Year: " + date.ToString("yyyy", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
+            string txt = "";
+            bool beforeC = false;
+            int yearAux = dYear;
+
+            if (yearAux < 0)
+            {
+                yearAux *= -1;
+                DateTime date = new DateTime(yearAux, dMonth, dDay);
+                txt += "Day: " + date.ToString("d, dddd", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
+                txt += "Month: " + date.ToString("M, MMMM", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
+                txt += "Year: " + date.ToString("yyyy", CultureInfo.CreateSpecificCulture("en-US")) + " BC\n";
+                beforeC = true;
+            }
+            else if (!beforeC)
+            {
+                DateTime date = new DateTime(yearAux, dMonth, dDay);
+                txt += "Day: " + date.ToString("d, dddd", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
+                txt += "Month: " + date.ToString("M, MMMM", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
+                txt += "Year: " + date.ToString("yyyy", CultureInfo.CreateSpecificCulture("en-US")) + " AC\n";
+            }
 
             return txt;
         }
@@ -40,33 +106,13 @@ namespace Exercise_3
         public int Day
         {
             get { return dDay; }
-            set
-            {
-                if (value > 0 && value < 32)
-                {
-                    dDay = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("This value is not possible, insert a day number between 1 and 31");
-                }
-            }
+            set { dDay = value; }
         }
 
         public int Month
         {
             get { return dMonth; }
-            set
-            {
-                if (value > 0 && value < 13)
-                {
-                    dMonth = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("This value is not possible, insert a month number between 1 and 12");
-                }
-            }
+            set { dMonth = value; }
         }
 
         public int Year
@@ -76,4 +122,5 @@ namespace Exercise_3
         }
     }
 }
+
 
