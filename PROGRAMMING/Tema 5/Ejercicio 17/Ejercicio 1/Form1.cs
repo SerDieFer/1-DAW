@@ -84,7 +84,7 @@ namespace Ejercicio_1
             {
                 for (int j = i + 1; j < vector.Length; j++)
                 {
-                    if (vector[j] < vector[i])
+                    if (vector[j] > vector[i])
                     {
                         numSustituto = vector[i];
                         vector[i] = vector[j];

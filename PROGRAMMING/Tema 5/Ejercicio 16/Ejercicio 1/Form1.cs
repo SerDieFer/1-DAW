@@ -13,44 +13,31 @@ namespace Ejercicio_1
         }
        
         int[] num = new int[3];
-        void leerVector (int[] vector)
+        void ReadNotRepeated(int[] array)
         {
-            for (int i = 0; i < vector.Length; i++)
+            int numToIntroduce;
+            int i = 1;
+            array[0] = int.Parse(Interaction.InputBox("Enter the value at position Nº0:"));
+            while (i < array.Length)
             {
-                vector[i] = int.Parse(Interaction.InputBox("Introduce el número de la posición [" + i + "]:"));
-            }
-        }
+                numToIntroduce = int.Parse(Interaction.InputBox("Enter the value at position Nº" + i + ":"));
 
-        void obtenerNumMayorMenor(int[] vector, out int nMayor, out int nMenor)
-        {
-            nMayor = nMenor = vector[0];
-
-            for (int i = 1; i < vector.Length; i++)
-            {
-                if (vector[i] > nMayor)
+                bool repeated = false;
+                for (int j = 0; j < i && !repeated; j++)
                 {
-                    nMayor = vector[i];
+                    if (array[j] == numToIntroduce)
+                    {
+                        repeated = true;
+                    }
                 }
 
-                if (vector[i] < nMenor)
+                if (!repeated)
                 {
-                    nMenor = vector[i];
+                    array[i] = numToIntroduce;
+                    i++;
+                    repeated = false;
                 }
             }
-        }
-        int contarRepetidos(int[] vector, int numComprobar)
-        {
-            int repetido = 0;
-
-            for(int i = 0; i < vector.Length;i++)
-            {
-                if (vector[i] == numComprobar)
-                {
-                    repetido++;
-                }
-            }
-            repetido--;
-            return repetido;
         }
 
         string mostrarVector (int[] vector)
@@ -74,49 +61,13 @@ namespace Ejercicio_1
 
         private void btnLeer_Click(object sender, EventArgs e)
         {
-            leerVector(num);
+            ReadNotRepeated(num);
         }
 
         private void btnMostrar_Click(object sender, EventArgs e)
         {
-            int nMayor, nMenor, repetidoMayor, repetidoMenor;
-            obtenerNumMayorMenor(num, out nMayor, out nMenor);
 
-            repetidoMayor = contarRepetidos(num, nMayor);
-            repetidoMenor = contarRepetidos(num, nMenor);
-
-            string txtMostrar, txtRes = "";
-            txtMostrar = mostrarVector(num);
-
-            if (repetidoMayor > 0 && repetidoMenor > 0)
-            {
-                txtRes = "\n\nEl número mayor será: " + nMayor +
-                         "\nSe repite " + repetidoMayor + " veces" +
-                         "\n\nEl número menor será: " + nMenor +
-                         "\nSe repite " + repetidoMenor + " veces";
-            }
-
-            else if (repetidoMayor == 0 && repetidoMenor > 0)
-            {
-                txtRes = "\n\nEl número mayor será: " + nMayor + " y no se repite"+
-                         "\n\nEl número menor será: " + nMenor +
-                         "\nSe repite " + repetidoMenor + " veces";
-            }
-
-            else if (repetidoMayor > 0 && repetidoMenor == 0)
-            {
-                txtRes = "\n\nEl número mayor será: " + nMayor +
-                         "\nSe repite " + repetidoMayor + " veces" +
-                         "\n\nEl número menor será: " + nMenor + " y no se repite";       
-            }
-
-            else
-            {
-                txtRes = "\n\nEl número mayor será: " + nMayor + " y no se repite" +
-                         "\n\nEl número menor será: " + nMenor + " y no se repite";
-            }
-
-            MessageBox.Show(txtMostrar + txtRes);
+            MessageBox.Show(mostrarVector(num));
 
         }
     }
