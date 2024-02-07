@@ -21,19 +21,19 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
-        private double ElevateNum (double m, double n)
+        private double ElevateNum(double m, double n)
         {
             double res = 1;
-            for(int i = 1; i <= n; i++) 
+            for (int i = 1; i <= n; i++)
             {
                 res *= m;
             }
             return res;
         }
-        private double FactorialNum (double n)
+        private double FactorialNum(double n)
         {
             double res = 1;
-            for(int i = 1; i <= n; i++)
+            for (int i = 1; i <= n; i++)
             {
                 res *= i;
             }
@@ -43,7 +43,7 @@ namespace WindowsFormsApp1
         private double CalculateSerie(double m, double n)
         {
             double res = 0;
-            for(int i = 1; i <= n;i++)
+            for (int i = 1; i <= n; i++)
             {
                 res += ElevateNum(m, i) / FactorialNum(i); ;
             }
@@ -114,7 +114,7 @@ namespace WindowsFormsApp1
 
         private void ReadArray(int[] array)
         {
-            for(int i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 array[i] = int.Parse(Interaction.InputBox("Introduce the number into position Nº" + i));
             }
@@ -125,9 +125,9 @@ namespace WindowsFormsApp1
             string txt = "";
             int counter = 0;
 
-            foreach(int i in array)
+            foreach (int i in array)
             {
-                if(counter == array.Length-1)
+                if (counter == array.Length - 1)
                 {
                     txt += i + ".";
                 }
@@ -145,7 +145,7 @@ namespace WindowsFormsApp1
             string txt = "";
             int counter = 0;
 
-            foreach(var i in array)
+            foreach (var i in array)
             {
                 if (counter == array.Length - 1)
                 {
@@ -172,54 +172,61 @@ namespace WindowsFormsApp1
             avg /= array.Length;
             return avg;
         }
+
         double[] array3 = { 1.72, 2, 1.57, 1.65, 1.78, 1.9 };
-        private string GreaterOrLowerThanAvg(double[] array)
+        private void GreaterOrLowerThanAvg(double[] array, out double numGreater, out double numLower)
         {
-            string txtBiggerEqualThanAverage = "So the biggest or equals to the average will be: ";
-            string txtLowerThanAvergage = "So the smaller than the average will be: ";
-            string txtResults = "";
+            numGreater = numLower = 0;
             double avg = AvgArray(array);
-            for (int i = 0; i < array.Length;i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 if (array[i] >= avg)
                 {
-                    txtBiggerEqualThanAverage += array[i] + ", ";
+                    numGreater++;
                 }
                 else
                 {
-                    txtLowerThanAvergage += array[i] + ", ";
+                    numLower++;
                 }
             }
-            txtResults = "The media in this class will be: " + avg + "\n\n" +txtBiggerEqualThanAverage + 
-                "\n\n" + txtLowerThanAvergage + "\n\nAre all classroom mates smaller than 1.7? " + SmallClassroomStature(array);
-            return txtResults;
         }
 
-        private bool SmallClassroomStature(double[] array)
+        private bool AllSmall(double[] array)
         {
-            bool smallClassStature = false;
-            for (int i = 0; i < array.Length; i++)
+            bool allSmall = true;
+            for (int i = 0; i < array.Length && allSmall; i++)
             {
                 if (array[i] < 1.7)
                 {
-                    smallClassStature = true;
-                }
-                else
-                {
-                    smallClassStature = false;
+                    allSmall = false;
                 }
             }
-            return smallClassStature;
+            return allSmall;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            double numGreater;
+            double numLower;
+
+            GreaterOrLowerThanAvg(array3, out numGreater, out numLower);
+            string txtResults = "";
+            string txtBiggerEqualThanAverage = "So the biggest or equals to the average will be: " + numGreater;
+            string txtLowerThanAvergage = "So the smaller than the average will be: " + numLower;
+            txtResults = "The media in this class will be: " + AvgArray(array3) + "\n\n" + txtBiggerEqualThanAverage +
+               "\n\n" + txtLowerThanAvergage + "\n\nAre all classroom mates smaller than 1.7? " + 
+               AllSmall(array3);
+            MessageBox.Show(txtResults);
         }
         // FIN EXAMEN N2
 
         //Repasar
-        private void AddOnlyIfBigger (int[] array)
+        private void AddOnlyIfBigger(int[] array)
         {
             int numToIntroduce;
             int i = 1;
             array[0] = int.Parse(Interaction.InputBox("Introduce the value in the position Nº0:"));
-            while(i<array.Length)
+            while (i < array.Length)
             {
                 numToIntroduce = int.Parse(Interaction.InputBox("Introduce the value in the position Nº" + i + ":"));
                 if (array[i - 1] < numToIntroduce)
@@ -234,11 +241,11 @@ namespace WindowsFormsApp1
         private int RecalculatePosition(int[] array)
         {
             int modified = 0;
-            for(int i = 0 ;i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 if (array[i] != -1)
                 {
-                    for(int j = i + 1; j < array.Length; j++)
+                    for (int j = i + 1; j < array.Length; j++)
                     {
                         if (array[j] == array[i])
                         {
@@ -293,7 +300,7 @@ namespace WindowsFormsApp1
         {
             int min, max, avg;
             avg = min = max = array[0];
-            for(int i = 1; i < array.Length;i++)
+            for (int i = 1; i < array.Length; i++)
             {
                 if (array[i] <= min)
                 {
@@ -314,7 +321,6 @@ namespace WindowsFormsApp1
         // Repasar
         void MoveToRight(int[] array)
         {
-
             int lastP = array[array.Length - 1];
 
             for (int i = array.Length - 1; i >= 1; i--)
@@ -326,7 +332,7 @@ namespace WindowsFormsApp1
         }
 
         // Repasar
-        void OrderArrayFromSmallestToBiggerValue(int[] array) 
+        void OrderArrayFromSmallestToBiggerValue(int[] array)
         {
             int auxNum;
 
@@ -388,38 +394,47 @@ namespace WindowsFormsApp1
             return txtList;
         }
 
+        bool isBigger(int previousNum, int actualNum)
+        {
+            bool bigger = false;
+            if (previousNum < actualNum)
+            {
+                bigger = true;
+            }
+            return bigger;
+        }
 
-        List<int> list1 = new List<int>();    
+        List<int> list1 = new List<int>();
         void ReadNotRepeatedAndGreater(List<int> list)
         {
-            int num;
+            int i = 1;
             DialogResult more;
-            list.Insert(0, int.Parse(Interaction.InputBox("Enter the num you want to add", "Add Num")));
-
-            do
+            int num = int.Parse(Interaction.InputBox("Enter the num you want to add", "Add Num"));
+            list.Add(num);
+            more = MessageBox.Show("Do you want to keep adding more nums?", "Add Num", MessageBoxButtons.YesNo);
+            while (more == DialogResult.Yes)
             {
-                bool repeated = false;
                 num = int.Parse(Interaction.InputBox("Enter the num you want to add", "Add Num"));
-
-                for (int i = 1; i < list.Count && !repeated; i++)
+                bool contained = list.Contains(num);
+                if (!contained && isBigger(list[i - 1], num))
                 {
-                    if (!list.Contains(num) && num > list[i-1])
-                    {
-                        list.Insert(i, num);
-                        MessageBox.Show("The num (" + num + ") has been added to the list");
-                        repeated = true;
-                    }
+                    list.Add(num);
+                    //list.Sort();
+                    i++;
+                    MessageBox.Show("The num (" + num + ") has been added to the list");
                 }
-
-                if (!repeated)
+                else if (contained)
                 {
-                    MessageBox.Show("The word (" + num + ") can't be added to the list because it's repeated");
+                    MessageBox.Show("Inserted numbers can't be repeated");
                 }
-
+                else
+                {
+                    MessageBox.Show("Only values bigger than the previous used, try again");
+                }
                 more = MessageBox.Show("Do you want to keep adding more nums?", "Add Num", MessageBoxButtons.YesNo);
-            } while (more == DialogResult.Yes);
+            }
         }
-  
+
         // FIN EXAMEN N3
 
         // Repasar
@@ -462,12 +477,12 @@ namespace WindowsFormsApp1
         {
             bool isValid = false;
             int counter = 0;
-            foreach(string element in repeatedWordsArray)
+            foreach (string element in repeatedWordsArray)
             {
-                if(element == word)
+                if (element == word)
                 {
                     counter++;
-                    if(counter == 2)
+                    if (counter == 2)
                     {
                         isValid = true;
                     }
@@ -480,7 +495,7 @@ namespace WindowsFormsApp1
             return isValid;
         }
 
-        private void ReadArrayRepeated (string[] wordsArray, string[] repeatedWordsArray)
+        private void ReadArrayRepeated(string[] wordsArray, string[] repeatedWordsArray)
         {
             bool repeated = false;
             int i = 0;
@@ -501,7 +516,60 @@ namespace WindowsFormsApp1
 
         }
         // FIN EXAMEN N1
-        private void button1_Click(object sender, EventArgs e)
+
+        // EXAMEN N4
+        List<int> listN1 = new List<int>();
+        List<int> listN2 = new List<int>();
+        List<int> listN3 = new List<int>();
+        private void AddTest()
+        {
+            listN1.Add(1);
+            listN1.Add(2);
+            listN1.Add(6);
+            listN1.Add(7);
+            listN1.Add(28);
+            listN1.Add(30);
+
+            listN2.Add(2);
+            listN2.Add(3);
+            listN2.Add(5);
+            listN2.Add(28);
+        }
+
+        private bool CompositeNumber(int num)
+        {
+            bool composited = false;
+            int compositedCounter = 0;
+
+            for(int i = 2; i <= num && !composited; i++)
+            { 
+                if(num % i == 0)
+                {
+                    compositedCounter++;
+                    if(compositedCounter > 2)
+                    {
+                        composited = true;
+                    }
+                }
+            }
+            return composited;
+        }
+
+        private void MoveOnlyCompositedThatAreNotInSecondList(List<int> list1, List<int> list2)
+        {
+            int i = 0;
+            while (i < list1.Count)
+            {
+                bool composited = CompositeNumber(list1[i]);
+                if (composited && !list2.Contains(list1[i]))
+                {
+                    listN3.Add(list1[i]);
+                }
+                i++;    
+            }
+        }
+
+       /* private void button1_Click(object sender, EventArgs e)
         {
             //double m, n;
             //string res;
@@ -516,10 +584,11 @@ namespace WindowsFormsApp1
             //res = CalculateSerie(m, n).ToString();
 
             //res = MaxCommonDivisor(m, n).ToString();
-            ReadNotRepeatedAndGreater(list1);
-            MessageBox.Show(ShowList(list1, nameof(list1)));
+            AddTest();
+            MoveOnlyCompositedThatAreNotInSecondList(listN1, listN2);
+            MessageBox.Show(ShowList(listN3, nameof(listN3)));
 
         }
-
+*/
     }
 }

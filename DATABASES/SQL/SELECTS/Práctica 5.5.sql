@@ -329,6 +329,7 @@ SELECT *
 
 -- 1. Crea una vista que devuelva los códigos de los clientes que realizaron pedidos en 2009 y los clientes que realizaron pagos por transferencia. Utiliza la unión.
 
+GO
 CREATE VIEW VPedidosTransferencia2009 AS
 	 SELECT codCliente
   	   FROM PAGOS
@@ -337,6 +338,7 @@ CREATE VIEW VPedidosTransferencia2009 AS
 	 SELECT codCliente
   	   FROM PEDIDOS
 	  WHERE YEAR(fecha_pedido) = 2009
+GO
 
 -- 2. Escribe el código SQL para realizar una consulta a dicha vista
 
