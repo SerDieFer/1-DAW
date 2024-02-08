@@ -31,8 +31,6 @@ namespace WindowsFormsApp1
             DialogResult more;
             do
             {
-                bool alreadyInserted = false;
-
                 /* EXTRA OPTIONS IF YOU DONT WANT TO GET EMPTY AND NUMERIC STRING VALUES
                 do
                 {
@@ -51,23 +49,13 @@ namespace WindowsFormsApp1
 
                 // IN CASE EXTRA OPTIONS ARE LEFT COMMENTED
                 word = Interaction.InputBox("Enter the word you want to add", "Add Word");
-
-                for (int i = 0; i < list.Count && !alreadyInserted; i++)
+                int i = 0;
+                while (i < list.Count && string.Compare(word, list[i]) > 0)
                 {
-                    if (string.Compare(word, list[i]) <= 0)
-                    {
-                        list.Insert(i, word);
-                        MessageBox.Show("The word (" + word + ") has been added to the list");
-                        alreadyInserted = true;
-                    }
+                    i++;
                 }
-
-                if (!alreadyInserted)
-                {
-                    list.Add(word);
-                    MessageBox.Show("The word (" + word + ") has been added to the list");
-                }
-
+                list.Insert(i, word);
+                MessageBox.Show("The word (" + word + ") has been added to the list");
                 more = MessageBox.Show("Do you want to keep adding more words?", "Add Word", MessageBoxButtons.YesNo);
             } while (more == DialogResult.Yes);
         }

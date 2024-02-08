@@ -23,7 +23,7 @@ namespace Ejercicio_1
    
         double temperaturaMedia (double[] vector)
         {
-            double media = vector[0];
+            double media;
             double sumaTemp = vector[0];
 
             for (int i = 1; i < vector.Length; i++)

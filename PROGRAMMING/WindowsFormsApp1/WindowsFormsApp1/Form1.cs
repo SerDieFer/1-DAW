@@ -6,10 +6,14 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.Logging;
 using WindowsFormsApp1.Properties;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace WindowsFormsApp1
@@ -160,66 +164,6 @@ namespace WindowsFormsApp1
             return txt;
         }
 
-        // EXAMEN N2
-        private double AvgArray(double[] array)
-        {
-            double avg = 0;
-
-            foreach (double i in array)
-            {
-                avg += i;
-            }
-            avg /= array.Length;
-            return avg;
-        }
-
-        double[] array3 = { 1.72, 2, 1.57, 1.65, 1.78, 1.9 };
-        private void GreaterOrLowerThanAvg(double[] array, out double numGreater, out double numLower)
-        {
-            numGreater = numLower = 0;
-            double avg = AvgArray(array);
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i] >= avg)
-                {
-                    numGreater++;
-                }
-                else
-                {
-                    numLower++;
-                }
-            }
-        }
-
-        private bool AllSmall(double[] array)
-        {
-            bool allSmall = true;
-            for (int i = 0; i < array.Length && allSmall; i++)
-            {
-                if (array[i] < 1.7)
-                {
-                    allSmall = false;
-                }
-            }
-            return allSmall;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            double numGreater;
-            double numLower;
-
-            GreaterOrLowerThanAvg(array3, out numGreater, out numLower);
-            string txtResults = "";
-            string txtBiggerEqualThanAverage = "So the biggest or equals to the average will be: " + numGreater;
-            string txtLowerThanAvergage = "So the smaller than the average will be: " + numLower;
-            txtResults = "The media in this class will be: " + AvgArray(array3) + "\n\n" + txtBiggerEqualThanAverage +
-               "\n\n" + txtLowerThanAvergage + "\n\nAre all classroom mates smaller than 1.7? " + 
-               AllSmall(array3);
-            MessageBox.Show(txtResults);
-        }
-        // FIN EXAMEN N2
-
         //Repasar
         private void AddOnlyIfBigger(int[] array)
         {
@@ -293,7 +237,6 @@ namespace WindowsFormsApp1
                 startPosition++;
                 endPosition--;
             }
-
         }
 
         private string MaxMinAverage(int[] array)
@@ -369,74 +312,6 @@ namespace WindowsFormsApp1
             }
         }
 
-        // EXAMEN N3
-        private string ShowList(List<int> list, string listName)
-        {
-            string txtList = "The nums in the " + listName + " are: ";
-            if (list.Count > 0)
-            {
-                int elementsCounted = 0;
-                foreach (int nums in list)
-                {
-                    txtList += "(" + nums + ")";
-                    if (elementsCounted < list.Count - 1)
-                    {
-                        txtList += ", ";
-                    }
-                    elementsCounted++;
-                }
-                txtList += ".";
-            }
-            else
-            {
-                txtList += "(No nums in the list).";
-            }
-            return txtList;
-        }
-
-        bool isBigger(int previousNum, int actualNum)
-        {
-            bool bigger = false;
-            if (previousNum < actualNum)
-            {
-                bigger = true;
-            }
-            return bigger;
-        }
-
-        List<int> list1 = new List<int>();
-        void ReadNotRepeatedAndGreater(List<int> list)
-        {
-            int i = 1;
-            DialogResult more;
-            int num = int.Parse(Interaction.InputBox("Enter the num you want to add", "Add Num"));
-            list.Add(num);
-            more = MessageBox.Show("Do you want to keep adding more nums?", "Add Num", MessageBoxButtons.YesNo);
-            while (more == DialogResult.Yes)
-            {
-                num = int.Parse(Interaction.InputBox("Enter the num you want to add", "Add Num"));
-                bool contained = list.Contains(num);
-                if (!contained && isBigger(list[i - 1], num))
-                {
-                    list.Add(num);
-                    //list.Sort();
-                    i++;
-                    MessageBox.Show("The num (" + num + ") has been added to the list");
-                }
-                else if (contained)
-                {
-                    MessageBox.Show("Inserted numbers can't be repeated");
-                }
-                else
-                {
-                    MessageBox.Show("Only values bigger than the previous used, try again");
-                }
-                more = MessageBox.Show("Do you want to keep adding more nums?", "Add Num", MessageBoxButtons.YesNo);
-            }
-        }
-
-        // FIN EXAMEN N3
-
         // Repasar
         int searchArrayPosition(int[] array, int numToSearch)
         {
@@ -469,7 +344,29 @@ namespace WindowsFormsApp1
             return position;
         }
 
-        // EXAMEN N1
+        /*
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //double m, n;
+            //string res;
+
+
+            //m = int.Parse(Interaction.InputBox("Introduce él número inicial"));
+            //n = int.Parse(Interaction.InputBox("Introduce él número secundario"));
+
+            //res = InterchangeValues(m, n);
+            //res = "El número " + m + " ahora será " + n + "\n\nMientras que el " + n + " daría " + aux;
+
+            //res = CalculateSerie(m, n).ToString();
+
+            //res = MaxCommonDivisor(m, n).ToString();
+            //AddTest();
+            //MoveOnlyCompositedThatAreNotInSecondList(listN1, listN2);
+            //MessageBox.Show(ShowList(listN3, nameof(listN3)));
+        }
+        */
+
+        //* EXAMEN N1
         string[] wordsArray = new string[3];
         string[] repeatedWordsArray = { "ana", "juan", "juan", "marta", "marta", "marta", "paloma" };
 
@@ -486,10 +383,6 @@ namespace WindowsFormsApp1
                     {
                         isValid = true;
                     }
-                    else
-                    {
-                        isValid = false;
-                    }
                 }
             }
             return isValid;
@@ -503,6 +396,7 @@ namespace WindowsFormsApp1
             do
             {
                 string wordToValidate = Interaction.InputBox("Introduce the word to add: ");
+
                 if (ValidateWordRepeated2Times(wordToValidate, repeatedWordsArray))
                 {
                     wordsArray[i] = wordToValidate;
@@ -515,9 +409,137 @@ namespace WindowsFormsApp1
             } while (i < wordsArray.Length && !repeated);
 
         }
-        // FIN EXAMEN N1
+        //FIN EXAMEN N1 */
 
-        // EXAMEN N4
+        //* EXAMEN N2
+        private double AvgArray(double[] array)
+        {
+            double avg = 0;
+
+            foreach (double i in array)
+            {
+                avg += i;
+            }
+            avg /= array.Length;
+            return avg;
+        }
+       
+        private void GreaterOrLowerThanAvg(ref double[] array, out double numGreater, out double numLower)
+        {
+            numGreater = numLower = 0;
+            double avg = AvgArray(array);
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] >= avg)
+                {
+                    numGreater++;
+                }
+                else
+                {
+                    numLower++;
+                }
+            }
+        }
+
+        private bool AllSmall(double[] array)
+        {
+            bool allSmall = true;
+            for (int i = 0; i < array.Length && allSmall; i++)
+            {
+                if (array[i] > 1.7)
+                {
+                    allSmall = false;
+                }
+            }
+            return allSmall;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            double[] array3 = { 1.72, 2, 1.57, 1.65, 1.78, 1.9 };
+            double numGreater;
+            double numLower;
+
+            GreaterOrLowerThanAvg(ref array3, out numGreater, out numLower);
+            string txtResults = "";
+            string txtBiggerEqualThanAverage = "So the biggest or equals to the average will be: " + numGreater;
+            string txtLowerThanAvergage = "So the smaller than the average will be: " + numLower;
+            txtResults = "The media in this class will be: " + AvgArray(array3) + "\n\n" + txtBiggerEqualThanAverage +
+               "\n\n" + txtLowerThanAvergage + "\n\nAre all classroom mates smaller than 1.7? " + 
+               AllSmall(array3);
+            MessageBox.Show(txtResults);
+        }
+        //FIN EXAMEN N2 */
+
+        //* EXAMEN N3
+       private string ShowList(List<int> list, string listName)
+       {
+           string txtList = "The nums in the " + listName + " are: ";
+           if (list.Count > 0)
+           {
+               int elementsCounted = 0;
+               foreach (int nums in list)
+               {
+                   txtList += "(" + nums + ")";
+                   if (elementsCounted < list.Count - 1)
+                   {
+                       txtList += ", ";
+                   }
+                   elementsCounted++;
+               }
+               txtList += ".";
+           }
+           else
+           {
+               txtList += "(No nums in the list).";
+           }
+           return txtList;
+       }
+
+       bool isBigger(int previousNum, int actualNum)
+       {
+           bool bigger = false;
+           if (previousNum < actualNum)
+           {
+               bigger = true;
+           }
+           return bigger;
+       }
+
+       List<int> list1 = new List<int>();
+       void ReadNotRepeatedAndGreater(List<int> list)
+       {
+           int i = 1;
+           DialogResult more;
+           int num = int.Parse(Interaction.InputBox("Enter the num you want to add", "Add Num"));
+           list.Add(num);
+           more = MessageBox.Show("Do you want to keep adding more nums?", "Add Num", MessageBoxButtons.YesNo);
+           while (more == DialogResult.Yes)
+           {
+               num = int.Parse(Interaction.InputBox("Enter the num you want to add", "Add Num"));
+               bool contained = list.Contains(num);
+               if (!contained && isBigger(list[i - 1], num))
+               {
+                   list.Add(num);
+                   //list.Sort();
+                   i++;
+                   MessageBox.Show("The num (" + num + ") has been added to the list");
+               }
+               else if (contained)
+               {
+                   MessageBox.Show("Inserted numbers can't be repeated");
+               }
+               else
+               {
+                   MessageBox.Show("Only values bigger than the previous used, try again");
+               }
+               more = MessageBox.Show("Do you want to keep adding more nums?", "Add Num", MessageBoxButtons.YesNo);
+           }
+       }
+
+       //FIN EXAMEN N3 */
+
+        //* EXAMEN N4
         List<int> listN1 = new List<int>();
         List<int> listN2 = new List<int>();
         List<int> listN3 = new List<int>();
@@ -564,31 +586,197 @@ namespace WindowsFormsApp1
                 if (composited && !list2.Contains(list1[i]))
                 {
                     listN3.Add(list1[i]);
+                    listN1.Remove(list1[i]);
                 }
-                i++;    
+            }
+        }
+        //FIN EXAMEN N4 */
+
+        // EXAMEN OTRA CLASE N2
+        // Tienes dos listas, si en la lista2 se repite esa palabra más de dos veces la eliminas de la lista1.
+
+        List<string> lista1 = new List<string>();
+        List<string> lista2 = new List<string>();
+
+        private void PruebaAñadidas()
+        { 
+            lista1.Add("carmen");
+            lista1.Add("manuel");
+            lista1.Add("pepe");
+            lista1.Add("pepe");
+            lista1.Add("pepe");
+            lista1.Add("pepe");
+            lista1.Add("pepe");
+
+
+
+            lista2.Add("pepe");
+            lista2.Add("pepe");
+            lista2.Add("pepe");
+        }
+
+        private string MostrarLista (List<string> lista)
+        {
+            string texto = "";
+
+            foreach(string elemento in lista)
+            {
+                texto += elemento + ", ";
+            }
+            return texto;
+        }
+
+        private int PalabraRepetidaMasDe2Veces(string palabra, List<string> lista2)
+        {
+            int contador = 0;
+            foreach (string elemento in lista2)
+            {
+                if (elemento == palabra)
+                {
+                    contador++;
+                }
+            }
+            return contador;
+        }
+
+        private void BorrarRepetidas(List<string> lista1, List<string> lista2)
+        {
+            int i, j;
+            i = j = 0;
+            while(i < lista1.Count && j < lista2.Count) 
+            {
+                if (PalabraRepetidaMasDe2Veces(lista1[i], lista2) > 2)
+                {
+                    lista1.Remove(lista1[i]);
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+        }
+        private void button1b_Click(object sender, EventArgs e)
+        {
+            PruebaAñadidas();
+            BorrarRepetidas(lista1, lista2);
+            MessageBox.Show(MostrarLista(lista1));
+        }
+        //*/
+
+        //* EXAMEN OTRA CLASE N3
+        // Tienes una lista de números que tienes que rellenar tú con la condición de que cada número que introduzcas
+        // no puede ser menor que la suma de los dos anteriores, el primero lo metes tal cual, el segundo tiene que ser
+        // mayor al primero que has metido y ya todos tienen que ser mayor que la suma de los dos números anteriores.
+
+        List<int> listaNums = new List<int>();
+
+        int SumarNumeros(List<int> lista, int i)
+        {
+            int suma = 0;
+
+            if (lista.Count == 1)
+            {
+                suma = lista[i];
+            }
+            else if (lista.Count > 1)
+            {
+                suma = lista[i - 1] + lista[i];
+            }
+            return suma;
+        }
+
+        void AñadirALista(List<int> lista) 
+        {
+            int i = 0;
+            int num = int.Parse(Interaction.InputBox("Añade el número:"));
+            lista.Add(num);
+            MessageBox.Show("El número introducido es el:" + num);
+            while (i < lista.Count)
+            {
+                num = int.Parse(Interaction.InputBox("Añade el número:"));
+                if (num > SumarNumeros(lista, i))
+                {
+                    lista.Add(num);
+                    i++;
+                    MessageBox.Show("El número introducido es el:" + num);
+                }
+                else
+                {
+                    MessageBox.Show("El número introducido es menor que la suma de sus anteriores");
+                }
+            }
+
+        }
+        void button1c_Click(object sender, EventArgs e)
+        {
+            AñadirALista(listaNums);
+        }
+        //*/
+
+        //* EXAMEN OTRA CLASE N4
+        // Te dan una array que tiene edades, las empiezas a leer, tienes que hacer el botón, y luego tienes que hacer dos
+        // funciones, la edad mínima y la edad máxima, y luego otra función que te devuelva si hay un menor de edad o no.
+
+        private void LeerEdades(int[] vector) 
+        {
+            for(int i = 0; i < vector.Length; i++)
+            {
+                int edad = int.Parse(Interaction.InputBox("Añade la edad: "));
+                vector[i] = edad;
             }
         }
 
-       /* private void button1_Click(object sender, EventArgs e)
+        private void EdadMinMax(ref int[] vector, out int minima, out int maxima)
         {
-            //double m, n;
-            //string res;
-
-
-            //m = int.Parse(Interaction.InputBox("Introduce él número inicial"));
-            //n = int.Parse(Interaction.InputBox("Introduce él número secundario"));
-
-            //res = InterchangeValues(m, n);
-            //res = "El número " + m + " ahora será " + n + "\n\nMientras que el " + n + " daría " + aux;
-
-            //res = CalculateSerie(m, n).ToString();
-
-            //res = MaxCommonDivisor(m, n).ToString();
-            AddTest();
-            MoveOnlyCompositedThatAreNotInSecondList(listN1, listN2);
-            MessageBox.Show(ShowList(listN3, nameof(listN3)));
-
+            maxima = minima = vector[0];
+            for(int i = 0; i < vector.Length; i++)
+            {
+                if (vector[i] <= minima)
+                {
+                    minima = vector[i];
+                }
+                if (vector[i] >= maxima)
+                {
+                    maxima = vector[i];
+                }
+            }
         }
-*/
+
+        private bool TodosMayores18(int[] vector)
+        {
+            bool mayores = true;
+
+            for (int i = 0; i < vector.Length; i++)
+            {
+                if (vector[i] < 18)
+                {
+                    mayores = false;
+                }
+            }
+            return mayores;
+        }
+
+        private void button1d_Click(object sender, EventArgs e)
+        {
+            int[] edades = new int[5];
+            LeerEdades(edades);
+
+            int minima, maxima;
+            EdadMinMax(ref edades, out minima, out maxima);
+
+            string resultado = "La edad máxima sería: " + maxima + "\nLa edad mínima sería: " + minima;
+
+            if (TodosMayores18(edades))
+            {
+                MessageBox.Show(resultado + "\nSiendo todos mayores de edad");
+            }
+            else
+            {
+                MessageBox.Show(resultado + "\nHabiendo entre ellos menores de edad");
+            }
+        }
+        //*/
+
     }
 }

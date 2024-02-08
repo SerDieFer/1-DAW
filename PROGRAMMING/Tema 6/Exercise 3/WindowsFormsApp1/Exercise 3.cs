@@ -39,7 +39,7 @@ namespace WindowsFormsApp1
             {   
                 isPrime = false;
             }
-            for (int i = 2; i <= (num / 2) && isPrime; i++)
+            for (int i = 2; i <= (num) && isPrime; i++)
             {
                 if (num % i == 0)
                 {

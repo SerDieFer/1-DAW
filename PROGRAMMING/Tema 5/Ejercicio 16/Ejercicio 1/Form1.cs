@@ -35,7 +35,6 @@ namespace Ejercicio_1
                 {
                     array[i] = numToIntroduce;
                     i++;
-                    repeated = false;
                 }
             }
         }
