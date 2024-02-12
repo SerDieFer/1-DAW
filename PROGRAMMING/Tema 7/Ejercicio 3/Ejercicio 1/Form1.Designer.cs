@@ -30,6 +30,7 @@
         {
             this.btnIntroduceDate = new System.Windows.Forms.Button();
             this.brnShowData = new System.Windows.Forms.Button();
+            this.btnOrderDate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnIntroduceDate
@@ -44,7 +45,7 @@
             // 
             // brnShowData
             // 
-            this.brnShowData.Location = new System.Drawing.Point(12, 78);
+            this.brnShowData.Location = new System.Drawing.Point(12, 146);
             this.brnShowData.Name = "brnShowData";
             this.brnShowData.Size = new System.Drawing.Size(205, 46);
             this.brnShowData.TabIndex = 1;
@@ -52,11 +53,22 @@
             this.brnShowData.UseVisualStyleBackColor = true;
             this.brnShowData.Click += new System.EventHandler(this.brnShowData_Click);
             // 
+            // btnOrderDate
+            // 
+            this.btnOrderDate.Location = new System.Drawing.Point(15, 79);
+            this.btnOrderDate.Name = "btnOrderDate";
+            this.btnOrderDate.Size = new System.Drawing.Size(205, 46);
+            this.btnOrderDate.TabIndex = 2;
+            this.btnOrderDate.Text = "Order Date";
+            this.btnOrderDate.UseVisualStyleBackColor = true;
+            this.btnOrderDate.Click += new System.EventHandler(this.btnOrderDate_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(235, 136);
+            this.ClientSize = new System.Drawing.Size(235, 204);
+            this.Controls.Add(this.btnOrderDate);
             this.Controls.Add(this.brnShowData);
             this.Controls.Add(this.btnIntroduceDate);
             this.Name = "Form1";
@@ -69,6 +81,7 @@
 
         private System.Windows.Forms.Button btnIntroduceDate;
         private System.Windows.Forms.Button brnShowData;
+        private System.Windows.Forms.Button btnOrderDate;
     }
 }
 

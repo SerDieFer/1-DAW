@@ -172,11 +172,13 @@
 // }
 
 
-let preToothless = document.getElementById("T1");
+// let preToothless = document.getElementById("T1");
 
-function changeImg()
-{
-windows.setTimeout(function(){
-    preToothless.src = "Toothless.gif";
-}, 500);
-}
+// function changeImg()
+// {
+// windows.setTimeout(function(){
+//     preToothless.src = "Toothless.gif";
+// }, 500);
+// }
+
+function 

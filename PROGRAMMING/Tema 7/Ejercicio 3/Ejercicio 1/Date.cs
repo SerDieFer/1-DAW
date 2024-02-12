@@ -20,6 +20,9 @@ namespace Exercise_3
         // CONSTRUCTOR 
         public Date()
         {
+            this.dDay = -1;
+            this.dMonth = -1;
+            this.dYear = -1;
         }
         public bool IsLeapYear(int dYear)
         {
@@ -87,17 +90,17 @@ namespace Exercise_3
             {
                 yearAux *= -1;
                 DateTime date = new DateTime(yearAux, dMonth, dDay);
-                txt += "Day: " + date.ToString("d, dddd", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
-                txt += "Month: " + date.ToString("M, MMMM", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
                 txt += "Year: " + date.ToString("yyyy", CultureInfo.CreateSpecificCulture("en-US")) + " BC\n";
+                txt += "Month: " + date.ToString("M, MMMM", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
+                txt += "Day: " + date.ToString("d, dddd", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
                 beforeC = true;
             }
             else if (!beforeC)
             {
                 DateTime date = new DateTime(yearAux, dMonth, dDay);
-                txt += "Day: " + date.ToString("d, dddd", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
-                txt += "Month: " + date.ToString("M, MMMM", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
                 txt += "Year: " + date.ToString("yyyy", CultureInfo.CreateSpecificCulture("en-US")) + " AC\n";
+                txt += "Month: " + date.ToString("M, MMMM", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
+                txt += "Day: " + date.ToString("d, dddd", CultureInfo.CreateSpecificCulture("en-US")) + "\n";
             }
 
             return txt;

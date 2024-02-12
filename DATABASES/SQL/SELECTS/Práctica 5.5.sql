@@ -133,42 +133,36 @@ SELECT nombre
 						 
 -- 3. Devuelve el producto que más unidades tiene en stock. Si salen varios, quédate solo con uno.
 
-SELECT TOP(1) nombre,
-	   cantidad_en_stock 
+SELECT TOP(1) *
   FROM PRODUCTOS
  GROUP BY nombre, cantidad_en_stock
  ORDER BY cantidad_en_stock DESC
 
-SELECT TOP(1) nombre,
-	   cantidad_en_stock 
+SELECT TOP(1) *
   FROM PRODUCTOS
  WHERE cantidad_en_stock = (SELECT TOP(1) cantidad_en_stock
 					          FROM PRODUCTOS 
 						     ORDER BY cantidad_en_stock DESC)
 
-SELECT TOP(1) nombre,
-	   cantidad_en_stock 
+SELECT TOP(1) *
   FROM PRODUCTOS
  WHERE cantidad_en_stock = (SELECT MAX(cantidad_en_stock)
 					          FROM PRODUCTOS)
 						 
 -- 4. Devuelve el producto que menos unidades tiene en stock.
 
-SELECT TOP(1) nombre,
-	   cantidad_en_stock 
+SELECT TOP(1) *
   FROM PRODUCTOS
  GROUP BY nombre, cantidad_en_stock
  ORDER BY cantidad_en_stock ASC
 
-SELECT TOP(1) nombre,
-	   cantidad_en_stock 
+SELECT TOP(1) *
   FROM PRODUCTOS
  WHERE cantidad_en_stock = (SELECT TOP(1) cantidad_en_stock
 					          FROM PRODUCTOS 
 						     ORDER BY cantidad_en_stock ASC)
 
-SELECT TOP(1) nombre,
-	   cantidad_en_stock 
+SELECT TOP(1) *
   FROM PRODUCTOS
  WHERE cantidad_en_stock = (SELECT MIN(cantidad_en_stock)
 					          FROM PRODUCTOS)
@@ -222,7 +216,7 @@ SELECT nombre
 
 -- 3. Devuelve el producto que menos unidades tiene en stock.
 
-SELECT nombre
+SELECT *
   FROM PRODUCTOS
  WHERE cantidad_en_stock <= ALL (SELECT cantidad_en_stock 
  								   FROM PRODUCTOS)  
@@ -254,31 +248,33 @@ SELECT *
 
 -- 4. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos empleados que no sean representante de ventas de ningún cliente.
 
-SELECT CONCAT(nombre,' ',apellido1,' ',apellido2) AS nombreEmpleado,
-	   puesto_cargo,
-	   tlf_extension_ofi
-  FROM EMPLEADOS
- WHERE codEmpleado NOT IN (SELECT codEmpl_ventas
-						     FROM CLIENTES)
+SELECT CONCAT(em.nombre,' ',em.apellido1,' ',em.apellido2) AS nombreEmpleado,
+	   em.puesto_cargo,
+	   ofi.telefono
+  FROM EMPLEADOS em, OFICINAS ofi
+ WHERE em.codEmpleado NOT IN (SELECT cl.codEmpl_ventas
+						        FROM CLIENTES cl)
+   AND em.codOficina = ofi.codOficina
 
 -- 5. Devuelve las oficinas donde trabajan alguno de los empleados.
 
-SELECT ciudad
+SELECT *
   FROM OFICINAS
  WHERE codOficina IN (SELECT codOficina
 					    FROM EMPLEADOS)
 			   
 -- 6. Devuelve un listado con los clientes que han realizado algún pedido pero no que hayan realizado ningún pago.
 
-SELECT *
-  FROM CLIENTES
- WHERE codCliente NOT IN (SELECT codCliente
-						    FROM PAGOS)
-
-SELECT *
-  FROM CLIENTES
- WHERE codCliente IN(SELECT codCliente
-					   FROM PEDIDOS)
+	--Comprobar cuales no tienen pagos
+	SELECT *
+	FROM CLIENTES
+	WHERE codCliente NOT IN (SELECT codCliente
+								FROM PAGOS)
+	-- Comprobar cuales tienen pedidos
+	SELECT *
+	FROM CLIENTES
+	WHERE codCliente IN(SELECT codCliente
+						FROM PEDIDOS)
 
 SELECT *
   FROM CLIENTES

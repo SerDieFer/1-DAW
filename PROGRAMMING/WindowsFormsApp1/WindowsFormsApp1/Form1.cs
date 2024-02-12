@@ -392,7 +392,6 @@ namespace WindowsFormsApp1
         {
             bool repeated = false;
             int i = 0;
-
             do
             {
                 string wordToValidate = Interaction.InputBox("Introduce the word to add: ");
@@ -407,7 +406,6 @@ namespace WindowsFormsApp1
                     MessageBox.Show("Error");
                 }
             } while (i < wordsArray.Length && !repeated);
-
         }
         //FIN EXAMEN N1 */
 
@@ -477,17 +475,19 @@ namespace WindowsFormsApp1
            string txtList = "The nums in the " + listName + " are: ";
            if (list.Count > 0)
            {
-               int elementsCounted = 0;
-               foreach (int nums in list)
-               {
-                   txtList += "(" + nums + ")";
-                   if (elementsCounted < list.Count - 1)
-                   {
-                       txtList += ", ";
-                   }
-                   elementsCounted++;
-               }
-               txtList += ".";
+                int elementsCounted = 0;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (elementsCounted == list.Count - 1)
+                    {
+                        txtList += "(" + list[i] + ").";
+                    }
+                    else
+                    {
+                        txtList += "(" + list[i] + "), ";
+                    }
+                    elementsCounted++;
+                }
            }
            else
            {
@@ -618,10 +618,19 @@ namespace WindowsFormsApp1
         private string MostrarLista (List<string> lista)
         {
             string texto = "";
+            int contador = 0;
 
-            foreach(string elemento in lista)
+            for (int i = 0; i < lista.Count; i++)
             {
-                texto += elemento + ", ";
+                if(contador == lista.Count - 1)
+                {
+                    texto += lista[i] + ".";
+                }
+                else
+                {
+                    texto += lista[i] + ", ";
+                }
+                contador++;
             }
             return texto;
         }
@@ -629,9 +638,9 @@ namespace WindowsFormsApp1
         private int PalabraRepetidaMasDe2Veces(string palabra, List<string> lista2)
         {
             int contador = 0;
-            foreach (string elemento in lista2)
+            for (int i = 0; i < lista2.Count; i++)
             {
-                if (elemento == palabra)
+                if (lista2[i] == palabra)
                 {
                     contador++;
                 }
