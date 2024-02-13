@@ -180,5 +180,3 @@
 //     preToothless.src = "Toothless.gif";
 // }, 500);
 // }
-
-function 
