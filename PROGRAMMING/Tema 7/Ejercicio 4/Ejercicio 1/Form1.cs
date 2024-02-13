@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
-namespace Exercise_3
+namespace Exercise_4
 {
     public partial class Form1 : Form
     {
@@ -46,6 +46,7 @@ namespace Exercise_3
                 {
                     MessageBox.Show("You must enter numbers to set the data values");
                 }
+              
             } while (!checker);
         }
 
@@ -78,21 +79,15 @@ namespace Exercise_3
         // BUTTON WHICH SHOW ALL DATA STORED
         private void brnShowData_Click(object sender, EventArgs e)
         {
-            if (dateList.Count != 0)
-            {
-                MessageBox.Show(AddAllToList(dateList));
-            }
-            else
-            {
-                MessageBox.Show("ERROR, there's not values in the list, you need to add " +
-                "values before showing them, try again please.");
-            }
+
+            MessageBox.Show(AddAllToList(dateList));
         }
 
         // CHECK IF DATE IS PREVIOUS WHEN IT'S COMPARED WITH OTHER DATE AND RETURNS A TRUE OR FALSE
         private bool IsDatePrevious(Date firstDate, Date secondDate)
         {
             bool isPrevious = true;
+
             if (firstDate.Year > secondDate.Year)
             {
                 isPrevious = false;
@@ -118,6 +113,7 @@ namespace Exercise_3
         private void OrdersDateList(List<Date> list)
         {
             Date temporalDate;
+
             for (int i = 0; i < dateList.Count - 1; i++)
             {
                 for (int j = i + 1; j < dateList.Count; j++)
@@ -135,15 +131,7 @@ namespace Exercise_3
         // BUTTON WHICH ORDERS ALL DATA STORED
         private void btnOrderDate_Click(object sender, EventArgs e)
         {
-            if (dateList.Count > 1)
-            {
-                OrdersDateList(dateList);
-            }
-            else
-            {
-                MessageBox.Show("ERROR, there's not enough values to order the list, you need atleast two registered dates," +
-                    "try again please.");
-            }
+            OrdersDateList(dateList);
         }
     }
 }

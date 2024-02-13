@@ -11,19 +11,22 @@ using System.Xml.Linq;
 
 namespace Exercise_3
 {
+    // DATE CLASS
     class Date
     {
         private int dDay;
         private int dMonth;
         private int dYear;
 
-        // CONSTRUCTOR 
+        // DATE CONSTRUCTOR -- PREMADE VALUES TO CHECK ANY ERROR --
         public Date()
         {
             this.dDay = -1;
             this.dMonth = -1;
             this.dYear = -1;
         }
+
+        // RETURNS A TRUE OR FALSE IF THE SELECTED YEAR IS A LEAP YEAR
         public bool IsLeapYear(int dYear)
         {
             bool isLeap = false;
@@ -40,6 +43,7 @@ namespace Exercise_3
             return isLeap;
         }
 
+        // RETURN A TRUE OR FALSE IF THE INTRODUCED DATA IS VALID FOR THE DATA IMPUT RULES
         public bool ValidateData()
         {
             bool isValid = false;
@@ -79,7 +83,7 @@ namespace Exercise_3
             return isValid;
         }
 
-
+        // SHOWS ALL THE SELECTED DATA WITH MORE INFO
         public string ShowData()
         {
             string txt = "";
@@ -106,18 +110,21 @@ namespace Exercise_3
             return txt;
         }
 
+        // SETTER & GETTER FOR DAY
         public int Day
         {
             get { return dDay; }
             set { dDay = value; }
         }
 
+        // SETTER & GETTER FOR MONTH
         public int Month
         {
             get { return dMonth; }
             set { dMonth = value; }
         }
 
+        // SETTER & GETTER FOR YEAR 
         public int Year
         {
             get { return dYear; }
