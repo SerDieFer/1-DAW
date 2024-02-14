@@ -42,7 +42,7 @@
             this.btnIntroduceEmployee.TabIndex = 0;
             this.btnIntroduceEmployee.Text = "New Employee";
             this.btnIntroduceEmployee.UseVisualStyleBackColor = true;
-            this.btnIntroduceEmployee.Click += new System.EventHandler(this.btnIntroduceDate_Click);
+            this.btnIntroduceEmployee.Click += new System.EventHandler(this.btnIntroduceEmployee_Click);
             // 
             // btnShowList
             // 
@@ -62,7 +62,7 @@
             this.btnBirthday.TabIndex = 2;
             this.btnBirthday.Text = "Birthday Employee";
             this.btnBirthday.UseVisualStyleBackColor = true;
-            this.btnBirthday.Click += new System.EventHandler(this.btnOrderDate_Click);
+            this.btnBirthday.Click += new System.EventHandler(this.btnBirthday_Click);
             // 
             // btnAddSales
             // 
@@ -72,6 +72,7 @@
             this.btnAddSales.TabIndex = 3;
             this.btnAddSales.Text = "Add Sales";
             this.btnAddSales.UseVisualStyleBackColor = true;
+            this.btnAddSales.Click += new System.EventHandler(this.btnAddSales_Click);
             // 
             // Form1
             // 

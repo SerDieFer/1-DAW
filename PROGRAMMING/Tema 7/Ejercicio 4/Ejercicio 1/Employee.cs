@@ -73,8 +73,8 @@ namespace Exercise_4
         // FUNCTION WHICH SHOWS ALL EMPLOYEE INFO RECIEVED
         public string ShowAllEmployeeData()
         {
-            string eInfoTxt = "Employee data: \n" + "Name: " + eName + "\n" + "Age: " + eAge + "\n";
-            eInfoTxt += StoreSalesInfo(); // THIS WILL ADD THE SELECTED EMPLOYEE INFO ABOUT THE SALES MADE.
+            string eInfoTxt = "\nEmployee data: \n" + "Name: " + eName + "\n" + "Age: " + eAge + "\n";
+            eInfoTxt += StoreSalesInfo() + "\n"; // THIS WILL ADD THE SELECTED EMPLOYEE INFO ABOUT THE SALES MADE.
             return eInfoTxt;
         }
 
@@ -89,13 +89,7 @@ namespace Exercise_4
         public int Age
         {
             get { return eAge; }
-            set 
-            {
-                if (value >= 16 && value <= 100)
-                {
-                    eAge = value;
-                }
-            }
+            set { eAge = value; }
         }
 
         // SETTER & GETTER FOR EMPLOYEE SALESLIST

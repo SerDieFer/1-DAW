@@ -1,0 +1,25 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+li {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 55px;
+}
+
+
+li::before , li::after {
+    content: '';
+    display: inline-flex;
+    height: 55px;
+    width: 55px;
+    background-image: url(https://media.tenor.com/xzhGPsApG6MAAAAi/toothless-dancing-gif.gif);
+    background-size: 55px;
+}

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Ejercicio_1;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,125 +14,69 @@ namespace Exercise_4
         {
             InitializeComponent();
         }
+        EmployeesList actualListOfEmployees = new EmployeesList();
 
-        List<Date> dateList = new List<Date>();
-
-        // ASKS THE DATA FROM DATE AND THEN ADD THIS OBJECT (DATE) TO THE LIST
-        private void IntroduceDate(List<Date> list)
+        // ASKS THE DATA FROM THE EMPLOYEE TO ADD AND THEN ADD THIS OBJECT (PROPERTIES) TO THE LIST WITH EMPLOYEESLIST STRUCTURE
+        private void IntroduceEmployeeData()
         {
-            bool checker = false;
-            Date da = new Date();
+            Employee anEmployee = new Employee();
+            bool introduced = false;
             do
             {
                 try
                 {
-                    da.Day = int.Parse(Interaction.InputBox("Introduce the day: "));
-                    da.Month = int.Parse(Interaction.InputBox("Introduce the month: "));
-                    da.Year = int.Parse(Interaction.InputBox("Introduce the year: ")); ;
-                    if (!checker)
+                    string name = Interaction.InputBox("Introduce the day: ");
+                    int age = int.Parse(Interaction.InputBox("Introduce the month: "));
+                    if (age > 16 && age <= 75)
                     {
-                        if (da.ValidateData())
-                        {
-                            dateList.Add(da);
-                            checker = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Error, the data input is not possible you must " +
-                                "stay within the range of a date-type data format , retry again");
-                        }
+                        actualListOfEmployees.AddEmployeeToList(name, age);
+                        introduced = true;
+                    }
+                    else if (age < 16)
+                    {
+                        MessageBox.Show("The employee must be legally able to work, so it's age must be over 18");
+                    }
+                    else if (age > 75)
+                    {
+                        MessageBox.Show("Do you really think we're going to hire people which should be already retired? So funny!");
                     }
                 }
                 catch (FormatException)
                 {
-                    MessageBox.Show("You must enter numbers to set the data values");
+                    MessageBox.Show("You must enter valid data to set the employee properties");
                 }
-              
-            } while (!checker);
+            } while (!introduced);    
         }
 
-        // BUTTON WHICH ADD A PERSON
-        private void btnIntroduceDate_Click(object sender, EventArgs e)
+        // BUTTON WHICH ADD A PERSON FROM THE FUNCTION INTRODUCE EMPLOYEE DATA
+        private void btnIntroduceEmployee_Click(object sender, EventArgs e)
         {
-            IntroduceDate(dateList);
+            IntroduceEmployeeData();
         }
 
-        // ADDS ALL THE DATA FROM EVERY DATE CREATED IN THE LIST
-        private string AddAllToList(List<Date> list)
-        {
-            Date da;
-            string txtAll = "";
-            if (dateList.Count != 0)
-            {
-                for (int i = 0; i < dateList.Count; i++)
-                {
-                    da = dateList[i];
-                    txtAll += da.ShowData() + "\n";
-                }
-            }
-            else
-            {
-                MessageBox.Show("ERROR");
-            }
-            return txtAll;
-        }
-
-        // BUTTON WHICH SHOW ALL DATA STORED
+        // BUTTON WHICH SHOW ALL DATA STORED IN THE LIST, USING A FUNCTION INCLUDED IN EMPLOYEESLIST OBJECT
         private void brnShowData_Click(object sender, EventArgs e)
         {
-
-            MessageBox.Show(AddAllToList(dateList));
-        }
-
-        // CHECK IF DATE IS PREVIOUS WHEN IT'S COMPARED WITH OTHER DATE AND RETURNS A TRUE OR FALSE
-        private bool IsDatePrevious(Date firstDate, Date secondDate)
-        {
-            bool isPrevious = true;
-
-            if (firstDate.Year > secondDate.Year)
+            if (actualListOfEmployees.CountEmployeesList() != 0)
             {
-                isPrevious = false;
+                MessageBox.Show(actualListOfEmployees.ShowEmployeesList());
             }
-            else if (firstDate.Year == secondDate.Year)
-            {
-                if (firstDate.Month > secondDate.Month)
-                {
-                    isPrevious = false;
-                }
-                else if (firstDate.Month == secondDate.Month)
-                {
-                    if (firstDate.Day > secondDate.Day)
-                    {
-                        isPrevious = false;
-                    }
-                }
-            }
-            return isPrevious;
-        }
-
-        // CHECKS THE DATA FROM DATELIST AND THEN ORDER THIS DATE IN THE LIST BY YEAR, MONTH, DAY
-        private void OrdersDateList(List<Date> list)
-        {
-            Date temporalDate;
-
-            for (int i = 0; i < dateList.Count - 1; i++)
-            {
-                for (int j = i + 1; j < dateList.Count; j++)
-                {
-                    if (IsDatePrevious(dateList[i], dateList[j]))
-                    {
-                        temporalDate = dateList[i];
-                        dateList[i] = dateList[j];
-                        dateList[j] = temporalDate;
-                    }
-                }
+            else
+            { 
+                MessageBox.Show("NULL");
             }
         }
 
-        // BUTTON WHICH ORDERS ALL DATA STORED
-        private void btnOrderDate_Click(object sender, EventArgs e)
+        // 
+        private void btnBirthday_Click(object sender, EventArgs e)
         {
-            OrdersDateList(dateList);
+
+        }
+
+        // 
+        private void btnAddSales_Click (object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -33,14 +33,20 @@ namespace Ejercicio_1
         }
 
         // THIS COLLECTS ALL DATA FROM ALL THE EMPLOYEES ADDED INTO THE EMPLOYEES LIST
-        public string ShowEmployeesList ()
+        public string ShowEmployeesList()
         {
-            string eListTxt = "List of employees: \n";
+            string eListTxt = "List of employees:\n";
             foreach(Employee employee in eList)
             {
                 eListTxt += employee.ShowAllEmployeeData();
             }
             return eListTxt;
+        }
+
+        // FUNCTION WHICH COUNTS ALL THE ELEMENTS IN THE LIST
+        public int CountEmployeesList()
+        {
+            return eList.Count;
         }
 
 
