@@ -64,110 +64,216 @@ SELECT COUNT(nombre) AS numCLientesJose
 -- 6. Devuelve el número de empresas dadas de alta utilizando el campo NIFCIF
 
 SELECT NIFCIF
-FROM CLIENTES 
-WHERE LEFT(NIFCIF, 1) LIKE '[^0-9]%' --??? porque asi y no NOT
+  FROM CLIENTES 
+ WHERE LEFT(NIFCIF, 1) BETWEEN 'A' AND 'Z'
 
 SELECT COUNT(codCliente)
   FROM CLIENTES
- WHERE LEFT(NIFCIF, 1) LIKE '[^0-9]%'
+ WHERE LEFT(NIFCIF, 1) BETWEEN 'A' AND 'Z'
 
 -- 7. Devuelve el nombre y apellidos (en una sola columna) de los empleados que trabajan en la tienda 7
-SELECT ;
 
+SELECT CONCAT(nombre, ' ', apellidos)   
+  FROM VENDEDORES
+ WHERE codTienda = 7
 
 -- 8. Devuelve el nombre los/as jefes/as de las tiendas ubicadas en la Comunidad Valenciana
-SELECT ;
 
+SELECT CONCAT(nombre, ' ', apellidos)   
+  FROM VENDEDORES
+ WHERE codVendedorJefe IS NULL
+   AND codTienda IN (SELECT codTienda
+   					   FROM TIENDAS
+					  WHERE codProv IN (SELECT codProv
+										  FROM PROVINCIAS
+										 WHERE LOWER(nombre) LIKE 'castellón%' 
+											OR LOWER(nombre) LIKE 'valencia%'
+											OR LOWER(nombre) LIKE 'alicante%'))
 
 -- 9. Devuelve el nombre los/as jefes/as de las tiendas ubicadas de la Comunidad Valenciana y además el nombre de la tienda
-SELECT ;
 
-
+SELECT CONCAT(ven.nombre, ' ', ven.apellidos) AS nombreJefe,
+	   tie.nombre AS nombreTienda
+  FROM VENDEDORES ven,
+	   TIENDAS tie
+ WHERE ven.codVendedorJefe IS NULL
+   AND ven.codTienda = tie.codTienda
+   AND tie.codProv IN (SELECT codProv
+					     FROM PROVINCIAS
+						WHERE LOWER(nombre) LIKE 'castellón%' 
+						   OR LOWER(nombre) LIKE 'valencia%'
+						   OR LOWER(nombre) LIKE 'alicante%')
+   
 -- 10. Devuelve los municipios de la provincia de alicante ordenados alfabéticamente de mayor a menor
-SELECT ;
 
+SELECT muni.codProv,
+	   muni.nombre AS nombreMunicipioDeAlc
+  FROM PROVINCIAS pro,
+	   MUNICIPIOS muni
+ WHERE muni.codProv = pro.codProv 
+   AND LOWER(pro.nombre) LIKE 'alicante%'
+ ORDER BY muni.nombre DESC
 
 -- 11. Obtener las provincias cuyo nombre NO contiene ninguna 'o'
-SELECT ;
 
+SELECT nombre
+  FROM PROVINCIAS
+ WHERE nombre NOT LIKE '%o%'
+   AND nombre NOT LIKE '%ó%'
  
 -- 12. Obtener las provincias cuyo nombre NO contiene ninguna 'o' NI NINGUNA 'e'
-SELECT ;
 
-
+SELECT nombre
+  FROM PROVINCIAS
+  WHERE nombre NOT LIKE '%o%'
+	AND nombre NOT LIKE '%ó%'
+	AND nombre NOT LIKE '%e%'
+	AND nombre NOT LIKE '%é%'
+  
 -- 13. Disponemos de una tabla para almacenar el periodo de las campañas de marketing de la empresa.
 -- Obtén qué campaña teníamos activa el día 22 de diciembre
-SELECT ;
 
+SELECT *
+  FROM CAMPANYAS
+ WHERE '2024-12-22' BETWEEN fechaInicio AND fechaFin;
 
 -- 14. Obtén la información de los 5 primeros clientes cuyo nombre empiece por la letra 'A' y su primer apellido por la 'B'
-SELECT ;
 
+SELECT *
+FROM CLIENTES
+WHERE LEFT(UPPER(nombre), 1) = 'A'
+AND LEFT(UPPER(apellidos), 1) = 'B'
 
 -- 15. Obtén la información de los 5 primeros clientes cuyo nombre empiece por la letra 'A', su primer apellido por la 'B'
---		y el segundo apellido por L (suponemos que el segundo apellido es el que viene después del primer espacio en blanco en los apellidos)
-SELECT ;
+--	y el segundo apellido por L (suponemos que el segundo apellido es el que viene después del primer espacio en blanco en los apellidos)
+
+SELECT *
+FROM CLIENTES
+WHERE LEFT(UPPER(nombre), 1) = 'A'
+AND UPPER(apellidos) LIKE 'B% L%'
 
 
 -- 16. Devuelve el precio del producto más barato y el más caro en la misma consulta
-SELECT ;
 
+SELECT MAX(precioUnitario) AS precioMáximo,
+	   MIN(precioUnitario) AS precioMínimo
+  FROM PRODUCTOS
 
 -- 17. Devuelve el número de productos totales que tengan un precio entre 100€ y 200€ (ambos inclusive) -> 
-SELECT ;
 
+SELECT COUNT(codProducto)
+  FROM PRODUCTOS
+ WHERE precioUnitario BETWEEN 100 AND 200 
 
 -- 18. Disponemos de una tabla para almacenar qué compañías de transporte trabajan con la empresa y su estado.
 -- Obtén cuántas empresas de transporte tenemos en cada estado.
-SELECT ;
 
+SELECT COUNT(estadoAlta),
+	   estadoAlta
+FROM COMPANYIAS_TRANSPORTE
+GROUP BY estadoAlta
 
 -- 19. Obtén él número de municipios que tenemos en cada provincia (ordenado de mayor a menor)
-SELECT ;
 
+SELECT COUNT(muni.codMuni) AS numMunicipios,
+	   prov.nombre
+  FROM PROVINCIAS prov,
+	   MUNICIPIOS muni
+ WHERE prov.codProv = muni.codProv
+ GROUP BY prov.nombre
+ ORDER BY numMunicipios DESC
 
 -- 20. Modifica la consulta anterior para que solo aparezcan aquellas provincias que AL MENOS tengan 250 municipios
-SELECT ;
 
+SELECT COUNT(muni.codMuni) AS numMunicipios,
+	   prov.nombre
+  FROM PROVINCIAS prov,
+	   MUNICIPIOS muni
+ WHERE prov.codProv = muni.codProv
+ GROUP BY prov.nombre
+ HAVING COUNT(muni.codMuni) >= 250
+ ORDER BY numMunicipios DESC
 
 -- 21. Modifica la consulta anterior para que en lugar del código de la provincia aparezca su nombre
-SELECT ;
 
+SELECT COUNT(muni.codMuni) AS numMunicipios,
+	   prov.nombre
+  FROM PROVINCIAS prov,
+	   MUNICIPIOS muni
+ WHERE prov.codProv = muni.codProv
+ GROUP BY prov.nombre
+ HAVING COUNT(muni.codMuni) >= 250
+ ORDER BY numMunicipios DESC
 
 -- 22. Modifica la consulta anterior para que en lugar de aparecer los que tengan más de 250 municipios, aparezcan los que tengan
---		entre 50 y 75 municipios
-SELECT ;
+-- entre 50 y 75 municipios
 
-
+SELECT COUNT(muni.codMuni) AS numMunicipios,
+	   prov.nombre
+  FROM PROVINCIAS prov,
+	   MUNICIPIOS muni
+ WHERE prov.codProv = muni.codProv
+ GROUP BY prov.nombre
+ HAVING COUNT(muni.codMuni) BETWEEN 50 AND 75
+ ORDER BY numMunicipios DESC
 
 -- 23. Obtén el nombre de las subcategorías incluidas dentro de la categoría principal 'Series y películas'
 -- NOTA: Deberá aparecer tanto el nombre de la categoría principal como el nombre de todas las subcategorías
---			Los nombres de las columnas serán: nombreCat y nombreSubCat
---			Ordena el resultado alfabéticamente de menor a mayor por el nombre de la subcategoría
-SELECT ;
+-- Los nombres de las columnas serán: nombreCat y nombreSubCat
+-- Ordena el resultado alfabéticamente de menor a mayor por el nombre de la subcategoría
 
+SELECT cat.nombre AS nombreCat,
+	   sub.nombre AS nombreSubCat 
+  FROM SUBCATEGORIAS sub,
+	   CATEGORIAS cat
+ ORDER BY sub.nombre ASC
 
 -- 24. Obtener el nombre de las tiendas y la cantidad en stock, en las que el juego 'PS5 The Eternal Cylinder' se encuentra en stock
 -- Ordénalo por el que tenga mayor cantidad en stock primero
-SELECT ;
 
+SELECT tien.nombre AS tiendaQueTieneStock,
+	   st.stock AS numUnidades
+  FROM TIENDAS tien,
+	   STOCK_PRODUCTOS st
+ WHERE st.codProducto IN (SELECT codProducto
+						    FROM PRODUCTOS
+						   WHERE nombre = 'PS5 The Eternal Cylinder'
+						     AND stock >= 1)
+   AND tien.codTienda = st.codTienda
+ ORDER BY st.stock DESC
 
 -- 25. A partir de la consulta anterior, obtén qué tiendas necesitan solicitar unidades de ese juego a la central
-SELECT ;
 
+SELECT tien.nombre AS tiendaQueTieneStock,
+	   st.stock AS numUnidades
+  FROM TIENDAS tien,
+	   STOCK_PRODUCTOS st
+ WHERE st.codProducto IN (SELECT codProducto
+							FROM PRODUCTOS
+						   WHERE nombre = 'PS5 The Eternal Cylinder'
+							 AND stock = 0)
+   AND tien.codTienda = st.codTienda
+ ORDER BY st.stock DESC
 
 -- 26. Obtén el coste medio de los envíos realizados por cada transportista, obteniendo el nombre del transportista y el coste medio
-SELECT ;
 
+SELECT AVG(pe.costeEnvio) AS precioMedioEnvios,
+	   trans.nombre AS nombreTransportista
+  FROM PEDIDOS pe,
+	   COMPANYIAS_TRANSPORTE trans
+  WHERE pe.codTransportista = trans.codTransportista
+    AND pe.fecEntrega IS NOT NULL -- Duda de si se cobra el envío en caso de que sea NULL
+  GROUP BY trans.nombre
 
  ---------------------------------------------------------------------------------------
--- 27. Obtener los pedidos que se hayan entregado a través de cualquier agencia de transporte en un plazo no superior a 3 días
---	Los campos que deben salir son:
---		idPedido, plazo, fecHoraPedido, fecEntrega, datosCliente, datosVendedor
---		- datosCliente se forma concatenando el nombre y los apellidos del cliente
---		- datosVendedor se forma concatenando el nombre y los apellidos del vendedor
+-- 27. Obtener los pedidos que se hayan entregado a través de cualquier agencia de transporte 
+-- en un plazo no superior a 3 días
 --
---  Se debe ordenar ascendentemente por codPedido
+-- Los campos que deben salir son:
+-- - idPedido, plazo, fecHoraPedido, fecEntrega, datosCliente, datosVendedor
+-- - datosCliente se forma concatenando el nombre y los apellidos del cliente
+-- - datosVendedor se forma concatenando el nombre y los apellidos del vendedor
+-- - Se debe ordenar ascendentemente por codPedido
 ---------------------------------------------------------------------------------------
 SELECT ;
 
