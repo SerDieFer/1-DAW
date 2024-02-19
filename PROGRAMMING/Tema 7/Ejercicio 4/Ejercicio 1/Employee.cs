@@ -28,7 +28,7 @@ namespace Exercise_4
         }
 
         // FUNCTION WHICH ADDS A YEAR TO AN EMPLOYEE ACTUAL AGE (HAPPY BIRTHDAY!)
-        public void EmployeeBirthday ()
+        public void EmployeeBirthday()
         {
             eAge += 1;
         }
@@ -45,27 +45,30 @@ namespace Exercise_4
         // FUNCTION WHICH STORES A STRING WITH ALL THE INFO ABOUT THE SALESLIST FROM A POSITION WHICH WILL COINCIDE WITH SELECTED EMPLOYEE
         private string StoreSalesInfo ()
         {
-            string salesTxt = "The sales are: ";
             int counter = 0;
-            if(SalesList.Count != 0)
+            double totalSales = 0;
+            string salesTxt = "The sales from " + eName + " are: ";
+            if (SalesList.Count != 0)
             {
-                for(int i = 0; i < SalesList.Count; i++)
+                for (int i = 0; i < SalesList.Count; i++)
                 {
                     if (counter < SalesList.Count - 1)
                     {
-                        salesTxt += eSalesList[i] + ", ";
+                            salesTxt += eSalesList[i] + " €, ";
+                            totalSales += eSalesList[i];
                     }
                     else
                     {
-                        salesTxt += eSalesList[i] + ".";
+                        salesTxt += eSalesList[i] + " €.\n";
+                        totalSales += eSalesList[i];
                     }
                     counter++;
                 }
-                salesTxt += "\n";
+                salesTxt += "And the total value of " + eName + "'s sales is: " + totalSales + " €.";
             }
             else
             {
-                salesTxt = "This employee has not made any sale";
+                salesTxt = eName + " has not made any sale.";
             }
             return salesTxt;
         }
@@ -73,7 +76,7 @@ namespace Exercise_4
         // FUNCTION WHICH SHOWS ALL EMPLOYEE INFO RECIEVED
         public string ShowAllEmployeeData()
         {
-            string eInfoTxt = "\nEmployee data: \n" + "Name: " + eName + "\n" + "Age: " + eAge + "\n";
+            string eInfoTxt = "\nEmployee data: \n" + "Name: " + eName + "\n" + "Age: " + eAge + "\n\n";
             eInfoTxt += StoreSalesInfo() + "\n"; // THIS WILL ADD THE SELECTED EMPLOYEE INFO ABOUT THE SALES MADE.
             return eInfoTxt;
         }
