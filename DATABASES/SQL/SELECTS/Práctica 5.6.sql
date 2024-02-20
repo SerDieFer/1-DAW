@@ -1,15 +1,12 @@
-		--------------------------------------------------
-		-- Ejercicio de ampliación 5.6. Escribe las siguientes
-		--	consultas utilizando la base de datos SUPERTIENDA
-		--------------------------------------------------
-
-				--------------------------
-				--		CONSULTAS		--
-				--------------------------
+--------------------------------------------------
+-- Ejercicio de ampliación 5.6. Escribe las siguientes
+--	consultas utilizando la base de datos SUPERTIENDA
+--------------------------------------------------
 USE SUPERTIENDA
 -------------------------
 -- 		CONSULTAS
 -------------------------
+
 -- 1. Obtener todos los productos ordenados alfabéticamente por el nombre 
 
 SELECT *
@@ -17,7 +14,6 @@ FROM PRODUCTOS
 ORDER BY nombre ASC
 
 -- 2. Obtener todos los campos de todos los clientes que pertenezcan a la provincia de Madrid y sean del municipio de Alcorcón
-
 
 SELECT *
   FROM CLIENTES
@@ -28,7 +24,6 @@ SELECT *
 				     FROM MUNICIPIOS
 				    WHERE LOWER(nombre) = 'alcorcón')
 
-
 -- 3. Obtener los productos que tengan un precio entre 20 y 22 € y cuyo IVA sea del 10%
 
 SELECT nombre AS nombreProducto,
@@ -37,7 +32,6 @@ SELECT nombre AS nombreProducto,
   FROM PRODUCTOS
  WHERE precioUnitario BETWEEN 20 AND 22
    AND IVA = 10
-
 
 -- 4. Devuelve las tiendas que pertenezcan a la Comunidad Valenciana.
 
@@ -145,7 +139,8 @@ WHERE LEFT(UPPER(nombre), 1) = 'A'
 AND LEFT(UPPER(apellidos), 1) = 'B'
 
 -- 15. Obtén la información de los 5 primeros clientes cuyo nombre empiece por la letra 'A', su primer apellido por la 'B'
---	y el segundo apellido por L (suponemos que el segundo apellido es el que viene después del primer espacio en blanco en los apellidos)
+--	y el segundo apellido por L (suponemos que el segundo apellido es el que viene después del primer espacio en blanco en 
+-- los apellidos)
 
 SELECT *
 FROM CLIENTES
@@ -205,8 +200,8 @@ SELECT COUNT(muni.codMuni) AS numMunicipios,
  HAVING COUNT(muni.codMuni) >= 250
  ORDER BY numMunicipios DESC
 
--- 22. Modifica la consulta anterior para que en lugar de aparecer los que tengan más de 250 municipios, aparezcan los que tengan
--- entre 50 y 75 municipios
+-- 22. Modifica la consulta anterior para que en lugar de aparecer los que tengan más de 250 municipios, 
+-- aparezcan los que tengan entre 50 y 75 municipios.
 
 SELECT COUNT(muni.codMuni) AS numMunicipios,
 	   prov.nombre
@@ -228,8 +223,8 @@ SELECT cat.nombre AS nombreCat,
 	   CATEGORIAS cat
  ORDER BY sub.nombre ASC
 
--- 24. Obtener el nombre de las tiendas y la cantidad en stock, en las que el juego 'PS5 The Eternal Cylinder' se encuentra en stock
--- Ordénalo por el que tenga mayor cantidad en stock primero
+-- 24. Obtener el nombre de las tiendas y la cantidad en stock, en las que el juego 'PS5 The Eternal Cylinder' 
+-- se encuentra en stock. Ordénalo por el que tenga mayor cantidad en stock primero
 
 SELECT tien.nombre AS tiendaQueTieneStock,
 	   st.stock AS numUnidades
@@ -255,7 +250,8 @@ SELECT tien.nombre AS tiendaQueTieneStock,
    AND tien.codTienda = st.codTienda
  ORDER BY st.stock DESC
 
--- 26. Obtén el coste medio de los envíos realizados por cada transportista, obteniendo el nombre del transportista y el coste medio
+-- 26. Obtén el coste medio de los envíos realizados por cada transportista, obteniendo el nombre del 
+-- transportista y el coste medio
 
 SELECT AVG(pe.costeEnvio) AS precioMedioEnvios,
 	   trans.nombre AS nombreTransportista
@@ -275,124 +271,291 @@ SELECT AVG(pe.costeEnvio) AS precioMedioEnvios,
 -- - datosVendedor se forma concatenando el nombre y los apellidos del vendedor
 -- - Se debe ordenar ascendentemente por codPedido
 ---------------------------------------------------------------------------------------
-SELECT ;
 
+SELECT pe.codPedido,
+	   DATEDIFF(DAY, pe.fecHoraPedido, pe.fecPrevEntrega) AS plazoEntrega,
+	   pe.fecHoraPedido,
+	   pe.fecPrevEntrega,
+	   pe.fecEntrega,
+	   CONCAT(cli.nombre,' ',cli.apellidos) AS nombreCliente,
+	   CONCAT(ven.nombre,' ',ven.apellidos) AS datosVendedor
+  FROM PEDIDOS pe,
+	   CLIENTES cli,
+	   VENDEDORES ven
+ WHERE DATEDIFF(DAY, pe.fecPrevEntrega, pe.fecEntrega) <= 3
+   AND pe.codCliente = cli.codCliente
+   AND ven.codVendedor = pe.codVendedor
+ ORDER BY pe.codPedido ASC
 
--- 29. Obtén el número de pedidos realizados por cada cliente (si un cliente no ha realizado ningún pedido no aparecerá en la consulta)
--- Deberá devolver el codCliente, el nombre completo del cliente y el número de pedidos realizados por cada uno de ellos
-SELECT ;
+ ---------------------------------------------------------------------------------------
+-- 29. Obtén el número de pedidos realizados por cada cliente (si un cliente no ha realizado ningún pedido 
+-- no aparecerá en la consulta) Deberá devolver el codCliente, el nombre completo del cliente y el número 
+-- de pedidos realizados por cada uno de ellos
+ ---------------------------------------------------------------------------------------
 
+SELECT COUNT(pe.codPedido) AS pedidosCliente,
+	   cli.codCliente,
+	   CONCAT(cli.nombre,' ',cli.apellidos) AS nombreCliente
+  FROM PEDIDOS pe,
+	   CLIENTES cli
+ WHERE cli.codCliente = pe.codCliente
+ GROUP BY cli.codCliente, CONCAT(cli.nombre,' ',cli.apellidos)
+ ORDER BY pedidosCliente ASC
 
+SELECT COUNT(pe.codPedido) AS pedidosCliente,
+       cli.codCliente,
+       CONCAT(cli.nombre, ' ', cli.apellidos) AS nombreCliente
+  FROM CLIENTES cli JOIN PEDIDOS pe 
+    ON cli.codCliente = pe.codCliente
+ GROUP BY cli.codCliente, CONCAT(cli.nombre, ' ', cli.apellidos)
+ ORDER BY pedidosCliente ASC
+    
+ ---------------------------------------------------------------------------------------
 -- 29. Obtén el número de pedidos realizados por cada cliente
 -- IMPORTANTE: si un cliente no ha realizado ningún pedido aparecerá igualmente con 0 pedidos
 -- Los campos a obtener en la consulta son los mismos que los de la consulta anterior.
-SELECT ;
+--
+-- NOTA: Las consultas RIGHT/LEFT JOIN a veces no funcionan porque hay que mostrar el campo 
+-- de la tabla que aparece en la LEFT (c.idCliente)
+ ---------------------------------------------------------------------------------------
 
--- NOTA: Las consultas RIGHT/LEFT JOIN a veces no funcionan porque hay que mostrar el campo de la tabla que aparece en la LEFT (c.idCliente)
+SELECT COUNT(pe.codPedido) AS pedidosCliente,
+       cli.codCliente,
+       CONCAT(cli.nombre, ' ', cli.apellidos) AS nombreCliente
+  FROM CLIENTES cli LEFT JOIN PEDIDOS pe 
+    ON cli.codCliente = pe.codCliente
+ GROUP BY cli.codCliente, CONCAT(cli.nombre, ' ', cli.apellidos)
+ ORDER BY pedidosCliente ASC
 
-
-
-
-
+ ---------------------------------------------------------------------------------------
 -- 30. Obtén el número de pedidos realizados por cada cliente y el total gastado en todos los pedidos
 -- IMPORTANTE: si un cliente no ha realizado ningún pedido aparecerá igualmente con 0 pedidos y 0 € gastados
 -- Los campos a obtener en la consulta son los mismos que los de la consulta anterior.
+--
 -- Nivel: DIFICIL
-
+--
 -- Ayuda: al introducir la tabla LINEA_PEDIDO es posible que el mismo codPedido se cuente varias veces (uno por línea)
---		por lo que sería interesante que te asegures de que sean DIFERENTES antes de CONTARLOS ;-)
-
--- Ayuda2: piensa que si el cliente NO ha hecho pedidos, tampoco tendrá registros en LINEA_PEDIDO (por lo que INNER JOIN no es una buena opción)
---			para unir las tablas PEDIDO y LINEA_PEDIDO
-
+-- por lo que sería interesante que te asegures de que sean DIFERENTES antes de CONTARLOS ;-)
+--
+-- Ayuda2: piensa que si el cliente NO ha hecho pedidos, tampoco tendrá registros en LINEA_PEDIDO 
+-- (por lo que INNER JOIN no es una buena opción) para unir las tablas PEDIDO y LINEA_PEDIDO
+--
 -- Ayuda3: si en gasto te aparece NULL, seguro que hay una función que puede cambiar el NULL por un 0 dentro de una SELECT...
+ ---------------------------------------------------------------------------------------
 
-SELECT ;
-
-
+SELECT cli.codCliente,
+       CONCAT(cli.nombre, ' ', cli.apellidos) AS nombreCliente,
+	   COALESCE(COUNT(DISTINCT pe.codPedido), 0) AS numPedidos,
+       COALESCE(SUM(lpe.totalLinea), 0) AS sumaPrecioPedidos  
+ FROM CLIENTES cli LEFT JOIN PEDIDOS pe 
+   ON cli.codCliente = pe.codCliente
+ LEFT JOIN LINEAS_PEDIDOS lpe
+   ON pe.codPedido = lpe.codPedido
+GROUP BY cli.codCliente, CONCAT(cli.nombre, ' ', cli.apellidos)
 
 -- SUBCONSULTAS (operadores básicos de comparación)
 ------------------------------------------------------------------------------------------------------------------
 -- 30. Devuelve el nombre y el precio del producto que tenga el precio de venta más caro.
 -- Evidentemente, no se puede introducir un codProducto directamente, habrá que obtenerlo mediante una subconsulta
 ------------------------------------------------------------------------------------------------------------------
-SELECT ;
 
+SELECT nombre,
+	   precioUnitario
+  FROM PRODUCTOS
+ WHERE precioUnitario = (SELECT MAX(precioUnitario)
+						   FROM PRODUCTOS)
 
 -- 31. Devuelve el codProducto que más unidades tiene en stock en la tienda con codTienda=1. Si salen varios, quédate solo con uno.
-SELECT ;
 
+SELECT TOP(1) codProducto AS productoConMayorStock,
+	   stock AS cantidadProducto
+  FROM STOCK_PRODUCTOS
+ WHERE codTienda = (SELECT codTienda
+					  FROM TIENDAS
+					 WHERE codTienda = 1)
+ ORDER BY stock DESC
 
 -----------------------------------------------------------------------------------------
 -- 32. Modifica la consulta anterior y devuelve los datos de dicho producto (sin introducir el codProducto directamente, claro)
 -----------------------------------------------------------------------------------------
-SELECT ;
 
+SELECT *
+  FROM PRODUCTOS
+ WHERE codProducto = (SELECT TOP(1) codProducto AS productoConMayorStock
+  					    FROM STOCK_PRODUCTOS
+					   WHERE codTienda = (SELECT codTienda
+					                        FROM TIENDAS
+					                       WHERE codTienda = 1)
+					   ORDER BY stock DESC)
 
 -----------------------------------------------------------------------------------------
 -- 33. Devuelve el nombre y el precio de los productos cuyo precio sea MAYOR o IGUAL 
 --		que la media del precio de todos los productos
 -----------------------------------------------------------------------------------------
-SELECT ;
 
+SELECT nombre,
+       precioUnitario
+  FROM PRODUCTOS
+ WHERE precioUnitario >= (SELECT AVG(precioUnitario)
+  							FROM PRODUCTOS)
+ ORDER BY precioUnitario ASC
 
 -- 34. Devuelve los vendedores que están a cargo de la vendedora con nombre 'EVA' y apellidos 'ALCAIDE MORILLA'
---	Debes utilizar una subconsulta para obtener los vendedores a su cargo
---  Devuelve los campos: NIF, nombre, apellidos y el nombre de la tienda en la que trabajan
-SELECT ;
+-- Debes utilizar una subconsulta para obtener los vendedores a su cargo
+-- Devuelve los campos: NIF, nombre, apellidos y el nombre de la tienda en la que trabajan
 
-
+SELECT DISTINCT CONCAT(tra.nombre, ' ', tra.apellidos) AS datosVendedorACargo,
+       tra.NIF AS NIFVendedorACargo,
+       tie.nombre AS nombreTienda
+  FROM VENDEDORES tra,
+	   VENDEDORES jef,
+	   TIENDAS tie
+ WHERE tra.codVendedorJefe = (SELECT codVendedor
+  						        FROM VENDEDORES
+					           WHERE UPPER(nombre) = 'EVA'
+						         AND UPPER(apellidos) ='ALCAIDE MORILLA')
+AND tra.codTienda = tie.codTienda
 
 -- 35. Devuelve el nombre y el precio del producto que tenga el precio de venta más caro (utiliza ALL/ANY)
-SELECT ;
 
+SELECT nombre,
+	   precioUnitario
+  FROM PRODUCTOS
+ WHERE precioUnitario = ANY (SELECT MAX(precioUnitario)
+ 					  		   FROM PRODUCTOS)
+
+SELECT nombre,
+	   precioUnitario
+  FROM PRODUCTOS
+ WHERE precioUnitario = ALL (SELECT MAX(precioUnitario)
+ 					  		   FROM PRODUCTOS)						   
 
 -- 36. Devuelve el nombre y el precio del producto que tenga el precio de venta más barato (utiliza ALL/ANY)
-SELECT ;
 
+SELECT nombre,
+	   precioUnitario
+  FROM PRODUCTOS
+ WHERE precioUnitario = ANY (SELECT MIN(precioUnitario)
+ 					  		   FROM PRODUCTOS)
+
+SELECT nombre,
+	   precioUnitario
+  FROM PRODUCTOS
+ WHERE precioUnitario = ALL (SELECT MIN(precioUnitario)
+ 					  		   FROM PRODUCTOS)	
 
 -- 37. Devuelve los pedidos que tengan un coste de envío igual o superior a TODOS los productos de la subcategoría 72
-SELECT ;
 
+SELECT *
+  FROM PEDIDOS
+ WHERE costeEnvio >= ANY (SELECT SUM(precioUnitario)
+					        FROM PRODUCTOS
+					       WHERE codSubcategoria = '72')
+ ORDER BY costeEnvio DESC
 
 -- 38. Devuelve los pedidos que tengan un coste de envío MENOR que el precio unitario de cualquier producto de la subcategoría 72
-SELECT ;
+
+SELECT *
+  FROM PEDIDOS
+ WHERE costeEnvio <= ANY (SELECT SUM(precioUnitario)
+					        FROM PRODUCTOS
+					       WHERE codSubcategoria = '72')
+ ORDER BY costeEnvio DESC
 
 
 -- 39. Contabiliza cuántos pedidos están sin entregar a la espera de recogerlos en las tiendas
 -- Solo se deben contabilizar los pedidos que se recogen en tienda, no los que se envían online
-SELECT ;
 
-
+SELECT COUNT(codPedido) AS pedidosSinEntregar
+FROM PEDIDOS
+WHERE recogidaTiendaSN = 'S'
+AND fecEntrega IS NULL
 
 -- 40. Devuelve un listado que muestre los clientes que NUNCA hayan realizado ningún pedido.
 
--- 40.1) Utiliza IN / NOT IN
-SELECT ;
+	-- 40.1) Utiliza IN / NOT IN
+
+	SELECT *
+	FROM CLIENTES
+	WHERE codCliente NOT IN (SELECT codCliente
+							   FROM PEDIDOS)
+
+	-- 40.2) Utiliza EXISTS / NOT EXISTS
+
+	SELECT *
+	FROM CLIENTES cli
+	WHERE NOT EXISTS (SELECT codCliente
+						FROM PEDIDOS pe
+						WHERE cli.codCliente = pe.codCliente)				  
 
 
--- 40.2) Utiliza EXISTS / NOT EXISTS
-SELECT ;
 
+-- APARTIR DE AQUI SON JODIDOS
 
--- 41. Devuelve un listado de los productos de la categoría 'SP' que nunca han aparecido en ningún pedido.
--- 41.1) Utiliza IN / NOT IN
-SELECT ;
+-- 41. Devuelve un listado de los productos de la categoría 'SP' que nunca han aparecido en ningún pedido.  //preguntar a carlos
 
+	-- 41.1) Utiliza IN / NOT IN
 
--- 41.2) Utiliza EXISTS / NOT EXISTS
-SELECT ;
+	SELECT *
+	  FROM PRODUCTOS
+	 WHERE codProducto NOT IN (SELECT codProducto
+						         FROM LINEAS_PEDIDOS)
+	   AND codSubcategoria IN (SELECT codSubcategoria
+							     FROM SUBCATEGORIAS
+							    WHERE codCategoria IN (SELECT codCategoria
+							  						     FROM CATEGORIAS
+													    WHERE codCategoria ='SP'))
 
+	-- 41.2) Utiliza EXISTS / NOT EXISTS
 
+    SELECT *
+	  FROM PRODUCTOS pro
+	 WHERE NOT EXISTS (SELECT codProducto
+					 	 FROM LINEAS_PEDIDOS lpe
+						WHERE pro.codProducto = lpe.codProducto)	
+	   AND EXISTS (SELECT codCategoria
+				     FROM CATEGORIAS
+			        WHERE codCategoria ='SP')
 
 -- 42. Obtén todos los campos del cliente que más unidades del juego Grand Theft Auto V de PS5 haya comprado 
---		(no en un solo pedido, sino en todos).
-SELECT ;
+-- (no en un solo pedido, sino en todos). -- Preguntar a carlos
 
+SELECT cl.*
+  FROM CLIENTES cl
+  LEFT JOIN PEDIDOS pe 
+    ON cl.codCliente = pe.codCliente
+  LEFT JOIN LINEAS_PEDIDOS lp 
+    ON pe.codPedido = lp.codPedido
+ WHERE lp.codProducto = (SELECT codProducto
+						   FROM PRODUCTOS
+						  WHERE LOWER(nombre) = 'ps5 grand theft auto v')
+   AND lp.unidades = (SELECT MAX(unidades)
+                        FROM LINEAS_PEDIDOS
+                       WHERE codProducto = (SELECT codProducto
+					                          FROM PRODUCTOS
+						                     WHERE LOWER(nombre) = 'ps5 grand theft auto v'))
+
+SELECT *
+  FROM LINEAS_PEDIDOS
+ WHERE codProducto = (SELECT codProducto
+					    FROM PRODUCTOS
+					   WHERE LOWER(nombre) = 'ps5 grand theft auto v')
+  AND unidades = (SELECT MAX)
+GROUP BY codPedido
+  
+??????????
 
 -- 43.  Obtén todos los campos del cliente que más dinero haya gastado en cualquier tienda
-SELECT ;
 
+SELECT *
+FROM PEDIDOS
+
+SELECT *
+FROM CLIENTES
+WHERE codCliente IN (SELECT codCliente
+					  FROM PEDIDOS)
+
+?????????
 
 -- 44.  Obtén los datos del cliente que ha realizado el pedido más caro
 SELECT ;
