@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -24,12 +25,23 @@ namespace Exercise_5
          * BUT THIS METHOD IS SIMPLIER TO RECALL AND USE */
         public bool RegexFormatCheckerNumbers(string x)
         {
-            string regexPattern = "^[0-9]";
+            /* THIS REGULAR EXPRESSION HAS THIS CONDITIONS:
+             * 0-9 MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN 0 (INDEX 48) AND 9 (INDEX 57) (CASE SENSITIVE)
+             * SO TO SUM UP, THIS SELECTS ONLY NUMBERS */
+
+            string regexPattern = "[0-9]";
             return new Regex(regexPattern).IsMatch(x);
         }
         public bool RegexFormatCheckerLetters(string x)
         {
-            string regexPattern = "^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$";
+            /* THIS REGULAR EXPRESSION HAS THIS CONDITIONS:
+             * a-z MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN a (INDEX 97) AND z (INDEX 122) (CASE SENSITIVE)
+             * A-Z MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN A  (INDEX 65) AND Z (INDEX 90) (CASE SENSITIVE)
+             * á-ý MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN á (INDEX 225) AND ý (INDEX 253) (CASE SENSITIVE)
+             * Á-Ý MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN Á (INDEX 193) AND Ý (INDEX 221) (CASE SENSITIVE)
+             * SO TO SUM UP, THIS SELECTS ONLY CHARACTERS THAT ARE LETTERS AND LETTERS WITH DIACRITICAL MARKS */
+
+            string regexPattern = "^[a - zA - Zá - ýÁ - Ý] + ( [a - zA - Zá - ýÁ - Ý] +) *$";
             return new Regex(regexPattern).IsMatch(x);
         }
 
@@ -43,19 +55,24 @@ namespace Exercise_5
                 string name = Interaction.InputBox("Introduce the employee's name: ");
                 if (RegexFormatCheckerLetters(name))
                 {
-                    int age = int.Parse(Interaction.InputBox("Introduce the employee's age: "));
-                    if (age > 16 && age <= 75)
+                    string ageValue = Interaction.InputBox("Introduce the employee's age: ");
+                    if (RegexFormatCheckerNumbers(ageValue))
                     {
-                        actualListOfEmployees.AddEmployeeToList(name, age);
-                        introduced = true;
-                    }
-                    else if (age < 16)
-                    {
-                        MessageBox.Show("The employee must be legally able to work, so it's age must be over 18");
-                    }
-                    else if (age > 75)
-                    {
-                        MessageBox.Show("Do you really think we're going to hire people which should be already retired? So funny!");
+                        int age = int.Parse(ageValue);
+                        if (age > 16 && age <= 75)
+                        {
+
+                            actualListOfEmployees.AddEmployeeToList(name, age);
+                            introduced = true;
+                        }
+                        else if (age < 16)
+                        {
+                            MessageBox.Show("The employee must be legally able to work, so it's age must be over 18");
+                        }
+                        else if (age > 75)
+                        {
+                            MessageBox.Show("Do you really think we're going to hire people which should be already retired? So funny!");
+                        }
                     }
                 }
             } while (!introduced) ;
@@ -145,7 +162,7 @@ namespace Exercise_5
         {
             if (actualListOfEmployees.CountTotalEmployees() > 0)
             {
-                bool introduced = false;
+                bool introduced = false; 
                 do
                 {
                     string searchByName = Interaction.InputBox("Enter the name of the employee who has a sale to add");
@@ -170,7 +187,8 @@ namespace Exercise_5
                         }
                         else
                         {
-                            MessageBox.Show(searchByName + " is not working here or is not included in the list yet.");
+                            MessageBox.Show(searchByName + " does not work here or is not listed yet");
+                            introduced = true;
                         }
                     }
                 } while (!introduced);
@@ -195,24 +213,28 @@ namespace Exercise_5
                         if (actualListOfEmployees.returnPosition(searchByName) != -1)
                         {
                             if (actualListOfEmployees.EmployeeHasSales(searchByName))
-                            { 
-                                double saleValue = double.Parse(Interaction.InputBox("Select the value of the sale which is going to be removed from the selected employee"));
-                                if (actualListOfEmployees.SaleValueNotFound(searchByName, saleValue))
+                            {
+                                string saleInput = Interaction.InputBox("Select the value of the sale which is going to be removed from the selected employee");
+                                if (RegexFormatCheckerNumbers(saleInput))
                                 {
-                                    if (actualListOfEmployees.SaleRemoval(searchByName, saleValue))
+                                    double saleValue = double.Parse(saleInput);
+                                    if (actualListOfEmployees.SaleValueNotFound(searchByName, saleValue))
                                     {
-                                        MessageBox.Show(searchByName + " has a sale removed with a value of: " + saleValue + "€.");
-                                        introduced = true;
+                                        if (actualListOfEmployees.SaleRemoval(searchByName, saleValue))
+                                        {
+                                            MessageBox.Show(searchByName + " has a sale removed with a value of: " + saleValue + "€.");
+                                            introduced = true;
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    MessageBox.Show(searchByName + " has no sales for this amount (" + saleValue + "€)");
+                                    else
+                                    {
+                                        MessageBox.Show(searchByName + " has no sales for this amount (" + saleValue + "€)");
+                                    }
                                 }
                             }
                             else
                             {
-                                MessageBox.Show(searchByName + " has not made any sale");
+                                MessageBox.Show(searchByName + " has not made any sale yet");
                                 introduced = true;
                             }
                         }
@@ -245,3 +267,10 @@ namespace Exercise_5
 
     }
 }
+
+
+// REVISAR 
+// NOMBRE + NUMEROS EN ALGUNA PARTE DEL STRING REGEX
+// EMPLEADO CON MAYORES VENTAS CUANDO NADIE TIENE VENTAS
+// EMPLEADO CON MAYOR VENTAS
+
