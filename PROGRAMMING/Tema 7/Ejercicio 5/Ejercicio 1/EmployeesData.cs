@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-
 namespace Exercise_5
 {
     public partial class EmployeesData : Form
@@ -18,7 +17,7 @@ namespace Exercise_5
         // CREATION OF THE LIST OF EMPLOYEES 
         EmployeesList actualListOfEmployees = new EmployeesList();
 
-        /* THIS IS A FORMAT SETTING  FUNCTION WHICH IS GOING TO BE USED TO LIMIT CHARACTERS ALLOWED 
+        /* THIS IS A FORMAT SETTING FUNCTION WHICH IS GOING TO BE USED TO LIMIT CHARACTERS ALLOWED 
          * (ALLOWS CHARACTERS FROM SPANISH ALPHABET EXCEPT SPECIAL CHARACTERS OR NULLS)
          * ASKED IVENS FOR INFO, AND CHECKED ON INTERNET VIA "https://regex101.com/"
          * TO ARCHIEVE SOMETHING SIMILAR TO THIS .Any(char.IsDigit) / .IsNullOrWhiteSpace()) ARE METHODS TO APPLY FOR EXAMPLE
@@ -26,22 +25,27 @@ namespace Exercise_5
         public bool RegexFormatCheckerNumbers(string x)
         {
             /* THIS REGULAR EXPRESSION HAS THIS CONDITIONS:
+             * ^: THIS SYMBOL DENOTES THE BEGINNING OF THE STRING.
              * 0-9 MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN 0 (INDEX 48) AND 9 (INDEX 57) (CASE SENSITIVE)
-             * SO TO SUM UP, THIS SELECTS ONLY NUMBERS */
+             * * $: THIS SYMBOL INDICATES THE END OF THE STRING AND ENDS UPPERCASE CONVERSION.
+             * SO TO SUM UP, THIS SELECTS ONLY NUMBERS IN THE WHOLE STRING */
 
-            string regexPattern = "[0-9]";
+            string regexPattern = "^[0-9]+$";
             return new Regex(regexPattern).IsMatch(x);
         }
         public bool RegexFormatCheckerLetters(string x)
         {
             /* THIS REGULAR EXPRESSION HAS THIS CONDITIONS:
-             * a-z MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN a (INDEX 97) AND z (INDEX 122) (CASE SENSITIVE)
-             * A-Z MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN A  (INDEX 65) AND Z (INDEX 90) (CASE SENSITIVE)
-             * á-ý MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN á (INDEX 225) AND ý (INDEX 253) (CASE SENSITIVE)
-             * Á-Ý MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN Á (INDEX 193) AND Ý (INDEX 221) (CASE SENSITIVE)
-             * SO TO SUM UP, THIS SELECTS ONLY CHARACTERS THAT ARE LETTERS AND LETTERS WITH DIACRITICAL MARKS */
+             * ^: THIS SYMBOL DENOTES THE BEGINNING OF THE STRING.
+             * [A-ZÁ-Ý]+: IN THIS PART, WE USE \U TO BEGIN UPPERCASE CONVERSION, SPECIFYING THAT THE STRING MUST START WITH AT LEAST ONE LETTER OR ACCENTED CHARACTER. 
+             * THE [A-ZÁ-Ý] PORTION ALLOWS BOTH UPPERCASE AND ACCENTED CHARACTERS FROM THE SPANISH ALPHABET.
+             * ( \U[A-ZÁ-Ý]+)*: THIS SECTION ALLOWS ZERO OR MORE REPETITIONS OF A SPACE FOLLOWED BY ANOTHER WORD. 
+             * WITHIN THE PARENTHESES ( ), WE HAVE \U TO CONTINUE UPPERCASE CONVERSION, A SPACE FOLLOWED BY THE SAME EXPRESSION [A-ZÁ-Ý]+
+             * INDICATING THAT THERE CAN BE MULTIPLE WORDS SEPARATED BY A SINGLE SPACE.
+             * $: THIS SYMBOL INDICATES THE END OF THE STRING AND ENDS UPPERCASE CONVERSION. 
+             * SO TO SUM UP, THIS SELECTS ONLY LETTERS AND DIACRITICAL MARKS WHICH CAN BE SEPARATED BY A SINGLE SPACE IN THE WHOLE STRING */
 
-            string regexPattern = "^[a - zA - Zá - ýÁ - Ý] + ( [a - zA - Zá - ýÁ - Ý] +) *$";
+            string regexPattern = "^[a-zA-Zá-ýÁ-Ý]+( [a-zA-Zá-ýÁ-Ý]+)*$";
             return new Regex(regexPattern).IsMatch(x);
         }
 
@@ -74,11 +78,19 @@ namespace Exercise_5
                             MessageBox.Show("Do you really think we're going to hire people which should be already retired? So funny!");
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("The age format is not correct, try again");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The name format is not correct, try again");
                 }
             } while (!introduced) ;
         }
 
-        // BUTTON WHICH ADD A PERSON FROM THE FUNCTION INTRODUCE EMPLOYEE DATA
+        // BUTTON WHICH ADDS AN EMPLOYEE TO THE LIST
         private void btnIntroduceEmployee_Click(object sender, EventArgs e)
         {
             IntroduceEmployeeData();
@@ -95,7 +107,7 @@ namespace Exercise_5
                     string searchByName = Interaction.InputBox("Enter the name of the employee whose data is going to be removed");
                     if (RegexFormatCheckerLetters(searchByName))
                     {
-                        if (actualListOfEmployees.returnPosition(searchByName) != -1)
+                        if (actualListOfEmployees.ReturnPosition(searchByName) != -1)
                         {
                             actualListOfEmployees.RemoveEmployeeFromList(searchByName);
                             MessageBox.Show(searchByName + " was removed from the list.");
@@ -104,9 +116,14 @@ namespace Exercise_5
                         else
                         {
                             MessageBox.Show(searchByName + " is not working here or is not included in the list yet.");
+                            introduced = true;
                         }
                     }
-                    
+                    else
+                    {
+                        MessageBox.Show("The name format is not correct, try again");
+                    }
+
                 } while (!introduced);
             }
             else
@@ -115,7 +132,7 @@ namespace Exercise_5
             }
         }
 
-        // BUTTON WHICH SHOW ALL DATA STORED FROM A SELECTED EMPLOYEE
+        // BUTTON WHICH SHOWS ALL DATA STORED FROM A SELECTED EMPLOYEE
         private void btnShowEmployeeData_Click(object sender, EventArgs e)
         {
             if (actualListOfEmployees.CountTotalEmployees() > 0)
@@ -126,7 +143,7 @@ namespace Exercise_5
                     string searchByName = Interaction.InputBox("Enter the name of the employee whose data is required: ");
                     if (RegexFormatCheckerLetters(searchByName))
                     {
-                        if (actualListOfEmployees.returnPosition(searchByName) != -1)
+                        if (actualListOfEmployees.ReturnPosition(searchByName) != -1)
                         {
                             MessageBox.Show(actualListOfEmployees.ShowSelectedEmployeeData(searchByName));
                             introduced = true;
@@ -134,7 +151,12 @@ namespace Exercise_5
                         else
                         {
                             MessageBox.Show(searchByName + " is not working here or is not included in the list yet.");
+                            introduced = true;
                         }
+                    }
+                    else
+                    {
+                        MessageBox.Show("The name format is not correct, try again");
                     }
                 } while (!introduced);
             }
@@ -144,12 +166,12 @@ namespace Exercise_5
             }
         }
 
-        // BUTTON WHICH SHOW ALL DATA STORED IN THE LIST OF EMPLOYEES
+        // BUTTON WHICH SHOWS ALL DATA STORED IN THE LIST OF EMPLOYEES
         private void btnShowData_Click(object sender, EventArgs e)
         {
             if (actualListOfEmployees.CountTotalEmployees() > 0)
             {
-                MessageBox.Show(actualListOfEmployees.ShowEmployeesList());
+                MessageBox.Show(actualListOfEmployees.ShowsEmployeesList());
             }
             else
             {
@@ -168,7 +190,7 @@ namespace Exercise_5
                     string searchByName = Interaction.InputBox("Enter the name of the employee who has a sale to add");
                     if (RegexFormatCheckerLetters(searchByName))
                     {
-                        if (actualListOfEmployees.returnPosition(searchByName) != -1)
+                        if (actualListOfEmployees.ReturnPosition(searchByName) != -1)
                         {
                             string valueInput = (Interaction.InputBox("Enter the value of the sale from the selected employee"));
                             if (RegexFormatCheckerNumbers(valueInput))
@@ -191,6 +213,10 @@ namespace Exercise_5
                             introduced = true;
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("The name format is not correct, try again");
+                    }
                 } while (!introduced);
             }
             else
@@ -210,7 +236,7 @@ namespace Exercise_5
                     string searchByName = Interaction.InputBox("Enter the name of the employee whose sale is going to be removed");
                     if (RegexFormatCheckerLetters(searchByName))
                     {
-                        if (actualListOfEmployees.returnPosition(searchByName) != -1)
+                        if (actualListOfEmployees.ReturnPosition(searchByName) != -1)
                         {
                             if (actualListOfEmployees.EmployeeHasSales(searchByName))
                             {
@@ -231,6 +257,10 @@ namespace Exercise_5
                                         MessageBox.Show(searchByName + " has no sales for this amount (" + saleValue + "€)");
                                     }
                                 }
+                                else
+                                {
+                                    MessageBox.Show("The sale format is not correct, try again");
+                                }
                             }
                             else
                             {
@@ -244,6 +274,10 @@ namespace Exercise_5
                             introduced = true;
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("The name format is not correct, try again");
+                    }
                 } while (!introduced);
             }
             else
@@ -252,7 +286,52 @@ namespace Exercise_5
             }
         }
 
-        // BUTTON WHICH SHOW THE EMPLOYEE WITH GREATER SALES COUNT FROM THE LIST
+        // BUTTON WHICH CLEARS ALL SALES FROM A SELECTED EMPLOYEE
+        private void btnRemoveAllSales_Click(object sender, EventArgs e)
+        {
+            if (actualListOfEmployees.CountTotalEmployees() > 0)
+            {
+                bool introduced = false;
+                do
+                {
+                    string searchByName = Interaction.InputBox("Enter the name of the employee whose sale is going to be removed");
+                    if (RegexFormatCheckerLetters(searchByName))
+                    {
+                        if (actualListOfEmployees.ReturnPosition(searchByName) != -1)
+                        {
+                            if (actualListOfEmployees.EmployeeHasSales(searchByName))
+                            {
+                                if (actualListOfEmployees.AllSalesRemoval(searchByName))
+                                {
+                                    MessageBox.Show("All sales have been removed from " + searchByName);
+                                    introduced = true;
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show(searchByName + " has not made any sale yet");
+                                introduced = true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show(searchByName + " does not work here or is not listed yet");
+                            introduced = true;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("The name format is not correct, try again");
+                    }
+                } while (!introduced);
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has not employees added, add an employee before removing an employee's sales from the list.");
+            }
+        }
+
+        // BUTTON WHICH SHOWS THE EMPLOYEE OR EMPLOYEES WITH GREATER SALES COUNT FROM THE LIST
         private void btnShowEmployeeGreatestSales_Click(object sender, EventArgs e)
         {
             if (actualListOfEmployees.CountTotalEmployees() > 0)
@@ -265,12 +344,47 @@ namespace Exercise_5
             }
         }
 
+        // BUTTON WHICH SORTS THE EMPLOYEES LIST BY ALPHABETICAL ORDER
+        private void btnOrderEmployeesAlphabetically_Click(object sender, EventArgs e)
+        {
+            if (actualListOfEmployees.CountTotalEmployees() > 0 )
+            {
+                if (actualListOfEmployees.CountTotalEmployees() == 1)
+                {
+                    MessageBox.Show("Error, the list has only one employee, add atleast 2 employees to order the list");
+                }
+                else
+                {
+                    actualListOfEmployees.SortListAlphabetically();
+                    MessageBox.Show("The list was correctly sorted by alphabetical order");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has not employees added, add an employee before ordering the employees list");
+            }
+
+        }
+
+        // BUTTON WHICH SORTS THE EMPLOYEES LIST BY SALES TOTAL VALUE ORDER
+        private void btnOrderEmployeesBySales_Click(object sender, EventArgs e)
+        {
+            if (actualListOfEmployees.CountTotalEmployees() > 0)
+            {
+                if (actualListOfEmployees.CountTotalEmployees() == 1)
+                {
+                    MessageBox.Show("Error, the list has only one employee, add atleast 2 employees to order the list");
+                }
+                else
+                {
+                    actualListOfEmployees.SortListBySales();
+                    MessageBox.Show("The list was correctly sorted by total sales value order");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has not employees added, add an employee before ordering the employees list");
+            }
+        }
     }
 }
-
-
-// REVISAR 
-// NOMBRE + NUMEROS EN ALGUNA PARTE DEL STRING REGEX
-// EMPLEADO CON MAYORES VENTAS CUANDO NADIE TIENE VENTAS
-// EMPLEADO CON MAYOR VENTAS
-

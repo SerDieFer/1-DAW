@@ -36,7 +36,7 @@ namespace Exercise_5
         // FUNCTION WHICH REMOVES AN EMPLOYEE FROM THIS LIST
         public void RemoveEmployeeFromList(string name)
         {
-            eList.RemoveAt(returnPosition(name));
+            eList.RemoveAt(ReturnPosition(name));
         }
 
         // FUNCTION WHICH COLLECTS ALL DATA FROM THE SELECTED EMPLOYEE
@@ -45,13 +45,13 @@ namespace Exercise_5
             string eListTxt = "";
             if (eList.Count != 0)
             {
-                    eListTxt += eList[returnPosition(name)].ShowAllEmployeeData();
+                eListTxt += eList[ReturnPosition(name)].ShowAllEmployeeData();
             }
             return eListTxt;
         }
 
         // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE EMPLOYEES ADDED INTO THE EMPLOYEES LIST
-        public string ShowEmployeesList()
+        public string ShowsEmployeesList()
         {
             string eListTxt = "List of employees: \n";
             if (eList.Count != 0)
@@ -70,7 +70,7 @@ namespace Exercise_5
             bool saleDone = false;
             if (eList.Count != 0)
             {
-                int position = returnPosition(name);
+                int position = ReturnPosition(name);
                 if (position != -1)
                 {
                     if (value > 0)
@@ -89,7 +89,7 @@ namespace Exercise_5
             bool saleDone = false;
             if (eList.Count != 0)
             {
-                int position = returnPosition(name);
+                int position = ReturnPosition(name);
                 if (position != -1)
                 {
                     if (value > 0)
@@ -102,13 +102,29 @@ namespace Exercise_5
             return saleDone;
         }
 
+        // FUNCTION THAT SELECTS AN EMPLOYEE FROM THE LIST AND REMOVES ALL THE SALES
+        public bool AllSalesRemoval(string name)
+        {
+            bool salesCleared = false;
+            if (eList.Count != 0)
+            {
+                int position = ReturnPosition(name);
+                if (position != -1)
+                {
+                    eList[position].ClearSales();
+                    salesCleared = true;
+                }
+            }
+            return salesCleared;
+        }
+
         // FUNCTION THAT CHECKS IF THE SELECTED SALE EXIST IN THE EMPLOYEE SALES LIST
         public bool SaleValueNotFound(string name, double value)
         {
             bool saleFound = false;
             if (eList.Count != 0)
             {
-                int position = returnPosition(name);
+                int position = ReturnPosition(name);
                 if (position != -1)
                 {
                     if (value > 0)
@@ -129,7 +145,7 @@ namespace Exercise_5
             bool hasSales = false;    
             if (eList.Count != 0)
             {
-                int position = returnPosition(name);
+                int position = ReturnPosition(name);
                 if (position != -1)
                 {
                     if (eList[position].TotalSalesCount() > 0)
@@ -141,27 +157,111 @@ namespace Exercise_5
             return hasSales;
         }
 
-        // FUNCTION THAT SELECTS THE EMPLOYEE WITH THE BIGGEST SALE
-        public string BiggestSalesCountValue()
+        // FUNCTION THAT CHECKS IF ALL EMPLOYEES HAVE SALES
+        public bool AllEmployeeHaveSales()
         {
-            string biggestSale = "The employee with the biggest sales count is: ";
+            bool haveSales = true;
             if (eList.Count != 0)
             {
-                double biggest = eList[0].SalesTotalValue();
-                for (int i = 1; i < eList.Count; i++)
-                {
-                    if (biggest < eList[i].SalesTotalValue())
+                for(int i = 0; i < eList.Count && haveSales; i++)
+                { 
+                    if (eList[i].TotalSalesCount() == 0)
                     {
-                        biggest = eList[i].SalesTotalValue();
-                        biggestSale += eList[i].Name;
+                        haveSales = false;
                     }
                 }
             }
-            return biggestSale;
+            return haveSales;
+        }
+
+        // FUNCTION THAT SELECTS THE EMPLOYEE WITH THE BIGGEST SALE
+        public string BiggestSalesCountValue()
+        {
+            string biggestSale = " ";
+            string finalResult = "";
+            int sameAsBiggestCount = 0;
+            if (eList.Count != 0)
+            {
+                int i = 0;
+                if (eList[i].TotalSalesCount() > 0)
+                {
+                    double biggest = eList[0].SalesTotalValue();
+                    string biggestSaleEmployee = eList[0].Name;
+                    for  (i = 1; i < eList.Count; i++)
+                    {
+                        double checkSales = eList[i].SalesTotalValue();
+                        if (biggest < checkSales)
+                        {
+                            biggest = checkSales;
+                            biggestSaleEmployee = eList[i].Name;
+                        }
+                    }
+                    for (int j = 0; j < eList.Count; j++)
+                    {
+                        string sameAsBiggest = eList[j].Name;
+                        double checkIfSameValueSales = eList[j].SalesTotalValue();
+                        if (checkIfSameValueSales == biggest && (sameAsBiggest != biggestSaleEmployee))
+                        {
+                            finalResult += ", " + sameAsBiggest;
+                            sameAsBiggestCount++;
+                        }
+                    }
+                    if (sameAsBiggestCount == 0)
+                    {
+                        biggestSale = "The employee with the biggest sales value is: " + biggestSaleEmployee;
+                    }
+                    else
+                    {
+                        biggestSale = "The employees with the biggest sales value are: " + biggestSaleEmployee;
+                    }
+                }
+                else if(!AllEmployeeHaveSales())
+                {
+                    finalResult = "None employee has sales ";
+                }
+            }
+            finalResult = biggestSale + finalResult;
+            return finalResult;
+        }
+
+        //FUNCTION THAT ORDERS EMPLOYEES IN ALPHABETICAL ORDER
+        public void SortListAlphabetically()
+        {
+            Employee auxList;
+            for(int i = 0; i < eList.Count; i++)
+            {
+                for (int j = i + 1; j < eList.Count;j++)
+                {
+                    if (string.Compare(eList[i].Name, eList[j].Name) > 0)
+                    {
+                        auxList = eList[i];
+                        eList[i] = eList[j];
+                        eList[j] = auxList;
+                    }
+                }
+            }
+        }
+
+        //FUNCTION THAT ORDERS EMPLOYEES BY SALES VALUE ORDER
+        public void SortListBySales()
+        {
+            Employee auxList;
+            for (int i = 0; i < eList.Count; i++)
+            {
+                for (int j = i + 1; j < eList.Count; j++)
+                {
+                    if (eList[i].SalesTotalValue() < eList[j].SalesTotalValue())
+                    {
+                        auxList = eList[i];
+                        eList[i] = eList[j];
+                        eList[j] = auxList;
+                    }
+                }
+            }
         }
 
         // FUNCTION WHICH RETURNS THE POSITION OF THE EMPLOYEE IN THE LIST, IF IT'S NEGATIVE THE EMPLOYEE IS NOT IN THE LIST
-        public int returnPosition(string name)
+        public int ReturnPosition(string name)
         {
             int index = -1;
             for (int i = 0; i < eList.Count; i++)
@@ -184,7 +284,5 @@ namespace Exercise_5
             }
             return count;
         }
-
     }
 }
-

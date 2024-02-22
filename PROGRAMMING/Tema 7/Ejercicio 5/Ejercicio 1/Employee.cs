@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -45,6 +44,12 @@ namespace Exercise_5
             }
         }
 
+        // FUNCTION WHICH REMOVES ALL SALES TO AN EMPLOYEE
+        public void ClearSales()
+        {
+            eSalesList.Clear();
+        }
+
         // FUNCTION THAT ADDS ALL THE SALES FROM AN EMPLOYEE INTO A TOTAL
         public double SalesTotalValue()
         {
@@ -83,7 +88,6 @@ namespace Exercise_5
             }
             return saleCheck;
         }
-
 
         // FUNCTION WHICH STORES A STRING WITH ALL THE INFO ABOUT THE SALESLIST FROM A POSITION WHICH WILL COINCIDE WITH SELECTED EMPLOYEE
         private string StoreSalesInfo ()
@@ -160,5 +164,3 @@ namespace Exercise_5
         }
     }
 }
-
-

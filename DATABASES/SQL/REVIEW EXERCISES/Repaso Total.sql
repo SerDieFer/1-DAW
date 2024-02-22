@@ -67,14 +67,14 @@ GO
 -----------------------
 Inserta los siguientes STREAMERS:   Inserta los siguientes TEMAS:    Inserta las siguientes TEMATICAS de STREAMERS:
     - Ibai Llanos de España             - Informática                   [STREAMER]           [TEMATICA]     [idioma]   [medio]	  [milesSeguidores]
-    - AuronPlay de España               - Tecnología en general         Ibai Llanos	         Variado	    Español	   Twitch     12800
-    - Nate Gentile de España            - Gaming                        AuronPlay	         Gaming	        Español    YouTube    29200
-    - Linus Tech Tips de Canadá         - Variado                       AuronPlay	         Variado	    Español	   Twitch     14900
+    - AuronPlay de España               - Tecnología en general         Ibai Llanos	         Variado	      Español	   Twitch     12800
+    - Nate Gentile de España            - Gaming                        AuronPlay	           Gaming	        Español    YouTube    29200
+    - Linus Tech Tips de Canadá         - Variado                       AuronPlay	           Variado	      Español	   Twitch     14900
     - DYI Perks sin ningún país         - Bricolaje                     Nate Gentile         Informática    Español    YouTube	  2450
-    - Alexandre Chappel de Noruega      - Viajes                        Linus Tech Tips      Informática	Inglés	   YouTube	  15200
-    - Tekendo de España                 - Humor                         DYI Perks	         Bricolaje	    Inglés	   YouTube	  4140
+    - Alexandre Chappel de Noruega      - Viajes                        Linus Tech Tips      Informática	  Inglés	   YouTube	  15200
+    - Tekendo de España                 - Humor                         DYI Perks	           Bricolaje	    Inglés	   YouTube	  4140
     - Caddac Tech de ningún país                                        Alexandre Chappel    Bricolaje	    Inglés	   YouTube	  370
-                                                                        Caddac Tech	         Informática	Inglés	   YouTube    3
+                                                                        Caddac Tech	         Informática	  Inglés	   YouTube    3
 */
 
 GO
@@ -204,11 +204,11 @@ SELECT s.nombre AS nombreStreamer,
 SELECT s.nombre AS nombreStreamer,
        st.medio AS medioStreamer,
        t.nombre AS nombreTematicaCanal
-FROM STREAMERS s,
-     TEMATICAS t,
-     STREAMERS_TEMATICAS st
-WHERE s.codStreamer = st.codStreamer
-  AND t.codTematica = st.codTematica
+  FROM STREAMERS s,
+       TEMATICAS t,
+       STREAMERS_TEMATICAS st
+ WHERE s.codStreamer = st.codStreamer
+   AND t.codTematica = st.codTematica
 
 -- 13. Nombre de cada streamer, del medio en el que habla y de la temática de la que habla en ese medio, 
 -- incluso si de algún streamer no tenemos dato del medio o de la temática.
@@ -220,7 +220,7 @@ SELECT s.nombre AS nombreStreamer,
   FROM STREAMERS s
   LEFT JOIN STREAMERS_TEMATICAS st
     ON s.codStreamer = st.codStreamer
- LEFT JOIN TEMATICAS t
+  LEFT JOIN TEMATICAS t
     ON st.codTematica = t.codTematica
 
 -- 14. Nombre de cada medio y cantidad de canales que tenemos anotados en él, ordenado alfabéticamente por el nombre del medio.
@@ -388,25 +388,74 @@ WHERE codJuego = 1002
 
 -- 35. Muestra el nombre de cada juego junto al nombre del streamer que más habla de él, si existe. Los datos aparecerán ordenados por nombre de juego y, en caso de coincidir éste, por nombre de streamer.
 
+SELECT j.nombre AS nombreJuegos,
+       s.nombre AS nombreStreamer
+  FROM JUEGOS j,
+       STREAMERS s
+ WHERE j.codStreamer = s.codStreamer
+
 -- 36. Modifica el último dato de ejemplo que has añadido en la tabla de juegos, para que sí tenga asociado un streamer que hable de él.
+
+UPDATE JUEGOS
+SET codStreamer = 1
+FROM JUEGOS
+WHERE codJuego = 1003
 
 -- 37. Crea una tabla "juegosStreamers", volcando en ella el nombre de cada juego (con el alias "juego") y el nombre del streamer que habla de él (con el alias "streamer").
 
+CREATE TABLE JUEGOS_STREAMERS (
+  juego VARCHAR(20),
+  streamer VARCHAR(100)
+)
+
+UPDATE js
+SET js.juego = j.nombre,
+    js.streamer = s.nombre
+FROM JUEGOS_STREAMERS js,
+     JUEGOS j,
+     STREAMERS s
+WHERE js.juego = j.nombre
+  AND js.streamer = s.nombre
+    
 -- 38. Añade a la tabla "juegosStreamers" un campo "fechaPrueba".
+
+ALTER TABLE JUEGOS_STREAMERS 
+ADD fechaPrueba SMALLDATETIME
 
 -- 39. Pon la fecha de hoy (prefijada, sin usar GetDate) en el campo "fechaPrueba" de todos los registros de la tabla "juegosStreamers".
 
+INSERT INTO JUEGOS_STREAMERS (fechaPrueba)
+VALUES ('2024-02-22 00:00:00')
+
+SELECT *
+FROM JUEGOS_STREAMERS
+
 -- 40. Muestra juego, streamer y fecha de ayer (día anterior al valor del campo "fechaPrueba") para todos los registros de la tabla "juegosStreamers".
+
+
 
 -- 41. Muestra todos los datos de los registros de la tabla "juegosStreamers" que sean del año actual de 2 formas distintas (por ejemplo, usando comodines o funciones de cadenas).
 
+
+
 -- 42. Elimina la columna "streamer" de la tabla "juegosStreamers".
+
+ALTER TABLE JUEGOS_STREAMERS
+DROP COLUMN streamer
+
 
 -- 43. Vacía la tabla de "juegosStreamers", conservando su estructura.
 
+DELETE FROM JUEGOS_STREAMERS
+TRUNCATE TABLE JUEGOS_STREAMERS
+
 -- 44. Elimina por completo la tabla de "juegosStreamers".
 
+DROP TABLE JUEGOS_STREAMERS
+
 -- 45. Borra los canales del streamer "Caddac Tech".
+
+
 
 -- 46. Muestra la diferencia entre el canal con más seguidores y la media, mostrada en millones de seguidores. Usa el alias "diferenciaMillones".
 

@@ -41,6 +41,7 @@ namespace Exercise_5
             this.btnOrderEmployeesBySales = new System.Windows.Forms.Button();
             this.btnShowEmployeeGreatestSales = new System.Windows.Forms.Button();
             this.btnRemoveSales = new System.Windows.Forms.Button();
+            this.btnRemoveAllSales = new System.Windows.Forms.Button();
             this.gBEmployees.SuspendLayout();
             this.gbSales.SuspendLayout();
             this.SuspendLayout();
@@ -51,7 +52,7 @@ namespace Exercise_5
             this.btnIntroduceEmployee.Name = "btnIntroduceEmployee";
             this.btnIntroduceEmployee.Size = new System.Drawing.Size(235, 46);
             this.btnIntroduceEmployee.TabIndex = 0;
-            this.btnIntroduceEmployee.Text = "New Employee";
+            this.btnIntroduceEmployee.Text = "Add New Employee";
             this.btnIntroduceEmployee.UseVisualStyleBackColor = true;
             this.btnIntroduceEmployee.Click += new System.EventHandler(this.btnIntroduceEmployee_Click);
             // 
@@ -105,8 +106,9 @@ namespace Exercise_5
             this.btnOrderEmployeesAlphabetically.Name = "btnOrderEmployeesAlphabetically";
             this.btnOrderEmployeesAlphabetically.Size = new System.Drawing.Size(495, 46);
             this.btnOrderEmployeesAlphabetically.TabIndex = 3;
-            this.btnOrderEmployeesAlphabetically.Text = "Order Employees Alphabetically ";
+            this.btnOrderEmployeesAlphabetically.Text = "Sort Employees List Alphabetically ";
             this.btnOrderEmployeesAlphabetically.UseVisualStyleBackColor = true;
+            this.btnOrderEmployeesAlphabetically.Click += new System.EventHandler(this.btnOrderEmployeesAlphabetically_Click);
             // 
             // btnRemoveEmployee
             // 
@@ -120,6 +122,7 @@ namespace Exercise_5
             // 
             // gbSales
             // 
+            this.gbSales.Controls.Add(this.btnRemoveAllSales);
             this.gbSales.Controls.Add(this.btnOrderEmployeesBySales);
             this.gbSales.Controls.Add(this.btnShowEmployeeGreatestSales);
             this.gbSales.Controls.Add(this.btnRemoveSales);
@@ -133,12 +136,13 @@ namespace Exercise_5
             // 
             // btnOrderEmployeesBySales
             // 
-            this.btnOrderEmployeesBySales.Location = new System.Drawing.Point(419, 104);
+            this.btnOrderEmployeesBySales.Location = new System.Drawing.Point(553, 104);
             this.btnOrderEmployeesBySales.Name = "btnOrderEmployeesBySales";
-            this.btnOrderEmployeesBySales.Size = new System.Drawing.Size(369, 46);
+            this.btnOrderEmployeesBySales.Size = new System.Drawing.Size(235, 46);
             this.btnOrderEmployeesBySales.TabIndex = 4;
-            this.btnOrderEmployeesBySales.Text = "Order Employees By Sales";
+            this.btnOrderEmployeesBySales.Text = "Sort Employees List By Sales";
             this.btnOrderEmployeesBySales.UseVisualStyleBackColor = true;
+            this.btnOrderEmployeesBySales.Click += new System.EventHandler(this.btnOrderEmployeesBySales_Click);
             // 
             // btnShowEmployeeGreatestSales
             // 
@@ -154,11 +158,21 @@ namespace Exercise_5
             // 
             this.btnRemoveSales.Location = new System.Drawing.Point(23, 104);
             this.btnRemoveSales.Name = "btnRemoveSales";
-            this.btnRemoveSales.Size = new System.Drawing.Size(364, 46);
+            this.btnRemoveSales.Size = new System.Drawing.Size(235, 46);
             this.btnRemoveSales.TabIndex = 2;
             this.btnRemoveSales.Text = "Remove Selected Sale From Employee";
             this.btnRemoveSales.UseVisualStyleBackColor = true;
             this.btnRemoveSales.Click += new System.EventHandler(this.btnRemoveSales_Click);
+            // 
+            // btnRemoveAllSales
+            // 
+            this.btnRemoveAllSales.Location = new System.Drawing.Point(283, 104);
+            this.btnRemoveAllSales.Name = "btnRemoveAllSales";
+            this.btnRemoveAllSales.Size = new System.Drawing.Size(235, 46);
+            this.btnRemoveAllSales.TabIndex = 5;
+            this.btnRemoveAllSales.Text = "Remove All Sales From Employee";
+            this.btnRemoveAllSales.UseVisualStyleBackColor = true;
+            this.btnRemoveAllSales.Click += new System.EventHandler(this.btnRemoveAllSales_Click);
             // 
             // EmployeesData
             // 
@@ -188,6 +202,7 @@ namespace Exercise_5
         private System.Windows.Forms.Button btnShowEmployeeGreatestSales;
         private System.Windows.Forms.Button btnRemoveSales;
         private System.Windows.Forms.Button btnOrderEmployeesBySales;
+        private System.Windows.Forms.Button btnRemoveAllSales;
     }
 }
 
