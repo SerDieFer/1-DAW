@@ -1,5 +1,5 @@
 const tableContainer = document.getElementById("table");
-const createdTable = createTable(getRowCount(), getColumnCount());
+const createdTable = createTable(getRowCount(), getColumnCount())
 tableContainer.appendChild(createdTable);
     
 function createTable(rowCount,columnCount) {
