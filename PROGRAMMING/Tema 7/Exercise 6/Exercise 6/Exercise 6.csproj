@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AlumnList.cs" />
     <Compile Include="Alumn.cs" />
+    <Compile Include="CustomFunctions.cs" />
     <Compile Include="Teacher.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="AlumnForm.cs">

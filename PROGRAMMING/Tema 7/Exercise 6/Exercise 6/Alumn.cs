@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Exercise_6
     class Alumn
     {
         private string aName;
-        private int aID;
+        private string aID;
         private int aPhone;
         private List<double> aGradesList;
         private int aCourseCod;
@@ -18,7 +19,7 @@ namespace Exercise_6
         public Alumn()
         {
             this.aName = "";
-            this.aID = -1;
+            this.aID = "";
             this.aPhone = 0;
             this.aGradesList = new List<double>();
             this.aCourseCod = -1;
@@ -43,7 +44,7 @@ namespace Exercise_6
         }
 
         // FUNCTION WHICH REMOVES ALL GRADES FROM AN ALUMN
-        public void ClearSales()
+        public void ClearGradesFromAlumn()
         {
             aGradesList.Clear();
         }
@@ -93,11 +94,10 @@ namespace Exercise_6
             return aInfoTxt;
         }
 
-        // FUNCTION WHICH SHOW SELECTED COURSE INFO
-        public string ShowsSelectedAlumnData(string alumnName)
+        // FUNCTION WHICH SHOW SIMPLIER ALUMN INFO
+        public string ShowsSimplierAlumnData()
         {
-            string aInfoTxt = "\nAlumn data: \n" + "Name: " + aName + "\n" + "ID: " + aID + "\n" + "Phone: " + aPhone + "\n\n";
-            aInfoTxt += StoresAlumnGradesInfo() + "\n"; // THIS WILL ADD THE SELECTED ALUMN INFO ABOUT THE GRADES IT HAS MADE.
+            string aInfoTxt = "Alumn data: \n" + "Name: " + aName + "\n" + "ID: " + aID + "\n";
             return aInfoTxt;
         }
 
@@ -108,7 +108,7 @@ namespace Exercise_6
             set { aName = value; }
         }
         //FUNCTION WHICH GETS AND SETS THE ALUMN ID
-        public int ID
+        public string ID
         {
             get { return aID; }
             set { aID = value; }
@@ -134,9 +134,5 @@ namespace Exercise_6
             get { return aCourseCod; }
             set { aCourseCod = value; }
         }
-
-
-
-
     }
 }

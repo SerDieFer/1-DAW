@@ -90,7 +90,7 @@ namespace Exercise_5
         }
 
         // FUNCTION WHICH STORES A STRING WITH ALL THE INFO ABOUT THE SALESLIST FROM A POSITION WHICH WILL COINCIDE WITH SELECTED EMPLOYEE
-        private string StoreSalesInfo ()
+        private string StoreSalesInfo()
         {
             int counter = 0;
             double totalSales = 0;
