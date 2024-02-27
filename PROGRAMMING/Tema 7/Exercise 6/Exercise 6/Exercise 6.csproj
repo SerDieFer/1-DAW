@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F7D4F22D-8BA7-4F00-A8E2-B722A8C589C8}</ProjectGuid>
+    <ProjectGuid>{F55FB6C2-E594-460E-8131-139F49E1C511}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Ejercicio_1</RootNamespace>
-    <AssemblyName>Ejercicio 1</AssemblyName>
+    <RootNamespace>Exercise 6</RootNamespace>
+    <AssemblyName>Exercise 6</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,7 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,18 +46,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmployeesList.cs" />
-    <Compile Include="Employee.cs" />
-    <Compile Include="EmployeesData.cs">
+    <Compile Include="AlumnList.cs" />
+    <Compile Include="Alumn.cs" />
+    <Compile Include="Teacher.cs" />
+    <Compile Include="Course.cs" />
+    <Compile Include="AlumnForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EmployeesData.Designer.cs">
-      <DependentUpon>EmployeesData.cs</DependentUpon>
+    <Compile Include="AlumnForm.Designer.cs">
+      <DependentUpon>AlumnForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="TeacherList.cs" />
+    <Compile Include="CourseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CourseForm.designer.cs">
+      <DependentUpon>CourseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TeacherForm.Designer.cs">
+      <DependentUpon>TeacherForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InitialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InitialForm.designer.cs">
+      <DependentUpon>InitialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Progam.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="EmployeesData.resx">
-      <DependentUpon>EmployeesData.cs</DependentUpon>
+    <Compile Include="CourseList.cs" />
+    <EmbeddedResource Include="CourseForm.resx">
+      <DependentUpon>CourseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AlumnForm.resx">
+      <DependentUpon>AlumnForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TeacherForm.resx">
+      <DependentUpon>TeacherForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InitialForm.resx">
+      <DependentUpon>InitialForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
