@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.gpAlumns = new System.Windows.Forms.GroupBox();
+            this.btnRemoveAlumnByID = new System.Windows.Forms.Button();
             this.btnShowAlumnData = new System.Windows.Forms.Button();
             this.btnShowAlumnsFromSelectedCourse = new System.Windows.Forms.Button();
             this.btnSortAlumnsAlphabetically = new System.Windows.Forms.Button();
             this.btnShowAlumnList = new System.Windows.Forms.Button();
-            this.btnRemoveAlumn = new System.Windows.Forms.Button();
+            this.btnRemoveAlumnByName = new System.Windows.Forms.Button();
             this.btnAddAlumn = new System.Windows.Forms.Button();
             this.gpGrades = new System.Windows.Forms.GroupBox();
             this.btnRemoveGradesToAlumn = new System.Windows.Forms.Button();
@@ -46,11 +47,12 @@
             // 
             // gpAlumns
             // 
+            this.gpAlumns.Controls.Add(this.btnRemoveAlumnByID);
             this.gpAlumns.Controls.Add(this.btnShowAlumnData);
             this.gpAlumns.Controls.Add(this.btnShowAlumnsFromSelectedCourse);
             this.gpAlumns.Controls.Add(this.btnSortAlumnsAlphabetically);
             this.gpAlumns.Controls.Add(this.btnShowAlumnList);
-            this.gpAlumns.Controls.Add(this.btnRemoveAlumn);
+            this.gpAlumns.Controls.Add(this.btnRemoveAlumnByName);
             this.gpAlumns.Controls.Add(this.btnAddAlumn);
             this.gpAlumns.Location = new System.Drawing.Point(12, 12);
             this.gpAlumns.Name = "gpAlumns";
@@ -59,20 +61,31 @@
             this.gpAlumns.TabStop = false;
             this.gpAlumns.Text = "Alumns";
             // 
+            // btnRemoveAlumnByID
+            // 
+            this.btnRemoveAlumnByID.Location = new System.Drawing.Point(453, 19);
+            this.btnRemoveAlumnByID.Name = "btnRemoveAlumnByID";
+            this.btnRemoveAlumnByID.Size = new System.Drawing.Size(176, 44);
+            this.btnRemoveAlumnByID.TabIndex = 8;
+            this.btnRemoveAlumnByID.Text = "Remove Alumn By ID";
+            this.btnRemoveAlumnByID.UseVisualStyleBackColor = true;
+            this.btnRemoveAlumnByID.Click += new System.EventHandler(this.btnRemoveAlumnByID_Click);
+            // 
             // btnShowAlumnData
             // 
-            this.btnShowAlumnData.Location = new System.Drawing.Point(599, 87);
+            this.btnShowAlumnData.Location = new System.Drawing.Point(622, 87);
             this.btnShowAlumnData.Name = "btnShowAlumnData";
-            this.btnShowAlumnData.Size = new System.Drawing.Size(242, 44);
+            this.btnShowAlumnData.Size = new System.Drawing.Size(219, 44);
             this.btnShowAlumnData.TabIndex = 7;
             this.btnShowAlumnData.Text = "Show Selected Alumn Data";
             this.btnShowAlumnData.UseVisualStyleBackColor = true;
+            this.btnShowAlumnData.Click += new System.EventHandler(this.btnShowAlumnData_Click);
             // 
             // btnShowAlumnsFromSelectedCourse
             // 
-            this.btnShowAlumnsFromSelectedCourse.Location = new System.Drawing.Point(326, 87);
+            this.btnShowAlumnsFromSelectedCourse.Location = new System.Drawing.Point(323, 87);
             this.btnShowAlumnsFromSelectedCourse.Name = "btnShowAlumnsFromSelectedCourse";
-            this.btnShowAlumnsFromSelectedCourse.Size = new System.Drawing.Size(226, 44);
+            this.btnShowAlumnsFromSelectedCourse.Size = new System.Drawing.Size(264, 44);
             this.btnShowAlumnsFromSelectedCourse.TabIndex = 6;
             this.btnShowAlumnsFromSelectedCourse.Text = "Show All Alumns From Selected Course";
             this.btnShowAlumnsFromSelectedCourse.UseVisualStyleBackColor = true;
@@ -81,35 +94,37 @@
             // 
             this.btnSortAlumnsAlphabetically.Location = new System.Drawing.Point(25, 87);
             this.btnSortAlumnsAlphabetically.Name = "btnSortAlumnsAlphabetically";
-            this.btnSortAlumnsAlphabetically.Size = new System.Drawing.Size(246, 44);
+            this.btnSortAlumnsAlphabetically.Size = new System.Drawing.Size(264, 44);
             this.btnSortAlumnsAlphabetically.TabIndex = 5;
             this.btnSortAlumnsAlphabetically.Text = "Sort Alumns List Alphabetically ";
             this.btnSortAlumnsAlphabetically.UseVisualStyleBackColor = true;
+            this.btnSortAlumnsAlphabetically.Click += new System.EventHandler(this.btnSortAlumnsAlphabetically_Click);
             // 
             // btnShowAlumnList
             // 
-            this.btnShowAlumnList.Location = new System.Drawing.Point(598, 19);
+            this.btnShowAlumnList.Location = new System.Drawing.Point(664, 19);
             this.btnShowAlumnList.Name = "btnShowAlumnList";
-            this.btnShowAlumnList.Size = new System.Drawing.Size(242, 44);
+            this.btnShowAlumnList.Size = new System.Drawing.Size(176, 44);
             this.btnShowAlumnList.TabIndex = 4;
             this.btnShowAlumnList.Text = "Show Alumns List";
             this.btnShowAlumnList.UseVisualStyleBackColor = true;
+            this.btnShowAlumnList.Click += new System.EventHandler(this.btnShowAlumnList_Click);
             // 
-            // btnRemoveAlumn
+            // btnRemoveAlumnByName
             // 
-            this.btnRemoveAlumn.Location = new System.Drawing.Point(325, 19);
-            this.btnRemoveAlumn.Name = "btnRemoveAlumn";
-            this.btnRemoveAlumn.Size = new System.Drawing.Size(226, 44);
-            this.btnRemoveAlumn.TabIndex = 3;
-            this.btnRemoveAlumn.Text = "Remove Alumn";
-            this.btnRemoveAlumn.UseVisualStyleBackColor = true;
-            this.btnRemoveAlumn.Click += new System.EventHandler(this.btnRemoveAlumn_Click);
+            this.btnRemoveAlumnByName.Location = new System.Drawing.Point(242, 19);
+            this.btnRemoveAlumnByName.Name = "btnRemoveAlumnByName";
+            this.btnRemoveAlumnByName.Size = new System.Drawing.Size(175, 44);
+            this.btnRemoveAlumnByName.TabIndex = 3;
+            this.btnRemoveAlumnByName.Text = "Remove Alumn By Name";
+            this.btnRemoveAlumnByName.UseVisualStyleBackColor = true;
+            this.btnRemoveAlumnByName.Click += new System.EventHandler(this.btnRemoveAlumnByName_Click);
             // 
             // btnAddAlumn
             // 
-            this.btnAddAlumn.Location = new System.Drawing.Point(24, 19);
+            this.btnAddAlumn.Location = new System.Drawing.Point(25, 19);
             this.btnAddAlumn.Name = "btnAddAlumn";
-            this.btnAddAlumn.Size = new System.Drawing.Size(246, 44);
+            this.btnAddAlumn.Size = new System.Drawing.Size(175, 44);
             this.btnAddAlumn.TabIndex = 2;
             this.btnAddAlumn.Text = "Add Alumn";
             this.btnAddAlumn.UseVisualStyleBackColor = true;
@@ -188,11 +203,12 @@
         private System.Windows.Forms.Button btnShowAlumnsFromSelectedCourse;
         private System.Windows.Forms.Button btnSortAlumnsAlphabetically;
         private System.Windows.Forms.Button btnShowAlumnList;
-        private System.Windows.Forms.Button btnRemoveAlumn;
+        private System.Windows.Forms.Button btnRemoveAlumnByName;
         private System.Windows.Forms.GroupBox gpGrades;
         private System.Windows.Forms.Button btnRemoveGradesToAlumn;
         private System.Windows.Forms.Button btnAvgGradesLessThan5;
         private System.Windows.Forms.Button btnAddGradesToAlumn;
         private System.Windows.Forms.Button btnAvgGradesEqualMoreThan5;
+        private System.Windows.Forms.Button btnRemoveAlumnByID;
     }
 }

@@ -24,21 +24,18 @@ namespace Exercise_6
         public void AddsAlumn(string alumnName, string alumnID, int alumnPhone, int courseCod)
         {
             Alumn newAlumn = new Alumn();
-
             newAlumn.Name = alumnName;
             newAlumn.ID = alumnID;
             newAlumn.Phone = alumnPhone;
             newAlumn.CourseCod = courseCod;
-
             alumnList.Add(newAlumn);
         }
 
         // FUNCTION WHICH REMOVES AN ALUMN FROM THIS LIST
-        public void RemovesAlumn(string alumnID)
+        public void RemovesAlumn(int alumnPosition)
         {
-            alumnList.RemoveAt(ReturnsAlumnPosition(alumnID));
+            alumnList.RemoveAt(alumnPosition);
         }
-
 
         // FUNCTION WHICH CALCULATES THE AVERAGE GRADES FROM A SELECTED ALUMN
         public double SelectAlumnGradesAverage(string alumnName)
@@ -69,12 +66,23 @@ namespace Exercise_6
         }
 
         // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST
-        public string ShowsSelectedAlumnsData(string alumnID)
+        public string ShowsSelectedAlumnsData(string alumnName)
         {
             string alumnTxt = "";
             if (alumnList.Count != 0)
             {
-                alumnTxt = alumnList[ReturnsAlumnPosition(alumnID)].ShowsAlumnData();
+                alumnTxt = alumnList[].ShowsAlumnData();
+            }
+            return alumnTxt;
+        }
+
+        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST
+        public string ShowsSelectedAlumnsDataByID(string alumnID)
+        {
+            string alumnTxt = "";
+            if (alumnList.Count != 0)
+            {
+                alumnTxt = alumnList[ReturnsAlumnPositionFromID(alumnID)].ShowsAlumnData();
             }
             return alumnTxt;
         }
@@ -136,11 +144,11 @@ namespace Exercise_6
             {
                 // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
                 // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                StringBuilder infoMessage = new StringBuilder("Alumns with the same name:\n\n");
+                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n");
 
                 for (int i = 0; i < matchingAlumnsName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ". " + matchingAlumnsName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
                 }
 
                 infoMessage.AppendLine("Select the number to delete from list:");
@@ -151,26 +159,33 @@ namespace Exercise_6
                 // THIS MAKES THE INPUT SELECTED TO ASIGN IT TO AN ALUMN INDEX AND NEXT IT WILL DELETE ASK IF YOU WANT TO REMOVE THE SELECTED ONE
                 if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
                 {
-                    // Get the selected alumn's information
+                    // GETS THE SELECTED ALUMN INFU
                     string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
 
-                    // Ask the user if they want to remove this alumn
-                    DialogResult result = MessageBox.Show(selectedAlumnInfo + "\nDo you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
-
-                    if (result == DialogResult.Yes)
+                    // ASKS THE USER IF THEY WANT TO REMOVE THE SELECTED ALUMN
+                    DialogResult result = MessageBox.Show(selectedAlumnInfo + "Do you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
+                    bool deleted = false;
+                    do
                     {
-                        bool deleted = false;
-                        // Find the corresponding alumn in the alumnList and remove it
-                        for (int i = 0; i < alumnList.Count && !deleted; i++)
+                        if (result == DialogResult.Yes)
                         {
-                            if (alumnName == alumnList[i].Name)
+                            // FIND THE MATCHING ALUMN IN THE ALUMNLIST AND REMOVE IT
+                            for (int i = 0; i < alumnList.Count && !deleted; i++)
                             {
-                                RemovesAlumn(alumnList[i].ID);
-                                MessageBox.Show("Alumn removed successfully.");
-                                deleted = true;
+                                if (alumnName == alumnList[i].Name)
+                                {
+                                    RemovesAlumn(i);
+                                    MessageBox.Show("Alumn removed successfully.");
+                                    deleted = true;
+                                }
                             }
                         }
-                    }
+                        else
+                        {
+                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            result = MessageBox.Show(selectedAlumnInfo + "Do you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
+                        }
+                    } while (!deleted);
                 }
                 else
                 {
@@ -214,10 +229,8 @@ namespace Exercise_6
                     }
                 }
             }
-
             return gradesLowerThan5;
         }
-
 
         //FUNCTION THAT ORDERS ALUMNS IN ALPHABETICAL ORDER
         public void SortAlumnListAlphabetically()
@@ -236,16 +249,16 @@ namespace Exercise_6
                 }
             }
         }
-        // FUNCTION WHICH GETS AN UNIQUE ID WHEN THERE'S ONLY AN UNIQUE NAME IN THE LIST
 
-        public string GetUniqueID(string alumnName)
+        // FUNCTION WHICH GETS AN UNIQUE ID WHEN THERE'S ONLY AN UNIQUE NAME IN THE LIST
+        public int GetUniqueNamePosition(string alumnName)
         {
-            string uniqueId = "";
+            int uniqueId = 0;
             for (int i = 0; i < alumnList.Count; i++)
             {
                 if (alumnName == alumnList[i].Name)
                 {
-                    uniqueId = alumnList[i].ID;
+                    uniqueId = i;
                 }
             }
             return uniqueId;
@@ -279,6 +292,20 @@ namespace Exercise_6
             return used;
         }
 
+        // FUNCTION WHICH RETURNS THE ALUMN NAME FROM THE SELECTED ALUMN ID
+        public string ReturnsAlumnName(string alumnID)
+        {
+            string alumnName = "";
+            for (int i = 0; i < alumnList.Count; i++)
+            {
+                if (alumnID == alumnList[i].ID)
+                {
+                    alumnName = alumnList[i].Name;
+                }
+            }
+            return alumnName;
+        }
+
         // FUNCTION WHICH RETURNS THE COURSE ID OF THE SELECTED ALUMN
         public int ReturnsAlumnCourse(string alumnID)
         {
@@ -294,7 +321,7 @@ namespace Exercise_6
         }
 
         // FUNCTION WHICH RETURNS THE POSITION OF THE ALUMN IN THE LIST, IF IT'S NEGATIVE THE ALUMN IS NOT IN THE LIST
-        public int ReturnsAlumnPosition(string alumnID)
+        public int ReturnsAlumnPositionFromID(string alumnID)
         {
             int index = -1;
             for (int i = 0; i < alumnList.Count; i++)

@@ -11,6 +11,7 @@ using Microsoft.VisualBasic;
 
 namespace Exercise_6
 {
+    //TODO CANCELAR BOTON
     public partial class AlumnForm : Form
     {
         public AlumnForm()
@@ -96,7 +97,7 @@ namespace Exercise_6
             } while (!introduced);
         }
 
-        private void btnRemoveAlumn_Click(object sender, EventArgs e)
+        private void btnRemoveAlumnByName_Click(object sender, EventArgs e)
         {
             bool introduced = false;
             do
@@ -112,10 +113,15 @@ namespace Exercise_6
                     }
                     else if (alumnList.SameNameCounter(name) == 1)
                     {
-                        string uniqueName = alumnList.GetUniqueID(name);
-                        alumnList.RemovesAlumn(uniqueName);
+                        int uniqueNamePosition = alumnList.GetUniqueNamePosition(name);
+                        alumnList.RemovesAlumn(uniqueNamePosition);
                         introduced = true;
                         MessageBox.Show(name + " was removed.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("There is no alumns with the selected ID, try again");
+                        introduced = true;
                     }
                 }
                 else
@@ -125,5 +131,100 @@ namespace Exercise_6
 
             } while (!introduced);
         }
+
+        private void btnRemoveAlumnByID_Click(object sender, EventArgs e)
+        {
+            bool introduced = false;
+            do
+            {
+                string alumnID = Interaction.InputBox("Introduce the alumn's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
+
+                if (CustomFunctions.RegexID(alumnID))
+                {
+                    string alumnName = alumnList.ReturnsAlumnName(alumnID);
+                    if (alumnList.SameNameCounter(alumnName) > 1)
+                    {
+                        alumnList.SelectSameNameAlumnsToDelete(alumnName);
+                        introduced = true;
+                    }
+                    else if (alumnList.SameNameCounter(alumnName) == 1)
+                    {
+                        int uniqueNamePosition = alumnList.GetUniqueNamePosition(alumnName);
+                        alumnList.RemovesAlumn(uniqueNamePosition);
+                        introduced = true;
+                        MessageBox.Show(alumnName + " was removed.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("There is no alumns with the selected ID, try again");
+                        introduced = true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The name format is not correct, try again");
+                }
+
+            } while (!introduced);
+        }
+
+        private void btnShowAlumnList_Click(object sender, EventArgs e)
+        {
+            if (alumnList.CountsTotalAlumns() != 0)
+            {
+                MessageBox.Show(alumnList.ShowsAlumnsList());
+            }
+            else
+            {
+                MessageBox.Show("There is no alumns added to the list, add an alumn before trying again");
+            }
+        }
+
+        private void btnSortAlumnsAlphabetically_Click(object sender, EventArgs e)
+        {
+            if (alumnList.CountsTotalAlumns() > 0)
+            {
+                if (alumnList.CountsTotalAlumns() == 1)
+                {
+                    MessageBox.Show("Error, the list has only one alumn, add atleast 2 alumns to order the list");
+                }
+                else
+                {
+                    alumnList.SortAlumnListAlphabetically();
+                    MessageBox.Show("The list was correctly sorted by alphabetical order");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has not alumns added, add an alumn before ordering the alumns list");
+            }
+        }
+
+        private void btnShowAlumnData_Click(object sender, EventArgs e)
+        {
+            bool introduced = false;
+            if (alumnList.CountsTotalAlumns() > 0)
+            {
+                do
+                {
+                    string name = Interaction.InputBox("Introduce the alumn's name to remove (ONLY LETTERS): ");
+                    if (CustomFunctions.RegexName(name))
+                    {
+                        MessageBox.Show(alumnList.ShowsSelectedAlumnsData(name));
+                        introduced = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("The name format is not correct, try again");
+                    }
+
+                } while (!introduced);
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has not alumns added, add an alumn before showing the selected alumn.");
+            }
+        }
     }
 }
+
