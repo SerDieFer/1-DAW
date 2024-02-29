@@ -66,12 +66,16 @@ namespace Exercise_6
         }
 
         // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST
-        public string ShowsSelectedAlumnsData(string alumnName)
+        public string ShowsSelectedAlumnsData(string alumnID)
         {
             string alumnTxt = "";
+            bool found = false;
             if (alumnList.Count != 0)
             {
-                alumnTxt = alumnList[].ShowsAlumnData();
+                for (int i = 0; i < alumnList.Count && !found; i++)
+                {
+                    alumnTxt = alumnList[i].ShowsAlumnData();
+                }
             }
             return alumnTxt;
         }
@@ -121,7 +125,7 @@ namespace Exercise_6
             return counter;
         }
 
-        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS WITH SAME NAME ADDED INTO THE ALUMNS LIST
+        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS WITH SAME NAME ADDED INTO THE ALUMNS LIST TO DELETE THE SELECTED ONE
         public void SelectSameNameAlumnsToDelete(string alumnName)
         {
             bool found = false;
@@ -198,6 +202,80 @@ namespace Exercise_6
             }
         }
 
+        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS WITH SAME NAME ADDED INTO THE ALUMNS LIST TO SHOW THEIR DATA
+        public void SelectSameNameAlumnsToShow(string alumnName)
+        {
+            bool found = false;
+            List<string> matchingAlumnsName = new List<string>();
+
+            if (alumnList.Count != 0)
+            {
+                for (int i = 0; i < alumnList.Count; i++)
+                {
+                    if (alumnName == alumnList[i].Name)
+                    {
+                        found = true;
+                        string alumnData = alumnList[i].ShowsSimplierAlumnData();
+                        matchingAlumnsName.Add(alumnData);
+                    }
+                }
+            }
+
+            if (found)
+            {
+                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
+                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n");
+
+                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                {
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                }
+
+                infoMessage.AppendLine("Select the number of alumn to check more data from it:");
+
+                string userInput = Interaction.InputBox(infoMessage.ToString());
+                int selectedAlumnIndex = 0;
+
+                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                {
+                    // GETS THE SELECTED ALUMN INFU
+                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+
+                    // ASKS THE USER IF THEY WANT TO REMOVE THE SELECTED ALUMN
+                    DialogResult result = MessageBox.Show(selectedAlumnInfo + "Is this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
+                    bool show = false;
+                    do
+                    {
+                        if (result == DialogResult.Yes)
+                        {
+                            // FIND THE MATCHING ALUMN IN THE ALUMNLIST AND REMOVE IT
+                            for (int i = 0; i < alumnList.Count && !show; i++)
+                            {
+                                if (alumnName == alumnList[i].Name)
+                                {
+                                    show = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            result = MessageBox.Show(selectedAlumnInfo + "Is this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
+                        }
+                    } while (!show);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No alumns found with the given name.");
+            }
+        }
+
         //FUNCTION WHICH RETURNS ALL ALUMNS WHOSE AVERAGE GRADE IS EQUAL OR BIGGER THAN 5
         public string ShowsAlumnsWhoseGradesAvgIsEqualOrBiggerThan5()
         {
@@ -230,6 +308,23 @@ namespace Exercise_6
                 }
             }
             return gradesLowerThan5;
+        }
+
+        //FUNCTION WHICH RETURNS ALL ALUMNS WHO ARE IN THE SELECTED COURSE
+        public string ShowAlumnsByCourseCod(int courseCod)
+        {
+            string alumnsInCourse = "The alumns in the course (" + courseCod + ") are: \n\n";
+            if (alumnList.Count != 0)
+            {
+                for (int i = 0; i < alumnList.Count; i++)
+                {
+                    if (alumnList[i].CourseCod == courseCod)
+                    {
+                        alumnsInCourse += alumnList[i].ShowsAlumnData() + "\n";
+                    }
+                }
+            }
+            return alumnsInCourse;
         }
 
         //FUNCTION THAT ORDERS ALUMNS IN ALPHABETICAL ORDER
