@@ -9,7 +9,7 @@ namespace Exercise_6
 {
     static class CustomFunctions
     {
-
+        //TODO REXPLAIN ALL
         public static bool RegexID(string x)
         {
             /* THIS REGULAR EXPRESSION HAS THIS CONDITIONS:
@@ -57,6 +57,18 @@ namespace Exercise_6
              * SO TO SUM UP, THIS SELECTS ONLY NUMBERS IN THE WHOLE STRING */
 
             string regexPattern = "^(0|[1-9][0-9]*)$";
+            return new Regex(regexPattern).IsMatch(x);
+        }
+
+        public static bool RegexGradeValue(string x)
+        {
+            /* THIS REGULAR EXPRESSION HAS THIS CONDITIONS:
+             * ^: THIS SYMBOL DENOTES THE BEGINNING OF THE STRING.
+             * 0-9 MATCHES A SINGLE CHARACTER IN THE RANGE BETWEEN 0 (INDEX 48) AND 9 (INDEX 57) (CASE SENSITIVE)
+             * * $: THIS SYMBOL INDICATES THE END OF THE STRING AND ENDS UPPERCASE CONVERSION.
+             * SO TO SUM UP, THIS SELECTS ONLY NUMBERS IN THE WHOLE STRING */
+
+            string regexPattern = "^[0-9]0?$";
             return new Regex(regexPattern).IsMatch(x);
         }
     }

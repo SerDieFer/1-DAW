@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.gpAlumns = new System.Windows.Forms.GroupBox();
+            this.btnShowAlumnDataByName = new System.Windows.Forms.Button();
             this.btnRemoveAlumnByID = new System.Windows.Forms.Button();
             this.btnShowAlumnDataByID = new System.Windows.Forms.Button();
             this.btnShowAlumnsFromSelectedCourse = new System.Windows.Forms.Button();
@@ -37,11 +38,14 @@
             this.btnRemoveAlumnByName = new System.Windows.Forms.Button();
             this.btnAddAlumn = new System.Windows.Forms.Button();
             this.gpGrades = new System.Windows.Forms.GroupBox();
-            this.btnRemoveGradesToAlumn = new System.Windows.Forms.Button();
+            this.btnClearAllGradesToAlumnByID = new System.Windows.Forms.Button();
+            this.btnRemoveGradesToAlumnByID = new System.Windows.Forms.Button();
+            this.btnAddGradesToAlumnByID = new System.Windows.Forms.Button();
+            this.btnClearAllGradesToAlumnByName = new System.Windows.Forms.Button();
+            this.btnRemoveGradesToAlumnByName = new System.Windows.Forms.Button();
             this.btnAvgGradesLessThan5 = new System.Windows.Forms.Button();
-            this.btnAddGradesToAlumn = new System.Windows.Forms.Button();
+            this.btnAddGradesToAlumnByName = new System.Windows.Forms.Button();
             this.btnAvgGradesEqualMoreThan5 = new System.Windows.Forms.Button();
-            this.btnShowAlumnDataByName = new System.Windows.Forms.Button();
             this.gpAlumns.SuspendLayout();
             this.gpGrades.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +66,16 @@
             this.gpAlumns.TabIndex = 0;
             this.gpAlumns.TabStop = false;
             this.gpAlumns.Text = "Alumns";
+            // 
+            // btnShowAlumnDataByName
+            // 
+            this.btnShowAlumnDataByName.Location = new System.Drawing.Point(231, 96);
+            this.btnShowAlumnDataByName.Name = "btnShowAlumnDataByName";
+            this.btnShowAlumnDataByName.Size = new System.Drawing.Size(197, 44);
+            this.btnShowAlumnDataByName.TabIndex = 9;
+            this.btnShowAlumnDataByName.Text = "Show Selected Alumn Data By Name";
+            this.btnShowAlumnDataByName.UseVisualStyleBackColor = true;
+            this.btnShowAlumnDataByName.Click += new System.EventHandler(this.btnShowAlumnDataByName_Click);
             // 
             // btnRemoveAlumnByID
             // 
@@ -135,68 +149,106 @@
             // 
             // gpGrades
             // 
-            this.gpGrades.Controls.Add(this.btnRemoveGradesToAlumn);
+            this.gpGrades.Controls.Add(this.btnClearAllGradesToAlumnByID);
+            this.gpGrades.Controls.Add(this.btnRemoveGradesToAlumnByID);
+            this.gpGrades.Controls.Add(this.btnAddGradesToAlumnByID);
+            this.gpGrades.Controls.Add(this.btnClearAllGradesToAlumnByName);
+            this.gpGrades.Controls.Add(this.btnRemoveGradesToAlumnByName);
             this.gpGrades.Controls.Add(this.btnAvgGradesLessThan5);
-            this.gpGrades.Controls.Add(this.btnAddGradesToAlumn);
+            this.gpGrades.Controls.Add(this.btnAddGradesToAlumnByName);
             this.gpGrades.Controls.Add(this.btnAvgGradesEqualMoreThan5);
             this.gpGrades.Location = new System.Drawing.Point(12, 196);
             this.gpGrades.Name = "gpGrades";
-            this.gpGrades.Size = new System.Drawing.Size(881, 149);
+            this.gpGrades.Size = new System.Drawing.Size(881, 231);
             this.gpGrades.TabIndex = 8;
             this.gpGrades.TabStop = false;
             this.gpGrades.Text = "Grades";
             // 
-            // btnRemoveGradesToAlumn
+            // btnClearAllGradesToAlumnByID
             // 
-            this.btnRemoveGradesToAlumn.Location = new System.Drawing.Point(25, 90);
-            this.btnRemoveGradesToAlumn.Name = "btnRemoveGradesToAlumn";
-            this.btnRemoveGradesToAlumn.Size = new System.Drawing.Size(392, 44);
-            this.btnRemoveGradesToAlumn.TabIndex = 9;
-            this.btnRemoveGradesToAlumn.Text = "Remove Grades To Selected Alumn";
-            this.btnRemoveGradesToAlumn.UseVisualStyleBackColor = true;
+            this.btnClearAllGradesToAlumnByID.Location = new System.Drawing.Point(603, 90);
+            this.btnClearAllGradesToAlumnByID.Name = "btnClearAllGradesToAlumnByID";
+            this.btnClearAllGradesToAlumnByID.Size = new System.Drawing.Size(263, 44);
+            this.btnClearAllGradesToAlumnByID.TabIndex = 13;
+            this.btnClearAllGradesToAlumnByID.Text = "Clear All Grades From Selected Alumn By ID\r\n";
+            this.btnClearAllGradesToAlumnByID.UseVisualStyleBackColor = true;
+            this.btnClearAllGradesToAlumnByID.Click += new System.EventHandler(this.btnClearAllGradesToAlumnByID_Click);
+            // 
+            // btnRemoveGradesToAlumnByID
+            // 
+            this.btnRemoveGradesToAlumnByID.Location = new System.Drawing.Point(311, 90);
+            this.btnRemoveGradesToAlumnByID.Name = "btnRemoveGradesToAlumnByID";
+            this.btnRemoveGradesToAlumnByID.Size = new System.Drawing.Size(263, 44);
+            this.btnRemoveGradesToAlumnByID.TabIndex = 12;
+            this.btnRemoveGradesToAlumnByID.Text = "Remove Selected Grades To Alumn By ID\r\n";
+            this.btnRemoveGradesToAlumnByID.UseVisualStyleBackColor = true;
+            this.btnRemoveGradesToAlumnByID.Click += new System.EventHandler(this.btnRemoveGradesToAlumnByID_Click);
+            // 
+            // btnAddGradesToAlumnByID
+            // 
+            this.btnAddGradesToAlumnByID.Location = new System.Drawing.Point(17, 90);
+            this.btnAddGradesToAlumnByID.Name = "btnAddGradesToAlumnByID";
+            this.btnAddGradesToAlumnByID.Size = new System.Drawing.Size(263, 44);
+            this.btnAddGradesToAlumnByID.TabIndex = 11;
+            this.btnAddGradesToAlumnByID.Text = "Add Grades To Selected Alumn By ID";
+            this.btnAddGradesToAlumnByID.UseVisualStyleBackColor = true;
+            this.btnAddGradesToAlumnByID.Click += new System.EventHandler(this.btnAddGradesToAlumnByID_Click);
+            // 
+            // btnClearAllGradesToAlumnByName
+            // 
+            this.btnClearAllGradesToAlumnByName.Location = new System.Drawing.Point(603, 19);
+            this.btnClearAllGradesToAlumnByName.Name = "btnClearAllGradesToAlumnByName";
+            this.btnClearAllGradesToAlumnByName.Size = new System.Drawing.Size(263, 44);
+            this.btnClearAllGradesToAlumnByName.TabIndex = 10;
+            this.btnClearAllGradesToAlumnByName.Text = "Clear All Grades From Selected Alumn By Name";
+            this.btnClearAllGradesToAlumnByName.UseVisualStyleBackColor = true;
+            this.btnClearAllGradesToAlumnByName.Click += new System.EventHandler(this.btnClearAllGradesToAlumnByName_Click);
+            // 
+            // btnRemoveGradesToAlumnByName
+            // 
+            this.btnRemoveGradesToAlumnByName.Location = new System.Drawing.Point(311, 19);
+            this.btnRemoveGradesToAlumnByName.Name = "btnRemoveGradesToAlumnByName";
+            this.btnRemoveGradesToAlumnByName.Size = new System.Drawing.Size(263, 44);
+            this.btnRemoveGradesToAlumnByName.TabIndex = 9;
+            this.btnRemoveGradesToAlumnByName.Text = "Remove Selected Grades To Alumn By Name";
+            this.btnRemoveGradesToAlumnByName.UseVisualStyleBackColor = true;
+            this.btnRemoveGradesToAlumnByName.Click += new System.EventHandler(this.btnRemoveGradesToAlumnByName_Click);
             // 
             // btnAvgGradesLessThan5
             // 
-            this.btnAvgGradesLessThan5.Location = new System.Drawing.Point(503, 90);
+            this.btnAvgGradesLessThan5.Location = new System.Drawing.Point(455, 161);
             this.btnAvgGradesLessThan5.Name = "btnAvgGradesLessThan5";
-            this.btnAvgGradesLessThan5.Size = new System.Drawing.Size(364, 44);
+            this.btnAvgGradesLessThan5.Size = new System.Drawing.Size(411, 44);
             this.btnAvgGradesLessThan5.TabIndex = 8;
             this.btnAvgGradesLessThan5.Text = "Show Alumns With Average Grades That Are Less Than 5";
             this.btnAvgGradesLessThan5.UseVisualStyleBackColor = true;
+            this.btnAvgGradesLessThan5.Click += new System.EventHandler(this.btnAvgGradesLessThan5_Click);
             // 
-            // btnAddGradesToAlumn
+            // btnAddGradesToAlumnByName
             // 
-            this.btnAddGradesToAlumn.Location = new System.Drawing.Point(25, 19);
-            this.btnAddGradesToAlumn.Name = "btnAddGradesToAlumn";
-            this.btnAddGradesToAlumn.Size = new System.Drawing.Size(392, 44);
-            this.btnAddGradesToAlumn.TabIndex = 7;
-            this.btnAddGradesToAlumn.Text = "Add Grades To Selected Alumn";
-            this.btnAddGradesToAlumn.UseVisualStyleBackColor = true;
+            this.btnAddGradesToAlumnByName.Location = new System.Drawing.Point(17, 19);
+            this.btnAddGradesToAlumnByName.Name = "btnAddGradesToAlumnByName";
+            this.btnAddGradesToAlumnByName.Size = new System.Drawing.Size(263, 44);
+            this.btnAddGradesToAlumnByName.TabIndex = 7;
+            this.btnAddGradesToAlumnByName.Text = "Add Grades To Selected Alumn By Name";
+            this.btnAddGradesToAlumnByName.UseVisualStyleBackColor = true;
+            this.btnAddGradesToAlumnByName.Click += new System.EventHandler(this.btnAddGradesToAlumnByName_Click);
             // 
             // btnAvgGradesEqualMoreThan5
             // 
-            this.btnAvgGradesEqualMoreThan5.Location = new System.Drawing.Point(502, 19);
+            this.btnAvgGradesEqualMoreThan5.Location = new System.Drawing.Point(17, 161);
             this.btnAvgGradesEqualMoreThan5.Name = "btnAvgGradesEqualMoreThan5";
-            this.btnAvgGradesEqualMoreThan5.Size = new System.Drawing.Size(364, 44);
+            this.btnAvgGradesEqualMoreThan5.Size = new System.Drawing.Size(411, 44);
             this.btnAvgGradesEqualMoreThan5.TabIndex = 6;
             this.btnAvgGradesEqualMoreThan5.Text = "Show Alumns With Average Grades That Are Equal Or More Than 5";
             this.btnAvgGradesEqualMoreThan5.UseVisualStyleBackColor = true;
-            // 
-            // btnShowAlumnDataByName
-            // 
-            this.btnShowAlumnDataByName.Location = new System.Drawing.Point(231, 96);
-            this.btnShowAlumnDataByName.Name = "btnShowAlumnDataByName";
-            this.btnShowAlumnDataByName.Size = new System.Drawing.Size(197, 44);
-            this.btnShowAlumnDataByName.TabIndex = 9;
-            this.btnShowAlumnDataByName.Text = "Show Selected Alumn Data By Name";
-            this.btnShowAlumnDataByName.UseVisualStyleBackColor = true;
-            this.btnShowAlumnDataByName.Click += new System.EventHandler(this.btnShowAlumnDataByName_Click);
+            this.btnAvgGradesEqualMoreThan5.Click += new System.EventHandler(this.btnAvgGradesEqualMoreThan5_Click);
             // 
             // AlumnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(905, 357);
+            this.ClientSize = new System.Drawing.Size(905, 444);
             this.Controls.Add(this.gpGrades);
             this.Controls.Add(this.gpAlumns);
             this.Name = "AlumnForm";
@@ -218,11 +270,15 @@
         private System.Windows.Forms.Button btnShowAlumnList;
         private System.Windows.Forms.Button btnRemoveAlumnByName;
         private System.Windows.Forms.GroupBox gpGrades;
-        private System.Windows.Forms.Button btnRemoveGradesToAlumn;
+        private System.Windows.Forms.Button btnRemoveGradesToAlumnByName;
         private System.Windows.Forms.Button btnAvgGradesLessThan5;
-        private System.Windows.Forms.Button btnAddGradesToAlumn;
+        private System.Windows.Forms.Button btnAddGradesToAlumnByName;
         private System.Windows.Forms.Button btnAvgGradesEqualMoreThan5;
         private System.Windows.Forms.Button btnRemoveAlumnByID;
         private System.Windows.Forms.Button btnShowAlumnDataByName;
+        private System.Windows.Forms.Button btnClearAllGradesToAlumnByName;
+        private System.Windows.Forms.Button btnClearAllGradesToAlumnByID;
+        private System.Windows.Forms.Button btnRemoveGradesToAlumnByID;
+        private System.Windows.Forms.Button btnAddGradesToAlumnByID;
     }
 }

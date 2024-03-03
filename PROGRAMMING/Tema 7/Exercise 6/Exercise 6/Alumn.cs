@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,26 +26,41 @@ namespace Exercise_6
             this.aCourseCod = -1;
         }
 
-        // FUNCTION WHICH ADDS A GRADE IN A CERTAIN COURSE TO A SELECTED ALUMN
-        public void AddsSelectedAlumnGrade(int alumnName, int courseCod, double courseGrade)
+        // FUNCTION WHICH ADDS A GRADE TO A SELECTED ALUMN
+        public void AddsSelectedAlumnGrade(string alumnID, double grade)
         {
-            if (courseGrade >= 0 && courseGrade <= 10)
+            if (grade >= 0 && grade <= 10)
             {
-                aGradesList.Add(courseGrade);
+                aGradesList.Add(grade);
             }
         }
 
-        // FUNCTION WHICH REMOVES A GRADE IN A CERTAIN COURSE TO A SELECTED ALUMN
-        public void RemovesSelectedAlumnGrade(int alumnName, int courseCod, double courseGrade)
+        // FUNCTION WHICH REMOVES A GRADE TO A SELECTED ALUMN
+        public void RemovesSelectedAlumnGrade(string alumnID, double grade)
         {
-            if (courseGrade >= 0 && courseGrade <= 10)
+            if (grade >= 0 && grade <= 10)
             {
-                aGradesList.Remove(courseGrade);
+                aGradesList.Remove(grade);
             }
         }
+
+        // FUNCTION WHICH RETURNS A BOOLEAN IF A SELECTED ALUMN HAS THE SELECTED GRADE
+        public bool ChecksAlumnSelectedGrade(string alumnID, double grade)
+        {
+            bool exist = false;
+            if (grade >= 0 && grade <= 10)
+            {
+                if(aGradesList.Contains(grade))
+                {
+                    exist = true;
+                }
+            }
+            return exist;
+        }
+
 
         // FUNCTION WHICH REMOVES ALL GRADES FROM AN ALUMN
-        public void ClearGradesFromAlumn()
+        public void ClearGradesFromAlumn(string alumnID)
         {
             aGradesList.Clear();
         }
@@ -68,15 +84,26 @@ namespace Exercise_6
         // FUNCTION WHICH STORES A STRING WITH ALL THE INFO ABOUT THE GRADES LIST FROM A POSITION WHICH WILL COINCIDE WITH SELECTED ALUMN
         public string StoresAlumnGradesInfo()
         {
+            int counter = 0;
             string AllgradesTxt = "";
-            string gradesTxt = "The grades from " + aName + " are: ";
+            string gradesTxt = "";
             if (aGradesList.Count != 0)
             {
                 for (int i = 0; i < aGradesList.Count; i++)
                 {
-                    gradesTxt += aGradesList[i] + "\n";
+                    if (counter < aGradesList.Count - 1)
+                    {
+                        gradesTxt += aGradesList[i] + " - ";
+                    }
+                    else
+                    {
+                        gradesTxt += aGradesList[i];
+                    }
+                    counter++;
+
                 }
-                AllgradesTxt = "And the grades from " + aName + " are: " + gradesTxt;
+                string averageGrade = AlumnGradesAverage().ToString();
+                AllgradesTxt = "And the grades from " + aName + " are:\n\n" + gradesTxt + "\n\nHaving a grade average of: " + averageGrade;
             }
             else
             {
@@ -89,8 +116,8 @@ namespace Exercise_6
         // FUNCTION WHICH SHOW ALL ALUMN INFO
         public string ShowsAlumnData()
         {
-            string aInfoTxt = "\nAlumn data: \n" + "Name: " + aName + "\n" + "ID: " + aID + "\n" + "Phone: " + aPhone + "\n\n";
-            aInfoTxt += StoresAlumnGradesInfo() + "\n"; // THIS WILL ADD THE SELECTED ALUMN INFO ABOUT THE GRADES IT HAS MADE.
+            string aInfoTxt = "Alumn data: \n" + "Name: " + aName + "\n" + "ID: " + aID + "\n" + "Phone: " + aPhone+ "\n" + "Course Cod: " + aCourseCod + "\n";
+            aInfoTxt += "\n" + StoresAlumnGradesInfo() + "\n"; // THIS WILL ADD THE SELECTED ALUMN INFO ABOUT THE GRADES IT HAS MADE.
             return aInfoTxt;
         }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,10 @@ using System.Xml.Linq;
 
 namespace Exercise_6
 {
+
+    // TODO LIST OF GRADES TO SHOW WHEN REMOVING?
+    // TODO VALIDAR QUE EL CURSO EN SU LISTA EXISTA AL AÑADIR ALUMNO A ESTE
+
     public class AlumnList
     {
         private List<Alumn> alumnList;
@@ -20,7 +25,7 @@ namespace Exercise_6
             alumnList = new List<Alumn>();
         }
 
-        //FUNCTION WHICH ADDS AN ALUMN TO THE ALUMN LIST
+        // FUNCTION WHICH ADDS AN ALUMN TO THE ALUMN LIST
         public void AddsAlumn(string alumnName, string alumnID, int alumnPhone, int courseCod)
         {
             Alumn newAlumn = new Alumn();
@@ -37,51 +42,164 @@ namespace Exercise_6
             alumnList.RemoveAt(alumnPosition);
         }
 
-        // FUNCTION WHICH CALCULATES THE AVERAGE GRADES FROM A SELECTED ALUMN
-        public double SelectAlumnGradesAverage(string alumnName)
+        // FUNCTION THAT SELECTS AN ALUMN FROM THE LIST AND ADDS A SELECTED GRADE
+        public bool GradeAdding(string alumnID, double alumnGrade)
         {
-            double alumnGradesAvg = 0;
+            bool gradeAdded = false;
             if (alumnList.Count != 0)
             {
-                for (int i = 0; i < alumnList.Count; i++)
+                int position = ReturnsAlumnPositionFromID(alumnID);
+                if (position != -1)
                 {
-                    alumnGradesAvg = alumnList[i].AlumnGradesAverage(); 
+                    if (alumnGrade >= 0 && alumnGrade <= 10)
+                    {
+                        alumnList[position].AddsSelectedAlumnGrade(alumnID, alumnGrade);
+                        gradeAdded = true;
+                    }
                 }
-            }  
-            return alumnGradesAvg;
+            }
+            return gradeAdded;
+        }
+
+        //FUNCTION WHICH ADDS MULTIPLE GRADES TO A SELECTED ALUMN
+        public void MultipleGradeAddingFromSelectedAlumn(string alumnID)
+        {
+            bool added = false;
+            do
+            {
+                string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: ");
+                if (CustomFunctions.RegexGradeValue(gradeValue))
+                {
+                    double grade = double.Parse(gradeValue);
+                    GradeAdding(alumnID, grade);
+                    MessageBox.Show("A grade with a value of " + grade + " has been added to this alumn.");
+
+                    //THIS RE ASKS IF YOU WANT TO ADD MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
+                    DialogResult keepAdding = MessageBox.Show("Do you want to keep adding grades?", "Keep Adding Grades", MessageBoxButtons.YesNo);
+                    if (keepAdding == DialogResult.No)
+                    {
+                        added = true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Grade value invalid, select a value between 0 and 10.");
+                }
+            } while (!added);
+        }
+
+        // FUNCTION THAT RETURNS IF A GRADE EXIST FROM THE SELECTED ALUMN FROM ALL THE ALUMNS LIST
+        public bool GradeExistanceCheck(string alumnID, double alumnGrade)
+        {
+            bool gradeExist = false;
+            if (alumnList.Count != 0)
+            {
+                int position = ReturnsAlumnPositionFromID(alumnID);
+                if (position != -1)
+                {
+                    if (alumnGrade >= 0 && alumnGrade <= 10)
+                    {
+                        gradeExist = alumnList[position].ChecksAlumnSelectedGrade(alumnID, alumnGrade);
+                    }
+                }
+            }
+            return gradeExist;
+        }
+
+        // FUNCTION THAT SELECTS AN ALUMN FROM THE LIST AND REMOVES IT A SELECTED GRADE
+        public void GradeRemoval(string alumnID, double alumnGrade)
+        {
+            if (alumnList.Count != 0)
+            {
+                int position = ReturnsAlumnPositionFromID(alumnID);
+                if (position != -1)
+                {
+                    if (alumnGrade >= 0 && alumnGrade <= 10)
+                    {
+                        alumnList[position].RemovesSelectedAlumnGrade(alumnID, alumnGrade);
+                    }
+                }
+            }
+        }
+
+        //FUNCTION WHICH REMOVES MULTIPLE GRADES TO A SELECTED ALUMN
+        public void MultipleGradeRemovingFromSelectedAlumn(string alumnID)
+        {
+            if (SelectedAlumnHasGrades(alumnID))
+            {
+                bool removed = false;
+                do
+                {
+                    string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: ");
+                    if (CustomFunctions.RegexGradeValue(gradeValue))
+                    {
+                        double grade = double.Parse(gradeValue);
+                        if (GradeExistanceCheck(alumnID, grade))
+                        {
+                            GradeRemoval(alumnID, grade);
+                            MessageBox.Show("A grade with a value of " + grade + " has been cleared from this alumn.");
+
+                            if (SelectedAlumnHasGrades(alumnID))
+                            {
+                                //THIS RE ASKS IF YOU WANT TO ADD MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
+                                DialogResult keepRemoving = MessageBox.Show("Do you want to keep removing grades?", "Keep Removing Grades", MessageBoxButtons.YesNo);
+                                if (keepRemoving == DialogResult.No)
+                                {
+                                    removed = true;
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("This alumn doesn't have any grades left to remove.");
+                                removed = true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("The alumn has not any grade with that value, try another value.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Grade value invalid, select a value between 0 and 10.");
+                    }
+                } while (!removed);
+            }
+            else
+            {
+                MessageBox.Show("The alumn has not any grades added. ");
+            }
+        }
+
+        // FUNCTION THAT SELECTS AN ALUMN FROM THE LIST AND CLEARS ALL THE GRADES FROM IT
+        public void GradesClearing(string alumnID)
+        {
+            if (alumnList.Count != 0)
+            {
+                int position = ReturnsAlumnPositionFromID(alumnID);
+                if (position != -1)
+                {
+                        alumnList[position].ClearGradesFromAlumn(alumnID);
+                }
+            }
         }
 
         // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST
         public string ShowsAlumnsList()
         {
-            string alumnListTxt = "List of alumns: \n";
+            string alumnListTxt = "List of alumns: \n\n";
             if (alumnList.Count != 0)
             {
                 foreach(Alumn alumn in alumnList)
                 {
-                    alumnListTxt += alumn.ShowsAlumnData();
+                    alumnListTxt += alumn.ShowsAlumnData() + "\n";
                 }
             }
             return alumnListTxt;
         }
 
-        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST
-        public string ShowsSelectedAlumnsData(string alumnID)
-        {
-            string alumnTxt = "";
-            bool found = false;
-            if (alumnList.Count != 0)
-            {
-                for (int i = 0; i < alumnList.Count && !found; i++)
-                {
-                    alumnTxt = alumnList[i].ShowsAlumnData();
-                }
-            }
-            return alumnTxt;
-        }
-
-        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST
-        public string ShowsSelectedAlumnsDataByID(string alumnID)
+        // FUNCTION WHICH COLLECTS ALL DATA BY ID FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST 
+        public string ShowsSelectedAlumnDataByID(string alumnID)
         {
             string alumnTxt = "";
             if (alumnList.Count != 0)
@@ -89,23 +207,6 @@ namespace Exercise_6
                 alumnTxt = alumnList[ReturnsAlumnPositionFromID(alumnID)].ShowsAlumnData();
             }
             return alumnTxt;
-        }
-
-        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST
-        public string ShowsAlumnsByCourse(int courseCod)
-        {
-            string alumnByCourseTxt = "The alumns in the course [" + courseCod +"] are: \n\n";
-            if (alumnList.Count != 0)
-            {
-                for(int i = 0; i < alumnList.Count; i++)
-                {
-                    if (courseCod == alumnList[i].CourseCod)
-                    {
-                        alumnByCourseTxt = alumnList[i].Name + "\n";
-                    }
-                }
-            }
-            return alumnByCourseTxt;
         }
 
         // FUNCTION WHICH COUNTS ALL ALUMNS THAT SHARE THE SAME NAME
@@ -148,17 +249,17 @@ namespace Exercise_6
             {
                 // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
                 // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n");
+                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
 
                 for (int i = 0; i < matchingAlumnsName.Count; i++)
                 {
                     infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
                 }
 
-                infoMessage.AppendLine("Select the number to delete from list:");
+                infoMessage.AppendLine("Select the number to delete from list:\n");
 
                 string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedAlumnIndex = 0;
+                int selectedAlumnIndex;
 
                 // THIS MAKES THE INPUT SELECTED TO ASIGN IT TO AN ALUMN INDEX AND NEXT IT WILL DELETE ASK IF YOU WANT TO REMOVE THE SELECTED ONE
                 if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
@@ -179,7 +280,7 @@ namespace Exercise_6
                                 if (alumnName == alumnList[i].Name)
                                 {
                                     RemovesAlumn(i);
-                                    MessageBox.Show("Alumn removed successfully.");
+                                    MessageBox.Show("Alumn cleared successfully.");
                                     deleted = true;
                                 }
                             }
@@ -187,7 +288,7 @@ namespace Exercise_6
                         else
                         {
                             userInput = Interaction.InputBox(infoMessage.ToString());
-                            result = MessageBox.Show(selectedAlumnInfo + "Do you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
+                            result = MessageBox.Show(selectedAlumnInfo + "\nDo you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
                         }
                     } while (!deleted);
                 }
@@ -225,45 +326,329 @@ namespace Exercise_6
             {
                 // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
                 // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n");
+                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
 
                 for (int i = 0; i < matchingAlumnsName.Count; i++)
                 {
                     infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
                 }
 
-                infoMessage.AppendLine("Select the number of alumn to check more data from it:");
+                infoMessage.AppendLine("Select the number of alumn to check more data from it:\n");
 
                 string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedAlumnIndex = 0;
+                int selectedAlumnIndex;
 
                 if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
                 {
                     // GETS THE SELECTED ALUMN INFU
                     string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
 
-                    // ASKS THE USER IF THEY WANT TO REMOVE THE SELECTED ALUMN
-                    DialogResult result = MessageBox.Show(selectedAlumnInfo + "Is this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
-                    bool show = false;
+                    // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
+                    DialogResult result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
+                    bool showed = false;
                     do
                     {
                         if (result == DialogResult.Yes)
                         {
-                            // FIND THE MATCHING ALUMN IN THE ALUMNLIST AND REMOVE IT
-                            for (int i = 0; i < alumnList.Count && !show; i++)
+                            showed = true;
+                        }
+                        else
+                        {
+                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
+                        }
+                    } while (!showed);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No alumns found with the given name.");
+            }
+        }
+
+        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS WITH SAME NAME ADDED INTO THE ALUMNS LIST TO ADD THEM GRADES
+        public void SelectSameNameAlumnsToAddGrade(string alumnName)
+        {
+            bool found = false;
+
+            // THIS STORES THE ALUMNS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM ALUMNS LIST
+            List<string> matchingAlumnsName = new List<string>();
+
+            // THIS STORES THESE ALUMNS ID IN ANOTHER LIST TO REUSE THEIR ID LATER
+            List<string> SameNameAlumnsID = new List<string>();
+
+            if (alumnList.Count != 0)
+            {
+                for (int i = 0; i < alumnList.Count; i++)
+                {
+                    if (alumnName == alumnList[i].Name)
+                    {
+                        found = true;
+                        string alumnData = alumnList[i].ShowsSimplierAlumnData();
+                        string alumnID = alumnList[i].ID;
+                        matchingAlumnsName.Add(alumnData);
+                        SameNameAlumnsID.Add(alumnID);
+
+                    }
+                }
+            }
+
+            if (found)
+            {
+                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
+                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+
+                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                {
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                }
+
+                infoMessage.AppendLine("Select the number of alumn to add a grade from the list:\n");
+
+                string userInput = Interaction.InputBox(infoMessage.ToString());
+                int selectedAlumnIndex;
+
+                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                {
+                    // GETS THE SELECTED ALUMN INFU AND ID
+                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+                    string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
+
+                    DialogResult result;
+                    bool added = false;
+                    do
+                    {
+                        // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
+                        result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to add a grade?", "Add Grade", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            do
                             {
-                                if (alumnName == alumnList[i].Name)
+                                string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: ");
+                                if (CustomFunctions.RegexGradeValue(gradeValue))
                                 {
-                                    show = true;
+                                    double grade = double.Parse(gradeValue);
+                                    GradeAdding(selectedAlumnID, grade);
+                                    MessageBox.Show("A grade with a value of " + grade + " has been added to this alumn.");
+
+                                    //THIS RE ASKS IF YOU WANT TO ADD MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
+                                    DialogResult keepAdding = MessageBox.Show("Do you want to keep adding grades?", "Keep Adding Grades", MessageBoxButtons.YesNo);
+                                    if (keepAdding == DialogResult.No)
+                                    {
+                                        added = true;
+                                    }
                                 }
+                                else
+                                {
+                                    MessageBox.Show("Grade value invalid, select a value between 0 and 10.");
+                                }
+                            } while (!added);
+                        }
+                        else
+                        {
+                            userInput = Interaction.InputBox(infoMessage.ToString());
+                        }
+                    } while (!added);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No alumns found with the given name.");
+            }
+        }
+
+        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS WITH SAME NAME ADDED INTO THE ALUMNS LIST TO REMOVE THEIR SELECTED GRADES
+        public void SelectSameNameAlumnsToRemoveGrade(string alumnName)
+        {
+            bool found = false;
+
+            // THIS STORES THE ALUMNS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM ALUMNS LIST
+            List<string> matchingAlumnsName = new List<string>();
+
+            // THIS STORES THESE ALUMNS ID IN ANOTHER LIST TO REUSE THEIR ID LATER
+            List<string> SameNameAlumnsID = new List<string>();
+
+            if (alumnList.Count != 0)
+            {
+                    for (int i = 0; i < alumnList.Count; i++)
+                    {
+                        if (alumnName == alumnList[i].Name)
+                        {                     
+                            string alumnData = alumnList[i].ShowsSimplierAlumnData();
+                            string alumnID = alumnList[i].ID;
+                            matchingAlumnsName.Add(alumnData);
+                            SameNameAlumnsID.Add(alumnID);
+                            found = true;
+                        }
+                    }
+                }
+
+            if (found)
+            {
+                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
+                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+
+                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                {
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                }
+
+                infoMessage.AppendLine("Select the number of alumn to remove a grade from the list:\n");
+
+                string userInput = Interaction.InputBox(infoMessage.ToString());
+                int selectedAlumnIndex;
+
+                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                {
+                    // GETS THE SELECTED ALUMN INFU AND ID
+                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+                    string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
+
+                    DialogResult result;
+                    bool removed = false;
+                    do
+                    {
+                        // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
+                        result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to remove a grade?", "Add Grade", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            do
+                            {
+                                string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: ");
+                                if (CustomFunctions.RegexGradeValue(gradeValue))
+                                {
+                                    double grade = double.Parse(gradeValue);
+                                    if (GradeExistanceCheck(selectedAlumnID, grade))
+                                    {
+                                        GradeRemoval(selectedAlumnID, grade);
+                                        MessageBox.Show("A grade with a value of " + grade + " has been cleared from this alumn.");
+
+                                        if (SelectedAlumnHasGrades(selectedAlumnID))
+                                        {
+                                            //THIS RE ASKS IF YOU WANT TO ADD MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
+                                            DialogResult keepRemoving = MessageBox.Show("Do you want to keep removing grades?", "Keep Removing Grades", MessageBoxButtons.YesNo);
+                                            if (keepRemoving == DialogResult.No)
+                                            {
+                                                removed = true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("This alumn doesn't have any grades left to remove.");
+                                            removed = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("The alumn has not any grade with that value, try another value.");
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Grade value invalid, select a value between 0 and 10.");
+                                }
+                            } while (!removed);
+                        }
+                        else
+                        {
+                            userInput = Interaction.InputBox(infoMessage.ToString());
+                        }
+                    } while (!removed);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No alumns found with the given name.");
+            }
+        }
+
+        // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS WITH SAME NAME ADDED INTO THE ALUMNS LIST TO REMOVE THEIR SELECTED GRADES
+        public void SelectSameNameAlumnsToClearGrades(string alumnName)
+        {
+            bool found = false;
+
+            // THIS STORES THE ALUMNS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM ALUMNS LIST
+            List<string> matchingAlumnsName = new List<string>();
+
+            // THIS STORES THESE ALUMNS ID IN ANOTHER LIST TO REUSE THEIR ID LATER
+            List<string> SameNameAlumnsID = new List<string>();
+
+            if (alumnList.Count != 0)
+            {
+                for (int i = 0; i < alumnList.Count; i++)
+                {
+                    if (alumnName == alumnList[i].Name)
+                    {
+                        string alumnData = alumnList[i].ShowsSimplierAlumnData();
+                        string alumnID = alumnList[i].ID;
+                        matchingAlumnsName.Add(alumnData);
+                        SameNameAlumnsID.Add(alumnID);
+                        found = true;
+                    }
+                }
+            }
+
+            if (found)
+            {
+                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
+                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+
+                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                {
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                }
+
+                infoMessage.AppendLine("Select the number of alumn to clear all its grades from the list:\n");
+
+                string userInput = Interaction.InputBox(infoMessage.ToString());
+                int selectedAlumnIndex;
+
+                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                {
+                    // GETS THE SELECTED ALUMN INFU AND ID
+                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+                    string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
+
+                    DialogResult result;
+                    bool cleared = false;
+                    do
+                    {
+                        // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
+                        result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to clear it's grades?", "Clear Grades", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            if (SelectedAlumnHasGrades(selectedAlumnID))
+                            {
+                                GradesClearing(selectedAlumnID);
+                                MessageBox.Show("All grades from this alumn has been cleared");
+                                cleared = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("This alumn doesn't have any grades added.");
+                                cleared = true;
                             }
                         }
                         else
                         {
                             userInput = Interaction.InputBox(infoMessage.ToString());
-                            result = MessageBox.Show(selectedAlumnInfo + "Is this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
                         }
-                    } while (!show);
+                    } while (!cleared);
                 }
                 else
                 {
@@ -284,7 +669,7 @@ namespace Exercise_6
             {
                 for (int i = 0; i < alumnList.Count; i++)
                 {
-                    if (alumnList[i].AlumnGradesAverage() >= 5)
+                    if (alumnList[i].AlumnGradesAverage() >= 5 && SelectedAlumnHasGrades(alumnList[i].ID))
                     {
                         gradesMoreThan5 += alumnList[i].ShowsAlumnData() + "\n";
                     }
@@ -293,7 +678,24 @@ namespace Exercise_6
             return gradesMoreThan5;
         }
 
-        //FUNCTION WHICH RETURNS ALL ALUMNS WHOSE AVERAGE GRADE IS LOWER THAN 5
+        // FUNCTION WHICH COUNTS HOW MANY ALUMNS HAS AN AVERAGE EQUAL OR MORE THAN A 5
+        public int CountAlumnsWhoseGradeIsEqualOrBiggerThan5()
+        {
+            int alumnGradesMoreThan5 = 0;
+            if (alumnList.Count != 0)
+            {
+                for (int i = 0; i < alumnList.Count; i++)
+                {
+                    if (alumnList[i].AlumnGradesAverage() >= 5 && SelectedAlumnHasGrades(alumnList[i].ID))
+                    {
+                        alumnGradesMoreThan5++;
+                    }
+                }
+            }
+            return alumnGradesMoreThan5;
+        }
+
+        // FUNCTION WHICH RETURNS ALL ALUMNS WHOSE AVERAGE GRADE IS LOWER THAN 5
         public string ShowsAlumnsWhoseGradesAvgIsLowerThan5()
         {
             string gradesLowerThan5 = "The alumns with the grade lower than 5 are: \n\n";
@@ -301,7 +703,7 @@ namespace Exercise_6
             {
                 for (int i = 0; i < alumnList.Count; i++)
                 {
-                    if (alumnList[i].AlumnGradesAverage() < 5)
+                    if (alumnList[i].AlumnGradesAverage() < 5 && SelectedAlumnHasGrades(alumnList[i].ID))
                     {
                         gradesLowerThan5 += alumnList[i].ShowsAlumnData() + "\n";
                     }
@@ -310,8 +712,25 @@ namespace Exercise_6
             return gradesLowerThan5;
         }
 
-        //FUNCTION WHICH RETURNS ALL ALUMNS WHO ARE IN THE SELECTED COURSE
-        public string ShowAlumnsByCourseCod(int courseCod)
+        // FUNCTION WHICH COUNTS HOW MANY ALUMNS HAS AN AVERAGE LOWER THAN A 5
+        public int CountAlumnsWhoseGradeIsLowerThan5()
+        {
+            int alumnGradesLowerThan5 = 0;
+            if (alumnList.Count != 0)
+            {
+                for (int i = 0; i < alumnList.Count; i++)
+                {
+                    if (alumnList[i].AlumnGradesAverage() < 5 && SelectedAlumnHasGrades(alumnList[i].ID))
+                    {
+                        alumnGradesLowerThan5++;
+                    }
+                }
+            }
+            return alumnGradesLowerThan5;
+        }
+
+        // FUNCTION WHICH RETURNS ALL ALUMNS WHO ARE IN THE SELECTED COURSE
+        public string ShowAlumnsBySelectedCourseCod(int courseCod)
         {
             string alumnsInCourse = "The alumns in the course (" + courseCod + ") are: \n\n";
             if (alumnList.Count != 0)
@@ -327,7 +746,7 @@ namespace Exercise_6
             return alumnsInCourse;
         }
 
-        //FUNCTION THAT ORDERS ALUMNS IN ALPHABETICAL ORDER
+        // FUNCTION THAT ORDERS ALUMNS IN ALPHABETICAL ORDER
         public void SortAlumnListAlphabetically()
         {
             Alumn auxAlumnList;
@@ -343,6 +762,51 @@ namespace Exercise_6
                     }
                 }
             }
+        }
+
+        // FUNCTION WHICH RETURNS IF THERE ARE ALUMNS IN THE SELECTED COURSE COD
+        public bool AlumnsInCourse(int courseCod)
+        {
+            bool alumnInCourse = false;
+            for(int i = 0; i < alumnList.Count && !alumnInCourse; i++)
+            {
+                if(courseCod == alumnList[i].CourseCod)
+                {
+                    alumnInCourse = true;
+                }
+            }
+            return alumnInCourse;
+        }
+
+        // FUNCTION THAT RETURNS IF THE SELECTED COURSE COD HAS ALUMNS IN IT
+        public bool SelectedAlumnHasGrades(string alumnID)
+        {
+            bool hasGrades = true;
+            for (int i = 0; i < alumnList.Count && hasGrades; i++)
+            {
+                if (alumnID == alumnList[i].ID)
+                {
+                    if(alumnList[i].Grades.Count() == 0)
+                    {
+                        hasGrades = false;
+                    }
+                }
+            }
+            return hasGrades;
+        }
+
+        // FUNCTION WHICH RETURNS HOW MANY ALUMNS HAS GRADES ADDED
+        public int AlumnsWithGradesCounter()
+        {
+            int alumnsWithGrades = 0;
+            for (int i = 0; i < alumnList.Count; i++)
+            {
+                if (alumnList[i].Grades.Count() > 0)
+                {
+                alumnsWithGrades++;
+                }             
+            }
+            return alumnsWithGrades;
         }
 
         // FUNCTION WHICH GETS AN UNIQUE ID WHEN THERE'S ONLY AN UNIQUE NAME IN THE LIST
@@ -401,7 +865,7 @@ namespace Exercise_6
             return alumnName;
         }
 
-        // FUNCTION WHICH RETURNS THE COURSE ID OF THE SELECTED ALUMN
+        // FUNCTION WHICH RETURNS THE COURSE ID OF THE SELECTED ALUMN         ????????NOT USED???????
         public int ReturnsAlumnCourse(string alumnID)
         {
             int courseCod = -1;
@@ -427,6 +891,20 @@ namespace Exercise_6
                 }
             }
             return index;
+        }
+
+        // FUNCTION WHICH RETURNS THE ID FROM AN ALUMN IN THE LIST
+        public string ReturnsAlumnIDFromPosition(int alumnPosition)
+        {
+            string alumnID = "";
+            for (int i = 0; i < alumnList.Count; i++)
+            {
+                if (alumnPosition == i)
+                {
+                    alumnID = alumnList[i].ID;
+                }
+            }
+            return alumnID;
         }
 
         // FUNCTION WHICH RETURNS THE COUNT OF THE NUMBER OF ALUMNS IN THE LIST
