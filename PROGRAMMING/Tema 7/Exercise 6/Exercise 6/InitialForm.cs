@@ -36,8 +36,10 @@ namespace Exercise_6
 
         private void btnTeacher_Click(object sender, EventArgs e)
         {
-            TeacherForm teacherForm = new TeacherForm(teacherList);
+            TeacherForm teacherForm = new TeacherForm(teacherList, alumnList);
             teacherForm.ShowDialog();
         }
+
+
     }
 }

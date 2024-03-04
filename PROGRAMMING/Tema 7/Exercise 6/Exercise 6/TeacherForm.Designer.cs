@@ -30,6 +30,7 @@
         {
             this.gpSubjects = new System.Windows.Forms.GroupBox();
             this.btnRemoveSubjectToSelectedTeacher = new System.Windows.Forms.Button();
+            this.btnShowTeachersBySelectedSubject = new System.Windows.Forms.Button();
             this.btnAddSubjectToSelectedTeacher = new System.Windows.Forms.Button();
             this.gpTeachers = new System.Windows.Forms.GroupBox();
             this.btnShowTeacherData = new System.Windows.Forms.Button();
@@ -37,7 +38,6 @@
             this.btnShowTeacherList = new System.Windows.Forms.Button();
             this.btnRemoveTeacher = new System.Windows.Forms.Button();
             this.btnAddTeacher = new System.Windows.Forms.Button();
-            this.btnShowTeachersBySelectedSubject = new System.Windows.Forms.Button();
             this.gpSubjects.SuspendLayout();
             this.gpTeachers.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +62,15 @@
             this.btnRemoveSubjectToSelectedTeacher.TabIndex = 9;
             this.btnRemoveSubjectToSelectedTeacher.Text = "Remove Subject To Selected Teacher";
             this.btnRemoveSubjectToSelectedTeacher.UseVisualStyleBackColor = true;
+            // 
+            // btnShowTeachersBySelectedSubject
+            // 
+            this.btnShowTeachersBySelectedSubject.Location = new System.Drawing.Point(25, 90);
+            this.btnShowTeachersBySelectedSubject.Name = "btnShowTeachersBySelectedSubject";
+            this.btnShowTeachersBySelectedSubject.Size = new System.Drawing.Size(815, 44);
+            this.btnShowTeachersBySelectedSubject.TabIndex = 8;
+            this.btnShowTeachersBySelectedSubject.Text = "Show All Teachers By Subject";
+            this.btnShowTeachersBySelectedSubject.UseVisualStyleBackColor = true;
             // 
             // btnAddSubjectToSelectedTeacher
             // 
@@ -130,15 +139,7 @@
             this.btnAddTeacher.TabIndex = 2;
             this.btnAddTeacher.Text = "Add Teacher";
             this.btnAddTeacher.UseVisualStyleBackColor = true;
-            // 
-            // btnShowTeachersBySelectedSubject
-            // 
-            this.btnShowTeachersBySelectedSubject.Location = new System.Drawing.Point(25, 90);
-            this.btnShowTeachersBySelectedSubject.Name = "btnShowTeachersBySelectedSubject";
-            this.btnShowTeachersBySelectedSubject.Size = new System.Drawing.Size(815, 44);
-            this.btnShowTeachersBySelectedSubject.TabIndex = 8;
-            this.btnShowTeachersBySelectedSubject.Text = "Show All Teachers By Subject";
-            this.btnShowTeachersBySelectedSubject.UseVisualStyleBackColor = true;
+            this.btnAddTeacher.Click += new System.EventHandler(this.btnAddTeacher_Click);
             // 
             // TeacherForm
             // 

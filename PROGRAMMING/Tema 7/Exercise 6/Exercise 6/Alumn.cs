@@ -58,13 +58,11 @@ namespace Exercise_6
             return exist;
         }
 
-
         // FUNCTION WHICH REMOVES ALL GRADES FROM AN ALUMN
         public void ClearGradesFromAlumn(string alumnID)
         {
             aGradesList.Clear();
         }
-
 
         //FUNCTION WHICH RETURNS THE AVERAGE FROM IT'S GRADES
         public double AlumnGradesAverage()
@@ -111,7 +109,6 @@ namespace Exercise_6
             }
             return AllgradesTxt;
         }
-
 
         // FUNCTION WHICH SHOW ALL ALUMN INFO
         public string ShowsAlumnData()
