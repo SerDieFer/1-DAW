@@ -5,7 +5,9 @@ using System.Xml.Linq;
 
 namespace Exercise_6
 {
-    // TODO CANCELAR BOTON?
+    // TODO CANCEL BUTTON?
+    // CHECKS EVERYTHING WORKS
+    // RENAME MB CONTENT
 
     public partial class AlumnForm : Form
     {
@@ -13,16 +15,18 @@ namespace Exercise_6
         {
             InitializeComponent();
         }
-
+        
         public AlumnList alumnList;
+        public TeacherList teacherList;
         private void AlumnForm_Load(object sender, EventArgs e)
         {
         }
 
-        public AlumnForm(AlumnList alumnList)
+        public AlumnForm(AlumnList alumnList, TeacherList teacherList)
         {
             InitializeComponent();
             this.alumnList = alumnList;
+            this.teacherList = teacherList;
         }
 
         // IS DONE
@@ -42,42 +46,58 @@ namespace Exercise_6
                     {
                         if (!alumnList.AlreadyUsedID(alumnID))
                         {
-                            string phoneValue = Interaction.InputBox("Introduce the alumn's phone number (9 DIGITS): \nIt must start with 6 or 7!!\n\nExample 1: 612345678 \nExample 2: 712345678");
-
-                            if (CustomFunctions.RegexPhone(phoneValue))
+                            if (!teacherList.AlreadyUsedID(alumnID))
                             {
-                                int phone = int.Parse(phoneValue);
-                                if (!alumnList.AlreadyUsedPhone(phone))
+                                string phoneValue = Interaction.InputBox("Introduce the alumn's phone number (9 DIGITS): \nIt must start with 6 or 7!!\n\nExample 1: 612345678 \nExample 2: 712345678");
+
+                                if (CustomFunctions.RegexPhone(phoneValue))
                                 {
-                                    string courseCodValue = Interaction.InputBox("Introduce the alumn's course code \n(MUST BE BIGGER THAN 0): ");
-
-                                    if (CustomFunctions.RegexCourseCod(courseCodValue) && int.Parse(courseCodValue) > 0)
+                                    int phone = int.Parse(phoneValue);
+                                    if (!alumnList.AlreadyUsedPhone(phone))
                                     {
-                                        int courseCod = int.Parse(courseCodValue);
-                                        alumnList.AddsAlumn(name, alumnID, phone, courseCod);
-                                        introduced = true;
-                                        MessageBox.Show(name + " was registered.");
+                                        if (!teacherList.AlreadyUsedPhone(phone))
+                                        {
+                                            string courseCodValue = Interaction.InputBox("Introduce the alumn's course code \n(MUST BE BIGGER THAN 0): ");
 
+                                            if (CustomFunctions.RegexCourseCod(courseCodValue) && int.Parse(courseCodValue) > 0)
+                                            {
+                                                int courseCod = int.Parse(courseCodValue);
+                                                alumnList.AddsAlumn(name, alumnID, phone, courseCod);
+                                                introduced = true;
+                                                MessageBox.Show(name + " was registered.");
+
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show("The course format is not correct, try again.");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Not possible, this phone number is already used by a teacher!!");
+                                            introduced = true;
+                                        }
                                     }
                                     else
                                     {
-                                        MessageBox.Show("The course format is not correct, try again.");
+                                        MessageBox.Show("Not possible, this phone number is already used by an alumn!!");
+                                        introduced = true;
                                     }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("The phone is already used, so this alumn was registered in a course before!!");
-                                    introduced = true;
+                                    MessageBox.Show("The phone format is not correct, try again.");
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("The phone format is not correct, try again.");
+                                MessageBox.Show("Not possible, this ID is already used by a teacher!!");
+                                introduced = true;
                             }
                         }
                         else
                         {
-                            MessageBox.Show("The ID is already used, so this alumn was registered in a course before!!");
+                            MessageBox.Show("Not possible, this ID is already used by an alumn!!");
                             introduced = true;
                         }
                     }

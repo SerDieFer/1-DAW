@@ -30,7 +30,7 @@ namespace Exercise_6
 
         private void btnAlumn_Click(object sender, EventArgs e)
         {
-            AlumnForm alumnForm = new AlumnForm(alumnList);
+            AlumnForm alumnForm = new AlumnForm(alumnList, teacherList);
             alumnForm.ShowDialog();
         }
 

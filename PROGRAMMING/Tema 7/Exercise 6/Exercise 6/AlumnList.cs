@@ -14,7 +14,8 @@ namespace Exercise_6
 {
 
     // TODO LIST OF GRADES TO SHOW WHEN REMOVING?
-    // TODO VALIDAR QUE EL CURSO EN SU LISTA EXISTA AL AÑADIR ALUMNO A ESTE
+    // TODO VALIDATE COURSE EXIST WHEN ADDING AN ALUMN TO IT
+    // TODO REFACTORIZAR Y REUSAR EL MULTIPLE ADD/REMOVE EN SAMENAME X
 
     public class AlumnList
     {
@@ -198,7 +199,7 @@ namespace Exercise_6
             return alumnListTxt;
         }
 
-        // FUNCTION WHICH COLLECTS ALL DATA BY ID FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST 
+        // FUNCTION WHICH COLLECTS THE SELECTED ALUMN DATA BY ID FROM ALL THE ALUMNS ADDED INTO THE ALUMNS LIST 
         public string ShowsSelectedAlumnDataByID(string alumnID)
         {
             string alumnTxt = "";

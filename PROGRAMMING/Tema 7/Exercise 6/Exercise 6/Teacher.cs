@@ -88,8 +88,18 @@ namespace Exercise_6
         // FUNCTION WHICH SHOW ALL TEACHER INFO
         public string ShowsTeacherData()
         {
-            string tInfoTxt = "Teacher data: \n" + "Name: " + tName + "\n" + "ID: " + tID + "\n" + "Phone: " + tPhone + "\n" + "Mentor Course Cod: " + tCourseMentorCod + "\n";
-            tInfoTxt += "\n" + StoresTeacherSubjectsInfo() + "\n"; // THIS WILL ADD THE SELECTED TEACHER INFO ABOUT THE SUBJECTS IT IMPARTS.
+            string tInfoTxt = "";
+            if (tCourseMentorCod == -1)
+            {
+                tInfoTxt = "Teacher data: \n" + "Name: " + tName + "\n" + "ID: " + tID + "\n" + "Phone: " + tPhone + "\n";
+                tInfoTxt += "\n" + StoresTeacherSubjectsInfo() + "\n";
+            }
+            else
+            {
+                tInfoTxt = "Teacher data: \n" + "Name: " + tName + "\n" + "ID: " + tID + "\n" + "Phone: " + tPhone + "\n" + "Mentor Course Cod: " + tCourseMentorCod + "\n";
+                tInfoTxt += "\n" + StoresTeacherSubjectsInfo() + "\n";
+            }
+            // THIS WILL ADD THE SELECTED TEACHER INFO ABOUT THE SUBJECTS IT IMPARTS.
             return tInfoTxt;
         }
 
