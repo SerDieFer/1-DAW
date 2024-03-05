@@ -12,10 +12,8 @@ using System.Xml.Linq;
 
 namespace Exercise_6
 {
-
-    // TODO LIST OF GRADES TO SHOW WHEN REMOVING?
-    // TODO VALIDATE COURSE EXIST WHEN ADDING AN ALUMN TO IT
     // TODO REFACTORIZAR Y REUSAR EL MULTIPLE ADD/REMOVE EN SAMENAME X
+    // TODO LIST OF GRADES TO SHOW WHEN REMOVING?
 
     public class AlumnList
     {
@@ -317,7 +315,7 @@ namespace Exercise_6
                     if (alumnName == alumnList[i].Name)
                     {
                         found = true;
-                        string alumnData = alumnList[i].ShowsSimplierAlumnData();
+                        string alumnData = alumnList[i].ShowsAlumnData();
                         matchingAlumnsName.Add(alumnData);
                     }
                 }

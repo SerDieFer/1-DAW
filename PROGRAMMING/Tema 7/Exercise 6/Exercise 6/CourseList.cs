@@ -17,20 +17,23 @@ namespace Exercise_6
         }
 
         //FUNCTION WHICH ADDS A COURSE TO THE COURSES LIST
-        public void AddsCourse(int courseID, string courseName)
+        public void AddsCourse(int courseCod, string courseName)
         {
             Course newCourse = new Course();
 
             newCourse.Name = courseName;
-            newCourse.Cod = courseID;
+            newCourse.Cod = courseCod;
 
             courseList.Add(newCourse);
         }
 
         // FUNCTION WHICH REMOVES A COURSE FROM THIS LIST
-        public void RemovesCourse(int courseID)
+        public void RemovesCourse(int courseCod)
         {
-            courseList.RemoveAt(ReturnsCoursePosition(courseID));
+            if (courseList.Count != 0)
+            {
+                courseList.RemoveAt(ReturnsCoursePosition(courseCod));
+            }
         }
 
         // FUNCTION WHICH COLLECTS ALL COURSES FROM THE LIST
@@ -48,32 +51,48 @@ namespace Exercise_6
         }
 
         // FUNCTION WHICH COLLECTS ALL DATA FROM THE SELECTED COURSE
-        public string ShowsSelectedCourseData(int courseID)
+        public string ShowsSelectedCourseData(int courseCod)
         {
             string courseDataTxt = "";
             if (courseList.Count != 0)
             {
-                courseDataTxt += courseList[ReturnsCoursePosition(courseID)].ShowsCourseData();
+                courseDataTxt += courseList[ReturnsCoursePosition(courseCod)].ShowsCourseData();
+            }
+            else
+            {
+                courseDataTxt = "There isn't any added course to the course list";
             }
             return courseDataTxt;
         }
 
-        //TODO ALUMNS IN SELECTED COURSE //
-
-
         // FUNCTION WHICH RETURNS THE POSITION OF THE COURSE IN THE LIST, IF IT'S NEGATIVE THE COURSE IS NOT IN THE LIST
-        public int ReturnsCoursePosition(int courseID)
+        public int ReturnsCoursePosition(int courseCod)
         {
             int index = -1;
             for (int i = 0; i < courseList.Count; i++)
             {
-                if (courseID == courseList[i].Cod)
+                if (courseCod == courseList[i].Cod)
                 {
                     index = i;
                 }
             }
             return index;
         }
+
+        // FUNCTION WHICH RETURNS THE NAME OF THE COURSE IN THE LIST
+        public string ReturnsCourseName(int courseCod)
+        {
+            string courseName = "";
+            for (int i = 0; i < courseList.Count; i++)
+            {
+                if (courseCod == courseList[i].Cod)
+                {
+                    courseName = courseList[i].Name;
+                }
+            }
+            return courseName;
+        }
+
 
         // FUNCTION WHICH RETURNS THE COUNT OF THE NUMBER OF COURSES IN THE LIST
         public int CountsTotalCourses()

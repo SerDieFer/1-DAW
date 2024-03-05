@@ -15,7 +15,7 @@ namespace Exercise_6
 {
     // TODO CANCEL BUTTON?
     // CHECKS EVERYTHING WORKS
-    // RENAME MB CONTENT
+    // CANT ADD TUTOR IF THERE'S NO COURSE
 
     public partial class TeacherForm : Form
     {
@@ -26,15 +26,18 @@ namespace Exercise_6
 
         public TeacherList teacherList;
         public AlumnList alumnList;
+        public CourseList courseList;
+
         private void TeacherForm_Load(object sender, EventArgs e)
         {
         }
  
-        public TeacherForm (TeacherList teacherList, AlumnList alumnList)
+        public TeacherForm (TeacherList teacherList, AlumnList alumnList, CourseList courseList)
         {
             InitializeComponent();
             this.teacherList = teacherList;
             this.alumnList = alumnList;
+            this.courseList = courseList;
         }
 
         private void btnAddTeacher_Click(object sender, EventArgs e)
@@ -43,7 +46,7 @@ namespace Exercise_6
             bool introduced = false;
             do
             {
-                string teacherName = Interaction.InputBox("Introduce the teacher's teacherName (ONLY LETTERS): ");
+                string teacherName = Interaction.InputBox("Introduce the teacher's name (ONLY LETTERS): ");
 
                 if (CustomFunctions.RegexName(teacherName))
                 {
@@ -72,10 +75,19 @@ namespace Exercise_6
                                                 if (CustomFunctions.RegexCourseCod(mentorCourseCod) && int.Parse(mentorCourseCod) > 0)
                                                 {
                                                     int courseMentorCod = int.Parse(mentorCourseCod);
-                                                    teacherList.AddsTeacher(teacherName, teacherID, phone, courseMentorCod);
-                                                    introduced = true;
-                                                    MessageBox.Show(teacherName + " was registered as the mentor teacher of the course Nº" + courseMentorCod + ".");
+                                                    int coursePosition = courseList.ReturnsCoursePosition(courseMentorCod);
+                                                    if (coursePosition != -1)
+                                                    {
+                                                        teacherList.AddsTeacher(teacherName, teacherID, phone, courseMentorCod);
+                                                        MessageBox.Show(teacherName + " was registered as the mentor teacher of the course Nº" + courseMentorCod + ".");
+                                                        introduced = true;
 
+                                                    }
+                                                    else
+                                                    {
+                                                        MessageBox.Show("The selected course cod doesn't exist, try again");
+                                                        introduced = true;
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -125,7 +137,7 @@ namespace Exercise_6
                 }
                 else
                 {
-                    MessageBox.Show("The teacherName format is not correct, try again.");
+                    MessageBox.Show("The name format is not correct, try again.");
                 }
             } while (!introduced);
         }
@@ -154,7 +166,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no teacher with the selected ID");
+                            MessageBox.Show("There isn't any teacher with the selected ID");
                             removed = true;
                         }
                     }
@@ -167,7 +179,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before removing a teacher.");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before removing a teacher.");
             }
         }
 
@@ -178,7 +190,7 @@ namespace Exercise_6
                 bool introduced = false;
                 do
                 {
-                    string teacherName = Interaction.InputBox("Introduce the teacher's teacherName to remove (ONLY LETTERS): ");
+                    string teacherName = Interaction.InputBox("Introduce the teacher's name to remove (ONLY LETTERS): ");
                     if (CustomFunctions.RegexName(teacherName))
                     {
                         if (teacherList.SameNameCounter(teacherName) > 1)
@@ -196,7 +208,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There aren't any teachers with the selected name, try again");
+                            MessageBox.Show("There isn't any teacher with the selected name, try again");
                             introduced = true;
                         }
                     }
@@ -209,7 +221,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before removing a teacher.");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before removing a teacher.");
             }
         }
 
@@ -231,7 +243,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no teacher with the selected ID, try again");
+                            MessageBox.Show("There isn't any teacher with the selected ID, try again");
                             introduced = true;
                         }
                     }
@@ -244,7 +256,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before checking a teacher data from the teacher list");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before checking a teacher data from the teacher list");
             }
         }
 
@@ -274,7 +286,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There aren't any teachers with the selected name, try again");
+                            MessageBox.Show("There isn't any teacher with the selected name, try again");
                             showed = true;
                         }
                     }
@@ -288,7 +300,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before checking a teacher data from the teacher list");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before checking a teacher data from the teacher list");
             }
         }
 
@@ -320,7 +332,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before ordering the teacher list");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before ordering the teacher list");
             }
         }
 
@@ -348,7 +360,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There aren't any teachers with the selected name, try again");
+                            MessageBox.Show("There isn't any teacher with the selected name, try again");
                             added = true;
                         }
                     }
@@ -361,7 +373,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before ordering the teacher list");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before ordering the teacher list");
             }
         }
 
@@ -391,7 +403,7 @@ namespace Exercise_6
                             }
                             else
                             {
-                                MessageBox.Show("There aren't any teachers with the selected name, try again");
+                                MessageBox.Show("There isn't any teacher with the selected name, try again");
                                 removed = true;
                             }
                         }
@@ -408,7 +420,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before ordering the teacher list");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before ordering the teacher list");
             }
         }
 
@@ -421,7 +433,7 @@ namespace Exercise_6
                     bool cleared = false;
                     do
                     {
-                        string teacherName = Interaction.InputBox("Introduce the alumn's name (ONLY LETTERS): ");
+                        string teacherName = Interaction.InputBox("Introduce the teacher's name (ONLY LETTERS): ");
                         if (CustomFunctions.RegexName(teacherName))
                         {
                             if (teacherList.SameNameCounter(teacherName) > 1)
@@ -441,13 +453,13 @@ namespace Exercise_6
                                 }
                                 else
                                 {
-                                    MessageBox.Show("This teacher has not any subjects added, clearing them is not needed ");
+                                    MessageBox.Show("This teacher has no added subjects, clearing them is not needed ");
                                     cleared = true;
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("There aren't any teachers with the selected name, try again");
+                                MessageBox.Show("There isn't any teacher with the selected name, try again");
                                 cleared = true;
                             }
                         }
@@ -464,7 +476,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before clearing subjects to a teacher");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before clearing subjects to a teacher");
             }
         }
 
@@ -489,7 +501,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no teacher with the selected ID");
+                            MessageBox.Show("There isn't any teacher with the selected ID");
                             added = true;
                         }
                     }
@@ -502,7 +514,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before adding subjects to a teacher");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before adding subjects to a teacher");
             }
         }
 
@@ -529,7 +541,7 @@ namespace Exercise_6
                             }
                             else
                             {
-                                MessageBox.Show("There is no teacher with the selected ID");
+                                MessageBox.Show("There isn't any teacher with the selected ID");
                                 removed = true;
                             }
                         }
@@ -547,7 +559,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before removing an alumn.");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before removing an alumn.");
             }
         }
 
@@ -576,14 +588,14 @@ namespace Exercise_6
                                     }
                                     else
                                     {
-                                        MessageBox.Show("This teacher has not any subject added, clearing them is not needed ");
+                                        MessageBox.Show("This teacher has no added subjects, clearing them is not needed ");
                                         cleared = true;
                                     }
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("There is no teacher with the selected ID");
+                                MessageBox.Show("There isn't any teacher with the selected ID");
                                 cleared = true;
                             }
                         }
@@ -601,7 +613,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before clearing selected teacher's subjects.");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before clearing selected teacher's subjects.");
             }
         }
 
@@ -635,7 +647,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not teachers added, add a teacher before showing the teachers who imparts the selected subject.");
+                MessageBox.Show("Error, the list has no added teachers, add a teacher before showing the teachers who imparts the selected subject.");
             }
         }
     }

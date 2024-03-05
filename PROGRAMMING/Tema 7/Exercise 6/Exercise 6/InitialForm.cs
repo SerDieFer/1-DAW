@@ -23,20 +23,20 @@ namespace Exercise_6
 
         private void bCursos_Click(object sender, EventArgs e)
         {
-            CourseForm courseForm = new CourseForm(courseList, alumnList);
+            CourseForm courseForm = new CourseForm(courseList, alumnList, teacherList);
 
             courseForm.ShowDialog();
         }
 
         private void btnAlumn_Click(object sender, EventArgs e)
         {
-            AlumnForm alumnForm = new AlumnForm(alumnList, teacherList);
+            AlumnForm alumnForm = new AlumnForm(alumnList, teacherList, courseList);
             alumnForm.ShowDialog();
         }
 
         private void btnTeacher_Click(object sender, EventArgs e)
         {
-            TeacherForm teacherForm = new TeacherForm(teacherList, alumnList);
+            TeacherForm teacherForm = new TeacherForm(teacherList, alumnList, courseList);
             teacherForm.ShowDialog();
         }
 

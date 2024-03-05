@@ -43,6 +43,7 @@
             this.btnAddCourse.TabIndex = 1;
             this.btnAddCourse.Text = "Add Course";
             this.btnAddCourse.UseVisualStyleBackColor = true;
+            this.btnAddCourse.Click += new System.EventHandler(this.btnAddCourse_Click);
             // 
             // btnRemoveCourse
             // 
@@ -52,6 +53,7 @@
             this.btnRemoveCourse.TabIndex = 2;
             this.btnRemoveCourse.Text = "Remove Course";
             this.btnRemoveCourse.UseVisualStyleBackColor = true;
+            this.btnRemoveCourse.Click += new System.EventHandler(this.btnRemoveCourse_Click);
             // 
             // btnShowCourses
             // 
@@ -61,6 +63,7 @@
             this.btnShowCourses.TabIndex = 3;
             this.btnShowCourses.Text = "Show All Courses";
             this.btnShowCourses.UseVisualStyleBackColor = true;
+            this.btnShowCourses.Click += new System.EventHandler(this.btnShowCourses_Click);
             // 
             // btnShowAlumnsSelectedCourse
             // 
@@ -70,6 +73,7 @@
             this.btnShowAlumnsSelectedCourse.TabIndex = 4;
             this.btnShowAlumnsSelectedCourse.Text = "Show All Alumns From Selected Course";
             this.btnShowAlumnsSelectedCourse.UseVisualStyleBackColor = true;
+            this.btnShowAlumnsSelectedCourse.Click += new System.EventHandler(this.btnShowAlumnsSelectedCourse_Click);
             // 
             // btnShowSelectedCourse
             // 
@@ -79,6 +83,7 @@
             this.btnShowSelectedCourse.TabIndex = 5;
             this.btnShowSelectedCourse.Text = "Show Data From Selected Course";
             this.btnShowSelectedCourse.UseVisualStyleBackColor = true;
+            this.btnShowSelectedCourse.Click += new System.EventHandler(this.btnShowSelectedCourse_Click);
             // 
             // CourseForm
             // 

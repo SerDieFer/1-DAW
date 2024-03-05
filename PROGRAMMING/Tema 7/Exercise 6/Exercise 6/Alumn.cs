@@ -75,6 +75,7 @@ namespace Exercise_6
                     alumnAVG += aGradesList[i];
                 }
                 alumnAVG = alumnAVG / aGradesList.Count;
+                alumnAVG = Math.Round(alumnAVG,2);
             }
             return alumnAVG;
         }

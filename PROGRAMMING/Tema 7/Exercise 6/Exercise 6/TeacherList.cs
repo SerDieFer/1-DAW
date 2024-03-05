@@ -9,7 +9,10 @@ using System.Windows.Forms;
 
 namespace Exercise_6
 {
-    //TODO REFACTORIZAR Y REUSAR EL MULTIPLE ADD/REMOVE EN SAMENAME X
+    // TODO REFACTORIZAR Y REUSAR EL MULTIPLE ADD/REMOVE EN SAMENAME X
+    // CONTAR SI HAY ALGUN PROFESOR CON ASIGNATURAS AÑADIDAS PARA CHECKEAR EL VER PROFESORES POR ASIGNATURAS
+    // COMPROBAR QUE EL TUTOR NO PUEDA COMPARTIR CODIGO CON OTROS TUTORES POR EL CURSO Y SI ESTE CODIGO ESTA EN USO
+  
     public class TeacherList
     {
         private List<Teacher> teacherList;
@@ -184,7 +187,7 @@ namespace Exercise_6
         // FUNCTION WHICH COLLECTS ALL THE TEACHERS NAMES AND ID WHO IMPARTS THE SELECTED SUBJECT
         public string ShowTeachersBySubjectName(string subjectName)
         {
-            string subjectTeachersTxt = "";
+            string subjectTeachersTxt = "The subject " + subjectName + " has as teachers: \n";
             for (int i = 0; i < teacherList.Count; i++)
             {
                 string teacherID = ReturnsTeacherIDFromPosition(i);

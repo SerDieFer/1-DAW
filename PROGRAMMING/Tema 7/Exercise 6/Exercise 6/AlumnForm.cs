@@ -6,8 +6,6 @@ using System.Xml.Linq;
 namespace Exercise_6
 {
     // TODO CANCEL BUTTON?
-    // CHECKS EVERYTHING WORKS
-    // RENAME MB CONTENT
 
     public partial class AlumnForm : Form
     {
@@ -18,15 +16,19 @@ namespace Exercise_6
         
         public AlumnList alumnList;
         public TeacherList teacherList;
+        public CourseList courseList;
+
         private void AlumnForm_Load(object sender, EventArgs e)
         {
+
         }
 
-        public AlumnForm(AlumnList alumnList, TeacherList teacherList)
+        public AlumnForm(AlumnList alumnList, TeacherList teacherList, CourseList courseList)
         {
             InitializeComponent();
             this.alumnList = alumnList;
             this.teacherList = teacherList;
+            this.courseList = courseList;
         }
 
         // IS DONE
@@ -62,9 +64,18 @@ namespace Exercise_6
                                             if (CustomFunctions.RegexCourseCod(courseCodValue) && int.Parse(courseCodValue) > 0)
                                             {
                                                 int courseCod = int.Parse(courseCodValue);
-                                                alumnList.AddsAlumn(name, alumnID, phone, courseCod);
-                                                introduced = true;
-                                                MessageBox.Show(name + " was registered.");
+                                                int coursePosition = courseList.ReturnsCoursePosition(courseCod);
+                                                if (coursePosition != -1)
+                                                {
+                                                    alumnList.AddsAlumn(name, alumnID, phone, courseCod);
+                                                    introduced = true;
+                                                    MessageBox.Show(name + " was registered.");
+                                                }
+                                                else
+                                                {
+                                                    MessageBox.Show("The selected course cod doesn't exist, try again");
+                                                    introduced = true;
+                                                }
 
                                             }
                                             else
@@ -139,7 +150,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no alumns with the selected name, try again");
+                            MessageBox.Show("There isn't any alumn with the selected name, try again");
                             introduced = true;
                         }
                     }
@@ -152,7 +163,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before removing an alumn.");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before removing an alumn.");
             }
         }
 
@@ -181,7 +192,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no alumns with the selected name, try again");
+                            MessageBox.Show("There isn't any alumn with the selected name, try again");
                             added = true;
                         }
                     }
@@ -194,7 +205,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before adding grades to an alumn");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before adding grades to an alumn");
             }
         }
 
@@ -225,7 +236,7 @@ namespace Exercise_6
                             }
                             else
                             {
-                                MessageBox.Show("There is no alumns with the selected name, try again");
+                                MessageBox.Show("There isn't any alumn with the selected name, try again");
                                 removed = true;
                             }
                         }
@@ -237,12 +248,12 @@ namespace Exercise_6
                 }
                 else
                 {
-                    MessageBox.Show("There is no alumns with grades added.");
+                    MessageBox.Show("There aren't any alumns with grades added.");
                 }
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before removing grades to an alumn");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before removing grades to an alumn");
             }
         }
 
@@ -277,13 +288,13 @@ namespace Exercise_6
                                 }
                                 else
                                 {
-                                    MessageBox.Show("This alumn has not any grades added, clearing them is not needed ");
+                                    MessageBox.Show("This alumn has no added grades, clearing them is not needed ");
                                     cleared = true;
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("There is no alumns with the selected name, try again");
+                                MessageBox.Show("There isn't any alumn with the selected name, try again");
                                 cleared = true;
                             }
                         }
@@ -295,12 +306,12 @@ namespace Exercise_6
                 }
                 else
                 {
-                    MessageBox.Show("There is no alumns with grades added.");
+                    MessageBox.Show("There aren't any alumns with grades added.");
                 }
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before clearing grades to an alumn");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before clearing grades to an alumn");
             }
         }
 
@@ -309,7 +320,6 @@ namespace Exercise_6
         {
             if (alumnList.CountsTotalAlumns() > 0)
             {
-                //TODO CHANGE THIS TO ONLY SHOW DATA FROM ALL ALUMNS WITH SAME NAME
                 bool showed = false;
                 do
                 {
@@ -331,7 +341,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no alumns with the selected name, try again");
+                            MessageBox.Show("There isn't any alumn with the selected name, try again");
                             showed = true;
                         }
                     }
@@ -345,7 +355,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before checking an alumn data from the alumns list");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before checking an alumn data from the alumns list");
             }
         }
 
@@ -374,7 +384,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no alumns with the selected ID");
+                            MessageBox.Show("There isn't any alumn with the selected ID");
                             removed = true;
                         }
                     }
@@ -387,7 +397,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before removing an alumn.");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before removing an alumn.");
             }
         }
 
@@ -413,7 +423,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no alumns with the selected ID");
+                            MessageBox.Show("There isn't any alumn with the selected ID");
                             added = true;
                         }
                     }
@@ -426,7 +436,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before adding grades to an alumn.");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before adding grades to an alumn.");
             }
         }
 
@@ -454,7 +464,7 @@ namespace Exercise_6
                             }
                             else
                             {
-                                MessageBox.Show("There is no alumns with the selected ID");
+                                MessageBox.Show("There isn't any alumn with the selected ID");
                                 removed = true;
                             }
                         }
@@ -472,7 +482,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before removing an alumn.");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before removing an alumn.");
             }
         }
 
@@ -502,14 +512,14 @@ namespace Exercise_6
                                     }
                                     else
                                     {
-                                        MessageBox.Show("This alumn has not any grades added, clearing them is not needed ");
+                                        MessageBox.Show("This alumn has no added grades, clearing them is not needed ");
                                         cleared = true;
                                     }
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("There is no alumns with the selected ID");
+                                MessageBox.Show("There isn't any alumn with the selected ID");
                                 cleared = true;
                             }
                         }
@@ -522,12 +532,12 @@ namespace Exercise_6
                 }
                 else
                 {
-                    MessageBox.Show("There is no alumns with grades added.");
+                    MessageBox.Show("There aren't any alumns with grades added.");
                 }
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before clearing selected alumn's grades.");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before clearing selected alumn's grades.");
             }
         }
 
@@ -550,7 +560,7 @@ namespace Exercise_6
                         }
                         else
                         {
-                            MessageBox.Show("There is no alumns with the selected ID, try again");
+                            MessageBox.Show("There isn`t any alumn with the selected ID, try again");
                             introduced = true;
                         }
                     }
@@ -563,7 +573,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before checking an alumn data from the alumns list");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before checking an alumn data from the alumns list");
             }
         }
 
@@ -599,7 +609,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before showing the alumns from the selected course.");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before showing the alumns from the selected course.");
             }
         }
 
@@ -612,7 +622,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("There is no alumns added to the list, add an alumn before trying again");
+                MessageBox.Show("There isn't added any alumn to the list, add an alumn before trying again");
             }
         }
 
@@ -633,7 +643,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before ordering the alumns list");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before ordering the alumns list");
             }
         }
 
@@ -653,7 +663,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before ordering the alumns list");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before ordering the alumns list");
             }
         }
 
@@ -673,7 +683,7 @@ namespace Exercise_6
             }
             else
             {
-                MessageBox.Show("Error, the list has not alumns added, add an alumn before ordering the alumns list");
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before ordering the alumns list");
             }
         }
     }

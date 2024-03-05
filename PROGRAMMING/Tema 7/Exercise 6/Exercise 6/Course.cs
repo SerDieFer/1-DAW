@@ -22,14 +22,7 @@ namespace Exercise_6
         // FUNCTION WHICH SHOW ALL COURSE INFO
         public string ShowsCourseData()
         {
-            string cInfoTxt = "\nCourse data: \n" + "Name: " + cName + "\n" + "Code: " + cCod + "\n\n";
-            return cInfoTxt;
-        }
-
-        // FUNCTION WHICH SHOW SELECTED COURSE INFO
-        public string ShowsSelectedCourseData(string courseName)
-        {
-            string cInfoTxt = "\nCourse data: \n" + "Name: " + cName + "\n" + "Code: " + cCod + "\n\n";
+            string cInfoTxt = "\nCourse data: \n" + "Name: " + cName + "\n" + "Code: " + cCod + "\n";
             return cInfoTxt;
         }
 

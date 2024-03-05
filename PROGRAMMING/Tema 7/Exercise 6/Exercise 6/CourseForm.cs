@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,9 @@ using System.Windows.Forms;
 
 namespace Exercise_6
 {
+    // TODO CANCEL BUTTON?
+    // CUANDO BORRAS CURSO LOS ALUMNOS Y PROFESORES SIGUEN GUARDANDO LA INFORMACION PASADA
+
     public partial class CourseForm : Form
     {
         public CourseForm()
@@ -18,20 +22,175 @@ namespace Exercise_6
 
         public CourseList courseList;
         public AlumnList alumnList;
-        // public ListaAlumnos listaAlumnos; //necesaria para el botón de mostrar los alumnos por curso.
+        public TeacherList teacherList;
 
         private void CourseForm_Load(object sender, EventArgs e)
         {
+
         }
 
-        public CourseForm(CourseList courseList, AlumnList alumnList)
+        public CourseForm(CourseList courseList, AlumnList alumnList, TeacherList teacherList)
         {
             InitializeComponent();
-            // Ponemos en la lista de cursos del formulario la lista
-            // de cursos que se pasa desde el formulario inicial
             this.courseList = courseList;
             this.alumnList = alumnList;
+            this.teacherList = teacherList;
         }
 
+        private void btnAddCourse_Click(object sender, EventArgs e)
+        {
+            Course aCourse = new Course();
+            bool introduced = false;
+            do
+            {
+                string courseCodValue = Interaction.InputBox("Introduce the desired course code \n(MUST BE BIGGER THAN 0): ");
+                if (CustomFunctions.RegexCourseCod(courseCodValue) && int.Parse(courseCodValue) > 0)
+                {
+                    
+                    string courseName = Interaction.InputBox("Introduce the course's name (ONLY LETTERS): ");
+                    if (CustomFunctions.RegexName(courseName))
+                    {
+                        int courseCod = int.Parse(courseCodValue);
+                        courseList.AddsCourse(courseCod, courseName);
+                        introduced = true;
+                        MessageBox.Show("The course Nº" + courseCod + " and designed as " + courseName + " was registered.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("The course name format is not correct, try again.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The course format is not correct, try again.");
+                }
+            } while (!introduced);
+        }
+
+        private void btnRemoveCourse_Click(object sender, EventArgs e)
+        {
+            if (courseList.CountsTotalCourses() > 0)
+            {
+                bool introduced = false;
+                do
+                {
+                    string courseCodValue = Interaction.InputBox("Introduce the course's cod to remove (ONLY NUMS, MUST BE BIGGER THAN 0): ");
+                    if (CustomFunctions.RegexCourseCod(courseCodValue))
+                    {
+                        int courseCod = int.Parse(courseCodValue);
+                        string courseName = courseList.ReturnsCourseName(courseCod);
+                        int coursePosition = courseList.ReturnsCoursePosition(courseCod);
+                        if (coursePosition != -1)
+                        {
+                            courseList.RemovesCourse(courseCod);
+                            MessageBox.Show("The course ( " + courseName + " ) with the Cod ( " + courseCod + " ) was removed.");
+                            introduced = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("The course cod selected doesn't exist, try again");
+                        }  
+                    }
+                    else
+                    {
+                        MessageBox.Show("The course cod format is not correct, try again");
+                    }
+
+                } while (!introduced);
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has no added courses, add a course before removing a course.");
+            }
+        }
+
+        private void btnShowCourses_Click(object sender, EventArgs e)
+        {
+            if (courseList.CountsTotalCourses() != 0)
+            {
+                MessageBox.Show(courseList.ShowsAllCoursesData());
+            }
+            else
+            {
+                MessageBox.Show("There isn't any added course to the list, add a course before trying again");
+            }
+        }
+
+        private void btnShowSelectedCourse_Click(object sender, EventArgs e)
+        {
+            if (courseList.CountsTotalCourses() != 0)
+            {
+                bool introduced = false;
+                do
+                {
+                    string courseCodValue = Interaction.InputBox("Introduce the course's cod to show data (ONLY NUMS, MUST BE BIGGER THAN 0): ");
+                    if (CustomFunctions.RegexCourseCod(courseCodValue))
+                    {
+                        int courseCod = int.Parse(courseCodValue);
+                        int coursePosition = courseList.ReturnsCoursePosition(courseCod);
+                        if (coursePosition != -1)
+                        {
+                            MessageBox.Show(courseList.ShowsSelectedCourseData(courseCod));
+                            introduced = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("The course cod selected doesn't exist, try again");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("The course cod format is not correct, try again");
+                    }
+
+                } while (!introduced);   
+            }
+            else
+            {
+                MessageBox.Show("There isn't any added course to the list, add a course before trying again");
+            }
+        }
+
+        private void btnShowAlumnsSelectedCourse_Click(object sender, EventArgs e)
+        {
+            bool introduced = false;
+            if (courseList.CountsTotalCourses() > 0)
+            {
+                if (alumnList.CountsTotalAlumns() > 0)
+                {
+                    do
+                    {
+                        string courseCodValue = Interaction.InputBox("Introduce the course's cod to show alumns data (ONLY NUMS, MUST BE BIGGER THAN 0): ");
+                        if (CustomFunctions.RegexCourseCod(courseCodValue))
+                        {
+                            int courseCod = int.Parse(courseCodValue);
+                            if (alumnList.AlumnsInCourse(courseCod))
+                            {
+                                MessageBox.Show(alumnList.ShowAlumnsBySelectedCourseCod(courseCod));
+                                introduced = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("The selected course hasn't any alumn registered yet, select another one.");
+                                introduced = true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("The course cod format is not correct, try again");
+                        }
+
+                    } while (!introduced);
+                }
+                else
+                {
+                    MessageBox.Show("Error, the list has no added alumns, add a alumn before showing the alumns who are doing the selected course.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has no added courses, add a course before showing the alumns who are doing the selected course.");
+            }
+        }
     }
 }
