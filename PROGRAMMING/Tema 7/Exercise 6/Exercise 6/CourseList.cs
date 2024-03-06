@@ -93,6 +93,19 @@ namespace Exercise_6
             return courseName;
         }
 
+        // FUNCTION WHICH RETURNS IF THE COURSE ID IS ALREADY USED
+        public bool AlreadyUsedCourseCod(int courseCod)
+        {
+            bool used = false;
+            for (int i = 0; i < courseList.Count && !used; i++)
+            {
+                if (courseCod == courseList[i].Cod)
+                {
+                    used = true;
+                }
+            }
+            return used;
+        }
 
         // FUNCTION WHICH RETURNS THE COUNT OF THE NUMBER OF COURSES IN THE LIST
         public int CountsTotalCourses()
@@ -104,6 +117,5 @@ namespace Exercise_6
             }
             return count;
         }
-
     }
 }

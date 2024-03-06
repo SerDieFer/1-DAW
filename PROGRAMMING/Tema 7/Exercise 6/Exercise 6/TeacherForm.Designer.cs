@@ -188,7 +188,7 @@
             this.btnSortAlumnsAlphabetically.TabIndex = 5;
             this.btnSortAlumnsAlphabetically.Text = "Sort Teachers List Alphabetically ";
             this.btnSortAlumnsAlphabetically.UseVisualStyleBackColor = true;
-            this.btnSortAlumnsAlphabetically.Click += new System.EventHandler(this.btnSortAlumnsAlphabetically_Click);
+            this.btnSortAlumnsAlphabetically.Click += new System.EventHandler(this.btnSortTeachersAlphabetically_Click);
             // 
             // btnShowTeacherList
             // 

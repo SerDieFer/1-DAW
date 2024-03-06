@@ -20,7 +20,6 @@ namespace Exercise_6
         AlumnList alumnList = new AlumnList();
         TeacherList teacherList = new TeacherList();
 
-
         private void bCursos_Click(object sender, EventArgs e)
         {
             CourseForm courseForm = new CourseForm(courseList, alumnList, teacherList);
@@ -39,7 +38,5 @@ namespace Exercise_6
             TeacherForm teacherForm = new TeacherForm(teacherList, alumnList, courseList);
             teacherForm.ShowDialog();
         }
-
-
     }
 }

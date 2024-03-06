@@ -12,8 +12,8 @@ using System.Xml.Linq;
 
 namespace Exercise_6
 {
-    // TODO REFACTORIZAR Y REUSAR EL MULTIPLE ADD/REMOVE EN SAMENAME X
-    // TODO LIST OF GRADES TO SHOW WHEN REMOVING?
+    // TODO ADD A LIST OF GRADES TO SHOW WHEN REMOVING THE GRADES I WOULD LIKE SOME VISUALIZATION ON WHAT I'M REMOVING
+    // TODO TRY TO REDUCE CODE AND REUSE OTHER FUNCTIONS IN THE SAMENAME(X) FUNCTIONS
 
     public class AlumnList
     {
@@ -67,7 +67,7 @@ namespace Exercise_6
             do
             {
                 string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: ");
-                if (CustomFunctions.RegexGradeValue(gradeValue))
+                if (RegexCustomFunctions.RegexGradeValue(gradeValue))
                 {
                     double grade = double.Parse(gradeValue);
                     GradeAdding(alumnID, grade);
@@ -130,7 +130,7 @@ namespace Exercise_6
                 do
                 {
                     string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: ");
-                    if (CustomFunctions.RegexGradeValue(gradeValue))
+                    if (RegexCustomFunctions.RegexGradeValue(gradeValue))
                     {
                         double grade = double.Parse(gradeValue);
                         if (GradeExistanceCheck(alumnID, grade))
@@ -429,7 +429,7 @@ namespace Exercise_6
                             do
                             {
                                 string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: ");
-                                if (CustomFunctions.RegexGradeValue(gradeValue))
+                                if (RegexCustomFunctions.RegexGradeValue(gradeValue))
                                 {
                                     double grade = double.Parse(gradeValue);
                                     GradeAdding(selectedAlumnID, grade);
@@ -524,7 +524,7 @@ namespace Exercise_6
                             do
                             {
                                 string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: ");
-                                if (CustomFunctions.RegexGradeValue(gradeValue))
+                                if (RegexCustomFunctions.RegexGradeValue(gradeValue))
                                 {
                                     double grade = double.Parse(gradeValue);
                                     if (GradeExistanceCheck(selectedAlumnID, grade))

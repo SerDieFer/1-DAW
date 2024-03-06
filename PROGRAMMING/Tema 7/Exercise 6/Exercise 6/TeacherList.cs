@@ -9,10 +9,9 @@ using System.Windows.Forms;
 
 namespace Exercise_6
 {
-    // TODO REFACTORIZAR Y REUSAR EL MULTIPLE ADD/REMOVE EN SAMENAME X
-    // CONTAR SI HAY ALGUN PROFESOR CON ASIGNATURAS AÑADIDAS PARA CHECKEAR EL VER PROFESORES POR ASIGNATURAS
-    // COMPROBAR QUE EL TUTOR NO PUEDA COMPARTIR CODIGO CON OTROS TUTORES POR EL CURSO Y SI ESTE CODIGO ESTA EN USO
-  
+    // TODO ADD A LIST OF GRADES TO SHOW WHEN REMOVING THE GRADES I WOULD LIKE SOME VISUALIZATION ON WHAT I'M REMOVING
+    // TODO TRY TO REDUCE CODE AND REUSE OTHER FUNCTIONS IN THE SAMENAME(X) FUNCTIONS
+
     public class TeacherList
     {
         private List<Teacher> teacherList;
@@ -62,7 +61,7 @@ namespace Exercise_6
             do
             {
                 string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: ");
-                if (CustomFunctions.RegexName(subjectName))
+                if (RegexCustomFunctions.RegexName(subjectName))
                 {
                     SubjectAdding(teacherID, subjectName);
                     MessageBox.Show("A subject named " + subjectName + " has been added to this teacher.");
@@ -118,7 +117,7 @@ namespace Exercise_6
                 do
                 {
                     string subject = Interaction.InputBox("Introduce the subject's name to remove from all the teacher subjects: ");
-                    if (CustomFunctions.RegexGradeValue(subject))
+                    if (RegexCustomFunctions.RegexGradeValue(subject))
                     {
                         if (SubjectExistanceCheck(teacherID, subject))
                         {
@@ -432,7 +431,7 @@ namespace Exercise_6
                             do
                             {
                                 string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: ");
-                                if (CustomFunctions.RegexName(subjectName))
+                                if (RegexCustomFunctions.RegexName(subjectName))
                                 {
                                     SubjectAdding(selectedTeacherID, subjectName);
                                     MessageBox.Show("A subject named " + subjectName + " has been added to this teacher.");
@@ -528,7 +527,7 @@ namespace Exercise_6
                             {
                                 string subjectName = Interaction.InputBox("Introduce the subject's name to remove to this teacher: ");
                                 //MultipleSubjectsRemovalFromSelectedTeacher(selectedTeacherID); -- this may work?
-                                if (CustomFunctions.RegexName(subjectName))
+                                if (RegexCustomFunctions.RegexName(subjectName))
                                 {
                                     if (SubjectExistanceCheck(selectedTeacherID, subjectName))
                                     {
@@ -600,7 +599,6 @@ namespace Exercise_6
                         string teacherID = teacherList[i].ID;
                         matchingTeachersName.Add(teacherData);
                         SameNameTeachersID.Add(teacherID);
-
                     }
                 }
             }
@@ -811,12 +809,24 @@ namespace Exercise_6
             return teacherID;
         }
 
+        // FUNCTION WHICH CHECKS IF THE MENTOR COURSE COD IS REPEATED FROM ALL THE TEACHERS IN THE LIST
+        public bool CourseAlreadyHasTutor(int courseMentorCod)
+        {
+            bool alreadyHasTutor = false;
+            for (int i = 0; i < teacherList.Count && !alreadyHasTutor; i++)
+            {
+                if (teacherList[i].CourseMentorCod == courseMentorCod)
+                {
+                    alreadyHasTutor = true;
+                }
+            }
+            return alreadyHasTutor;
+        }
+
         // FUNCTION WHICH RETURNS THE COUNT OF THE NUMBER OF TEACHERS IN THE LIST
         public int CountsTotalTeachers()
         {
             return teacherList.Count;
         }
-
-
     }
 }

@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="AlumnList.cs" />
     <Compile Include="Alumn.cs" />
-    <Compile Include="CustomFunctions.cs" />
+    <Compile Include="RegexCustomFunctions.cs" />
     <Compile Include="Teacher.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="AlumnForm.cs">

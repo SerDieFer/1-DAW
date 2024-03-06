@@ -5,7 +5,6 @@ using System.Xml.Linq;
 
 namespace Exercise_6
 {
-    // TODO CANCEL BUTTON?
 
     public partial class AlumnForm : Form
     {
@@ -31,7 +30,7 @@ namespace Exercise_6
             this.courseList = courseList;
         }
 
-        // IS DONE
+        // ADDS AN ALUMN
         private void btnAddAlumn_Click(object sender, EventArgs e)
         {
             Alumn anAlumn = new Alumn();
@@ -39,12 +38,11 @@ namespace Exercise_6
             do
             {
                 string name = Interaction.InputBox("Introduce the alumn's name (ONLY LETTERS): ");
-
-                if (CustomFunctions.RegexName(name))
+                if (RegexCustomFunctions.RegexName(name))
                 {
                     string alumnID = Interaction.InputBox("Introduce the alumn's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (CustomFunctions.RegexID(alumnID))
+                    if (RegexCustomFunctions.RegexID(alumnID))
                     {
                         if (!alumnList.AlreadyUsedID(alumnID))
                         {
@@ -52,7 +50,7 @@ namespace Exercise_6
                             {
                                 string phoneValue = Interaction.InputBox("Introduce the alumn's phone number (9 DIGITS): \nIt must start with 6 or 7!!\n\nExample 1: 612345678 \nExample 2: 712345678");
 
-                                if (CustomFunctions.RegexPhone(phoneValue))
+                                if (RegexCustomFunctions.RegexPhone(phoneValue))
                                 {
                                     int phone = int.Parse(phoneValue);
                                     if (!alumnList.AlreadyUsedPhone(phone))
@@ -61,7 +59,7 @@ namespace Exercise_6
                                         {
                                             string courseCodValue = Interaction.InputBox("Introduce the alumn's course code \n(MUST BE BIGGER THAN 0): ");
 
-                                            if (CustomFunctions.RegexCourseCod(courseCodValue) && int.Parse(courseCodValue) > 0)
+                                            if (RegexCustomFunctions.RegexCourseCod(courseCodValue) && int.Parse(courseCodValue) > 0)
                                             {
                                                 int courseCod = int.Parse(courseCodValue);
                                                 int coursePosition = courseList.ReturnsCoursePosition(courseCod);
@@ -120,11 +118,11 @@ namespace Exercise_6
                 else
                 {
                     MessageBox.Show("The name format is not correct, try again.");
-                }
-            } while (!introduced);
+                }   
+            } while (!introduced) ;
         }
 
-        //IS DONE
+        // REMOVES AN ALUMN
         private void btnRemoveAlumnByName_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -133,7 +131,7 @@ namespace Exercise_6
                 do
                 {
                     string alumnName = Interaction.InputBox("Introduce the alumn's name to remove (ONLY LETTERS): ");
-                    if (CustomFunctions.RegexName(alumnName))
+                    if (RegexCustomFunctions.RegexName(alumnName))
                     {
                         if (alumnList.SameNameCounter(alumnName) > 1)
                         {
@@ -167,7 +165,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // ADDS MULTIPLE GRADES TO A SELECTED ALUMN BY NAME
         private void btnAddGradesToAlumnByName_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -176,7 +174,7 @@ namespace Exercise_6
                 do
                 {
                     string alumnName = Interaction.InputBox("Introduce the alumn's name (ONLY LETTERS): ");
-                    if (CustomFunctions.RegexName(alumnName))
+                    if (RegexCustomFunctions.RegexName(alumnName))
                     {
                         if (alumnList.SameNameCounter(alumnName) > 1)
                         {
@@ -209,7 +207,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // REMOVES MULTIPLE GRADES TO A SELECTED ALUMN BY NAME
         private void btnRemoveGradesToAlumnByName_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -220,7 +218,7 @@ namespace Exercise_6
                     do
                     {
                         string alumnName = Interaction.InputBox("Introduce the alumn's name (ONLY LETTERS): ");
-                        if (CustomFunctions.RegexName(alumnName))
+                        if (RegexCustomFunctions.RegexName(alumnName))
                         {
                             if (alumnList.SameNameCounter(alumnName) > 1)
                             {
@@ -257,7 +255,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // CLEAR ALL GRADES TO A SELECTED ALUMN BY NAME
         private void btnClearAllGradesToAlumnByName_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -268,7 +266,7 @@ namespace Exercise_6
                     do
                     {
                         string alumnName = Interaction.InputBox("Introduce the alumn's name (ONLY LETTERS): ");
-                        if (CustomFunctions.RegexName(alumnName))
+                        if (RegexCustomFunctions.RegexName(alumnName))
                         {
 
                             if (alumnList.SameNameCounter(alumnName) > 1)
@@ -315,7 +313,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // SHOWS ALL DATA FROM A SELECTED ALUMN BY NAME
         private void btnShowAlumnDataByName_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -325,7 +323,7 @@ namespace Exercise_6
                 {
                     string name = Interaction.InputBox("Introduce the alumn's name to show data (ONLY LETTERS): ");
 
-                    if (CustomFunctions.RegexName(name))
+                    if (RegexCustomFunctions.RegexName(name))
                     {
                         if (alumnList.SameNameCounter(name) > 1)
                         {
@@ -359,7 +357,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // REMOVES A SELECTED ALUMN BY ID
         private void btnRemoveAlumnByID_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -369,7 +367,7 @@ namespace Exercise_6
                 {
                     string alumnID = Interaction.InputBox("Introduce the alumn's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (CustomFunctions.RegexID(alumnID))
+                    if (RegexCustomFunctions.RegexID(alumnID))
                     {
                         if (alumnList.AlreadyUsedID(alumnID))
                         {
@@ -401,7 +399,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // ADDS MULTIPLE GRADES TO A SELECTED ALUMN BY ID
         private void btnAddGradesToAlumnByID_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -411,7 +409,7 @@ namespace Exercise_6
                 {
                     string alumnID = Interaction.InputBox("Introduce the alumn's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (CustomFunctions.RegexID(alumnID))
+                    if (RegexCustomFunctions.RegexID(alumnID))
                     {
                         if (alumnList.AlreadyUsedID(alumnID))
                         {
@@ -440,7 +438,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // REMOVES MULTIPLE GRADES TO A SELECTED ALUMN BY ID
         private void btnRemoveGradesToAlumnByID_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -452,7 +450,7 @@ namespace Exercise_6
                     {
                         string alumnID = Interaction.InputBox("Introduce the alumn's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                        if (CustomFunctions.RegexID(alumnID))
+                        if (RegexCustomFunctions.RegexID(alumnID))
                         {
                             if (alumnList.AlreadyUsedID(alumnID))
                             {
@@ -486,7 +484,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // CLEAR ALL GRADES TO A SELECTED ALUMN BY ID
         private void btnClearAllGradesToAlumnByID_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -498,7 +496,7 @@ namespace Exercise_6
                     {
                         string alumnID = Interaction.InputBox("Introduce the alumn's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                        if (CustomFunctions.RegexID(alumnID))
+                        if (RegexCustomFunctions.RegexID(alumnID))
                         {
                             if (alumnList.AlreadyUsedID(alumnID))
                             {
@@ -541,7 +539,7 @@ namespace Exercise_6
             }
         }
 
-        //IS DONE
+        // SHOWS ALL DATA FROM A SELECTED ALUMN BY ID
         private void btnShowAlumnDataByID_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -551,7 +549,7 @@ namespace Exercise_6
                 {
                     string alumnID = Interaction.InputBox("Introduce the alumn's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (CustomFunctions.RegexID(alumnID))
+                    if (RegexCustomFunctions.RegexID(alumnID))
                     {
                         if (alumnList.AlreadyUsedID(alumnID))
                         {
@@ -577,7 +575,7 @@ namespace Exercise_6
             }
         }
 
-        //IS DONE
+        // SHOWS ALL ALUMNS FROM A SELECTED COURSE BY COD
         private void btnShowAlumnsFromSelectedCourse_Click(object sender, EventArgs e)
         {
             bool introduced = false;
@@ -586,7 +584,7 @@ namespace Exercise_6
                 do
                 {
                     string courseCodValue = Interaction.InputBox("Introduce the course code to show the alumns who are registered in it (FROM 1 TO ∞): ");
-                    if (CustomFunctions.RegexCourseCod(courseCodValue))
+                    if (RegexCustomFunctions.RegexCourseCod(courseCodValue))
                     {
                         int courseCod = int.Parse(courseCodValue);
                         if (alumnList.AlumnsInCourse(courseCod))
@@ -613,7 +611,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // SHOWS ALL ALUMNS ADDED
         private void btnShowAlumnList_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() != 0)
@@ -626,7 +624,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // SORTS ALUMN LIST IN ALPHABETICAL ORDER
         private void btnSortAlumnsAlphabetically_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -647,7 +645,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // SHOWS ALL ALUMNS WHOSE GRADES AVERAGE IS EQUAL OR BIGGER THAN 5
         private void btnAvgGradesEqualMoreThan5_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)
@@ -667,7 +665,7 @@ namespace Exercise_6
             }
         }
 
-        // IS DONE
+        // SHOWS ALL ALUMNS WHOSE GRADES AVERAGE IS LOWER THAN 5
         private void btnAvgGradesLessThan5_Click(object sender, EventArgs e)
         {
             if (alumnList.CountsTotalAlumns() > 0)

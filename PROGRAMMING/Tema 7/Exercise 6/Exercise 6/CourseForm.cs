@@ -10,9 +10,6 @@ using System.Windows.Forms;
 
 namespace Exercise_6
 {
-    // TODO CANCEL BUTTON?
-    // CUANDO BORRAS CURSO LOS ALUMNOS Y PROFESORES SIGUEN GUARDANDO LA INFORMACION PASADA
-
     public partial class CourseForm : Form
     {
         public CourseForm()
@@ -37,6 +34,7 @@ namespace Exercise_6
             this.teacherList = teacherList;
         }
 
+        // ADD COURSE
         private void btnAddCourse_Click(object sender, EventArgs e)
         {
             Course aCourse = new Course();
@@ -44,20 +42,27 @@ namespace Exercise_6
             do
             {
                 string courseCodValue = Interaction.InputBox("Introduce the desired course code \n(MUST BE BIGGER THAN 0): ");
-                if (CustomFunctions.RegexCourseCod(courseCodValue) && int.Parse(courseCodValue) > 0)
+                int courseCod = int.Parse(courseCodValue);
+                if (RegexCustomFunctions.RegexCourseCod(courseCodValue) && courseCod > 0)
                 {
-                    
-                    string courseName = Interaction.InputBox("Introduce the course's name (ONLY LETTERS): ");
-                    if (CustomFunctions.RegexName(courseName))
+                    if (!courseList.AlreadyUsedCourseCod(courseCod))
                     {
-                        int courseCod = int.Parse(courseCodValue);
-                        courseList.AddsCourse(courseCod, courseName);
-                        introduced = true;
-                        MessageBox.Show("The course Nº" + courseCod + " and designed as " + courseName + " was registered.");
+                        string courseName = Interaction.InputBox("Introduce the course's name (ONLY LETTERS): ");
+                        if (RegexCustomFunctions.RegexName(courseName))
+                        {
+                            courseList.AddsCourse(courseCod, courseName);
+                            introduced = true;
+                            MessageBox.Show("The course Nº" + courseCod + " and designed as " + courseName + " was registered.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("The course name format is not correct, try again.");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("The course name format is not correct, try again.");
+                        MessageBox.Show("The selected course cod already exist, try again.");
+                        introduced = true;
                     }
                 }
                 else
@@ -67,6 +72,7 @@ namespace Exercise_6
             } while (!introduced);
         }
 
+        // REMOVE COURSE
         private void btnRemoveCourse_Click(object sender, EventArgs e)
         {
             if (courseList.CountsTotalCourses() > 0)
@@ -75,7 +81,7 @@ namespace Exercise_6
                 do
                 {
                     string courseCodValue = Interaction.InputBox("Introduce the course's cod to remove (ONLY NUMS, MUST BE BIGGER THAN 0): ");
-                    if (CustomFunctions.RegexCourseCod(courseCodValue))
+                    if (RegexCustomFunctions.RegexCourseCod(courseCodValue))
                     {
                         int courseCod = int.Parse(courseCodValue);
                         string courseName = courseList.ReturnsCourseName(courseCod);
@@ -104,6 +110,7 @@ namespace Exercise_6
             }
         }
 
+        // SHOW COURSE
         private void btnShowCourses_Click(object sender, EventArgs e)
         {
             if (courseList.CountsTotalCourses() != 0)
@@ -116,6 +123,7 @@ namespace Exercise_6
             }
         }
 
+        // SHOW SELECTED COURSE BY COURSE COD
         private void btnShowSelectedCourse_Click(object sender, EventArgs e)
         {
             if (courseList.CountsTotalCourses() != 0)
@@ -124,7 +132,7 @@ namespace Exercise_6
                 do
                 {
                     string courseCodValue = Interaction.InputBox("Introduce the course's cod to show data (ONLY NUMS, MUST BE BIGGER THAN 0): ");
-                    if (CustomFunctions.RegexCourseCod(courseCodValue))
+                    if (RegexCustomFunctions.RegexCourseCod(courseCodValue))
                     {
                         int courseCod = int.Parse(courseCodValue);
                         int coursePosition = courseList.ReturnsCoursePosition(courseCod);
@@ -151,6 +159,7 @@ namespace Exercise_6
             }
         }
 
+        // SHOW ALUMNS IN SELECTED COURSE
         private void btnShowAlumnsSelectedCourse_Click(object sender, EventArgs e)
         {
             bool introduced = false;
@@ -161,7 +170,7 @@ namespace Exercise_6
                     do
                     {
                         string courseCodValue = Interaction.InputBox("Introduce the course's cod to show alumns data (ONLY NUMS, MUST BE BIGGER THAN 0): ");
-                        if (CustomFunctions.RegexCourseCod(courseCodValue))
+                        if (RegexCustomFunctions.RegexCourseCod(courseCodValue))
                         {
                             int courseCod = int.Parse(courseCodValue);
                             if (alumnList.AlumnsInCourse(courseCod))
