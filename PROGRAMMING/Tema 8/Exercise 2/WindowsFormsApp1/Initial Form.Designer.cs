@@ -47,7 +47,7 @@
             this.btnIntroduceSquare.TabIndex = 0;
             this.btnIntroduceSquare.Text = "Introduce Square";
             this.btnIntroduceSquare.UseVisualStyleBackColor = true;
-            this.btnIntroduceSquare.Click += new System.EventHandler(this.btnCreateSquare_Click);
+            this.btnIntroduceSquare.Click += new System.EventHandler(this.btnIntroduceSquareData_Click);
             // 
             // btnIntroduceCircle
             // 
@@ -57,7 +57,7 @@
             this.btnIntroduceCircle.TabIndex = 1;
             this.btnIntroduceCircle.Text = "Introduce Circle\r\n";
             this.btnIntroduceCircle.UseVisualStyleBackColor = true;
-            this.btnIntroduceCircle.Click += new System.EventHandler(this.btnCreateCircle_Click);
+            this.btnIntroduceCircle.Click += new System.EventHandler(this.btnIntroduceCircleData_Click);
             // 
             // gbIntroduceFigures
             // 
@@ -106,7 +106,7 @@
             this.btnShowAllCircles.Name = "btnShowAllCircles";
             this.btnShowAllCircles.Size = new System.Drawing.Size(354, 50);
             this.btnShowAllCircles.TabIndex = 1;
-            this.btnShowAllCircles.Text = "Shows All Circles";
+            this.btnShowAllCircles.Text = "Shows All CirclesForm";
             this.btnShowAllCircles.UseVisualStyleBackColor = true;
             // 
             // InitialForm
@@ -118,7 +118,7 @@
             this.Controls.Add(this.gbIntroduceFigures);
             this.Name = "InitialForm";
             this.Text = "Initial Form";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.InitialForm_Load);
             this.gbIntroduceFigures.ResumeLayout(false);
             this.gpShowFigures.ResumeLayout(false);
             this.ResumeLayout(false);

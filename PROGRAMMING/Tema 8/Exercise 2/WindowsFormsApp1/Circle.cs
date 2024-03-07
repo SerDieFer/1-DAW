@@ -29,7 +29,7 @@ namespace Exercise_2
         public override string ToString()
         {
             string txt = base.ToString();
-            txt += "\nRadius: " + circleRadius;
+            txt += "\nRadius: " + circleRadius + "\nArea: " + FigureArea();
             return txt;
         }
         public override double FigureArea()

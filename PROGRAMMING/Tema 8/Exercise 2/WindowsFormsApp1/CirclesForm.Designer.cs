@@ -1,6 +1,6 @@
 ﻿namespace Exercise_2
 {
-    partial class Circles
+    partial class CirclesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -140,14 +140,14 @@
             this.lblPositionX.TabIndex = 0;
             this.lblPositionX.Text = "Position X: ";
             // 
-            // Circles
+            // CirclesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(241, 254);
             this.Controls.Add(this.gpCircleData);
-            this.Name = "Circles";
-            this.Text = "Circles";
+            this.Name = "CirclesForm";
+            this.Text = "CirclesForm";
             this.Load += new System.EventHandler(this.Circles_Load);
             this.gpCircleData.ResumeLayout(false);
             this.gpCircleData.PerformLayout();

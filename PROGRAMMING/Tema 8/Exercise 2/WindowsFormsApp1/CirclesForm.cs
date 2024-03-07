@@ -10,16 +10,24 @@ using System.Windows.Forms;
 
 namespace Exercise_2
 {
-    public partial class Squares : Form
+    public partial class CirclesForm : Form
     {
-        public Squares()
+        public CirclesForm()
         {
             InitializeComponent();
         }
 
-        private void Squares_Load(object sender, EventArgs e)
+        public FigureList figureList;
+
+        private void Circles_Load(object sender, EventArgs e)
         {
 
+        }
+
+        public CirclesForm(FigureList figureList)
+        {
+            InitializeComponent();
+            this.figureList = figureList;
         }
     }
 }

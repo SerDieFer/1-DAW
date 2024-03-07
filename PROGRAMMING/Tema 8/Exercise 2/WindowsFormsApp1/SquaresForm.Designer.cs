@@ -1,6 +1,6 @@
 ﻿namespace Exercise_2
 {
-    partial class Squares
+    partial class SquaresForm
     {
         /// <summary>
         /// Required designer variable.
