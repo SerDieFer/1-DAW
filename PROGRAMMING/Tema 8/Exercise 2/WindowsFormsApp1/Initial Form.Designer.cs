@@ -90,6 +90,7 @@
             this.btnShowAllSquares.TabIndex = 2;
             this.btnShowAllSquares.Text = "Shows All Squares";
             this.btnShowAllSquares.UseVisualStyleBackColor = true;
+            this.btnShowAllSquares.Click += new System.EventHandler(this.btnShowAllSquares_Click);
             // 
             // btnShowAllFigures
             // 
@@ -99,6 +100,7 @@
             this.btnShowAllFigures.TabIndex = 0;
             this.btnShowAllFigures.Text = "Shows All Figures";
             this.btnShowAllFigures.UseVisualStyleBackColor = true;
+            this.btnShowAllFigures.Click += new System.EventHandler(this.btnShowAllFigures_Click);
             // 
             // btnShowAllCircles
             // 
@@ -108,6 +110,7 @@
             this.btnShowAllCircles.TabIndex = 1;
             this.btnShowAllCircles.Text = "Shows All CirclesForm";
             this.btnShowAllCircles.UseVisualStyleBackColor = true;
+            this.btnShowAllCircles.Click += new System.EventHandler(this.btnShowAllCircles_Click);
             // 
             // InitialForm
             // 

@@ -67,6 +67,7 @@
             this.btnCreateCircle.TabIndex = 8;
             this.btnCreateCircle.Text = "Create Circle";
             this.btnCreateCircle.UseVisualStyleBackColor = true;
+            this.btnCreateCircle.Click += new System.EventHandler(this.btnCreateCircle_Click);
             // 
             // txtbCircleRadius
             // 

@@ -48,8 +48,5 @@ namespace Exercise_2
         }
 
         public abstract double FigureArea();
-
-
-
     }
 }

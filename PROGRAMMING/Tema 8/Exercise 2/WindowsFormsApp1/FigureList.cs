@@ -8,6 +8,6 @@ namespace Exercise_2
 {
     public class FigureList
     {
-
+        List<Figure> figuresList = new List<Figure>();
     }
 }
