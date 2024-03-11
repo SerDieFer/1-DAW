@@ -45,4 +45,38 @@ SELECT @primerNombre = nombre,
  PRINT CONCAT(@primerNombre,' ', @apellido1, ' ', @apellido2)
 
  
-        
+-- DECLARE @i INT = 1
+
+-- WHILE @i <= 200
+-- BEGIN
+--   IF (@i%7 = 0 AND @i <> 7)
+--     BEGIN
+--       PRINT @i
+--       BREAK
+--     END
+--   SET @i += 1
+-- END
+
+-- DECLARE @firstCodCliente INT
+-- DECLARE @lastCodCliente INT
+-- DECLARE @nameCliente VARCHAR(50)
+
+-- SELECT @lastCodCliente = MAX(codCliente),
+--        @firstCodCliente = MIN(codCliente)
+-- FROM CLIENTES
+
+-- WHILE @firstCodCliente <= @lastCodCliente
+-- BEGIN
+--   SET @nameCliente = NULL
+--   SET @nameCliente  = (SELECT nombre_cliente
+--                          FROM CLIENTES
+--                         WHERE codCliente = @firstCodCliente)
+--   IF @nameCliente IS NOT NULL
+--   BEGIN
+--     PRINT @nameCliente
+--   END
+--   SET @firstCodCliente += 1
+-- END
+
+
+

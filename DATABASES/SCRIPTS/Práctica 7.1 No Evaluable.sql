@@ -120,8 +120,28 @@ PRINT CONCAT('PEDIDO: ',       @codPedido,       CHAR(10),
 -- Salida: 'Se ha aumentado el precio un XXXX% de la gama YYYY'
 -------------------------------------------------------------------------------------------
 
+EXEC sp_columns CATEGORIA_PRODUCTOS
 
+DECLARE @porcentaje DECIMAL(3,2)
+DECLARE @gama VARCHAR (50)
+DECLARE @categoriaGama CHAR(2)
 
+SELECT @porcentaje = 1.20,
+	   @gama = cp.nombre,
+	   @categoriaGama = cp.codCategoria
+  FROM CATEGORIA_PRODUCTOS cp,
+	   PRODUCTOS p
+WHERE cp.codCategoria = p.codCategoria
+
+UPDATE PRODUCTOS
+   SET precio_venta = precio_venta * @porcentaje
+ WHERE @categoriaGama = 'OR'
+
+PRINT CONCAT('Se ha aumentado el precio un ', @porcentaje, ' de la gama ',  @gama)
+ 
+SELECT precio_venta
+FROM PRODUCTOS
+WHERE codCategoria = 'OR'
 
 -------------------------------------------------------------------------------------------
 -- 6. Crea un script que devuelva cuántos clientes han realizado algún pedido de
@@ -130,9 +150,30 @@ PRINT CONCAT('PEDIDO: ',       @codPedido,       CHAR(10),
 -- Salida: 'Existen XXXX clientes en la BD que han realizado pedidos de al menos YYYY productos'
 -------------------------------------------------------------------------------------------
 
+DECLARE @numProductosEnPedido INT
+DECLARE @numClientes INT
+    SET @numProductosEnPedido = 3
+
+SELECT @numProductosEnPedido = (SELECT codPedido
+	 							  FROM DETALLE_PEDIDOS
+	                             GROUP BY codPedido
+								HAVING SUM(cantidad) >= 3)
 
 
+SELECT @numClientes = (SELECT COUNT(codCliente)
+	   					 FROM PEDIDOS
+						WHERE codPedido IN @numProductosEnPedido)
 
+
+	 SELECT SUM(cantidad) AS cantidadProductosTotales
+	   FROM DETALLE_PEDIDOS
+	  GROUP BY codPedido
+
+	 SELECT *
+	   FROM PEDIDOS
+
+	SELECT COUNT(codCliente)
+	  FROM CLIENTES
 
 -------------------------------------------------------------------------------------------
 -- 7. Crea un script que a partir de una variable codCliente devuelva el nombre completo de su
