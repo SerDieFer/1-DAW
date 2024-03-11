@@ -10,39 +10,42 @@ using System.Windows.Forms;
 
 namespace Exercise_4
 {
-    public partial class CirclesForm : Form
+    public partial class RectangleForm : Form
     {
-        private void Circles_Load(object sender, EventArgs e)
+        public RectangleForm()
         {
+            InitializeComponent();
         }
 
-        public CirclesForm(List<Figure> figureList)
+
+        public RectangleForm(List<Figure> figureList)
         {
             InitializeComponent();
             this.figureList = figureList;
         }
         public List<Figure> figureList;
 
-        private void btnCreateCircle_Click(object sender, EventArgs e)
+        private void btnCreateRectangle_Click(object sender, EventArgs e)
         {
             int positionX = int.Parse(txtbPositionX.Text);
             int positionY = int.Parse(txtbPositionY.Text);
-            double radius = double.Parse(txtbCircleRadius.Text);
+            double rBase = double.Parse(txtbRectangleBase.Text);
+            double rHeight = double.Parse(txtbRectangleHeight.Text);
             string color = txtbColor.Text;
 
-            if (radius > 0)
+            if (rBase > 0 && rHeight > 0)
             {
                 if (!string.IsNullOrEmpty(color))
                 {
-                    Circle newCircle = new Circle(positionX, positionY, color, radius);
-                    figureList.Add(newCircle);
+                    Rectangle newRectangle = new Rectangle(positionX, positionY, color, rBase, rHeight);
+                    figureList.Add(newRectangle);
                     ClearTextBoxes();
-                    MessageBox.Show("A circle was added!");
+                    MessageBox.Show("A rectangle was added!");
                 }
             }
             else
             {
-                MessageBox.Show("Can't have a negative or null radius.");
+                MessageBox.Show("Can't have a negative or null base or height.");
             }
         }
 
@@ -51,7 +54,8 @@ namespace Exercise_4
             txtbColor.Text = string.Empty;
             txtbPositionX.Text = string.Empty;
             txtbPositionY.Text = string.Empty;
-            txtbCircleRadius.Text = string.Empty;
+            txtbRectangleBase.Text = string.Empty;
+            txtbRectangleHeight.Text = string.Empty;
         }
     }
 }

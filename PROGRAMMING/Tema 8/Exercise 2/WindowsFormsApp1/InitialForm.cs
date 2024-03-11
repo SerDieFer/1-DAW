@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using Exercise_4;
 
-namespace Exercise_2
+namespace Exercise_4
 {
     public partial class InitialForm : Form
     {
@@ -34,6 +35,24 @@ namespace Exercise_2
         {
             CirclesForm circlesForm = new CirclesForm(figureList);
             circlesForm.ShowDialog();
+        }
+
+        private void btnIntroduceEquilateralTriangle_Click(object sender, EventArgs e)
+        {
+            EquilateralTriangleForm equilateralTriangleForm = new EquilateralTriangleForm(figureList);
+            equilateralTriangleForm.ShowDialog();
+        }
+
+        private void btnIntroduceRectangle_Click(object sender, EventArgs e)
+        {
+            RectangleForm rectangleForm = new RectangleForm(figureList);
+            rectangleForm.ShowDialog();
+        }
+
+        private void btnIntroduceRegularHexagon_Click(object sender, EventArgs e)
+        {
+            RegularHexagonForm regularHexagonForm = new RegularHexagonForm(figureList);
+            regularHexagonForm.ShowDialog();
         }
 
         private void btnShowAllFigures_Click(object sender, EventArgs e)
@@ -74,6 +93,45 @@ namespace Exercise_2
             for (int i = 0; i < figureList.Count; i++)
             {
                 if (figureList[i].GetType() == typeof(Square))
+                {
+                    txt += figureList[i].WhoAmI() + " in position Nº" + (i + 1) + ":\n" + figureList[i].ToString() + "\n";
+                }
+            }
+            MessageBox.Show(txt);
+        }
+
+        private void btnShowAllEquilateralTriangles_Click(object sender, EventArgs e)
+        {
+            string txt = "Equilateral Triangle Data: \n\n";
+            for (int i = 0; i < figureList.Count; i++)
+            {
+                if (figureList[i].GetType() == typeof(EquilateralTriangle))
+                {
+                    txt += figureList[i].WhoAmI() + " in position Nº" + (i + 1) + ":\n" + figureList[i].ToString() + "\n";
+                }
+            }
+            MessageBox.Show(txt);
+        }
+
+        private void btnShowAllRectangles_Click(object sender, EventArgs e)
+        {
+            string txt = "Rectangle Data: \n\n";
+            for (int i = 0; i < figureList.Count; i++)
+            {
+                if (figureList[i].GetType() == typeof(Rectangle))
+                {
+                    txt += figureList[i].WhoAmI() + " in position Nº" + (i + 1) + ":\n" + figureList[i].ToString() + "\n";
+                }
+            }
+            MessageBox.Show(txt);
+        }
+
+        private void btnShowAllRegularHexagons_Click(object sender, EventArgs e)
+        {
+            string txt = "Regular Hexagon Data: \n\n";
+            for (int i = 0; i < figureList.Count; i++)
+            {
+                if (figureList[i].GetType() == typeof(RegularHexagon))
                 {
                     txt += figureList[i].WhoAmI() + " in position Nº" + (i + 1) + ":\n" + figureList[i].ToString() + "\n";
                 }

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Exercise_2
+namespace Exercise_4
 {
     public partial class SquaresForm : Form
     {

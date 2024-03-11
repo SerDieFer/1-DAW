@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("Exercise_2")]
+[assembly: AssemblyTitle("Exercise_4")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IES Mare Nostrum")]
-[assembly: AssemblyProduct("Exercise_2")]
+[assembly: AssemblyProduct("Exercise_4")]
 [assembly: AssemblyCopyright("Copyright © IES Mare Nostrum 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

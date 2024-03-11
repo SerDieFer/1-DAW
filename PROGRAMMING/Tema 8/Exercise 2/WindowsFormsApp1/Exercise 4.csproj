@@ -48,6 +48,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Circle.cs" />
+    <Compile Include="EquilateralTriangleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EquilateralTriangleForm.Designer.cs">
+      <DependentUpon>EquilateralTriangleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RectangleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RectangleForm.Designer.cs">
+      <DependentUpon>RectangleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegularHexagon.cs" />
+    <Compile Include="EquilateralTriangle.cs" />
     <Compile Include="Figure.cs" />
     <Compile Include="CirclesForm.cs">
       <SubType>Form</SubType>
@@ -56,17 +70,24 @@
       <DependentUpon>CirclesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FigureList.cs" />
+    <Compile Include="Rectangle.cs" />
+    <Compile Include="RegularHexagonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegularHexagonForm.Designer.cs">
+      <DependentUpon>RegularHexagonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SquaresForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SquaresForm.Designer.cs">
       <DependentUpon>SquaresForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Initial Form.cs">
+    <Compile Include="InitialForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Initial Form.Designer.cs">
-      <DependentUpon>Initial Form.cs</DependentUpon>
+    <Compile Include="InitialForm.Designer.cs">
+      <DependentUpon>InitialForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,8 +95,11 @@
     <EmbeddedResource Include="CirclesForm.resx">
       <DependentUpon>CirclesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Initial Form.resx">
-      <DependentUpon>Initial Form.cs</DependentUpon>
+    <EmbeddedResource Include="EquilateralTriangleForm.resx">
+      <DependentUpon>EquilateralTriangleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InitialForm.resx">
+      <DependentUpon>InitialForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -86,6 +110,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RectangleForm.resx">
+      <DependentUpon>RectangleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegularHexagonForm.resx">
+      <DependentUpon>RegularHexagonForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SquaresForm.resx">
       <DependentUpon>SquaresForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,6 +1,6 @@
 ﻿namespace Exercise_4
 {
-    partial class CirclesForm
+    partial class RegularHexagonForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,54 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gpCircleData = new System.Windows.Forms.GroupBox();
-            this.btnCreateCircle = new System.Windows.Forms.Button();
-            this.txtbCircleRadius = new System.Windows.Forms.TextBox();
+            this.gpRegularHexagonData = new System.Windows.Forms.GroupBox();
+            this.btnCreateRegularHexagon = new System.Windows.Forms.Button();
+            this.txtbRegularHexagonSide = new System.Windows.Forms.TextBox();
             this.txtbColor = new System.Windows.Forms.TextBox();
             this.txtbPositionY = new System.Windows.Forms.TextBox();
             this.txtbPositionX = new System.Windows.Forms.TextBox();
-            this.lblCircleRadius = new System.Windows.Forms.Label();
+            this.lblRegularHexagonSide = new System.Windows.Forms.Label();
             this.lblColor = new System.Windows.Forms.Label();
             this.lblPositionY = new System.Windows.Forms.Label();
             this.lblPositionX = new System.Windows.Forms.Label();
-            this.gpCircleData.SuspendLayout();
+            this.gpRegularHexagonData.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gpCircleData
+            // gpRegularHexagonData
             // 
-            this.gpCircleData.Controls.Add(this.btnCreateCircle);
-            this.gpCircleData.Controls.Add(this.txtbCircleRadius);
-            this.gpCircleData.Controls.Add(this.txtbColor);
-            this.gpCircleData.Controls.Add(this.txtbPositionY);
-            this.gpCircleData.Controls.Add(this.txtbPositionX);
-            this.gpCircleData.Controls.Add(this.lblCircleRadius);
-            this.gpCircleData.Controls.Add(this.lblColor);
-            this.gpCircleData.Controls.Add(this.lblPositionY);
-            this.gpCircleData.Controls.Add(this.lblPositionX);
-            this.gpCircleData.Location = new System.Drawing.Point(12, 12);
-            this.gpCircleData.Name = "gpCircleData";
-            this.gpCircleData.Size = new System.Drawing.Size(210, 227);
-            this.gpCircleData.TabIndex = 1;
-            this.gpCircleData.TabStop = false;
-            this.gpCircleData.Text = "Introduce Circle Data";
+            this.gpRegularHexagonData.Controls.Add(this.btnCreateRegularHexagon);
+            this.gpRegularHexagonData.Controls.Add(this.txtbRegularHexagonSide);
+            this.gpRegularHexagonData.Controls.Add(this.txtbColor);
+            this.gpRegularHexagonData.Controls.Add(this.txtbPositionY);
+            this.gpRegularHexagonData.Controls.Add(this.txtbPositionX);
+            this.gpRegularHexagonData.Controls.Add(this.lblRegularHexagonSide);
+            this.gpRegularHexagonData.Controls.Add(this.lblColor);
+            this.gpRegularHexagonData.Controls.Add(this.lblPositionY);
+            this.gpRegularHexagonData.Controls.Add(this.lblPositionX);
+            this.gpRegularHexagonData.Location = new System.Drawing.Point(12, 12);
+            this.gpRegularHexagonData.Name = "gpRegularHexagonData";
+            this.gpRegularHexagonData.Size = new System.Drawing.Size(210, 219);
+            this.gpRegularHexagonData.TabIndex = 5;
+            this.gpRegularHexagonData.TabStop = false;
+            this.gpRegularHexagonData.Text = "Introduce Regular Hexagon Data";
             // 
-            // btnCreateCircle
+            // btnCreateRegularHexagon
             // 
-            this.btnCreateCircle.Location = new System.Drawing.Point(26, 171);
-            this.btnCreateCircle.Name = "btnCreateCircle";
-            this.btnCreateCircle.Size = new System.Drawing.Size(158, 36);
-            this.btnCreateCircle.TabIndex = 8;
-            this.btnCreateCircle.Text = "Create Circle";
-            this.btnCreateCircle.UseVisualStyleBackColor = true;
-            this.btnCreateCircle.Click += new System.EventHandler(this.btnCreateCircle_Click);
+            this.btnCreateRegularHexagon.Location = new System.Drawing.Point(26, 169);
+            this.btnCreateRegularHexagon.Name = "btnCreateRegularHexagon";
+            this.btnCreateRegularHexagon.Size = new System.Drawing.Size(158, 36);
+            this.btnCreateRegularHexagon.TabIndex = 8;
+            this.btnCreateRegularHexagon.Text = "Create Regular Hexagon";
+            this.btnCreateRegularHexagon.UseVisualStyleBackColor = true;
             // 
-            // txtbCircleRadius
+            // txtbRegularHexagonSide
             // 
-            this.txtbCircleRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbCircleRadius.Location = new System.Drawing.Point(116, 129);
-            this.txtbCircleRadius.Name = "txtbCircleRadius";
-            this.txtbCircleRadius.Size = new System.Drawing.Size(68, 26);
-            this.txtbCircleRadius.TabIndex = 7;
+            this.txtbRegularHexagonSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbRegularHexagonSide.Location = new System.Drawing.Point(116, 129);
+            this.txtbRegularHexagonSide.Name = "txtbRegularHexagonSide";
+            this.txtbRegularHexagonSide.Size = new System.Drawing.Size(68, 26);
+            this.txtbRegularHexagonSide.TabIndex = 7;
             // 
             // txtbColor
             // 
@@ -101,15 +100,15 @@
             this.txtbPositionX.Size = new System.Drawing.Size(68, 26);
             this.txtbPositionX.TabIndex = 4;
             // 
-            // lblCircleRadius
+            // lblRegularHexagonSide
             // 
-            this.lblCircleRadius.AutoSize = true;
-            this.lblCircleRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCircleRadius.Location = new System.Drawing.Point(45, 132);
-            this.lblCircleRadius.Name = "lblCircleRadius";
-            this.lblCircleRadius.Size = new System.Drawing.Size(63, 20);
-            this.lblCircleRadius.TabIndex = 3;
-            this.lblCircleRadius.Text = "Radius:";
+            this.lblRegularHexagonSide.AutoSize = true;
+            this.lblRegularHexagonSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRegularHexagonSide.Location = new System.Drawing.Point(60, 132);
+            this.lblRegularHexagonSide.Name = "lblRegularHexagonSide";
+            this.lblRegularHexagonSide.Size = new System.Drawing.Size(45, 20);
+            this.lblRegularHexagonSide.TabIndex = 3;
+            this.lblRegularHexagonSide.Text = "Side:";
             // 
             // lblColor
             // 
@@ -141,30 +140,30 @@
             this.lblPositionX.TabIndex = 0;
             this.lblPositionX.Text = "Position X: ";
             // 
-            // CirclesForm
+            // RegularHexagonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(241, 254);
-            this.Controls.Add(this.gpCircleData);
-            this.Name = "CirclesForm";
-            this.Text = "CirclesForm";
-            this.Load += new System.EventHandler(this.Circles_Load);
-            this.gpCircleData.ResumeLayout(false);
-            this.gpCircleData.PerformLayout();
+            this.ClientSize = new System.Drawing.Size(242, 252);
+            this.Controls.Add(this.gpRegularHexagonData);
+            this.Name = "RegularHexagonForm";
+            this.Text = "RegularHexagonForm";
+            this.Load += new System.EventHandler(this.RegularHexagonForm_Load);
+            this.gpRegularHexagonData.ResumeLayout(false);
+            this.gpRegularHexagonData.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gpCircleData;
-        private System.Windows.Forms.Button btnCreateCircle;
-        private System.Windows.Forms.TextBox txtbCircleRadius;
+        private System.Windows.Forms.GroupBox gpRegularHexagonData;
+        private System.Windows.Forms.Button btnCreateRegularHexagon;
+        private System.Windows.Forms.TextBox txtbRegularHexagonSide;
         private System.Windows.Forms.TextBox txtbColor;
         private System.Windows.Forms.TextBox txtbPositionY;
         private System.Windows.Forms.TextBox txtbPositionX;
-        private System.Windows.Forms.Label lblCircleRadius;
+        private System.Windows.Forms.Label lblRegularHexagonSide;
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.Label lblPositionY;
         private System.Windows.Forms.Label lblPositionX;

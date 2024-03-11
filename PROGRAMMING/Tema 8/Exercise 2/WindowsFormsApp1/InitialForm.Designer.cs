@@ -1,4 +1,4 @@
-﻿namespace Exercise_2
+﻿namespace Exercise_4
 {
     partial class InitialForm
     {
@@ -35,6 +35,12 @@
             this.btnShowAllSquares = new System.Windows.Forms.Button();
             this.btnShowAllFigures = new System.Windows.Forms.Button();
             this.btnShowAllCircles = new System.Windows.Forms.Button();
+            this.btnIntroduceEquilateralTriangle = new System.Windows.Forms.Button();
+            this.btnIntroduceRectangle = new System.Windows.Forms.Button();
+            this.btnIntroduceRegularHexagon = new System.Windows.Forms.Button();
+            this.btnShowAllRectangles = new System.Windows.Forms.Button();
+            this.btnShowAllEquilateralTriangles = new System.Windows.Forms.Button();
+            this.btnShowAllRegularHexagons = new System.Windows.Forms.Button();
             this.gbIntroduceFigures.SuspendLayout();
             this.gpShowFigures.SuspendLayout();
             this.SuspendLayout();
@@ -61,23 +67,29 @@
             // 
             // gbIntroduceFigures
             // 
+            this.gbIntroduceFigures.Controls.Add(this.btnIntroduceRegularHexagon);
+            this.gbIntroduceFigures.Controls.Add(this.btnIntroduceRectangle);
+            this.gbIntroduceFigures.Controls.Add(this.btnIntroduceEquilateralTriangle);
             this.gbIntroduceFigures.Controls.Add(this.btnIntroduceSquare);
             this.gbIntroduceFigures.Controls.Add(this.btnIntroduceCircle);
             this.gbIntroduceFigures.Location = new System.Drawing.Point(12, 12);
             this.gbIntroduceFigures.Name = "gbIntroduceFigures";
-            this.gbIntroduceFigures.Size = new System.Drawing.Size(382, 175);
+            this.gbIntroduceFigures.Size = new System.Drawing.Size(382, 384);
             this.gbIntroduceFigures.TabIndex = 2;
             this.gbIntroduceFigures.TabStop = false;
             this.gbIntroduceFigures.Text = "Introduce";
             // 
             // gpShowFigures
             // 
+            this.gpShowFigures.Controls.Add(this.btnShowAllRegularHexagons);
+            this.gpShowFigures.Controls.Add(this.btnShowAllRectangles);
+            this.gpShowFigures.Controls.Add(this.btnShowAllEquilateralTriangles);
             this.gpShowFigures.Controls.Add(this.btnShowAllSquares);
             this.gpShowFigures.Controls.Add(this.btnShowAllFigures);
             this.gpShowFigures.Controls.Add(this.btnShowAllCircles);
-            this.gpShowFigures.Location = new System.Drawing.Point(13, 193);
+            this.gpShowFigures.Location = new System.Drawing.Point(12, 413);
             this.gpShowFigures.Name = "gpShowFigures";
-            this.gpShowFigures.Size = new System.Drawing.Size(382, 236);
+            this.gpShowFigures.Size = new System.Drawing.Size(382, 446);
             this.gpShowFigures.TabIndex = 3;
             this.gpShowFigures.TabStop = false;
             this.gpShowFigures.Text = "Show";
@@ -108,15 +120,75 @@
             this.btnShowAllCircles.Name = "btnShowAllCircles";
             this.btnShowAllCircles.Size = new System.Drawing.Size(354, 50);
             this.btnShowAllCircles.TabIndex = 1;
-            this.btnShowAllCircles.Text = "Shows All CirclesForm";
+            this.btnShowAllCircles.Text = "Shows All Circles";
             this.btnShowAllCircles.UseVisualStyleBackColor = true;
             this.btnShowAllCircles.Click += new System.EventHandler(this.btnShowAllCircles_Click);
+            // 
+            // btnIntroduceEquilateralTriangle
+            // 
+            this.btnIntroduceEquilateralTriangle.Location = new System.Drawing.Point(15, 169);
+            this.btnIntroduceEquilateralTriangle.Name = "btnIntroduceEquilateralTriangle";
+            this.btnIntroduceEquilateralTriangle.Size = new System.Drawing.Size(354, 50);
+            this.btnIntroduceEquilateralTriangle.TabIndex = 2;
+            this.btnIntroduceEquilateralTriangle.Text = "Introduce Equilateral Triangle";
+            this.btnIntroduceEquilateralTriangle.UseVisualStyleBackColor = true;
+            this.btnIntroduceEquilateralTriangle.Click += new System.EventHandler(this.btnIntroduceEquilateralTriangle_Click);
+            // 
+            // btnIntroduceRectangle
+            // 
+            this.btnIntroduceRectangle.Location = new System.Drawing.Point(15, 238);
+            this.btnIntroduceRectangle.Name = "btnIntroduceRectangle";
+            this.btnIntroduceRectangle.Size = new System.Drawing.Size(354, 50);
+            this.btnIntroduceRectangle.TabIndex = 3;
+            this.btnIntroduceRectangle.Text = "Introduce Rectangle";
+            this.btnIntroduceRectangle.UseVisualStyleBackColor = true;
+            this.btnIntroduceRectangle.Click += new System.EventHandler(this.btnIntroduceRectangle_Click);
+            // 
+            // btnIntroduceRegularHexagon
+            // 
+            this.btnIntroduceRegularHexagon.Location = new System.Drawing.Point(15, 307);
+            this.btnIntroduceRegularHexagon.Name = "btnIntroduceRegularHexagon";
+            this.btnIntroduceRegularHexagon.Size = new System.Drawing.Size(354, 50);
+            this.btnIntroduceRegularHexagon.TabIndex = 4;
+            this.btnIntroduceRegularHexagon.Text = "Introduce Regular Hexagon";
+            this.btnIntroduceRegularHexagon.UseVisualStyleBackColor = true;
+            this.btnIntroduceRegularHexagon.Click += new System.EventHandler(this.btnIntroduceRegularHexagon_Click);
+            // 
+            // btnShowAllRectangles
+            // 
+            this.btnShowAllRectangles.Location = new System.Drawing.Point(14, 301);
+            this.btnShowAllRectangles.Name = "btnShowAllRectangles";
+            this.btnShowAllRectangles.Size = new System.Drawing.Size(354, 50);
+            this.btnShowAllRectangles.TabIndex = 4;
+            this.btnShowAllRectangles.Text = "Shows All Rectangles";
+            this.btnShowAllRectangles.UseVisualStyleBackColor = true;
+            this.btnShowAllRectangles.Click += new System.EventHandler(this.btnShowAllRectangles_Click);
+            // 
+            // btnShowAllEquilateralTriangles
+            // 
+            this.btnShowAllEquilateralTriangles.Location = new System.Drawing.Point(15, 233);
+            this.btnShowAllEquilateralTriangles.Name = "btnShowAllEquilateralTriangles";
+            this.btnShowAllEquilateralTriangles.Size = new System.Drawing.Size(354, 50);
+            this.btnShowAllEquilateralTriangles.TabIndex = 3;
+            this.btnShowAllEquilateralTriangles.Text = "Shows All Equilateral Triangles";
+            this.btnShowAllEquilateralTriangles.UseVisualStyleBackColor = true;
+            this.btnShowAllEquilateralTriangles.Click += new System.EventHandler(this.btnShowAllEquilateralTriangles_Click);
+            // 
+            // btnShowAllRegularHexagons
+            // 
+            this.btnShowAllRegularHexagons.Location = new System.Drawing.Point(15, 369);
+            this.btnShowAllRegularHexagons.Name = "btnShowAllRegularHexagons";
+            this.btnShowAllRegularHexagons.Size = new System.Drawing.Size(354, 50);
+            this.btnShowAllRegularHexagons.TabIndex = 5;
+            this.btnShowAllRegularHexagons.Text = "Shows All Regular Hexagons";
+            this.btnShowAllRegularHexagons.UseVisualStyleBackColor = true;
+            this.btnShowAllRegularHexagons.Click += new System.EventHandler(this.btnShowAllRegularHexagons_Click);
             // 
             // InitialForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(407, 445);
+            this.ClientSize = new System.Drawing.Size(407, 880);
             this.Controls.Add(this.gpShowFigures);
             this.Controls.Add(this.gbIntroduceFigures);
             this.Name = "InitialForm";
@@ -137,6 +209,12 @@
         private System.Windows.Forms.Button btnShowAllSquares;
         private System.Windows.Forms.Button btnShowAllFigures;
         private System.Windows.Forms.Button btnShowAllCircles;
+        private System.Windows.Forms.Button btnIntroduceRegularHexagon;
+        private System.Windows.Forms.Button btnIntroduceRectangle;
+        private System.Windows.Forms.Button btnIntroduceEquilateralTriangle;
+        private System.Windows.Forms.Button btnShowAllRegularHexagons;
+        private System.Windows.Forms.Button btnShowAllRectangles;
+        private System.Windows.Forms.Button btnShowAllEquilateralTriangles;
     }
 }
 

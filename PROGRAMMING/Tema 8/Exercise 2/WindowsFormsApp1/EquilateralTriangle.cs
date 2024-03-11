@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace Exercise_4
 {
-    internal class Square : Figure
+    public class EquilateralTriangle : Figure
     {
-        private double squareSide;
+        private double equilateralTriangleSide;
 
         public double Side
         {
-            get { return squareSide; }
-            set { squareSide = value; }
+            get { return equilateralTriangleSide; }
+            set { equilateralTriangleSide = value; }
         }
 
-        public Square(int x, int y, string color, double sideLenght) : base(x, y, color)
+        public EquilateralTriangle(int x, int y, string color, double sideLenght) : base(x, y, color)
         {
             Side = sideLenght;
         }
 
         public override string WhoAmI()
         {
-            return "I'm a square";
+            return "I'm an equilateral triangle";
         }
 
         public override string ToString()
@@ -32,16 +32,16 @@ namespace Exercise_4
             txt += "\nSide: " + Side + "\nPerimeter: " + FigurePerimeter() + "\nArea: " + FigureArea() + "\n";
             return txt;
         }
+
         public override double FigurePerimeter()
         {
-            return Math.Round((Side * 4), 2);
+            return Math.Round((Side * 3), 2);
         }
-
 
         public override double FigureArea()
         {
-            return Math.Round(Math.Pow(Side, 2),2);
+            double triangleHeight = (Side * Math.Sqrt(3)) / 2;
+            return Math.Round(((Side * triangleHeight) / 2), 2);
         }
-
     }
 }

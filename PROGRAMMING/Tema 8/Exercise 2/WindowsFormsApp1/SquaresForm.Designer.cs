@@ -1,4 +1,4 @@
-﻿namespace Exercise_2
+﻿namespace Exercise_4
 {
     partial class SquaresForm
     {
@@ -109,7 +109,7 @@
             this.lblSquareHeight.Name = "lblSquareHeight";
             this.lblSquareHeight.Size = new System.Drawing.Size(60, 20);
             this.lblSquareHeight.TabIndex = 3;
-            this.lblSquareHeight.Text = "Height:";
+            this.lblSquareHeight.Text = "Side:";
             // 
             // lblColor
             // 

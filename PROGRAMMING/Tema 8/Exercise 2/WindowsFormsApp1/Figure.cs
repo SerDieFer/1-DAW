@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise_2
+namespace Exercise_4
 {
     public abstract class Figure
     {
@@ -43,10 +43,12 @@ namespace Exercise_2
         public override string ToString()
         {
             string txt;
-            txt = "Position X: " + positionX + "\nPosition Y: " + positionY + "\nColor: " + figureColor;
+            txt = "Position X: " + PositionX + "\nPosition Y: " + PositionY + "\nColor: " + Color;
             return txt;
         }
 
+        public abstract double FigurePerimeter();
+  
         public abstract double FigureArea();
     }
 }
