@@ -1,6 +1,6 @@
 ﻿namespace Exercise_4
 {
-    partial class EquilateralTriangleForm
+    partial class fCircle
     {
         /// <summary>
         /// Required designer variable.
@@ -28,61 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gpEquilateralTriangleData = new System.Windows.Forms.GroupBox();
-            this.btnCreateEquilateralTriangle = new System.Windows.Forms.Button();
-            this.txtbEquilateralTriangleSide = new System.Windows.Forms.TextBox();
+            this.gpCircleData = new System.Windows.Forms.GroupBox();
+            this.btnCreateCircle = new System.Windows.Forms.Button();
+            this.txtbCircleRadius = new System.Windows.Forms.TextBox();
             this.txtbColor = new System.Windows.Forms.TextBox();
             this.txtbPositionY = new System.Windows.Forms.TextBox();
             this.txtbPositionX = new System.Windows.Forms.TextBox();
-            this.lblEquilateralTriangleSide = new System.Windows.Forms.Label();
+            this.lblCircleRadius = new System.Windows.Forms.Label();
             this.lblColor = new System.Windows.Forms.Label();
             this.lblPositionY = new System.Windows.Forms.Label();
             this.lblPositionX = new System.Windows.Forms.Label();
-            this.gpEquilateralTriangleData.SuspendLayout();
+            this.gpCircleData.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gpEquilateralTriangleData
+            // gpCircleData
             // 
-            this.gpEquilateralTriangleData.Controls.Add(this.btnCreateEquilateralTriangle);
-            this.gpEquilateralTriangleData.Controls.Add(this.txtbEquilateralTriangleSide);
-            this.gpEquilateralTriangleData.Controls.Add(this.txtbColor);
-            this.gpEquilateralTriangleData.Controls.Add(this.txtbPositionY);
-            this.gpEquilateralTriangleData.Controls.Add(this.txtbPositionX);
-            this.gpEquilateralTriangleData.Controls.Add(this.lblEquilateralTriangleSide);
-            this.gpEquilateralTriangleData.Controls.Add(this.lblColor);
-            this.gpEquilateralTriangleData.Controls.Add(this.lblPositionY);
-            this.gpEquilateralTriangleData.Controls.Add(this.lblPositionX);
-            this.gpEquilateralTriangleData.Location = new System.Drawing.Point(12, 12);
-            this.gpEquilateralTriangleData.Name = "gpEquilateralTriangleData";
-            this.gpEquilateralTriangleData.Size = new System.Drawing.Size(210, 227);
-            this.gpEquilateralTriangleData.TabIndex = 2;
-            this.gpEquilateralTriangleData.TabStop = false;
-            this.gpEquilateralTriangleData.Text = "Introduce Equilateral Triangle Data";
+            this.gpCircleData.Controls.Add(this.btnCreateCircle);
+            this.gpCircleData.Controls.Add(this.txtbCircleRadius);
+            this.gpCircleData.Controls.Add(this.txtbColor);
+            this.gpCircleData.Controls.Add(this.txtbPositionY);
+            this.gpCircleData.Controls.Add(this.txtbPositionX);
+            this.gpCircleData.Controls.Add(this.lblCircleRadius);
+            this.gpCircleData.Controls.Add(this.lblColor);
+            this.gpCircleData.Controls.Add(this.lblPositionY);
+            this.gpCircleData.Controls.Add(this.lblPositionX);
+            this.gpCircleData.Location = new System.Drawing.Point(12, 12);
+            this.gpCircleData.Name = "gpCircleData";
+            this.gpCircleData.Size = new System.Drawing.Size(253, 227);
+            this.gpCircleData.TabIndex = 1;
+            this.gpCircleData.TabStop = false;
+            this.gpCircleData.Text = "Introduce Circle Data";
             // 
-            // btnCreateEquilateralTriangle
+            // btnCreateCircle
             // 
-            this.btnCreateEquilateralTriangle.Location = new System.Drawing.Point(26, 171);
-            this.btnCreateEquilateralTriangle.Name = "btnCreateEquilateralTriangle";
-            this.btnCreateEquilateralTriangle.Size = new System.Drawing.Size(158, 36);
-            this.btnCreateEquilateralTriangle.TabIndex = 8;
-            this.btnCreateEquilateralTriangle.Text = "Create Equilateral Triangle";
-            this.btnCreateEquilateralTriangle.UseVisualStyleBackColor = true;
-            this.btnCreateEquilateralTriangle.Click += new System.EventHandler(this.btnCreateEquilateralTriangle_Click);
+            this.btnCreateCircle.Location = new System.Drawing.Point(26, 171);
+            this.btnCreateCircle.Name = "btnCreateCircle";
+            this.btnCreateCircle.Size = new System.Drawing.Size(201, 36);
+            this.btnCreateCircle.TabIndex = 8;
+            this.btnCreateCircle.Text = "Create Circle";
+            this.btnCreateCircle.UseVisualStyleBackColor = true;
+            this.btnCreateCircle.Click += new System.EventHandler(this.btnCreateCircle_Click);
             // 
-            // txtbEquilateralTriangleSide
+            // txtbCircleRadius
             // 
-            this.txtbEquilateralTriangleSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbEquilateralTriangleSide.Location = new System.Drawing.Point(116, 129);
-            this.txtbEquilateralTriangleSide.Name = "txtbEquilateralTriangleSide";
-            this.txtbEquilateralTriangleSide.Size = new System.Drawing.Size(68, 26);
-            this.txtbEquilateralTriangleSide.TabIndex = 7;
+            this.txtbCircleRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbCircleRadius.Location = new System.Drawing.Point(116, 129);
+            this.txtbCircleRadius.Name = "txtbCircleRadius";
+            this.txtbCircleRadius.Size = new System.Drawing.Size(111, 26);
+            this.txtbCircleRadius.TabIndex = 7;
             // 
             // txtbColor
             // 
             this.txtbColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbColor.Location = new System.Drawing.Point(116, 94);
             this.txtbColor.Name = "txtbColor";
-            this.txtbColor.Size = new System.Drawing.Size(68, 26);
+            this.txtbColor.Size = new System.Drawing.Size(111, 26);
             this.txtbColor.TabIndex = 6;
             // 
             // txtbPositionY
@@ -90,7 +90,7 @@
             this.txtbPositionY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionY.Location = new System.Drawing.Point(116, 60);
             this.txtbPositionY.Name = "txtbPositionY";
-            this.txtbPositionY.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionY.Size = new System.Drawing.Size(111, 26);
             this.txtbPositionY.TabIndex = 5;
             // 
             // txtbPositionX
@@ -98,18 +98,18 @@
             this.txtbPositionX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionX.Location = new System.Drawing.Point(116, 27);
             this.txtbPositionX.Name = "txtbPositionX";
-            this.txtbPositionX.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionX.Size = new System.Drawing.Size(111, 26);
             this.txtbPositionX.TabIndex = 4;
             // 
-            // lblEquilateralTriangleSide
+            // lblCircleRadius
             // 
-            this.lblEquilateralTriangleSide.AutoSize = true;
-            this.lblEquilateralTriangleSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEquilateralTriangleSide.Location = new System.Drawing.Point(60, 132);
-            this.lblEquilateralTriangleSide.Name = "lblEquilateralTriangleSide";
-            this.lblEquilateralTriangleSide.Size = new System.Drawing.Size(45, 20);
-            this.lblEquilateralTriangleSide.TabIndex = 3;
-            this.lblEquilateralTriangleSide.Text = "Side:";
+            this.lblCircleRadius.AutoSize = true;
+            this.lblCircleRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCircleRadius.Location = new System.Drawing.Point(45, 132);
+            this.lblCircleRadius.Name = "lblCircleRadius";
+            this.lblCircleRadius.Size = new System.Drawing.Size(63, 20);
+            this.lblCircleRadius.TabIndex = 3;
+            this.lblCircleRadius.Text = "Radius:";
             // 
             // lblColor
             // 
@@ -141,30 +141,30 @@
             this.lblPositionX.TabIndex = 0;
             this.lblPositionX.Text = "Position X: ";
             // 
-            // EquilateralTriangleForm
+            // CirclesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(246, 253);
-            this.Controls.Add(this.gpEquilateralTriangleData);
-            this.Name = "EquilateralTriangleForm";
-            this.Text = "EquilateralTriangleForm";
-            this.Load += new System.EventHandler(this.EquilateralTriangleForm_Load);
-            this.gpEquilateralTriangleData.ResumeLayout(false);
-            this.gpEquilateralTriangleData.PerformLayout();
+            this.ClientSize = new System.Drawing.Size(284, 254);
+            this.Controls.Add(this.gpCircleData);
+            this.Name = "CirclesForm";
+            this.Text = "Circles";
+            this.Load += new System.EventHandler(this.fCircle_Load);
+            this.gpCircleData.ResumeLayout(false);
+            this.gpCircleData.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gpEquilateralTriangleData;
-        private System.Windows.Forms.Button btnCreateEquilateralTriangle;
-        private System.Windows.Forms.TextBox txtbEquilateralTriangleSide;
+        private System.Windows.Forms.GroupBox gpCircleData;
+        private System.Windows.Forms.Button btnCreateCircle;
+        private System.Windows.Forms.TextBox txtbCircleRadius;
         private System.Windows.Forms.TextBox txtbColor;
         private System.Windows.Forms.TextBox txtbPositionY;
         private System.Windows.Forms.TextBox txtbPositionX;
-        private System.Windows.Forms.Label lblEquilateralTriangleSide;
+        private System.Windows.Forms.Label lblCircleRadius;
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.Label lblPositionY;
         private System.Windows.Forms.Label lblPositionX;

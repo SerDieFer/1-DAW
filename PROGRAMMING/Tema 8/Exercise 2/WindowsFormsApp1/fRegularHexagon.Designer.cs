@@ -1,6 +1,6 @@
 ﻿namespace Exercise_4
 {
-    partial class SquaresForm
+    partial class fRegularHexagon
     {
         /// <summary>
         /// Required designer variable.
@@ -28,61 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gpSquareData = new System.Windows.Forms.GroupBox();
-            this.btnCreateSquare = new System.Windows.Forms.Button();
-            this.txtbSquareHeight = new System.Windows.Forms.TextBox();
+            this.gpRegularHexagonData = new System.Windows.Forms.GroupBox();
+            this.btnCreateRegularHexagon = new System.Windows.Forms.Button();
+            this.txtbRegularHexagonSide = new System.Windows.Forms.TextBox();
             this.txtbColor = new System.Windows.Forms.TextBox();
             this.txtbPositionY = new System.Windows.Forms.TextBox();
             this.txtbPositionX = new System.Windows.Forms.TextBox();
-            this.lblSquareHeight = new System.Windows.Forms.Label();
+            this.lblRegularHexagonSide = new System.Windows.Forms.Label();
             this.lblColor = new System.Windows.Forms.Label();
             this.lblPositionY = new System.Windows.Forms.Label();
             this.lblPositionX = new System.Windows.Forms.Label();
-            this.gpSquareData.SuspendLayout();
+            this.gpRegularHexagonData.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gpSquareData
+            // gpRegularHexagonData
             // 
-            this.gpSquareData.Controls.Add(this.btnCreateSquare);
-            this.gpSquareData.Controls.Add(this.txtbSquareHeight);
-            this.gpSquareData.Controls.Add(this.txtbColor);
-            this.gpSquareData.Controls.Add(this.txtbPositionY);
-            this.gpSquareData.Controls.Add(this.txtbPositionX);
-            this.gpSquareData.Controls.Add(this.lblSquareHeight);
-            this.gpSquareData.Controls.Add(this.lblColor);
-            this.gpSquareData.Controls.Add(this.lblPositionY);
-            this.gpSquareData.Controls.Add(this.lblPositionX);
-            this.gpSquareData.Location = new System.Drawing.Point(12, 12);
-            this.gpSquareData.Name = "gpSquareData";
-            this.gpSquareData.Size = new System.Drawing.Size(210, 227);
-            this.gpSquareData.TabIndex = 0;
-            this.gpSquareData.TabStop = false;
-            this.gpSquareData.Text = "Introduce Square Data";
+            this.gpRegularHexagonData.Controls.Add(this.btnCreateRegularHexagon);
+            this.gpRegularHexagonData.Controls.Add(this.txtbRegularHexagonSide);
+            this.gpRegularHexagonData.Controls.Add(this.txtbColor);
+            this.gpRegularHexagonData.Controls.Add(this.txtbPositionY);
+            this.gpRegularHexagonData.Controls.Add(this.txtbPositionX);
+            this.gpRegularHexagonData.Controls.Add(this.lblRegularHexagonSide);
+            this.gpRegularHexagonData.Controls.Add(this.lblColor);
+            this.gpRegularHexagonData.Controls.Add(this.lblPositionY);
+            this.gpRegularHexagonData.Controls.Add(this.lblPositionX);
+            this.gpRegularHexagonData.Location = new System.Drawing.Point(12, 12);
+            this.gpRegularHexagonData.Name = "gpRegularHexagonData";
+            this.gpRegularHexagonData.Size = new System.Drawing.Size(290, 219);
+            this.gpRegularHexagonData.TabIndex = 5;
+            this.gpRegularHexagonData.TabStop = false;
+            this.gpRegularHexagonData.Text = "Introduce Regular Hexagon Data";
             // 
-            // btnCreateSquare
+            // btnCreateRegularHexagon
             // 
-            this.btnCreateSquare.Location = new System.Drawing.Point(26, 171);
-            this.btnCreateSquare.Name = "btnCreateSquare";
-            this.btnCreateSquare.Size = new System.Drawing.Size(158, 36);
-            this.btnCreateSquare.TabIndex = 8;
-            this.btnCreateSquare.Text = "Create Square";
-            this.btnCreateSquare.UseVisualStyleBackColor = true;
-            this.btnCreateSquare.Click += new System.EventHandler(this.btnCreateSquare_Click);
+            this.btnCreateRegularHexagon.Location = new System.Drawing.Point(26, 169);
+            this.btnCreateRegularHexagon.Name = "btnCreateRegularHexagon";
+            this.btnCreateRegularHexagon.Size = new System.Drawing.Size(238, 36);
+            this.btnCreateRegularHexagon.TabIndex = 8;
+            this.btnCreateRegularHexagon.Text = "Create Regular Hexagon";
+            this.btnCreateRegularHexagon.UseVisualStyleBackColor = true;
+            this.btnCreateRegularHexagon.Click += new System.EventHandler(this.btnCreateRegularHexagon_Click);
             // 
-            // txtbSquareHeight
+            // txtbRegularHexagonSide
             // 
-            this.txtbSquareHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbSquareHeight.Location = new System.Drawing.Point(116, 129);
-            this.txtbSquareHeight.Name = "txtbSquareHeight";
-            this.txtbSquareHeight.Size = new System.Drawing.Size(68, 26);
-            this.txtbSquareHeight.TabIndex = 7;
+            this.txtbRegularHexagonSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbRegularHexagonSide.Location = new System.Drawing.Point(116, 129);
+            this.txtbRegularHexagonSide.Name = "txtbRegularHexagonSide";
+            this.txtbRegularHexagonSide.Size = new System.Drawing.Size(148, 26);
+            this.txtbRegularHexagonSide.TabIndex = 7;
             // 
             // txtbColor
             // 
             this.txtbColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbColor.Location = new System.Drawing.Point(116, 94);
             this.txtbColor.Name = "txtbColor";
-            this.txtbColor.Size = new System.Drawing.Size(68, 26);
+            this.txtbColor.Size = new System.Drawing.Size(148, 26);
             this.txtbColor.TabIndex = 6;
             // 
             // txtbPositionY
@@ -90,7 +90,7 @@
             this.txtbPositionY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionY.Location = new System.Drawing.Point(116, 60);
             this.txtbPositionY.Name = "txtbPositionY";
-            this.txtbPositionY.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionY.Size = new System.Drawing.Size(148, 26);
             this.txtbPositionY.TabIndex = 5;
             // 
             // txtbPositionX
@@ -98,18 +98,18 @@
             this.txtbPositionX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionX.Location = new System.Drawing.Point(116, 27);
             this.txtbPositionX.Name = "txtbPositionX";
-            this.txtbPositionX.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionX.Size = new System.Drawing.Size(148, 26);
             this.txtbPositionX.TabIndex = 4;
             // 
-            // lblSquareHeight
+            // lblRegularHexagonSide
             // 
-            this.lblSquareHeight.AutoSize = true;
-            this.lblSquareHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSquareHeight.Location = new System.Drawing.Point(45, 132);
-            this.lblSquareHeight.Name = "lblSquareHeight";
-            this.lblSquareHeight.Size = new System.Drawing.Size(60, 20);
-            this.lblSquareHeight.TabIndex = 3;
-            this.lblSquareHeight.Text = "Side:";
+            this.lblRegularHexagonSide.AutoSize = true;
+            this.lblRegularHexagonSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRegularHexagonSide.Location = new System.Drawing.Point(60, 132);
+            this.lblRegularHexagonSide.Name = "lblRegularHexagonSide";
+            this.lblRegularHexagonSide.Size = new System.Drawing.Size(45, 20);
+            this.lblRegularHexagonSide.TabIndex = 3;
+            this.lblRegularHexagonSide.Text = "Side:";
             // 
             // lblColor
             // 
@@ -141,30 +141,30 @@
             this.lblPositionX.TabIndex = 0;
             this.lblPositionX.Text = "Position X: ";
             // 
-            // SquaresForm
+            // fRegularHexagon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(239, 251);
-            this.Controls.Add(this.gpSquareData);
-            this.Name = "SquaresForm";
-            this.Text = "Squares";
-            this.Load += new System.EventHandler(this.Squares_Load);
-            this.gpSquareData.ResumeLayout(false);
-            this.gpSquareData.PerformLayout();
+            this.ClientSize = new System.Drawing.Size(322, 252);
+            this.Controls.Add(this.gpRegularHexagonData);
+            this.Name = "fRegularHexagon";
+            this.Text = "Regular Hexagons";
+            this.Load += new System.EventHandler(this.fRegularHexagon_Load);
+            this.gpRegularHexagonData.ResumeLayout(false);
+            this.gpRegularHexagonData.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gpSquareData;
-        private System.Windows.Forms.Button btnCreateSquare;
-        private System.Windows.Forms.TextBox txtbSquareHeight;
+        private System.Windows.Forms.GroupBox gpRegularHexagonData;
+        private System.Windows.Forms.Button btnCreateRegularHexagon;
+        private System.Windows.Forms.TextBox txtbRegularHexagonSide;
         private System.Windows.Forms.TextBox txtbColor;
         private System.Windows.Forms.TextBox txtbPositionY;
         private System.Windows.Forms.TextBox txtbPositionX;
-        private System.Windows.Forms.Label lblSquareHeight;
+        private System.Windows.Forms.Label lblRegularHexagonSide;
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.Label lblPositionY;
         private System.Windows.Forms.Label lblPositionX;

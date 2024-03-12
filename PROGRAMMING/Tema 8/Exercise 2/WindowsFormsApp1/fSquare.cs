@@ -10,18 +10,19 @@ using System.Windows.Forms;
 
 namespace Exercise_4
 {
-    public partial class SquaresForm : Form
+    public partial class fSquare : Form
     {
-        public List<Figure> figureList;
-        public SquaresForm(List<Figure> figureList)
+        private void fSquare_Load(object sender, EventArgs e)
+        {
+        }
+       
+        public fSquare(List<Figure> figureList)
         {
             InitializeComponent();
             this.figureList = figureList;
         }
 
-        private void Squares_Load(object sender, EventArgs e)
-        {
-        }
+        public List<Figure> figureList;
 
         private void btnCreateSquare_Click(object sender, EventArgs e)
         {
@@ -38,6 +39,10 @@ namespace Exercise_4
                     figureList.Add(newSquare);
                     ClearTextBoxes();
                     MessageBox.Show("A square was added!");
+                }
+                else
+                {
+                    MessageBox.Show("A color must be selected!.");
                 }
             }
             else

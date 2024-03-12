@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Exercise_4;
+using WindowsFormsApp1;
 
 namespace Exercise_4
 {
@@ -27,32 +28,44 @@ namespace Exercise_4
         List<Figure> figureList = new List<Figure>();
         private void btnIntroduceSquareData_Click(object sender, EventArgs e)
         {
-            SquaresForm squaresForm = new SquaresForm(figureList);
+            fSquare squaresForm = new fSquare(figureList);
             squaresForm.ShowDialog();
         }
 
         private void btnIntroduceCircleData_Click(object sender, EventArgs e)
         {
-            CirclesForm circlesForm = new CirclesForm(figureList);
+            fCircle circlesForm = new fCircle(figureList);
             circlesForm.ShowDialog();
-        }
-
-        private void btnIntroduceEquilateralTriangle_Click(object sender, EventArgs e)
-        {
-            EquilateralTriangleForm equilateralTriangleForm = new EquilateralTriangleForm(figureList);
-            equilateralTriangleForm.ShowDialog();
         }
 
         private void btnIntroduceRectangle_Click(object sender, EventArgs e)
         {
-            RectangleForm rectangleForm = new RectangleForm(figureList);
+            fRectangle rectangleForm = new fRectangle(figureList);
             rectangleForm.ShowDialog();
         }
 
         private void btnIntroduceRegularHexagon_Click(object sender, EventArgs e)
         {
-            RegularHexagonForm regularHexagonForm = new RegularHexagonForm(figureList);
+            fRegularHexagon regularHexagonForm = new fRegularHexagon(figureList);
             regularHexagonForm.ShowDialog();
+        }
+
+        private void btnIntroduceIsoscelesTriangle_Click(object sender, EventArgs e)
+        {
+            fIsoscelesTriangle isoscelesTriangleForm = new fIsoscelesTriangle(figureList);
+            isoscelesTriangleForm.ShowDialog();
+        }
+
+        private void btnIntroduceEquilateralTriangle_Click(object sender, EventArgs e)
+        {
+            fEquilateralTriangle equilateralTriangleForm = new fEquilateralTriangle(figureList);
+            equilateralTriangleForm.ShowDialog();
+        }
+
+        private void btnIntroduceScaleneTriangle_Click(object sender, EventArgs e)
+        {
+            fScaleneTriangle scaleneTriangleForm = new fScaleneTriangle(figureList);
+            scaleneTriangleForm.ShowDialog();
         }
 
         private void btnShowAllFigures_Click(object sender, EventArgs e)
@@ -69,8 +82,28 @@ namespace Exercise_4
                 {
                     type = "Square";
                 }
+                else if(figureList[i].GetType() == typeof(Rectangle))
+                {
+                    type = "Rectangle";
+                }
+                else if (figureList[i].GetType() == typeof(EquilateralTriangle))
+                {
+                    type = "Equilateral Triangle";
+                }
+                else if (figureList[i].GetType() == typeof(IsoscelesTriangle))
+                {
+                    type = "Isosceles Triangle";
+                }
+                else if (figureList[i].GetType() == typeof(ScaleneTriangle))
+                {
+                    type = "Scalene Triangle";
+                }
+                else if (figureList[i].GetType() == typeof(RegularHexagon))
+                {
+                    type = "Regular Hexagon";
+                }
 
-                MessageBox.Show("Figura " + (i + 1) + ":\nType: " + type + "\n" + figureList[i].ToString());
+                MessageBox.Show("Figure Nº" + (i + 1) + ":\nType: " + type + "\n" + figureList[i].ToString());
             }
         }
 
@@ -137,6 +170,67 @@ namespace Exercise_4
                 }
             }
             MessageBox.Show(txt);
+        }
+
+        private void btnShowAllIsoscelesTriangles_Click(object sender, EventArgs e)
+        {
+            string txt = "Isosceles Triangle Data: \n\n";
+            for (int i = 0; i < figureList.Count; i++)
+            {
+                if (figureList[i].GetType() == typeof(IsoscelesTriangle))
+                {
+                    txt += figureList[i].WhoAmI() + " in position Nº" + (i + 1) + ":\n" + figureList[i].ToString() + "\n";
+                }
+            }
+            MessageBox.Show(txt);
+        }
+
+        private void btnShowAllScaleneTriangles_Click(object sender, EventArgs e)
+        {
+            string txt = "Scalene Triangle Data: \n\n";
+            for (int i = 0; i < figureList.Count; i++)
+            {
+                if (figureList[i].GetType() == typeof(ScaleneTriangle))
+                {
+                    txt += figureList[i].WhoAmI() + " in position Nº" + (i + 1) + ":\n" + figureList[i].ToString() + "\n";
+                }
+            }
+            MessageBox.Show(txt);
+        }
+
+        private void btnShowAllTriangles_Click(object sender, EventArgs e)
+        {
+            bool isTriangle = true;
+
+            for (int i = 0; i < figureList.Count; i++)
+            {
+                string type = "";
+
+                if (figureList[i].GetType() == typeof(EquilateralTriangle))
+                {
+                    type = "Equilateral Triangle";
+                    isTriangle = true;
+                }
+                else if (figureList[i].GetType() == typeof(IsoscelesTriangle))
+                {
+                    type = "Isosceles Triangle";
+                    isTriangle = true;
+                }
+                else if (figureList[i].GetType() == typeof(ScaleneTriangle))
+                {
+                    type = "Scalene Triangle";
+                    isTriangle = true;
+                }
+                else
+                {
+                    isTriangle = false;
+                }
+
+                if (isTriangle)
+                {
+                    MessageBox.Show("Figure Nº" + (i + 1) + ":\nType: " + type + "\n" + figureList[i].ToString());
+                }
+            }
         }
     }
 }

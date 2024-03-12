@@ -10,48 +10,52 @@ using System.Windows.Forms;
 
 namespace Exercise_4
 {
-    //finsih
-    public partial class RegularHexagonForm : Form
+    public partial class fCircle : Form
     {
-        public RegularHexagonForm()
+        private void fCircle_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
         }
-        public RegularHexagonForm(List<Figure> figureList)
+
+        public fCircle(List<Figure> figureList)
         {
             InitializeComponent();
             this.figureList = figureList;
         }
         public List<Figure> figureList;
 
-        private void RegularHexagonForm_Load(object sender, EventArgs e)
+        private void btnCreateCircle_Click(object sender, EventArgs e)
         {
             int positionX = int.Parse(txtbPositionX.Text);
             int positionY = int.Parse(txtbPositionY.Text);
-            double side = double.Parse(txtbRegularHexagonSide.Text);
+            double radius = double.Parse(txtbCircleRadius.Text);
             string color = txtbColor.Text;
 
-            if (side > 0)
+            if (radius > 0)
             {
                 if (!string.IsNullOrEmpty(color))
                 {
-                    EquilateralTriangle newEquilateralTriangle = new EquilateralTriangle(positionX, positionY, color, side);
-                    figureList.Add(newEquilateralTriangle);
+                    Circle newCircle = new Circle(positionX, positionY, color, radius);
+                    figureList.Add(newCircle);
                     ClearTextBoxes();
-                    MessageBox.Show("An equilateral triangle was added!");
+                    MessageBox.Show("A circle was added!");
+                }
+                else
+                {
+                    MessageBox.Show("A color must be selected!.");
                 }
             }
             else
             {
-                MessageBox.Show("Can't have a negative or null side.");
+                MessageBox.Show("Can't have a negative or null radius.");
             }
         }
+
         public void ClearTextBoxes()
         {
             txtbColor.Text = string.Empty;
             txtbPositionX.Text = string.Empty;
             txtbPositionY.Text = string.Empty;
-            txtbRegularHexagonSide.Text = string.Empty;
+            txtbCircleRadius.Text = string.Empty;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Exercise_4
 {
-    partial class CirclesForm
+    partial class fSquare
     {
         /// <summary>
         /// Required designer variable.
@@ -28,61 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gpCircleData = new System.Windows.Forms.GroupBox();
-            this.btnCreateCircle = new System.Windows.Forms.Button();
-            this.txtbCircleRadius = new System.Windows.Forms.TextBox();
+            this.gpSquareData = new System.Windows.Forms.GroupBox();
+            this.btnCreateSquare = new System.Windows.Forms.Button();
+            this.txtbSquareHeight = new System.Windows.Forms.TextBox();
             this.txtbColor = new System.Windows.Forms.TextBox();
             this.txtbPositionY = new System.Windows.Forms.TextBox();
             this.txtbPositionX = new System.Windows.Forms.TextBox();
-            this.lblCircleRadius = new System.Windows.Forms.Label();
+            this.lblSquareHeight = new System.Windows.Forms.Label();
             this.lblColor = new System.Windows.Forms.Label();
             this.lblPositionY = new System.Windows.Forms.Label();
             this.lblPositionX = new System.Windows.Forms.Label();
-            this.gpCircleData.SuspendLayout();
+            this.gpSquareData.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gpCircleData
+            // gpSquareData
             // 
-            this.gpCircleData.Controls.Add(this.btnCreateCircle);
-            this.gpCircleData.Controls.Add(this.txtbCircleRadius);
-            this.gpCircleData.Controls.Add(this.txtbColor);
-            this.gpCircleData.Controls.Add(this.txtbPositionY);
-            this.gpCircleData.Controls.Add(this.txtbPositionX);
-            this.gpCircleData.Controls.Add(this.lblCircleRadius);
-            this.gpCircleData.Controls.Add(this.lblColor);
-            this.gpCircleData.Controls.Add(this.lblPositionY);
-            this.gpCircleData.Controls.Add(this.lblPositionX);
-            this.gpCircleData.Location = new System.Drawing.Point(12, 12);
-            this.gpCircleData.Name = "gpCircleData";
-            this.gpCircleData.Size = new System.Drawing.Size(210, 227);
-            this.gpCircleData.TabIndex = 1;
-            this.gpCircleData.TabStop = false;
-            this.gpCircleData.Text = "Introduce Circle Data";
+            this.gpSquareData.Controls.Add(this.btnCreateSquare);
+            this.gpSquareData.Controls.Add(this.txtbSquareHeight);
+            this.gpSquareData.Controls.Add(this.txtbColor);
+            this.gpSquareData.Controls.Add(this.txtbPositionY);
+            this.gpSquareData.Controls.Add(this.txtbPositionX);
+            this.gpSquareData.Controls.Add(this.lblSquareHeight);
+            this.gpSquareData.Controls.Add(this.lblColor);
+            this.gpSquareData.Controls.Add(this.lblPositionY);
+            this.gpSquareData.Controls.Add(this.lblPositionX);
+            this.gpSquareData.Location = new System.Drawing.Point(12, 12);
+            this.gpSquareData.Name = "gpSquareData";
+            this.gpSquareData.Size = new System.Drawing.Size(283, 227);
+            this.gpSquareData.TabIndex = 0;
+            this.gpSquareData.TabStop = false;
+            this.gpSquareData.Text = "Introduce Square Data";
             // 
-            // btnCreateCircle
+            // btnCreateSquare
             // 
-            this.btnCreateCircle.Location = new System.Drawing.Point(26, 171);
-            this.btnCreateCircle.Name = "btnCreateCircle";
-            this.btnCreateCircle.Size = new System.Drawing.Size(158, 36);
-            this.btnCreateCircle.TabIndex = 8;
-            this.btnCreateCircle.Text = "Create Circle";
-            this.btnCreateCircle.UseVisualStyleBackColor = true;
-            this.btnCreateCircle.Click += new System.EventHandler(this.btnCreateCircle_Click);
+            this.btnCreateSquare.Location = new System.Drawing.Point(26, 171);
+            this.btnCreateSquare.Name = "btnCreateSquare";
+            this.btnCreateSquare.Size = new System.Drawing.Size(231, 36);
+            this.btnCreateSquare.TabIndex = 8;
+            this.btnCreateSquare.Text = "Create Square";
+            this.btnCreateSquare.UseVisualStyleBackColor = true;
+            this.btnCreateSquare.Click += new System.EventHandler(this.btnCreateSquare_Click);
             // 
-            // txtbCircleRadius
+            // txtbSquareHeight
             // 
-            this.txtbCircleRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbCircleRadius.Location = new System.Drawing.Point(116, 129);
-            this.txtbCircleRadius.Name = "txtbCircleRadius";
-            this.txtbCircleRadius.Size = new System.Drawing.Size(68, 26);
-            this.txtbCircleRadius.TabIndex = 7;
+            this.txtbSquareHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbSquareHeight.Location = new System.Drawing.Point(116, 129);
+            this.txtbSquareHeight.Name = "txtbSquareHeight";
+            this.txtbSquareHeight.Size = new System.Drawing.Size(141, 26);
+            this.txtbSquareHeight.TabIndex = 7;
             // 
             // txtbColor
             // 
             this.txtbColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbColor.Location = new System.Drawing.Point(116, 94);
             this.txtbColor.Name = "txtbColor";
-            this.txtbColor.Size = new System.Drawing.Size(68, 26);
+            this.txtbColor.Size = new System.Drawing.Size(141, 26);
             this.txtbColor.TabIndex = 6;
             // 
             // txtbPositionY
@@ -90,7 +90,7 @@
             this.txtbPositionY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionY.Location = new System.Drawing.Point(116, 60);
             this.txtbPositionY.Name = "txtbPositionY";
-            this.txtbPositionY.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionY.Size = new System.Drawing.Size(141, 26);
             this.txtbPositionY.TabIndex = 5;
             // 
             // txtbPositionX
@@ -98,18 +98,18 @@
             this.txtbPositionX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionX.Location = new System.Drawing.Point(116, 27);
             this.txtbPositionX.Name = "txtbPositionX";
-            this.txtbPositionX.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionX.Size = new System.Drawing.Size(141, 26);
             this.txtbPositionX.TabIndex = 4;
             // 
-            // lblCircleRadius
+            // lblSquareHeight
             // 
-            this.lblCircleRadius.AutoSize = true;
-            this.lblCircleRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCircleRadius.Location = new System.Drawing.Point(45, 132);
-            this.lblCircleRadius.Name = "lblCircleRadius";
-            this.lblCircleRadius.Size = new System.Drawing.Size(63, 20);
-            this.lblCircleRadius.TabIndex = 3;
-            this.lblCircleRadius.Text = "Radius:";
+            this.lblSquareHeight.AutoSize = true;
+            this.lblSquareHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSquareHeight.Location = new System.Drawing.Point(60, 132);
+            this.lblSquareHeight.Name = "lblSquareHeight";
+            this.lblSquareHeight.Size = new System.Drawing.Size(45, 20);
+            this.lblSquareHeight.TabIndex = 3;
+            this.lblSquareHeight.Text = "Side:";
             // 
             // lblColor
             // 
@@ -141,30 +141,30 @@
             this.lblPositionX.TabIndex = 0;
             this.lblPositionX.Text = "Position X: ";
             // 
-            // CirclesForm
+            // fSquare
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(241, 254);
-            this.Controls.Add(this.gpCircleData);
-            this.Name = "CirclesForm";
-            this.Text = "CirclesForm";
-            this.Load += new System.EventHandler(this.Circles_Load);
-            this.gpCircleData.ResumeLayout(false);
-            this.gpCircleData.PerformLayout();
+            this.ClientSize = new System.Drawing.Size(312, 251);
+            this.Controls.Add(this.gpSquareData);
+            this.Name = "fSquare";
+            this.Text = "Squares";
+            this.Load += new System.EventHandler(this.fSquare_Load);
+            this.gpSquareData.ResumeLayout(false);
+            this.gpSquareData.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gpCircleData;
-        private System.Windows.Forms.Button btnCreateCircle;
-        private System.Windows.Forms.TextBox txtbCircleRadius;
+        private System.Windows.Forms.GroupBox gpSquareData;
+        private System.Windows.Forms.Button btnCreateSquare;
+        private System.Windows.Forms.TextBox txtbSquareHeight;
         private System.Windows.Forms.TextBox txtbColor;
         private System.Windows.Forms.TextBox txtbPositionY;
         private System.Windows.Forms.TextBox txtbPositionX;
-        private System.Windows.Forms.Label lblCircleRadius;
+        private System.Windows.Forms.Label lblSquareHeight;
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.Label lblPositionY;
         private System.Windows.Forms.Label lblPositionX;

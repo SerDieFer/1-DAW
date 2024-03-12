@@ -1,6 +1,6 @@
 ﻿namespace Exercise_4
 {
-    partial class RectangleForm
+    partial class fRectangle
     {
         /// <summary>
         /// Required designer variable.
@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gpRectangleData = new System.Windows.Forms.GroupBox();
+            this.txtbRectangleHeight = new System.Windows.Forms.TextBox();
+            this.lblRectangleHeight = new System.Windows.Forms.Label();
             this.btnCreateRectangle = new System.Windows.Forms.Button();
             this.txtbRectangleBase = new System.Windows.Forms.TextBox();
             this.txtbColor = new System.Windows.Forms.TextBox();
@@ -38,8 +40,6 @@
             this.lblColor = new System.Windows.Forms.Label();
             this.lblPositionY = new System.Windows.Forms.Label();
             this.lblPositionX = new System.Windows.Forms.Label();
-            this.txtbRectangleHeight = new System.Windows.Forms.TextBox();
-            this.lblRectangleHeight = new System.Windows.Forms.Label();
             this.gpRectangleData.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,26 +58,45 @@
             this.gpRectangleData.Controls.Add(this.lblPositionX);
             this.gpRectangleData.Location = new System.Drawing.Point(12, 12);
             this.gpRectangleData.Name = "gpRectangleData";
-            this.gpRectangleData.Size = new System.Drawing.Size(210, 268);
+            this.gpRectangleData.Size = new System.Drawing.Size(293, 268);
             this.gpRectangleData.TabIndex = 3;
             this.gpRectangleData.TabStop = false;
             this.gpRectangleData.Text = "Introduce Rectangle Data";
+            // 
+            // txtbRectangleHeight
+            // 
+            this.txtbRectangleHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbRectangleHeight.Location = new System.Drawing.Point(116, 165);
+            this.txtbRectangleHeight.Name = "txtbRectangleHeight";
+            this.txtbRectangleHeight.Size = new System.Drawing.Size(151, 26);
+            this.txtbRectangleHeight.TabIndex = 10;
+            // 
+            // lblRectangleHeight
+            // 
+            this.lblRectangleHeight.AutoSize = true;
+            this.lblRectangleHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRectangleHeight.Location = new System.Drawing.Point(49, 168);
+            this.lblRectangleHeight.Name = "lblRectangleHeight";
+            this.lblRectangleHeight.Size = new System.Drawing.Size(60, 20);
+            this.lblRectangleHeight.TabIndex = 9;
+            this.lblRectangleHeight.Text = "Height:";
             // 
             // btnCreateRectangle
             // 
             this.btnCreateRectangle.Location = new System.Drawing.Point(26, 207);
             this.btnCreateRectangle.Name = "btnCreateRectangle";
-            this.btnCreateRectangle.Size = new System.Drawing.Size(158, 36);
+            this.btnCreateRectangle.Size = new System.Drawing.Size(241, 36);
             this.btnCreateRectangle.TabIndex = 8;
             this.btnCreateRectangle.Text = "Create Rectangle";
             this.btnCreateRectangle.UseVisualStyleBackColor = true;
+            this.btnCreateRectangle.Click += new System.EventHandler(this.btnCreateRectangle_Click);
             // 
             // txtbRectangleBase
             // 
             this.txtbRectangleBase.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbRectangleBase.Location = new System.Drawing.Point(116, 129);
             this.txtbRectangleBase.Name = "txtbRectangleBase";
-            this.txtbRectangleBase.Size = new System.Drawing.Size(68, 26);
+            this.txtbRectangleBase.Size = new System.Drawing.Size(151, 26);
             this.txtbRectangleBase.TabIndex = 7;
             // 
             // txtbColor
@@ -85,7 +104,7 @@
             this.txtbColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbColor.Location = new System.Drawing.Point(116, 94);
             this.txtbColor.Name = "txtbColor";
-            this.txtbColor.Size = new System.Drawing.Size(68, 26);
+            this.txtbColor.Size = new System.Drawing.Size(151, 26);
             this.txtbColor.TabIndex = 6;
             // 
             // txtbPositionY
@@ -93,7 +112,7 @@
             this.txtbPositionY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionY.Location = new System.Drawing.Point(116, 60);
             this.txtbPositionY.Name = "txtbPositionY";
-            this.txtbPositionY.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionY.Size = new System.Drawing.Size(151, 26);
             this.txtbPositionY.TabIndex = 5;
             // 
             // txtbPositionX
@@ -101,14 +120,14 @@
             this.txtbPositionX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionX.Location = new System.Drawing.Point(116, 27);
             this.txtbPositionX.Name = "txtbPositionX";
-            this.txtbPositionX.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionX.Size = new System.Drawing.Size(151, 26);
             this.txtbPositionX.TabIndex = 4;
             // 
             // lblRectangleBase
             // 
             this.lblRectangleBase.AutoSize = true;
             this.lblRectangleBase.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRectangleBase.Location = new System.Drawing.Point(60, 132);
+            this.lblRectangleBase.Location = new System.Drawing.Point(58, 132);
             this.lblRectangleBase.Name = "lblRectangleBase";
             this.lblRectangleBase.Size = new System.Drawing.Size(50, 20);
             this.lblRectangleBase.TabIndex = 3;
@@ -144,32 +163,15 @@
             this.lblPositionX.TabIndex = 0;
             this.lblPositionX.Text = "Position X: ";
             // 
-            // txtbRectangleHeight
-            // 
-            this.txtbRectangleHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbRectangleHeight.Location = new System.Drawing.Point(116, 165);
-            this.txtbRectangleHeight.Name = "txtbRectangleHeight";
-            this.txtbRectangleHeight.Size = new System.Drawing.Size(68, 26);
-            this.txtbRectangleHeight.TabIndex = 10;
-            // 
-            // lblRectangleHeight
-            // 
-            this.lblRectangleHeight.AutoSize = true;
-            this.lblRectangleHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRectangleHeight.Location = new System.Drawing.Point(51, 168);
-            this.lblRectangleHeight.Name = "lblRectangleHeight";
-            this.lblRectangleHeight.Size = new System.Drawing.Size(60, 20);
-            this.lblRectangleHeight.TabIndex = 9;
-            this.lblRectangleHeight.Text = "Height:";
-            // 
-            // RectangleForm
+            // fRectangle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 296);
+            this.ClientSize = new System.Drawing.Size(326, 296);
             this.Controls.Add(this.gpRectangleData);
-            this.Name = "RectangleForm";
-            this.Text = "RectangleForm";
+            this.Name = "fRectangle";
+            this.Text = "Rectangles";
+            this.Load += new System.EventHandler(this.fRectangle_Load);
             this.gpRectangleData.ResumeLayout(false);
             this.gpRectangleData.PerformLayout();
             this.ResumeLayout(false);

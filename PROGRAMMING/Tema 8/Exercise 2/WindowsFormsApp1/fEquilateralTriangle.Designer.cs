@@ -1,6 +1,6 @@
 ﻿namespace Exercise_4
 {
-    partial class RegularHexagonForm
+    partial class fEquilateralTriangle
     {
         /// <summary>
         /// Required designer variable.
@@ -28,60 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gpRegularHexagonData = new System.Windows.Forms.GroupBox();
-            this.btnCreateRegularHexagon = new System.Windows.Forms.Button();
-            this.txtbRegularHexagonSide = new System.Windows.Forms.TextBox();
+            this.gpEquilateralTriangleData = new System.Windows.Forms.GroupBox();
+            this.btnCreateEquilateralTriangle = new System.Windows.Forms.Button();
+            this.txtbEquilateralTriangleSide = new System.Windows.Forms.TextBox();
             this.txtbColor = new System.Windows.Forms.TextBox();
             this.txtbPositionY = new System.Windows.Forms.TextBox();
             this.txtbPositionX = new System.Windows.Forms.TextBox();
-            this.lblRegularHexagonSide = new System.Windows.Forms.Label();
+            this.lblEquilateralTriangleSide = new System.Windows.Forms.Label();
             this.lblColor = new System.Windows.Forms.Label();
             this.lblPositionY = new System.Windows.Forms.Label();
             this.lblPositionX = new System.Windows.Forms.Label();
-            this.gpRegularHexagonData.SuspendLayout();
+            this.gpEquilateralTriangleData.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gpRegularHexagonData
+            // gpEquilateralTriangleData
             // 
-            this.gpRegularHexagonData.Controls.Add(this.btnCreateRegularHexagon);
-            this.gpRegularHexagonData.Controls.Add(this.txtbRegularHexagonSide);
-            this.gpRegularHexagonData.Controls.Add(this.txtbColor);
-            this.gpRegularHexagonData.Controls.Add(this.txtbPositionY);
-            this.gpRegularHexagonData.Controls.Add(this.txtbPositionX);
-            this.gpRegularHexagonData.Controls.Add(this.lblRegularHexagonSide);
-            this.gpRegularHexagonData.Controls.Add(this.lblColor);
-            this.gpRegularHexagonData.Controls.Add(this.lblPositionY);
-            this.gpRegularHexagonData.Controls.Add(this.lblPositionX);
-            this.gpRegularHexagonData.Location = new System.Drawing.Point(12, 12);
-            this.gpRegularHexagonData.Name = "gpRegularHexagonData";
-            this.gpRegularHexagonData.Size = new System.Drawing.Size(210, 219);
-            this.gpRegularHexagonData.TabIndex = 5;
-            this.gpRegularHexagonData.TabStop = false;
-            this.gpRegularHexagonData.Text = "Introduce Regular Hexagon Data";
+            this.gpEquilateralTriangleData.Controls.Add(this.btnCreateEquilateralTriangle);
+            this.gpEquilateralTriangleData.Controls.Add(this.txtbEquilateralTriangleSide);
+            this.gpEquilateralTriangleData.Controls.Add(this.txtbColor);
+            this.gpEquilateralTriangleData.Controls.Add(this.txtbPositionY);
+            this.gpEquilateralTriangleData.Controls.Add(this.txtbPositionX);
+            this.gpEquilateralTriangleData.Controls.Add(this.lblEquilateralTriangleSide);
+            this.gpEquilateralTriangleData.Controls.Add(this.lblColor);
+            this.gpEquilateralTriangleData.Controls.Add(this.lblPositionY);
+            this.gpEquilateralTriangleData.Controls.Add(this.lblPositionX);
+            this.gpEquilateralTriangleData.Location = new System.Drawing.Point(12, 12);
+            this.gpEquilateralTriangleData.Name = "gpEquilateralTriangleData";
+            this.gpEquilateralTriangleData.Size = new System.Drawing.Size(267, 229);
+            this.gpEquilateralTriangleData.TabIndex = 2;
+            this.gpEquilateralTriangleData.TabStop = false;
+            this.gpEquilateralTriangleData.Text = "Introduce Equilateral Triangle Data";
             // 
-            // btnCreateRegularHexagon
+            // btnCreateEquilateralTriangle
             // 
-            this.btnCreateRegularHexagon.Location = new System.Drawing.Point(26, 169);
-            this.btnCreateRegularHexagon.Name = "btnCreateRegularHexagon";
-            this.btnCreateRegularHexagon.Size = new System.Drawing.Size(158, 36);
-            this.btnCreateRegularHexagon.TabIndex = 8;
-            this.btnCreateRegularHexagon.Text = "Create Regular Hexagon";
-            this.btnCreateRegularHexagon.UseVisualStyleBackColor = true;
+            this.btnCreateEquilateralTriangle.Location = new System.Drawing.Point(26, 172);
+            this.btnCreateEquilateralTriangle.Name = "btnCreateEquilateralTriangle";
+            this.btnCreateEquilateralTriangle.Size = new System.Drawing.Size(215, 36);
+            this.btnCreateEquilateralTriangle.TabIndex = 8;
+            this.btnCreateEquilateralTriangle.Text = "Create Equilateral Triangle";
+            this.btnCreateEquilateralTriangle.UseVisualStyleBackColor = true;
+            this.btnCreateEquilateralTriangle.Click += new System.EventHandler(this.btnCreateEquilateralTriangle_Click);
             // 
-            // txtbRegularHexagonSide
+            // txtbEquilateralTriangleSide
             // 
-            this.txtbRegularHexagonSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbRegularHexagonSide.Location = new System.Drawing.Point(116, 129);
-            this.txtbRegularHexagonSide.Name = "txtbRegularHexagonSide";
-            this.txtbRegularHexagonSide.Size = new System.Drawing.Size(68, 26);
-            this.txtbRegularHexagonSide.TabIndex = 7;
+            this.txtbEquilateralTriangleSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbEquilateralTriangleSide.Location = new System.Drawing.Point(116, 129);
+            this.txtbEquilateralTriangleSide.Name = "txtbEquilateralTriangleSide";
+            this.txtbEquilateralTriangleSide.Size = new System.Drawing.Size(125, 26);
+            this.txtbEquilateralTriangleSide.TabIndex = 7;
             // 
             // txtbColor
             // 
             this.txtbColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbColor.Location = new System.Drawing.Point(116, 94);
             this.txtbColor.Name = "txtbColor";
-            this.txtbColor.Size = new System.Drawing.Size(68, 26);
+            this.txtbColor.Size = new System.Drawing.Size(125, 26);
             this.txtbColor.TabIndex = 6;
             // 
             // txtbPositionY
@@ -89,7 +90,7 @@
             this.txtbPositionY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionY.Location = new System.Drawing.Point(116, 60);
             this.txtbPositionY.Name = "txtbPositionY";
-            this.txtbPositionY.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionY.Size = new System.Drawing.Size(125, 26);
             this.txtbPositionY.TabIndex = 5;
             // 
             // txtbPositionX
@@ -97,18 +98,18 @@
             this.txtbPositionX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPositionX.Location = new System.Drawing.Point(116, 27);
             this.txtbPositionX.Name = "txtbPositionX";
-            this.txtbPositionX.Size = new System.Drawing.Size(68, 26);
+            this.txtbPositionX.Size = new System.Drawing.Size(125, 26);
             this.txtbPositionX.TabIndex = 4;
             // 
-            // lblRegularHexagonSide
+            // lblEquilateralTriangleSide
             // 
-            this.lblRegularHexagonSide.AutoSize = true;
-            this.lblRegularHexagonSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRegularHexagonSide.Location = new System.Drawing.Point(60, 132);
-            this.lblRegularHexagonSide.Name = "lblRegularHexagonSide";
-            this.lblRegularHexagonSide.Size = new System.Drawing.Size(45, 20);
-            this.lblRegularHexagonSide.TabIndex = 3;
-            this.lblRegularHexagonSide.Text = "Side:";
+            this.lblEquilateralTriangleSide.AutoSize = true;
+            this.lblEquilateralTriangleSide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEquilateralTriangleSide.Location = new System.Drawing.Point(60, 132);
+            this.lblEquilateralTriangleSide.Name = "lblEquilateralTriangleSide";
+            this.lblEquilateralTriangleSide.Size = new System.Drawing.Size(45, 20);
+            this.lblEquilateralTriangleSide.TabIndex = 3;
+            this.lblEquilateralTriangleSide.Text = "Side:";
             // 
             // lblColor
             // 
@@ -140,30 +141,30 @@
             this.lblPositionX.TabIndex = 0;
             this.lblPositionX.Text = "Position X: ";
             // 
-            // RegularHexagonForm
+            // fEquilateralTriangle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(242, 252);
-            this.Controls.Add(this.gpRegularHexagonData);
-            this.Name = "RegularHexagonForm";
-            this.Text = "RegularHexagonForm";
-            this.Load += new System.EventHandler(this.RegularHexagonForm_Load);
-            this.gpRegularHexagonData.ResumeLayout(false);
-            this.gpRegularHexagonData.PerformLayout();
+            this.ClientSize = new System.Drawing.Size(291, 255);
+            this.Controls.Add(this.gpEquilateralTriangleData);
+            this.Name = "fEquilateralTriangle";
+            this.Text = "Equilateral Triangles";
+            this.Load += new System.EventHandler(this.fEquilateralTriangle_Load);
+            this.gpEquilateralTriangleData.ResumeLayout(false);
+            this.gpEquilateralTriangleData.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gpRegularHexagonData;
-        private System.Windows.Forms.Button btnCreateRegularHexagon;
-        private System.Windows.Forms.TextBox txtbRegularHexagonSide;
+        private System.Windows.Forms.GroupBox gpEquilateralTriangleData;
+        private System.Windows.Forms.Button btnCreateEquilateralTriangle;
+        private System.Windows.Forms.TextBox txtbEquilateralTriangleSide;
         private System.Windows.Forms.TextBox txtbColor;
         private System.Windows.Forms.TextBox txtbPositionY;
         private System.Windows.Forms.TextBox txtbPositionX;
-        private System.Windows.Forms.Label lblRegularHexagonSide;
+        private System.Windows.Forms.Label lblEquilateralTriangleSide;
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.Label lblPositionY;
         private System.Windows.Forms.Label lblPositionX;

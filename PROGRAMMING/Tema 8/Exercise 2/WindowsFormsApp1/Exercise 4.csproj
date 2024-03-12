@@ -48,40 +48,53 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Circle.cs" />
-    <Compile Include="EquilateralTriangleForm.cs">
+    <Compile Include="fEquilateralTriangle.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EquilateralTriangleForm.Designer.cs">
-      <DependentUpon>EquilateralTriangleForm.cs</DependentUpon>
+    <Compile Include="fEquilateralTriangle.Designer.cs">
+      <DependentUpon>fEquilateralTriangle.cs</DependentUpon>
     </Compile>
-    <Compile Include="RectangleForm.cs">
+    <Compile Include="fIsoscelesTriangle.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RectangleForm.Designer.cs">
-      <DependentUpon>RectangleForm.cs</DependentUpon>
+    <Compile Include="fIsoscelesTriangle.Designer.cs">
+      <DependentUpon>fIsoscelesTriangle.cs</DependentUpon>
     </Compile>
+    <Compile Include="fRectangle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fRectangle.Designer.cs">
+      <DependentUpon>fRectangle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fScaleneTriangle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fScaleneTriangle.Designer.cs">
+      <DependentUpon>fScaleneTriangle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IsoscelesTriangle.cs" />
     <Compile Include="RegularHexagon.cs" />
     <Compile Include="EquilateralTriangle.cs" />
     <Compile Include="Figure.cs" />
-    <Compile Include="CirclesForm.cs">
+    <Compile Include="fCircle.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CirclesForm.Designer.cs">
-      <DependentUpon>CirclesForm.cs</DependentUpon>
+    <Compile Include="fCircle.Designer.cs">
+      <DependentUpon>fCircle.cs</DependentUpon>
     </Compile>
     <Compile Include="FigureList.cs" />
     <Compile Include="Rectangle.cs" />
-    <Compile Include="RegularHexagonForm.cs">
+    <Compile Include="fRegularHexagon.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegularHexagonForm.Designer.cs">
-      <DependentUpon>RegularHexagonForm.cs</DependentUpon>
+    <Compile Include="fRegularHexagon.Designer.cs">
+      <DependentUpon>fRegularHexagon.cs</DependentUpon>
     </Compile>
-    <Compile Include="SquaresForm.cs">
+    <Compile Include="fSquare.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SquaresForm.Designer.cs">
-      <DependentUpon>SquaresForm.cs</DependentUpon>
+    <Compile Include="fSquare.Designer.cs">
+      <DependentUpon>fSquare.cs</DependentUpon>
     </Compile>
     <Compile Include="InitialForm.cs">
       <SubType>Form</SubType>
@@ -91,12 +104,19 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScaleneTriangle.cs" />
     <Compile Include="Square.cs" />
-    <EmbeddedResource Include="CirclesForm.resx">
-      <DependentUpon>CirclesForm.cs</DependentUpon>
+    <EmbeddedResource Include="fCircle.resx">
+      <DependentUpon>fCircle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EquilateralTriangleForm.resx">
-      <DependentUpon>EquilateralTriangleForm.cs</DependentUpon>
+    <EmbeddedResource Include="fEquilateralTriangle.resx">
+      <DependentUpon>fEquilateralTriangle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fIsoscelesTriangle.resx">
+      <DependentUpon>fIsoscelesTriangle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fScaleneTriangle.resx">
+      <DependentUpon>fScaleneTriangle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InitialForm.resx">
       <DependentUpon>InitialForm.cs</DependentUpon>
@@ -110,14 +130,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="RectangleForm.resx">
-      <DependentUpon>RectangleForm.cs</DependentUpon>
+    <EmbeddedResource Include="fRectangle.resx">
+      <DependentUpon>fRectangle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegularHexagonForm.resx">
-      <DependentUpon>RegularHexagonForm.cs</DependentUpon>
+    <EmbeddedResource Include="fRegularHexagon.resx">
+      <DependentUpon>fRegularHexagon.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SquaresForm.resx">
-      <DependentUpon>SquaresForm.cs</DependentUpon>
+    <EmbeddedResource Include="fSquare.resx">
+      <DependentUpon>fSquare.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
