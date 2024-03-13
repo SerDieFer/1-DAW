@@ -47,11 +47,28 @@ END
 --	NOTA: Si no sale lo mismo, te recomiendo revisar bien el orden de prioridad de los operadores... ()
 -------------------------------------------------------------------------------------------
 
+DECLARE @a INT = 3
+DECLARE @b INT = -4
+DECLARE @c INT = 1
+DECLARE @sol1 DECIMAL(4,2)
+DECLARE @sol2 DECIMAL(4,2)
+
+BEGIN TRY
+	IF( @a > 0 AND @c > 0 )
+	BEGIN
+		SET @sol1 = ( ( @b * -1 ) + ( SQRT(POWER(@b, 2) - ( 4 * @a * @c ) ) ) )  / (2 * @a)
+		SET @sol2 = ( ( @b * -1 ) - ( SQRT(POWER(@b, 2) - ( 4 * @a * @c ) ) ) ) / (2 * @a) 
+		PRINT CONCAT('sol1 = ', @sol1, CHAR(10), 'sol2 = ', @sol2)
+	END
+END TRY
+BEGIN CATCH
+	PRINT 'Los valores tienen que ser mayores que 0'
+END CATCH
 
 
 -------------------------------------------------------------------------------------------
 -- 3. Crea un script que calcule la serie de Fibonacci para un número dado.
-
+--
 -- La sucesión es: 1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597...
 -- Si te fijas, se calcula sumando el número anterior al siguiente:
 --	Ejemplo. Si se introduce el numero 3 significa que tendremos que hacer 3 iteraciones:
@@ -66,7 +83,22 @@ END
 --	Ayuda: Quizás necesites guardar en algún sitio el valor actual de la serie antes de sumarlo...
 -------------------------------------------------------------------------------------------
 
+DECLARE @limite INT = 6
+DECLARE @res INT = 1
+DECLARE @i INT = 0
+DECLARE @aux1 INT = 0
+DECLARE @aux2 INT = 0
 
+WHILE ( @i < @limite ) 
+BEGIN
+	SET @aux1 = @res - @aux2
+	PRINT CONCAT(@aux1, ' + ', @aux2, ' = ' , @res)
+	SET @aux2 += @aux1
+	SET @res += @aux2 - @aux1
+	SET @i += 1
+END
+
+--?
 
 -------------------------------------------------------------------------------------------
 -- 4. Utilizando la BD JARDINERIA, crea un script que realice lo siguiente:
