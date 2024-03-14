@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resultado>
+    <album>
+        <nombre>A Hard Day's Night</nombre>
+        <autor>The Beatles</autor>
+        <fechaGrabacion>1964</fechaGrabacion>
+        <discografica>EMI Records LTD.</discografica>
+        <codigoBarras>877774643726</codigoBarras>
+        <codigoProducto>7464372</codigoProducto>
+        <formato>CD</formato>
+        <compositor>
+            <compositor1>John Lenon</compositor1>
+            <compositor2>Paul McCartney</compositor2>
+        </compositor>
+        <lista>
+            <cancion1>
+                <titulo>A Hard Day's Night</titulo>
+            </cancion1>
+            <cancion2>
+                <titulo>I Should Have Know Better</titulo>
+            </cancion2>
+            <cancion3>
+                <titulo>If I Fell</titulo>
+            </cancion3>
+            <cancion4>
+                <titulo>I'm Happy Just To Dance With You</titulo>
+            </cancion4>
+            <cancion5>
+                <titulo>And I Love Her</titulo>
+            </cancion5>
+            <cancion6>
+                <titulo>Tell Me Why</titulo>
+            </cancion6>
+            <cancion7>
+                <titulo>Can't Buy Me Love</titulo>
+            </cancion7>
+            <cancion8>
+                <titulo>Any Time At All</titulo>
+            </cancion8>
+            <cancion9>
+                <titulo>I'll Cry Instead</titulo>
+            </cancion9>
+            <cancion10>
+                <titulo>Things We Said Today</titulo>
+            </cancion10>
+            <cancion11>
+                <titulo>When I Get Home</titulo>
+            </cancion11>
+            <cancion12>
+                <titulo>You Can't Do That</titulo>
+            </cancion12>
+            <cancion13>
+                <titulo>I'll Be Back</titulo>
+            </cancion13>
+        </lista>
+    </album>
+    <album>
+        <nombre>Abbey Road</nombre>
+        <autor>The Beatles</autor>
+        <fechaGrabacion>1969</fechaGrabacion>
+        <discografica>EMI Records LTD.</discografica>
+        <codigoBarras>07777644624</codigoBarras>
+        <codigoProducto>7464462</codigoProducto>
+        <formato>CD</formato>
+        <lista>
+            <cancion1>
+                <titulo>Come Together</titulo>
+            </cancion1>
+            <cancion2>
+                <titulo>Something</titulo>
+            </cancion2>
+            <cancion3>
+                <titulo>Maxwell's Silver Hammer</titulo>
+            </cancion3>
+            <cancion4>
+                <titulo>Oh! Darling</titulo>
+            </cancion4>
+            <cancion5>
+                <titulo>Octopus's Garden</titulo>
+            </cancion5>
+            <cancion6>
+                <titulo>I Want You (She's So Heavy)</titulo>
+            </cancion6>
+            <cancion7>
+                <titulo>Here Comes The Sun</titulo>
+            </cancion7>
+            <cancion8>
+                <titulo>Because</titulo>
+            </cancion8>
+            <cancion9>
+                <titulo>You Never Give Me Your Money</titulo>
+            </cancion9>
+            <cancion10>
+                <titulo>Sun King</titulo>
+            </cancion10>
+            <cancion11>
+                <titulo>Mean Mr Mustard</titulo>
+            </cancion11>
+            <cancion12>
+                <titulo>Polythene Pam</titulo>
+            </cancion12>
+            <cancion13>
+                <titulo>She Came In Through The Bathroom Windows</titulo>
+            </cancion13>
+            <cancion14>
+                <titulo>Golden Slumbers</titulo>
+            </cancion14>
+            <cancion15>
+                <titulo>Carry That Weight</titulo>
+            </cancion15>
+            <cancion16>
+                <titulo>The End</titulo>
+            </cancion16>
+            <cancion17>
+                <titulo>Her Majesty</titulo>
+            </cancion17>
+        </lista>
+    </album>
+     <album>
+        <nombre>Flowers</nombre>
+        <autor>The Rolling Stones</autor>
+        <fechaGrabacion>1987</fechaGrabacion>
+        <discografica>The Decca Record Co. LTD.</discografica>
+        <codigoBarras>042282013927</codigoBarras>
+        <codigoProducto>8201392</codigoProducto>
+        <formato>CD</formato>
+        <productor>Andrew Loog Oldham</productor>
+        <duracionTotal>
+            <minutos>36</minutos>
+            <segundos>56</segundos>
+        </duracionTotal>
+        <lista>
+            <cancion1>
+                <titulo>Ruby Tuesday</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>15</segundos>
+                </duracion>
+            </cancion1>
+            <cancion2>
+                <titulo>Have You Seen Your Mother, Baby, Standing In The Shadow?</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>2</minutos>
+                    <segundos>33</segundos>
+                </duracion>
+            </cancion2>
+            <cancion3>
+                <titulo>Let's Spend The Night Together</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>36</segundos>
+                </duracion>
+            </cancion3>
+            <cancion4>
+                <titulo>Lady Jane</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>6</segundos>
+                </duracion>
+            </cancion4>
+            <cancion5>
+                <titulo>Out Of Time</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>42</segundos>
+                </duracion>
+            </cancion5>
+            <cancion6>
+                <titulo>My Girl</titulo>
+                <compositor>
+                    <compositor1>Robinson</compositor1>
+                    <compositor2>White</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>2</minutos>
+                    <segundos>38</segundos>
+                </duracion>
+            </cancion6>
+            <cancion7>
+                <titulo>Backstreet Girl</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>26</segundos>
+                </duracion>
+            </cancion7>
+            <cancion8>
+                <titulo>Please Go Home</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>16</segundos>
+                </duracion>
+            </cancion8>
+            <cancion9>
+                <titulo>Mother's Little Helper</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>2</minutos>
+                    <segundos>43</segundos>
+                </duracion>
+            </cancion9>
+            <cancion10>
+                <titulo>Take It Or Leave It</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>2</minutos>
+                    <segundos>46</segundos>
+                </duracion>
+            </cancion10>
+            <cancion11>
+                <titulo>Ride On, Baby</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>2</minutos>
+                    <segundos>53</segundos>
+                </duracion>
+            </cancion11>
+            <cancion12>
+                <titulo>Sittin' On A Fence</titulo>
+                <compositor>
+                    <compositor1>Jagger</compositor1>
+                    <compositor2>Richards</compositor2>
+                </compositor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>2</segundos>
+                </duracion>
+            </cancion12>
+        </lista>
+    </album>
+</resultado>

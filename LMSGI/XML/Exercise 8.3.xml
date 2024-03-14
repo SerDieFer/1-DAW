@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resultado>
+    <album>
+        <genero>Tradicional Cubana</genero>
+        <nombre>Calle Salud</nombre>
+        <autor>Compay segundos</autor>
+        <fechaGrabacion>1999</fechaGrabacion>
+        <lista>
+            <cancion1 genero = "Son-afro">
+                <titulo>Saludo a Chango</titulo>
+                <autor>Armando Dulfo</autor>
+                <duracion>
+                    <minutos>5</minutos>
+                    <segundos>46</segundos>
+                </duracion>
+            </cancion1>
+            <cancion2 genero = "Bolero-son">
+                <titulo>Amor Gigante</titulo>
+                <autor>Francisco Repilado</autor>
+                <duracion>
+                    <minutos>2</minutos>
+                    <segundos>52</segundos>
+                </duracion>
+            </cancion2>
+            <cancion3 genero = "Bolero-son">
+                <titulo>Rosa de Francia</titulo>
+                <autor>Rodrigo Prats</autor>
+                <duracion>
+                    <minutos>5</minutos>
+                    <segundos>20</segundos>
+                </duracion>
+            </cancion3>
+            <cancion4 genero = "Merengue">
+                <titulo>María en la Playa</titulo>
+                <autor>Francisco Repilado</autor>
+                <duracion>
+                    <minutos>2</minutos>
+                    <segundos>49</segundos>
+                </duracion>
+            </cancion4>
+            <cancion5 genero = "Bolero-son">
+                <titulo>Versos para Ti</titulo>
+                <autor>Francisco Repilado</autor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>56</segundos>
+                </duracion>
+            </cancion5>
+            <cancion6 genero = "Bolero-son">
+                <titulo>La Engañadora</titulo>
+                <autor>Enrique Jorrín</autor>
+                <duracion>
+                    <minutos>4</minutos>
+                    <segundos>20</segundos>
+                </duracion>
+            </cancion6>
+            <cancion7 genero = "Son">
+                <titulo>Viejos sones de Santiago</titulo>
+                <autor>Popular</autor>
+                <duracion>
+                    <minutos>4</minutos>
+                    <segundos>21</segundos>
+                </duracion>
+            </cancion7>
+            <cancion8 genero = "Bolero">
+                <titulo>El Día que me Quieras</titulo>
+                <autor>Carlos Gardél</autor>
+                <duracion>
+                    <minutos>4</minutos>
+                    <segundos>3</segundos>
+                </duracion>
+            </cancion8>
+            <cancion9 genero = "Sabroso">
+                <titulo>Se Perdió la Flauta</titulo>
+                <autor>Compay segundos</autor>
+                <duracion>
+                    <minutos>4</minutos>
+                    <segundos>52</segundos>
+                </duracion>
+            </cancion9>
+            <cancion10 genero = "Bolero">
+                <titulo>Morir de Amor</titulo>
+                <autor>Charles Aznavour</autor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>29</segundos>
+                </duracion>
+            </cancion10>
+            <cancion11 genero = "Son">
+                <titulo>Lágrimas Negras</titulo>
+                <autor>Miguel Matamoros</autor>
+                <duracion>
+                    <minutos>3</minutos>
+                    <segundos>49</segundos>
+                </duracion>
+            </cancion11>
+            <cancion12 genero = "Son">
+                <titulo>Balcón de Santiago</titulo>   
+                <autor>Francisco Repilado</autor>
+                <duracion>
+                    <minutos>5</minutos>
+                    <segundos>40</segundos>
+                </duracion>
+            </cancion12>
+            <cancion13 genero = "Son">
+                <titulo>Chan Chan</titulo>  
+                <autor>Francisco Repilado</autor>
+                <duracion>
+                    <minutos>5</minutos>
+                    <segundos>30</segundos>
+                </duracion>
+            </cancion13>
+        </lista>
+    </album>
+</resultado>
