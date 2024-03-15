@@ -65,7 +65,6 @@ BEGIN CATCH
 	PRINT 'Los valores tienen que ser mayores que 0'
 END CATCH
 
-
 -------------------------------------------------------------------------------------------
 -- 3. Crea un script que calcule la serie de Fibonacci para un número dado.
 --
@@ -83,22 +82,23 @@ END CATCH
 --	Ayuda: Quizás necesites guardar en algún sitio el valor actual de la serie antes de sumarlo...
 -------------------------------------------------------------------------------------------
 
-DECLARE @limite INT = 6
+DECLARE @limite INT = 5
+DECLARE @iteracion INT = 0
 DECLARE @res INT = 1
-DECLARE @i INT = 0
 DECLARE @aux1 INT = 0
 DECLARE @aux2 INT = 0
 
-WHILE ( @i < @limite ) 
-BEGIN
-	SET @aux1 = @res - @aux2
-	PRINT CONCAT(@aux1, ' + ', @aux2, ' = ' , @res)
-	SET @aux2 += @aux1
-	SET @res += @aux2 - @aux1
-	SET @i += 1
-END
+DECLARE @txt VARCHAR(50) = 'ini = 1'
+  PRINT @txt
 
---?
+WHILE (@iteracion < @limite) 
+BEGIN
+	SET @aux1 = @aux2
+	SET @aux2 = @res
+	SET @res = @aux1 + @aux2
+	SET @iteracion += 1
+	PRINT CONCAT(@aux1, ' + ', @aux2, ' = ' , @res)
+END
 
 -------------------------------------------------------------------------------------------
 -- 4. Utilizando la BD JARDINERIA, crea un script que realice lo siguiente:
@@ -111,7 +111,21 @@ END
 --	    Reto opcional: Implementa el script utilizando una única consulta.
 -------------------------------------------------------------------------------------------
 
+EXEC sp_columns CLIENTES
 
+DECLARE @nombreCliente VARCHAR(50)
+DECLARE @numPedidos INT
+DECLARE @numCliente INT = 3
+
+SELECT @nombreCliente = cli.nombre_cliente,
+	   @numPedidos = COUNT(pe.codPedido)
+  FROM PEDIDOS pe,
+	   CLIENTES cli
+ WHERE cli.codCliente = pe.codCliente
+   AND @numCliente = cli.codCliente
+ GROUP BY cli.nombre_cliente
+
+ PRINT CONCAT('Cliente: ', @nombreCliente, CHAR(10), 'Pedidos: ' , @numPedidos)
 
 -------------------------------------------------------------------------------------------
 -- 5. Utilizando la BD JARDINERIA, crea un script que realice lo siguiente:
@@ -132,7 +146,35 @@ END
 --			Walton , John
 -------------------------------------------------------------------------------------------
 
+EXEC sp_columns OFICINAS
 
+DECLARE @nombreCompleto VARCHAR(153)
+DECLARE @posicionEmpleado INT = 1
+
+DECLARE @totalEmpleados INT 
+DECLARE @ciudadOficina VARCHAR(40) = 'londres'
+
+ SELECT @totalEmpleados = COUNT(codEmpleado)
+   FROM EMPLEADOS
+
+WHILE (@posicionEmpleado <= @totalEmpleados)
+BEGIN
+	   SET @nombreCompleto = NULL
+	SELECT @nombreCompleto = CONCAT(em.apellido1, ' ', em.apellido2, ', ', em.nombre),
+		   @posicionEmpleado = em.codEmpleado
+	  FROM EMPLEADOS em,
+	       OFICINAS ofi
+	 WHERE em.codEmpleado = @posicionEmpleado
+	   AND em.codOficina = ofi.codOficina
+	   AND LOWER(ofi.ciudad) = @ciudadOficina 
+
+		IF (@nombreCompleto IS NOT NULL)
+		BEGIN
+			PRINT CONCAT('ID (', @posicionEmpleado, ') Nombre: ',  @nombreCompleto)
+		END
+
+	SET @posicionEmpleado += 1
+END
 
 -------------------------------------------------------------------------------------------
 -- 6. Utilizando la BD JARDINERIA, crea un script que realice lo siguiente:
@@ -160,6 +202,51 @@ END
 --			...
 -------------------------------------------------------------------------------------------
 
+SELECT *
+FROM CLIENTES
+
+DECLARE @nomCliente VARCHAR(50)
+DECLARE @numPed INT
+DECLARE @costoPedido INT
+DECLARE @posCliente INT = 1
+
+DECLARE @totalClientes INT
+ SELECT @totalClientes = COUNT(codCliente)
+   FROM CLIENTES
+
+WHILE(@posCliente <= @totalClientes)
+BEGIN
+	SET @nomCliente = NULL
+
+   SELECT @numPed = COUNT(codPedido)
+     FROM PEDIDOS
+    WHERE codCliente = @posCliente
+
+	SELECT @costoPedido = CAST(SUM(de.cantidad * de.precio_unidad) AS DECIMAL(10,2))
+	  FROM DETALLE_PEDIDOS de,
+		   PEDIDOS pe
+	 WHERE pe.codPedido = de.codPedido
+	   AND pe.codCliente = @posCliente
+
+    SELECT @nomCliente = nombre_cliente
+      FROM CLIENTES
+     WHERE codCliente = @posCliente
+
+	IF (@nomCliente IS NOT NULL)
+    BEGIN
+        PRINT CONCAT('Cliente ID(', @posCliente, '): ', @nomCliente)
+        IF (@numPed > 0)
+        BEGIN
+            PRINT CONCAT('Pedidos: ', @numPed, CHAR(10),
+                         'Costo Pedidos: ', @costoPedido, '€', CHAR(10))
+        END
+        ELSE
+        BEGIN
+            PRINT CONCAT('Este cliente no tiene pedidos.', CHAR(10))
+        END
+    END
+ SET @posCliente += 1
+END
 
 -------------------------------------------------------------------------------------------
 -- 7. Utilizando la BD JARDINERIA, crea un script que realice las siguientes operaciones:
@@ -172,6 +259,39 @@ END
 -------------------------------------------------------------------------------------------
 
 
+DECLARE @ERROR INT
+BEGIN TRY
+
+    BEGIN TRANSACTION;
+
+    DECLARE @codOficina INT;
+     INSERT INTO OFICINAS (ciudad, pais) VALUES ('Ciudad Inventada', 'País Inventado');
+       SET @codOficina = SCOPE_IDENTITY(); 
+
+    DECLARE @codEmpleado INT;
+     INSERT INTO EMPLEADOS (nombre, apellido1, apellido2, tlf_extension_ofi, email, codOficina) 
+     VALUES ('Nombre Inventado', 'Apellido1', 'Apellido2', '123', 'correo@inventado.com', @codOficina);
+        SET @codEmpleado = SCOPE_IDENTITY(); 
+
+    DECLARE @codCliente INT;
+     INSERT INTO CLIENTES (nombre_cliente, linea_direccion1, ciudad, pais, telefono) 
+     VALUES ('Cliente Inventado', 'Dirección Inventada', 'Ciudad Inventada', 'País Inventado', '123456789');
+        SET @codCliente = SCOPE_IDENTITY(); 
+
+     UPDATE CLIENTES SET codEmpl_ventas = @codEmpleado WHERE codCliente = @codCliente;
+	
+	SET @ERROR = 1/0
+    COMMIT TRANSACTION; 
+
+    PRINT 'Operaciones completadas exitosamente.';
+END TRY
+BEGIN CATCH
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION; 
+    PRINT 'Se produjo un error durante la ejecución del script:';
+    PRINT ERROR_MESSAGE(); 
+END CATCH;
+
 
 -------------------------------------------------------------------------------------------
 -- 8. Utilizando la BD JARDINERIA, crea un script que realice las siguientes operaciones:
@@ -181,6 +301,7 @@ END
 --		Debes crear variables con los identificadores de clave primaria para eliminar
 --			todos los datos de cada una de las tablas en una sola ejecución
 -------------------------------------------------------------------------------------------
+
 
 
 
