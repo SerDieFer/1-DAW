@@ -49,6 +49,7 @@
     <Compile Include="Alumn.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="CourseList.cs" />
+    <Compile Include="CustomRegex.cs" />
     <Compile Include="fAlumn.cs">
       <SubType>Form</SubType>
     </Compile>

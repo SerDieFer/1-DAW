@@ -5,21 +5,38 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Exercise_5
+namespace Exercise_6
 {
-    public partial class fInitial : Form
+    public partial class InitialForm : Form
     {
-        public fInitial()
+        public InitialForm()  
         {
             InitializeComponent();
         }
 
-        private void fInitial_Load(object sender, EventArgs e)
-        {
+        CourseList courseList = new CourseList();
+        AlumnList alumnList = new AlumnList();
+        TeacherList teacherList = new TeacherList();
 
+        private void bCursos_Click(object sender, EventArgs e)
+        {
+            CourseForm courseForm = new CourseForm(courseList, alumnList, teacherList);
+
+            courseForm.ShowDialog();
+        }
+
+        private void btnAlumn_Click(object sender, EventArgs e)
+        {
+            AlumnForm alumnForm = new AlumnForm(alumnList, teacherList, courseList);
+            alumnForm.ShowDialog();
+        }
+
+        private void btnTeacher_Click(object sender, EventArgs e)
+        {
+            TeacherForm teacherForm = new TeacherForm(teacherList, alumnList, courseList);
+            teacherForm.ShowDialog();
         }
     }
 }

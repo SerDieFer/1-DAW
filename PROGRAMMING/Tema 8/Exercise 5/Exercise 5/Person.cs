@@ -9,14 +9,21 @@ namespace Exercise_5
     abstract public class Person
     {
         private string pName;
-        private int p;
-
+        private string pID;
+        private int pPhone;
 
         public Person()
         {
-            personList = new List<Person>();
-            teacherList = new List<Person>();
-            alumnList = new List<Person>();
+            pName = "";
+            pID = "";
+            pPhone = -1;
+        }
+
+        public Person(string pName, string pID, int pPhone)
+        {
+            pName = this.pName;
+            pID = this.pID;
+            pPhone = this.pPhone;
         }
 
 
