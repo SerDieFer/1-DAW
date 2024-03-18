@@ -258,40 +258,53 @@ END
 --		Asigna como representante de ventas el cliente anterior
 -------------------------------------------------------------------------------------------
 
+EXEC sp_help CLIENTES 
+
+SET IMPLICIT_TRANSACTIONS OFF
 
 DECLARE @ERROR INT
 BEGIN TRY
+    BEGIN TRANSACTION
+		DECLARE @codOficina CHAR(6)
+			SET	@codOficina = 'ELX-ES'
+		 INSERT INTO OFICINAS (codOficina, ciudad, pais, codPostal, telefono, linea_direccion1) 
+		 VALUES (@codOficina, 'Elche', 'España', '03207', '613704822', 'Calle Prudencio la Viña')
 
-    BEGIN TRANSACTION;
+		DECLARE @codEmpleado INT
+		 SELECT @codEmpleado = ISNULL(MAX(codEmpleado) + 1, 1)
+		   FROM EMPLEADOS
 
-    DECLARE @codOficina INT;
-     INSERT INTO OFICINAS (ciudad, pais) VALUES ('Ciudad Inventada', 'País Inventado');
-       SET @codOficina = SCOPE_IDENTITY(); 
+		 INSERT INTO EMPLEADOS (codEmpleado, nombre, apellido1, apellido2, tlf_extension_ofi, email, salario, codOficina) 
+	   	 VALUES (@codEmpleado, 'Abel', 'Esta', 'False', '12345', 'abelTrueFalse@hehe.com', 3, @codOficina)
 
-    DECLARE @codEmpleado INT;
-     INSERT INTO EMPLEADOS (nombre, apellido1, apellido2, tlf_extension_ofi, email, codOficina) 
-     VALUES ('Nombre Inventado', 'Apellido1', 'Apellido2', '123', 'correo@inventado.com', @codOficina);
-        SET @codEmpleado = SCOPE_IDENTITY(); 
+	    DECLARE @codCliente INT
+		 SELECT @codCliente = ISNULL(MAX(codCliente) + 1, 1)
+		   FROM CLIENTES
+		
+		 INSERT INTO CLIENTES (codCliente, nombre_cliente, nombre_contacto, linea_direccion1, ciudad, pais, telefono, codEmpl_ventas) 
+		 VALUES (@codCliente, 'Santiago Bien Pelado', 'Santi True', 'Calle de las Milanesas', 'Alicante', 'España', '696969696', @codEmpleado)
 
-    DECLARE @codCliente INT;
-     INSERT INTO CLIENTES (nombre_cliente, linea_direccion1, ciudad, pais, telefono) 
-     VALUES ('Cliente Inventado', 'Dirección Inventada', 'Ciudad Inventada', 'País Inventado', '123456789');
-        SET @codCliente = SCOPE_IDENTITY(); 
-
-     UPDATE CLIENTES SET codEmpl_ventas = @codEmpleado WHERE codCliente = @codCliente;
-	
-	SET @ERROR = 1/0
-    COMMIT TRANSACTION; 
-
-    PRINT 'Operaciones completadas exitosamente.';
+		  --SET @ERROR = 1/0 -- Prueba para introducir un error
+    COMMIT
+    	  PRINT 'Operaciones completadas exitosamente.';
 END TRY
-BEGIN CATCH
-    IF @@TRANCOUNT > 0
-        ROLLBACK TRANSACTION; 
-    PRINT 'Se produjo un error durante la ejecución del script:';
-    PRINT ERROR_MESSAGE(); 
-END CATCH;
 
+BEGIN CATCH
+    ROLLBACK
+    PRINT 'Se produjo un error durante la ejecución del script:';
+    PRINT CONCAT ('ERROR: ', ERROR_NUMBER(), CHAR(10),
+ 				  'DESCRIPCION: ', ERROR_MESSAGE(), CHAR(10),
+ 				  'LINEA: ', ERROR_LINE())
+END CATCH
+
+SELECT *
+  FROM OFICINAS
+
+SELECT *
+  FROM EMPLEADOS
+
+SELECT *
+  FROM CLIENTES
 
 -------------------------------------------------------------------------------------------
 -- 8. Utilizando la BD JARDINERIA, crea un script que realice las siguientes operaciones:
@@ -299,20 +312,56 @@ END CATCH;
 --
 --		Debes eliminar la oficina, el empleado y el cliente creados en el apartado anterior.
 --		Debes crear variables con los identificadores de clave primaria para eliminar
---			todos los datos de cada una de las tablas en una sola ejecución
+--		todos los datos de cada una de las tablas en una sola ejecución
 -------------------------------------------------------------------------------------------
+		
+DECLARE @ERROR2 INT
+
+BEGIN TRY
+	BEGIN TRANSACTION	
+
+		DECLARE @borrarCliente INT
+	     SELECT @borrarCliente = MAX(codCliente)
+		   FROM CLIENTES
+
+		 DELETE FROM CLIENTES
+		  WHERE codCliente = @borrarCliente
+
+		DECLARE @borrarEmpleado INT
+	     SELECT @borrarEmpleado = MAX(codEmpleado)
+		   FROM EMPLEADOS
+
+		 DELETE FROM EMPLEADOS
+		  WHERE codEmpleado = @borrarEmpleado
 
 
+		DECLARE @borrarOficina CHAR(6)
+		 SELECT @borrarOficina = 'ELX-ES'
+		   FROM OFICINAS
 
+		 DELETE FROM OFICINAS
+		  WHERE codOficina = @borrarOficina
 
+		  --SET @ERROR2 = 1/0 -- Prueba para introducir un error
+    COMMIT
+    PRINT 'Operaciones completadas exitosamente.';
+END TRY
+
+BEGIN CATCH
+    ROLLBACK
+    PRINT 'Se produjo un error durante la ejecución del script:';
+    PRINT CONCAT ('ERROR: ', ERROR_NUMBER(), CHAR(10),
+ 				  'DESCRIPCION: ', ERROR_MESSAGE(), CHAR(10),
+ 				  'LINEA: ', ERROR_LINE())
+END CATCH
 
 -------------------------------------------------------------------------------------------
 -- 9. Utilizando la BD JARDINERIA, crea un script que realice lo siguiente:
 --		Crea un nuevo cliente (invéntate los datos). No debes indicar directamente el código, 
---			sino buscar cuál le tocaría con una SELECT y guardarlo en una variable.
+--		sino buscar cuál le tocaría con una SELECT y guardarlo en una variable.
 
 --		Crea un nuevo pedido para dicho cliente (fechaPedido será la fecha actual, fecha esperada 10 días 
---				después de la fecha de pedido, fecha entrega y comentarios a NULL y estado PENDIENTE)
+--		después de la fecha de pedido, fecha entrega y comentarios a NULL y estado PENDIENTE)
 --			Dicho pedido debe constar de dos productos (los códigos de producto se declaran como variables y se utilizan después)
 --			El precio de cada producto debes obtenerlo utilizando SELECT antes de insertarlo en DETALLE_PEDIDOS,
 --			de tal manera que, si modificamos los códigos de producto, el script seguirá funcionando.
@@ -327,4 +376,73 @@ END CATCH;
 --				Forma de pago debe ser: 'PayPal' y Fechapago la del día
 -------------------------------------------------------------------------------------------
 
+EXEC sp_help PAGOS
 
+DECLARE @ERROR3 INT
+
+BEGIN TRY
+	BEGIN TRANSACTION	
+	   DECLARE @nuevoCliente INT
+	    SELECT @nuevoCliente = ISNULL(MAX(codCliente) + 1, 1)
+		  FROM CLIENTES
+
+		INSERT INTO CLIENTES (codCliente, nombre_cliente, nombre_contacto, linea_direccion1, ciudad, pais, telefono) 
+		VALUES (@nuevoCliente, 'Abel el Gris', 'Abel False', 'Sala del Rey de Minas Moria', 'Moria', 'Montañas Nubladas', '123456789')
+		
+	   DECLARE @nuevoCodPedido INT
+		SELECT @nuevoCodPedido = ISNULL(MAX(codPedido) + 1, 1)
+		  FROM PEDIDOS
+
+		INSERT INTO PEDIDOS (codPedido, fecha_pedido, fecha_esperada, codEstado, codCliente) 
+		VALUES (@nuevoCodPedido, GETDATE(), DATEADD(DAY,10, GETDATE()), 'P', @nuevoCliente)
+
+	   DECLARE @codProducto1 INT = 7
+
+	   DECLARE @precioProducto1 DECIMAL(9,2)
+	    SELECT @precioProducto1 = precio_venta
+	      FROM PRODUCTOS
+	     WHERE codProducto = @codProducto1
+
+	   DECLARE @codProducto2 INT = 9
+
+	   DECLARE @precioProducto2 DECIMAL(9,2)
+	    SELECT @precioProducto2 = precio_venta
+	      FROM PRODUCTOS
+	     WHERE codProducto = @codProducto2
+
+		INSERT INTO DETALLE_PEDIDOS(codPedido, codProducto, cantidad, precio_unidad, numeroLinea)
+		VALUES (@nuevoCodPedido, @codProducto1, 5, @precioProducto1, 1)
+		
+		INSERT INTO DETALLE_PEDIDOS(codPedido, codProducto, cantidad, precio_unidad, numeroLinea)
+		VALUES (@nuevoCodPedido, @codProducto2, 8, @precioProducto2, 2)
+
+	   DECLARE @codUltimaTransaccion INT
+ 		SELECT @codUltimaTransaccion = RIGHT(id_transaccion, 8)
+   		  FROM PAGOS
+  		 ORDER BY id_transaccion ASC
+
+	   DECLARE @nuevaTransaccion CHAR(15) = CONCAT('ak-std-', RIGHT(REPLICATE('0', 6) + CAST(@codUltimaTransaccion AS VARCHAR(8)), 8))
+
+	   DECLARE @pagoTotal INT 
+		SELECT @pagoTotal = SUM(cantidad * precio_unidad)
+		  FROM DETALLE_PEDIDOS
+		 WHERE codPedido = @nuevoCodPedido
+	
+		INSERT INTO PAGOS(codCliente, id_transaccion, fechaHora_pago, importe_pago, codFormaPago, codPedido)
+		VALUES (@nuevoCliente, @nuevaTransaccion, GETDATE(), @pagoTotal, 'P', @nuevoCodPedido)
+
+		   --SET @ERROR3 = 1/0 -- Prueba para introducir un error
+    COMMIT
+    PRINT 'Operaciones completadas exitosamente.';
+END TRY
+
+BEGIN CATCH
+    ROLLBACK
+    PRINT 'Se produjo un error durante la ejecución del script:';
+    PRINT CONCAT ('ERROR: ', ERROR_NUMBER(), CHAR(10),
+ 				  'DESCRIPCION: ', ERROR_MESSAGE(), CHAR(10),
+ 				  'LINEA: ', ERROR_LINE())
+END CATCH
+
+SELECT *
+FROM PAGOS
