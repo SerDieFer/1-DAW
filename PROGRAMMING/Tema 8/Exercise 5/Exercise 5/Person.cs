@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Exercise_5
 {
@@ -11,6 +13,23 @@ namespace Exercise_5
         private string pName;
         private string pID;
         private int pPhone;
+
+        public string Name
+        {
+            get { return pName; }
+            set { pName = value; }
+        }
+        public string ID
+        {
+            get { return pID; }
+            set { pID = value; }
+        }
+
+        public int Phone
+        {
+            get { return pPhone; }
+            set { pPhone = value; }
+        }
 
         public Person()
         {
@@ -26,11 +45,12 @@ namespace Exercise_5
             pPhone = this.pPhone;
         }
 
-
-
-
-
-
-
+        public virtual string ShowsPersonData()
+        {
+            var className = GetType().Name;
+            string pInfoTxt = "";
+            pInfoTxt = className + " data: \n" + "Name: " + Name + "\n" + "ID: " + ID + "\n" + "Phone: " + Phone + "\n";
+            return pInfoTxt;
+        }
     }
 }

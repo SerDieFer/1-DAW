@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +43,75 @@ namespace Exercise_5
             SubjectsList = tSubjects;
             TutorCod = tTutorCod;
             Email = tEmail;
+        }
+
+        public void AddsSelectedTeacherSubject(string teacherID, string subjectName)
+        {
+            tSubjectsList.Add(subjectName);
+        }
+
+        public void RemovesSelectedTeacherSubject(string teacherID, string subjectName)
+        {
+            tSubjectsList.Remove(subjectName);
+        }
+
+        public bool ChecksTeacherSelectedSubject(string teacherID, string subjectName)
+        {
+            bool exist = false;
+
+            if (tSubjectsList.Contains(subjectName))
+            {
+                exist = true;
+            }
+            return exist;
+        }
+
+        public void ClearSubjectsFromTeacher(string teacherID)
+        {
+            tSubjectsList.Clear();
+        }
+
+        public string StoresTeacherSubjectsInfo()
+        {
+            int counter = 0;
+            string AllSubjectsTxt = "";
+            string subjectsTxt = "";
+            if (tSubjectsList.Count != 0)
+            {
+                for (int i = 0; i < tSubjectsList.Count; i++)
+                {
+                    if (counter < tSubjectsList.Count - 1)
+                    {
+                        subjectsTxt += tSubjectsList[i] + " - ";
+                    }
+                    else
+                    {
+                        subjectsTxt += tSubjectsList[i];
+                    }
+                    counter++;
+
+                }
+                AllSubjectsTxt = "And the subjects from " + Name + " are:\n\n" + subjectsTxt; ;
+            }
+            else
+            {
+                AllSubjectsTxt = Name + " has not any subject added.";
+            }
+            return AllSubjectsTxt;
+        }
+
+        public override string ShowsPersonData()
+        {
+            string tInfoTxt = "";
+            if (TutorCod == -1)
+            {
+                tInfoTxt += base.ShowsPersonData() + StoresTeacherSubjectsInfo() + "\n";
+            }
+            else
+            {
+                tInfoTxt = tInfoTxt += base.ShowsPersonData() + "\n" + "Mentor Course Cod: " + TutorCod + "\n" + StoresTeacherSubjectsInfo();
+            }
+            return tInfoTxt;
         }
 
     }

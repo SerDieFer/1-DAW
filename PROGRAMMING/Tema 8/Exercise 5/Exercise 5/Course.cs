@@ -12,14 +12,12 @@ namespace Exercise_5
         private int cCourseCod;
         private string cCourseName;
 
-        //FUNCTION WHICH GETS AND SETS THE COURSE NAME
         public string Name
         {
             get { return cCourseName; }
             set { cCourseName = value; }
         }
 
-        //FUNCTION WHICH GETS AND SETS THE COURSE COD
         public int Cod
         {
             get { return cCourseCod; }
@@ -32,7 +30,6 @@ namespace Exercise_5
             cCourseName = "";
         }
 
-        // FUNCTION WHICH SHOW ALL COURSE INFO
         public string ShowsCourseData()
         {
             string cInfoTxt = "\nCourse data: \n" + "Name: " + Name + "\n" + "Code: " + Cod + "\n";

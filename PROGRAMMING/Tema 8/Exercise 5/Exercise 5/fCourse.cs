@@ -18,7 +18,7 @@ namespace Exercise_6
             InitializeComponent();
         }
 
-        public CourseList coursesList;
+        public CourseList courseList;
         public PersonList personList;
 
         private void CourseForm_Load(object sender, EventArgs e)
@@ -29,7 +29,7 @@ namespace Exercise_6
         public CourseForm(CourseList courseList, PersonList personList)
         {
             InitializeComponent();
-            this.coursesList = courseList;
+            this.courseList = courseList;
             this.personList = personList;
         }
 
@@ -42,12 +42,12 @@ namespace Exercise_6
             {
                 string courseCodValue = Interaction.InputBox("Introduce the desired course code \n(MUST BE BIGGER THAN 0): ");
                 int courseCod = int.Parse(courseCodValue);
-                if (RegexCustomFunctions.RegexCourseCod(courseCodValue) && courseCod > 0)
+                if (CustomRegex.RegexCourseCod(courseCodValue) && courseCod > 0)
                 {
                     if (!courseList.AlreadyUsedCourseCod(courseCod))
                     {
                         string courseName = Interaction.InputBox("Introduce the course's name (ONLY LETTERS): ");
-                        if (RegexCustomFunctions.RegexName(courseName))
+                        if (CustomRegex.RegexName(courseName))
                         {
                             courseList.AddsCourse(courseCod, courseName);
                             introduced = true;
@@ -80,7 +80,7 @@ namespace Exercise_6
                 do
                 {
                     string courseCodValue = Interaction.InputBox("Introduce the course's cod to remove (ONLY NUMS, MUST BE BIGGER THAN 0): ");
-                    if (RegexCustomFunctions.RegexCourseCod(courseCodValue))
+                    if (CustomRegex.RegexCourseCod(courseCodValue))
                     {
                         int courseCod = int.Parse(courseCodValue);
                         string courseName = courseList.ReturnsCourseName(courseCod);
@@ -131,7 +131,7 @@ namespace Exercise_6
                 do
                 {
                     string courseCodValue = Interaction.InputBox("Introduce the course's cod to show data (ONLY NUMS, MUST BE BIGGER THAN 0): ");
-                    if (RegexCustomFunctions.RegexCourseCod(courseCodValue))
+                    if (CustomRegex.RegexCourseCod(courseCodValue))
                     {
                         int courseCod = int.Parse(courseCodValue);
                         int coursePosition = courseList.ReturnsCoursePosition(courseCod);
@@ -164,17 +164,17 @@ namespace Exercise_6
             bool introduced = false;
             if (courseList.CountsTotalCourses() > 0)
             {
-                if (alumnList.CountsTotalAlumns() > 0)
+                if (personList.CountsTotalPersons() > 0)
                 {
                     do
                     {
                         string courseCodValue = Interaction.InputBox("Introduce the course's cod to show alumns data (ONLY NUMS, MUST BE BIGGER THAN 0): ");
-                        if (RegexCustomFunctions.RegexCourseCod(courseCodValue))
+                        if (CustomRegex.RegexCourseCod(courseCodValue))
                         {
                             int courseCod = int.Parse(courseCodValue);
-                            if (alumnList.AlumnsInCourse(courseCod))
+                            if (personList.AlumnsInCourse(courseCod))
                             {
-                                MessageBox.Show(alumnList.ShowAlumnsBySelectedCourseCod(courseCod));
+                                MessageBox.Show(personList.ShowAlumnsBySelectedCourseCod(courseCod));
                                 introduced = true;
                             }
                             else
