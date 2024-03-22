@@ -35,5 +35,6 @@ namespace Exercise_5
             string cInfoTxt = "\nCourse data: \n" + "Name: " + Name + "\n" + "Code: " + Cod + "\n";
             return cInfoTxt;
         }
+
     }
 }

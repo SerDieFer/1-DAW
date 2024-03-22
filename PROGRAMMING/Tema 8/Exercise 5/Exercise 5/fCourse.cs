@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Exercise_6
+namespace Exercise_5
 {
     public partial class CourseForm : Form
     {
@@ -172,7 +172,7 @@ namespace Exercise_6
                         if (CustomRegex.RegexCourseCod(courseCodValue))
                         {
                             int courseCod = int.Parse(courseCodValue);
-                            if (personList.AlumnsInCourse(courseCod))
+                            if (personList.AlumnInCourse(courseCod))
                             {
                                 MessageBox.Show(personList.ShowAlumnsBySelectedCourseCod(courseCod));
                                 introduced = true;

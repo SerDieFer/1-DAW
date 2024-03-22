@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Exercise_5;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
-namespace Exercise_6
+namespace Exercise_5
 {
     public partial class TeacherForm : Form
     {
@@ -20,21 +22,22 @@ namespace Exercise_6
             InitializeComponent();
         }
 
-        public TeacherList teacherList;
-        public AlumnList alumnList;
+        public PersonList personList;
         public CourseList courseList;
 
         private void TeacherForm_Load(object sender, EventArgs e)
         {
         }
  
-        public TeacherForm (TeacherList teacherList, AlumnList alumnList, CourseList courseList)
+        public TeacherForm (PersonList personList, CourseList courseList)
         {
             InitializeComponent();
-            this.teacherList = teacherList;
-            this.alumnList = alumnList;
+            this.personList = personList;
             this.courseList = courseList;
         }
+
+        // show selected by id no devuelve valor en caso de no existir ese dni en profesores
+        // que no se repitan las materias en el mismo profesor
 
         // ADDS A TEACHER
         private void btnAddTeacher_Click(object sender, EventArgs e)
@@ -45,39 +48,42 @@ namespace Exercise_6
             {
                 string teacherName = Interaction.InputBox("Introduce the teacher's name (ONLY LETTERS): ");
 
-                if (RegexCustomFunctions.RegexName(teacherName))
+                if (CustomRegex.RegexName(teacherName))
                 {
                     string teacherID = Interaction.InputBox("Introduce the teacher's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (RegexCustomFunctions.RegexID(teacherID))
+                    if (CustomRegex.RegexID(teacherID))
                     {
-                        if (!teacherList.AlreadyUsedID(teacherID))
+                        if (!personList.AlreadyUsedID(teacherID))
                         {
-                            if (!alumnList.AlreadyUsedID(teacherID))
-                            {
-                                string phoneValue = Interaction.InputBox("Introduce the teacher's phone number (9 DIGITS): \nIt must start with 6 or 7!!\n\nExample 1: 612345678 \nExample 2: 712345678");
+                            string phoneValue = Interaction.InputBox("Introduce the teacher's phone number (9 DIGITS): \nIt must start with 6 or 7!!\n\nExample 1: 612345678 \nExample 2: 712345678");
 
-                                if (RegexCustomFunctions.RegexPhone(phoneValue))
+                            if (CustomRegex.RegexPhone(phoneValue))
+                            {
+                                int phone = int.Parse(phoneValue);
+
+                                if (!personList.AlreadyUsedPhone(phone))
                                 {
-                                    int phone = int.Parse(phoneValue);
-                                    if (!teacherList.AlreadyUsedPhone(phone))
+                                    string email = Interaction.InputBox("Introduce the teacher's email: \nIt must end with @edu.gva.es!!\n\nExample 1: soyElProfe2@edu.gva.es");
+
+                                    if (CustomRegex.RegexEmail(email))
                                     {
-                                        if (!alumnList.AlreadyUsedPhone(phone))
+                                        if (!personList.AlreadyUsedEmail(email))
                                         {
                                             DialogResult isTutorResult = MessageBox.Show("Is the teacher a mentor for any course?", "Course Mentor", MessageBoxButtons.YesNo);
                                             if (isTutorResult == DialogResult.Yes)
                                             {
                                                 string mentorCourseCod = Interaction.InputBox("Introduce the course code where the teacher is the mentor \n(MUST BE BIGGER THAN 0): ");
 
-                                                if (RegexCustomFunctions.RegexCourseCod(mentorCourseCod) && int.Parse(mentorCourseCod) > 0)
+                                                if (CustomRegex.RegexCourseCod(mentorCourseCod) && int.Parse(mentorCourseCod) > 0)
                                                 {
                                                     int courseMentorCod = int.Parse(mentorCourseCod);
                                                     int coursePosition = courseList.ReturnsCoursePosition(courseMentorCod);
                                                     if (coursePosition != -1)
                                                     {
-                                                        if (!teacherList.CourseAlreadyHasTutor(courseMentorCod))
+                                                        if (!personList.CourseAlreadyHasTutor(courseMentorCod))
                                                         {
-                                                            teacherList.AddsTeacher(teacherName, teacherID, phone, courseMentorCod);
+                                                            personList.AddsTeacher(teacherName, teacherID, phone, email, courseMentorCod);
                                                             MessageBox.Show(teacherName + " was registered as the mentor teacher of the course Nº" + courseMentorCod + ".");
                                                             introduced = true;
                                                         }
@@ -100,37 +106,36 @@ namespace Exercise_6
                                             }
                                             else if (isTutorResult == DialogResult.No)
                                             {
-                                                teacherList.AddsTeacher(teacherName, teacherID, phone, -1);
+                                                personList.AddsTeacher(teacherName, teacherID, phone, email, -1);
                                                 introduced = true;
                                                 MessageBox.Show(teacherName + " was registered as a teacher.");
-                                            }                       
+                                            }
                                         }
                                         else
                                         {
-                                            MessageBox.Show("Not possible, this phone number is already used by an alumn!!");
+                                            MessageBox.Show("Not possible, this email is already used by a person!!");
                                             introduced = true;
                                         }
                                     }
                                     else
                                     {
-                                        MessageBox.Show("Not possible, this phone number is already used by a teacher!!");
-                                        introduced = true;
+                                        MessageBox.Show("The email format is not correct, try again.");
                                     }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("The phone format is not correct, try again.");
+                                    MessageBox.Show("Not possible, this phone number is already used by a person!!");
+                                    introduced = true;
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("Not possible, this ID is already used by an alumn!!");
-                                introduced = true;
+                                MessageBox.Show("The phone format is not correct, try again.");
                             }
                         }
                         else
                         {
-                            MessageBox.Show("Not possible, this ID is already used by a teacher!!");
+                            MessageBox.Show("Not possible, this ID is already used by a person!!");
                             introduced = true;
                         }
                     }
@@ -149,29 +154,38 @@ namespace Exercise_6
         // REMOVES SELECTED TEACHER BY ID
         private void btnRemoveTeacherByID_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
                 bool removed = false;
                 do
                 {
                     string teacherID = Interaction.InputBox("Introduce the teacher's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (RegexCustomFunctions.RegexID(teacherID))
+                    if (CustomRegex.RegexID(teacherID))
                     {
-                        if (teacherList.AlreadyUsedID(teacherID))
+                        if (personList.AlreadyUsedID(teacherID))
                         {
-                            if (teacherList.CountsTotalTeachers() >= 1)
+                            int validation = personList.CheckTypeOfPerson(teacherID);
+                            if (validation == 1)
                             {
-                                int teacherPosition = teacherList.ReturnsTeacherPositionFromID(teacherID);
-                                string teacherName = teacherList.ReturnsTeacherName(teacherID);
-                                teacherList.RemovesTeacher(teacherPosition);
-                                MessageBox.Show("The teacher ( " + teacherName + " ) with the ID ( " + teacherID + " ) was removed.");
+                                if (personList.CountsTotalTeachers() >= 1)
+                                {
+                                    int teacherPosition = personList.ReturnPersonPosition(teacherID);
+                                    string teacherName = personList.ReturnsPersonName(teacherID);
+                                    personList.RemovesTeacher(teacherPosition);
+                                    MessageBox.Show("The teacher ( " + teacherName + " ) with the ID ( " + teacherID + " ) was removed.");
+                                    removed = true;
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("There isn't any teacher with the selected ID");
                                 removed = true;
                             }
                         }
                         else
                         {
-                            MessageBox.Show("There isn't any teacher with the selected ID");
+                            MessageBox.Show("There isn't any person with the selected ID");
                             removed = true;
                         }
                     }
@@ -191,24 +205,24 @@ namespace Exercise_6
         // REMOVES SELECTED TEACHER BY NAME
         private void btnRemoveTeacherByName_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
                 bool introduced = false;
                 do
                 {
                     string teacherName = Interaction.InputBox("Introduce the teacher's name to remove (ONLY LETTERS): ");
-                    if (RegexCustomFunctions.RegexName(teacherName))
+                    if (CustomRegex.RegexName(teacherName))
                     {
-                        if (teacherList.SameNameCounter(teacherName) > 1)
+                        if (personList.SameTeacherNameCounter(teacherName) > 1)
                         {
-                            teacherList.SelectSameNameTeachersToDelete(teacherName);
+                            personList.SelectSameNameTeachersToDelete(teacherName);
                             introduced = true;
                         }
-                        else if (teacherList.SameNameCounter(teacherName) == 1)
+                        else if (personList.SameTeacherNameCounter(teacherName) == 1)
                         {
-                            int teacherPosition = teacherList.GetUniqueNamePosition(teacherName);
-                            string teacherID = teacherList.ReturnsTeacherIDFromPosition(teacherPosition);
-                            teacherList.RemovesTeacher(teacherPosition);
+                            int teacherPosition = personList.GetPositionFromUniqueName(teacherName);
+                            string teacherID = personList.ReturnsPersonIDFromPosition(teacherPosition);
+                            personList.RemovesTeacher(teacherPosition);
                             MessageBox.Show("The teacher ( " + teacherName + " ) with the ID ( " + teacherID + " ) was removed.");
                             introduced = true;
                         }
@@ -234,18 +248,18 @@ namespace Exercise_6
         // SHOWS SELECTED TEACHER DATA BY ID
         private void btnShowTeacherDataByID_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
                 bool introduced = false;
                 do
                 {
                     string teacherID = Interaction.InputBox("Introduce the teacher's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (RegexCustomFunctions.RegexID(teacherID))
+                    if (CustomRegex.RegexID(teacherID))
                     {
-                        if (teacherList.AlreadyUsedID(teacherID))
+                        if (personList.AlreadyUsedID(teacherID))
                         {
-                            MessageBox.Show(teacherList.ShowsSelectedTeacherDataByID(teacherID));
+                            MessageBox.Show(personList.ShowsSelectedTeacherDataByID(teacherID));
                             introduced = true;
                         }
                         else
@@ -270,25 +284,25 @@ namespace Exercise_6
         // SHOWS SELECTED TEACHER DATA BY NAME
         private void btnShowTeacherDataByName_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
                 bool showed = false;
                 do
                 {
                     string teacherName = Interaction.InputBox("Introduce the teacher's name to show data (ONLY LETTERS): ");
 
-                    if (RegexCustomFunctions.RegexName(teacherName))
+                    if (CustomRegex.RegexName(teacherName))
                     {
-                        if (teacherList.SameNameCounter(teacherName) > 1)
+                        if (personList.SameTeacherNameCounter(teacherName) > 1)
                         {
-                            teacherList.SelectSameNameTeachersToShow(teacherName);
+                            personList.SelectSameNameTeachersToShow(teacherName);
                             showed = true;
                         }
-                        else if (alumnList.SameNameCounter(teacherName) == 1)
+                        else if (personList.SameTeacherNameCounter(teacherName) == 1)
                         {
-                            int teacherPosition = teacherList.GetUniqueNamePosition(teacherName);
-                            string teacherID = teacherList.ReturnsTeacherIDFromPosition(teacherPosition);
-                            MessageBox.Show(teacherList.ShowsSelectedTeacherDataByID(teacherID));
+                            int teacherPosition = personList.GetPositionFromUniqueName(teacherName);
+                            string teacherID = personList.ReturnsPersonIDFromPosition(teacherPosition);
+                            MessageBox.Show(personList.ShowsSelectedTeacherDataByID(teacherID));
                             showed = true;
                         }
                         else
@@ -314,9 +328,9 @@ namespace Exercise_6
         // SHOWS TEACHERS LIST
         private void btnShowTeacherList_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() != 0)
+            if (personList.CountsTotalTeachers() != 0)
             {
-                MessageBox.Show(teacherList.ShowsTeachersList());
+                MessageBox.Show(personList.ShowsTeachersList());
             }
             else
             {
@@ -327,15 +341,15 @@ namespace Exercise_6
         // SORTS TEACHER LIST BY ALPHABETICAL ORDER
         private void btnSortTeachersAlphabetically_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
-                if (teacherList.CountsTotalTeachers() == 1)
+                if (personList.CountsTotalTeachers() == 1)
                 {
                     MessageBox.Show("Error, the list has only one teacher, add atleast 2 teachers to order the list");
                 }
                 else
                 {
-                    teacherList.SortTeachersListAlphabetically();
+                    personList.SortListAlphabeticallyByTeacher();
                     MessageBox.Show("The list was correctly sorted by alphabetical order");
                 }
             }
@@ -348,24 +362,24 @@ namespace Exercise_6
         // ADDS MULTIPLE SUBJECTS TO SELECTED TEACHER BY NAME
         private void btnAddSubjectToSelectedTeacherByName_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
                 bool added = false;
                 do
                 {
                     string teacherName = Interaction.InputBox("Introduce the teacher's name (ONLY LETTERS): ");
-                    if (RegexCustomFunctions.RegexName(teacherName))
+                    if (CustomRegex.RegexName(teacherName))
                     {
-                        if (teacherList.SameNameCounter(teacherName) > 1)
+                        if (personList.SameTeacherNameCounter(teacherName) > 1)
                         {
-                            teacherList.SelectSameNameTeachersToAddSubjects(teacherName);
+                            personList.SelectSameNameTeachersToAddSubjects(teacherName);
                             added = true;
                         }
-                        else if (teacherList.SameNameCounter(teacherName) == 1)
+                        else if (personList.SameTeacherNameCounter(teacherName) == 1)
                         {
-                            int teacherPosition = teacherList.GetUniqueNamePosition(teacherName);
-                            string teacherID = teacherList.ReturnsTeacherIDFromPosition(teacherPosition);
-                            teacherList.MultipleSubjectsAddingFromSelectedTeacher(teacherID);
+                            int teacherPosition = personList.GetPositionFromUniqueName(teacherName);
+                            string teacherID = personList.ReturnsPersonIDFromPosition(teacherPosition);
+                            personList.MultipleSubjectsAddingFromSelectedTeacher(teacherID);
                             added = true;
                         }
                         else
@@ -390,26 +404,26 @@ namespace Exercise_6
         // REMOVES MULTIPLE SUBJECTS TO SELECTED TEACHER BY NAME
         private void btnRemoveSubjectToSelectedTeacherByName_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
-                if (teacherList.TeachersWithSubjectsCounter() > 0)
+                if (personList.TeachersWithSubjectsCounter() > 0)
                 {
                     bool removed = false;
                     do
                     {
                         string teacherName = Interaction.InputBox("Introduce the teacher's name (ONLY LETTERS): ");
-                        if (RegexCustomFunctions.RegexName(teacherName))
+                        if (CustomRegex.RegexName(teacherName))
                         {
-                            if (teacherList.SameNameCounter(teacherName) > 1)
+                            if (personList.SameTeacherNameCounter(teacherName) > 1)
                             {
-                                teacherList.SelectSameNameTeachersToRemoveSubjects(teacherName);
+                                personList.SelectSameNameTeachersToRemoveSubjects(teacherName);
                                 removed = true;
                             }
-                            else if (teacherList.SameNameCounter(teacherName) == 1)
+                            else if (personList.SameTeacherNameCounter(teacherName) == 1)
                             {
-                                int teacherPosition = teacherList.GetUniqueNamePosition(teacherName);
-                                string teacherID = teacherList.ReturnsTeacherIDFromPosition(teacherPosition);
-                                teacherList.MultipleSubjectsRemovalFromSelectedTeacher(teacherID);
+                                int teacherPosition = personList.GetPositionFromUniqueName(teacherName);
+                                string teacherID = personList.ReturnsPersonIDFromPosition(teacherPosition);
+                                personList.MultipleSubjectsRemovalFromSelectedTeacher(teacherID);
                                 removed = true;
                             }
                             else
@@ -438,28 +452,28 @@ namespace Exercise_6
         // CLEARS ALL SUBJECTS TO SELECTED TEACHER BY NAME
         private void btnClearSubjectsToSelectedTeacherByName_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
-                if (teacherList.TeachersWithSubjectsCounter() > 0)
+                if (personList.TeachersWithSubjectsCounter() > 0)
                 {
                     bool cleared = false;
                     do
                     {
                         string teacherName = Interaction.InputBox("Introduce the teacher's name (ONLY LETTERS): ");
-                        if (RegexCustomFunctions.RegexName(teacherName))
+                        if (CustomRegex.RegexName(teacherName))
                         {
-                            if (teacherList.SameNameCounter(teacherName) > 1)
+                            if (personList.SameTeacherNameCounter(teacherName) > 1)
                             {
-                                teacherList.SelectSameNameTeachersToClearSubjects(teacherName);
+                                personList.SelectSameNameTeachersToClearSubjects(teacherName);
                                 cleared = true;
                             }
-                            else if (teacherList.SameNameCounter(teacherName) == 1)
+                            else if (personList.SameTeacherNameCounter(teacherName) == 1)
                             {
-                                int teacherPosition = teacherList.GetUniqueNamePosition(teacherName);
-                                string teacherID = teacherList.ReturnsTeacherIDFromPosition(teacherPosition);
-                                if (teacherList.SelectedTeacherHasSubject(teacherID))
+                                int teacherPosition = personList.GetPositionFromUniqueName(teacherName);
+                                string teacherID = personList.ReturnsPersonIDFromPosition(teacherPosition);
+                                if (personList.SelectedTeacherHasSubject(teacherID))
                                 {
-                                    teacherList.SubjectsClearing(teacherID);
+                                    personList.SubjectsClearing(teacherID);
                                     MessageBox.Show("All subjects from this teacher has been cleared.");
                                     cleared = true;
                                 }
@@ -494,20 +508,20 @@ namespace Exercise_6
         // ADDS MULTIPLE SUBJECTS TO SELECTED TEACHER BY ID
         private void btnAddSubjectToSelectedTeacherByID_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
                 bool added = false;
                 do
                 {
                     string teacherID = Interaction.InputBox("Introduce the teacher's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                    if (RegexCustomFunctions.RegexID(teacherID))
+                    if (CustomRegex.RegexID(teacherID))
                     {
-                        if (teacherList.AlreadyUsedID(teacherID))
+                        if (personList.AlreadyUsedID(teacherID) && personList[] )
                         {
-                            if (teacherList.CountsTotalTeachers() >= 1)
+                            if (personList.CountsTotalTeachers() >= 1)
                             {
-                                teacherList.MultipleSubjectsAddingFromSelectedTeacher(teacherID);
+                                personList.MultipleSubjectsAddingFromSelectedTeacher(teacherID);
                                 added = true;
                             }
                         }
@@ -533,22 +547,22 @@ namespace Exercise_6
         // REMOVES MULTIPLE SUBJECTS TO SELECTED TEACHER BY ID
         private void btnRemoveSubjectToSelectedTeacherByID_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
-                if (teacherList.TeachersWithSubjectsCounter() > 0)
+                if (personList.TeachersWithSubjectsCounter() > 0)
                 {
                     bool removed = false;
                     do
                     {
                         string teacherID = Interaction.InputBox("Introduce the teacher's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                        if (RegexCustomFunctions.RegexID(teacherID))
+                        if (CustomRegex.RegexID(teacherID))
                         {
-                            if (teacherList.AlreadyUsedID(teacherID))
+                            if (personList.AlreadyUsedID(teacherID))
                             {
-                                if (teacherList.CountsTotalTeachers() >= 1)
+                                if (personList.CountsTotalTeachers() >= 1)
                                 {
-                                    teacherList.MultipleSubjectsRemovalFromSelectedTeacher(teacherID);
+                                    personList.MultipleSubjectsRemovalFromSelectedTeacher(teacherID);
                                     removed = true;
                                 }
                             }
@@ -579,24 +593,24 @@ namespace Exercise_6
         // CLEARS ALL SUBJECTS TO SELECTED TEACHER BY ID
         private void btnClearSubjectsToSelectedTeacherByID_Click(object sender, EventArgs e)
         {
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
-                if (teacherList.TeachersWithSubjectsCounter() > 0)
+                if (personList.TeachersWithSubjectsCounter() > 0)
                 {
                     bool cleared = false;
                     do
                     {
                         string teacherID = Interaction.InputBox("Introduce the teacher's ID (9 CHARACTERS): \n\nNIA example: A1234567B \nDNI example: 12345678A");
 
-                        if (RegexCustomFunctions.RegexID(teacherID))
+                        if (CustomRegex.RegexID(teacherID))
                         {
-                            if (teacherList.AlreadyUsedID(teacherID))
+                            if (personList.AlreadyUsedID(teacherID))
                             {
-                                if (teacherList.CountsTotalTeachers() >= 1)
+                                if (personList.CountsTotalTeachers() >= 1)
                                 {
-                                    if (teacherList.SelectedTeacherHasSubject(teacherID))
+                                    if (personList.SelectedTeacherHasSubject(teacherID))
                                     {
-                                        teacherList.SubjectsClearing(teacherID);
+                                        personList.SubjectsClearing(teacherID);
                                         MessageBox.Show("All subjects from this teacher has been cleared.");
                                         cleared = true;
                                     }
@@ -635,18 +649,18 @@ namespace Exercise_6
         private void btnShowTeachersBySelectedSubject_Click(object sender, EventArgs e)
         {
             bool introduced = false;
-            if (teacherList.CountsTotalTeachers() > 0)
+            if (personList.CountsTotalTeachers() > 0)
             {
-                if (teacherList.TeachersWithSubjectsCounter() > 0)
+                if (personList.TeachersWithSubjectsCounter() > 0)
                 {
                     do
                     {
                         string subjectName = Interaction.InputBox("Introduce the subject's name to show the teachers who impart it: ");
-                        if (RegexCustomFunctions.RegexName(subjectName))
+                        if (CustomRegex.RegexName(subjectName))
                         {
-                            if (teacherList.SelectedSubjectHasTeachers(subjectName) > 0)
+                            if (personList.SelectedSubjectHasTeachers(subjectName) > 0)
                             {
-                                MessageBox.Show(teacherList.ShowTeachersBySubjectName(subjectName));
+                                MessageBox.Show(personList.ShowTeachersBySubjectName(subjectName));
                                 introduced = true;
                             }
                             else

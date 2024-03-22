@@ -12,7 +12,7 @@ namespace Exercise_5
 
         public CourseList()
         {
-            coursesList = new List<Course>();
+            courseList = new List<Course>();
         }
 
         public void AddsCourse(int courseCod, string courseName)

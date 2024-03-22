@@ -431,7 +431,7 @@ BEGIN TRY
 		INSERT INTO PAGOS(codCliente, id_transaccion, fechaHora_pago, importe_pago, codFormaPago, codPedido)
 		VALUES (@nuevoCliente, @nuevaTransaccion, GETDATE(), @pagoTotal, 'P', @nuevoCodPedido)
 
-		   --SET @ERROR3 = 1/0 -- Prueba para introducir un error
+		   SET @ERROR3 = 1/0 -- Prueba para introducir un error
     COMMIT
     PRINT 'Operaciones completadas exitosamente.';
 END TRY

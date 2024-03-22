@@ -105,11 +105,11 @@ namespace Exercise_5
             string tInfoTxt = "";
             if (TutorCod == -1)
             {
-                tInfoTxt += base.ShowsPersonData() + StoresTeacherSubjectsInfo() + "\n";
+                tInfoTxt += base.ShowsPersonData() + "\n" + StoresTeacherSubjectsInfo() + "\n";
             }
             else
             {
-                tInfoTxt = tInfoTxt += base.ShowsPersonData() + "\n" + "Mentor Course Cod: " + TutorCod + "\n" + StoresTeacherSubjectsInfo();
+                tInfoTxt = tInfoTxt += base.ShowsPersonData() + "\n" + "Mentor Course Cod: " + TutorCod + "\n" + StoresTeacherSubjectsInfo() + "\n";
             }
             return tInfoTxt;
         }

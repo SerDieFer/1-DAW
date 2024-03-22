@@ -52,5 +52,13 @@ namespace Exercise_5
             pInfoTxt = className + " data: \n" + "Name: " + Name + "\n" + "ID: " + ID + "\n" + "Phone: " + Phone + "\n";
             return pInfoTxt;
         }
+
+        public string ShowsSimplierPersonData()
+        {
+            var className = GetType().Name;
+            string pInfoTxt = "";
+            pInfoTxt = className + " data: \n" + "Name: " + Name + "\n" + "ID: " + ID;
+            return pInfoTxt;
+        }
     }
 }

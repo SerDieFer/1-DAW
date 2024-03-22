@@ -36,6 +36,17 @@ namespace Exercise_5
             string regexPattern = "^[6-7][0-9]{8}$";
             return new Regex(regexPattern).IsMatch(x);
         }
+
+        public static bool RegexEmail(string x)
+        {
+            /* THIS METHOD VALIDATES WHETHER THE INPUT STRING REPRESENTS A VALID EMAIL ADDRESS.
+                 * THE REGULAR EXPRESSION PATTERN "^[a-zA-Z0-9]+@edu\.gva\.es$" ENSURES THAT THE STRING STARTS WITH ONE OR MORE ALPHANUMERIC CHARACTERS (LETTERS OR DIGITS) 
+                 * FOLLOWED BY THE "@" SYMBOL AND THE SPECIFIC DOMAIN "edu.gva.es" AT THE END OF THE STRING. */
+
+            string regexPattern = "^[a-zA-Z0-9]+(@edu.gva.es)";
+            return new Regex(regexPattern).IsMatch(x);
+        }
+
         public static bool RegexCourseCod(string x)
         {
             /* THIS METHOD VALIDATES WHETHER THE INPUT STRING REPRESENTS A VALID COURSE CODE.

@@ -1,6 +1,6 @@
-﻿namespace Exercise_6
+﻿namespace Exercise_5
 {
-    partial class InitialForm
+    partial class fInitial
     {
         /// <summary>
         /// Variable del diseñador requerida.
@@ -73,6 +73,7 @@
             this.Controls.Add(this.btnCourse);
             this.Name = "InitialForm";
             this.Text = "School Management";
+            this.Load += new System.EventHandler(this.InitialForm_Load);
             this.ResumeLayout(false);
 
         }

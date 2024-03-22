@@ -122,6 +122,5 @@ namespace Exercise_5
             aInfoTxt += "\n" + StoresAlumnGradesInfo() + "\n";
             return aInfoTxt;
         }
-
     }
 }

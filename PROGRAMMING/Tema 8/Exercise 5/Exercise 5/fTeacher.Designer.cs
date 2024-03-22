@@ -1,4 +1,4 @@
-﻿namespace Exercise_6
+﻿namespace Exercise_5
 {
     partial class TeacherForm
     {
