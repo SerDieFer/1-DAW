@@ -354,12 +354,21 @@ namespace Exercise_5
                     {
                         if (personList.AlreadyUsedID(alumnID))
                         {
-                            if (personList.CountTotalAlumns() >= 1)
+                            int validation = personList.CheckTypeOfPerson(alumnID);
+                            if (validation == 0)
                             {
-                                int alumnPosition = personList.ReturnPersonPosition(alumnID);
-                                string alumnName = personList.ReturnsPersonName(alumnID);
-                                personList.RemovesAlumn(alumnPosition);
-                                MessageBox.Show("The alumn ( " + alumnName + " ) with the ID ( " + alumnID + " ) was cleared.");
+                                if (personList.CountTotalAlumns() >= 1)
+                                {
+                                    int alumnPosition = personList.ReturnPersonPosition(alumnID);
+                                    string alumnName = personList.ReturnsPersonName(alumnID);
+                                    personList.RemovesAlumn(alumnPosition);
+                                    MessageBox.Show("The alumn ( " + alumnName + " ) with the ID ( " + alumnID + " ) was cleared.");
+                                    removed = true;
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("The selected ID is not from an alumn, try another ID");
                                 removed = true;
                             }
                         }
@@ -396,9 +405,18 @@ namespace Exercise_5
                     {
                         if (personList.AlreadyUsedID(alumnID))
                         {
-                            if (personList.CountTotalAlumns() >= 1)
+                            int validation = personList.CheckTypeOfPerson(alumnID);
+                            if (validation == 0)
                             {
-                                personList.MultipleGradeAddingFromSelectedAlumn(alumnID);
+                                if (personList.CountTotalAlumns() >= 1)
+                                {
+                                    personList.MultipleGradeAddingFromSelectedAlumn(alumnID);
+                                    added = true;
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("The selected ID is not from an alumn, try another ID");
                                 added = true;
                             }
                         }
@@ -437,9 +455,18 @@ namespace Exercise_5
                         {
                             if (personList.AlreadyUsedID(alumnID))
                             {
-                                if (personList.CountTotalAlumns() >= 1)
+                                int validation = personList.CheckTypeOfPerson(alumnID);
+                                if (validation == 0)
                                 {
-                                    personList.MultipleGradeRemovingFromSelectedAlumn(alumnID);
+                                    if (personList.CountTotalAlumns() >= 1)
+                                    {
+                                        personList.MultipleGradeRemovingFromSelectedAlumn(alumnID);
+                                        removed = true;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The selected ID is not from an alumn, try another ID");
                                     removed = true;
                                 }
                             }
@@ -483,19 +510,28 @@ namespace Exercise_5
                         {
                             if (personList.AlreadyUsedID(alumnID))
                             {
-                                if (personList.CountTotalAlumns() >= 1)
+                                int validation = personList.CheckTypeOfPerson(alumnID);
+                                if (validation == 0)
                                 {
-                                    if (personList.SelectedAlumnHasGrades(alumnID))
+                                    if (personList.CountTotalAlumns() >= 1)
                                     {
-                                        personList.GradesClearing(alumnID);
-                                        MessageBox.Show("All grades from this alumn has been cleared.");
-                                        cleared = true;
+                                        if (personList.SelectedAlumnHasGrades(alumnID))
+                                        {
+                                            personList.GradesClearing(alumnID);
+                                            MessageBox.Show("All grades from this alumn has been cleared.");
+                                            cleared = true;
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("This alumn has no added grades, clearing them is not needed ");
+                                            cleared = true;
+                                        }
                                     }
-                                    else
-                                    {
-                                        MessageBox.Show("This alumn has no added grades, clearing them is not needed ");
-                                        cleared = true;
-                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("There isn't any alumn with the selected ID");
+                                    cleared = true;
                                 }
                             }
                             else
@@ -536,8 +572,17 @@ namespace Exercise_5
                     {
                         if (personList.AlreadyUsedID(alumnID))
                         {
-                            MessageBox.Show(personList.ShowsSelectedAlumnDataByID(alumnID));
-                            introduced = true;
+                            int validation = personList.CheckTypeOfPerson(alumnID);
+                            if (validation == 0)
+                            {
+                                MessageBox.Show(personList.ShowsSelectedAlumnDataByID(alumnID));
+                                introduced = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("There isn't any alumn with the selected ID");
+                                introduced = true;
+                            }
                         }
                         else
                         {

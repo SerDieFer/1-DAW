@@ -36,8 +36,9 @@ namespace Exercise_5
             this.courseList = courseList;
         }
 
-        // show selected by id no devuelve valor en caso de no existir ese dni en profesores
+        // show selected by id no devuelve error en caso de no existir ese dni en profesores
         // que no se repitan las materias en el mismo profesor
+        // que no se puedan añadir/borrar/limpiar materias de alumnos
 
         // ADDS A TEACHER
         private void btnAddTeacher_Click(object sender, EventArgs e)
@@ -259,8 +260,17 @@ namespace Exercise_5
                     {
                         if (personList.AlreadyUsedID(teacherID))
                         {
-                            MessageBox.Show(personList.ShowsSelectedTeacherDataByID(teacherID));
-                            introduced = true;
+                            int validation = personList.CheckTypeOfPerson(teacherID);
+                            if (validation == 1)
+                            {
+                                MessageBox.Show(personList.ShowsSelectedTeacherDataByID(teacherID));
+                                introduced = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("The selected ID is not from a teacher, try another ID.");
+                                introduced = true;
+                            }
                         }
                         else
                         {
@@ -517,11 +527,20 @@ namespace Exercise_5
 
                     if (CustomRegex.RegexID(teacherID))
                     {
-                        if (personList.AlreadyUsedID(teacherID) && personList[] )
+                        if (personList.AlreadyUsedID(teacherID))
                         {
-                            if (personList.CountsTotalTeachers() >= 1)
+                            int validation = personList.CheckTypeOfPerson(teacherID);
+                            if (validation == 1)
                             {
-                                personList.MultipleSubjectsAddingFromSelectedTeacher(teacherID);
+                                if (personList.CountsTotalTeachers() >= 1)
+                                {
+                                    personList.MultipleSubjectsAddingFromSelectedTeacher(teacherID);
+                                    added = true;
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("The selected ID is not from a teacher, try another ID.");
                                 added = true;
                             }
                         }
@@ -560,9 +579,18 @@ namespace Exercise_5
                         {
                             if (personList.AlreadyUsedID(teacherID))
                             {
-                                if (personList.CountsTotalTeachers() >= 1)
+                                int validation = personList.CheckTypeOfPerson(teacherID);
+                                if (validation == 1)
                                 {
-                                    personList.MultipleSubjectsRemovalFromSelectedTeacher(teacherID);
+                                    if (personList.CountsTotalTeachers() >= 1)
+                                    {
+                                        personList.MultipleSubjectsRemovalFromSelectedTeacher(teacherID);
+                                        removed = true;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The selected ID is not from a teacher, try another ID.");
                                     removed = true;
                                 }
                             }
@@ -606,19 +634,28 @@ namespace Exercise_5
                         {
                             if (personList.AlreadyUsedID(teacherID))
                             {
-                                if (personList.CountsTotalTeachers() >= 1)
+                                int validation = personList.CheckTypeOfPerson(teacherID);
+                                if (validation == 1)
                                 {
-                                    if (personList.SelectedTeacherHasSubject(teacherID))
+                                    if (personList.CountsTotalTeachers() >= 1)
                                     {
-                                        personList.SubjectsClearing(teacherID);
-                                        MessageBox.Show("All subjects from this teacher has been cleared.");
-                                        cleared = true;
+                                        if (personList.SelectedTeacherHasSubject(teacherID))
+                                        {
+                                            personList.SubjectsClearing(teacherID);
+                                            MessageBox.Show("All subjects from this teacher has been cleared.");
+                                            cleared = true;
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("This teacher has no added subjects, clearing them is not needed ");
+                                            cleared = true;
+                                        }
                                     }
-                                    else
-                                    {
-                                        MessageBox.Show("This teacher has no added subjects, clearing them is not needed ");
-                                        cleared = true;
-                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The selected ID is not from a teacher, try another ID.");
+                                    cleared = true;
                                 }
                             }
                             else
