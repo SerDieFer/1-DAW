@@ -19,6 +19,10 @@ namespace Exercise_5
             personList = new List<Person>();
         }
 
+        // do an alumn grades list to show while you delete them to show the actual ones
+        // same as teacher subjects
+        // check is a teacher before adding and removing subjects by id
+
         // TEACHERS RELATED METHODS //
 
         public void AddsTeacher(string teacherName, string teacherID, int teacherPhone, string teacherEmail, int courseMentorCod)
@@ -138,7 +142,7 @@ namespace Exercise_5
                 bool removed = false;
                 do
                 {
-                    string subject = Interaction.InputBox("Introduce the subject's name to remove from all the teacher subjects: ");
+                    string subject = Interaction.InputBox("Introduce the subject's name to remove from all the teacher subjects: " + "\n\n" + ((Teacher)personList[ReturnPersonPosition(teacherID)]).StoresTeacherSubjectsInfo());
                     if (CustomRegex.RegexGradeValue(subject))
                     {
                         if (SubjectExistanceCheck(teacherID, subject))
@@ -303,7 +307,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingTeachersName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number to delete from list:\n");
@@ -391,7 +395,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingTeachersName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number of teacher to check more data from it:\n");
@@ -471,7 +475,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingTeachersName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number of teacher to add a subject from the list:\n");
@@ -570,7 +574,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingTeachersName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number of teacher to remove a subject from the list:\n");
@@ -685,7 +689,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingTeachersName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number of teacher to clear all the subjects from the list:\n");
@@ -1226,7 +1230,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingAlumnsName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number of alumn to check more data from it:\n");
@@ -1304,7 +1308,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingAlumnsName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number of alumn to add a grade from the list:\n");
@@ -1401,7 +1405,7 @@ namespace Exercise_5
 
                     for (int i = 0; i < matchingAlumnsName.Count; i++)
                     {
-                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
                     }
 
                     infoMessage.AppendLine("Select the number of alumn to remove a grade from the list:\n");
@@ -1518,7 +1522,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingAlumnsName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number of alumn to clear all its grades from the list:\n");
