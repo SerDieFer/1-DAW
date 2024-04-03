@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resultado>
+    <factura codigo = "FAC001">     
+        <tipoPago formaPago = "efectivo">
+            <numeroCuenta></numeroCuenta>
+            <cantidadPago>115.74</cantidadPago>
+        </tipoPago>
+        <fechaEmision>
+            <fecha>2024-04-03</fecha>
+            <hora>20:05:00</hora>
+        </fechaEmision>
+        <cliente tipoCliente = "particular">
+            <datosCliente>
+                <DNI-NIF>12345678A</DNI-NIF>
+                <nombreCompleto>
+                    <nombre>Santiago</nombre>
+                    <apellido1>Lorenzano</apellido1>
+                    <apellido2></apellido2>
+                <nombreCompleto>
+                <direccion>
+                    <tipoVia>Calle</tipoVia>
+                    <nombreVia>Republica Argentina</nombreVia>
+                    <numero>10</numero>
+                    <piso>2</piso>
+                    <puerta>A</puerta>
+                </direccion>
+                <codigoPostal>03007</codigoPostal>
+                <poblacion>Alicante</poblacion>
+                <telefono>612345678</telefono>
+            </datosCliente>
+        </cliente>
+        <lineaPedidos sumaTotal = "115.74">
+            <linea1>
+                <denominacion>Peladin y sus Fantásticas Aventuras</denominacion>
+                <precioUnitario>100.69</precioUnitario>
+                <descuentoProducto>0.95</descuentoProducto>
+                <precioDescontado>95.65</precioDescontado>
+                <IVA>1.21</IVA>
+                <precioIVA>115.74</precioIVA>
+                <unidades>1</unidades>
+                <precioFinal>115.74</precioFinal>
+            </linea1>
+        </lineaPedidos>
+    </factura>
+
+    <factura codigo = "FAC002">
+        <tipoPago formaPago = "cuenta_bancaria">
+            <numeroCuenta>ES0000000000000000000000</numeroCuenta>
+            <cantidadPago>13388.18</cantidadPago>
+        </tipoPago>
+        <fechaEmision>
+            <fecha>2024-04-04</fecha>
+            <hora>09:30:00</hora>
+        </fechaEmision>
+        <cliente tipoCliente="empresa">
+            <datosCliente>
+                <DNI-NIF>98765432X</DNI-NIF>
+                <nombreCompleto>
+                    <nombre>Abel S.L.</nombre>
+                    <apellido1></apellido1>
+                    <apellido2></apellido2>
+                </nombreCompleto>
+                <direccion>
+                    <tipoVia>Avenida</tipoVia>
+                    <nombreVia>Abel el Grande</nombreVia>
+                    <numero>999</numero>
+                    <piso></piso>
+                    <puerta></puerta>
+                </direccion>
+                <codigoPostal>28013</codigoPostal>
+                <poblacion>Madrid</poblacion>
+                <telefono>912345678</telefono>
+            </datosCliente>
+        </cliente>
+        <lineaPedidos sumaTotal="13388.18">
+            <linea1>
+                <denominacion>Rifle Asalto AK-47</denominacion>
+                <precioUnitario>1652.89</precioUnitario>
+                <descuentoProducto>0.00</descuentoProducto>
+                <precioDescontado>1652.89</precioDescontado>
+                <IVA>1.21</IVA>
+                <precioIVA>2000.00</precioIVA>
+                <unidades>1</unidades>
+                <precioFinal>2000.00</precioFinal>
+            </linea1>
+            <linea2>
+                <denominacion>Lanzacohetes RPG-7</denominacion>
+                <precioUnitario>6198.34</precioUnitario>
+                <descuentoProducto>0.95</descuentoProducto>
+                <precioDescontado>5888.42</precioDescontado>
+                <IVA>1.21</IVA>
+                <precioIVA>7124.98</precioIVA>
+                <unidades>1</unidades>
+                <precioFinal>7124.98</precioFinal>
+            </linea2>
+            <linea3>
+                <denominacion>Municion AK-47 (1 cartucho)</denominacion>
+                <precioUnitario>2.472</precioUnitario>
+                <descuentoProducto>0.00</descuentoProducto>
+                <precioDescontado>2.472</precioDescontado>
+                <IVA>1.21</IVA>
+                <precioIVA>2.99</precioIVA>
+                <unidades>1000</unidades>
+                <precioFinal>2991.12</precioFinal>
+            </linea3>
+            <linea4>
+                <denominacion>Municion RPG-7 (1 proyectil)</denominacion>
+                <precioUnitario>200.25</precioUnitario>
+                <descuentoProducto>0.75</descuentoProducto>
+                <precioDescontado>150.18</precioDescontado>
+                <IVA>1.21</IVA>
+                <precioIVA>187.72</precioIVA>
+                <unidades>7</unidades>
+                <precioFinal>1272.08</precioFinal>
+            </linea4>
+        </lineaPedidos>
+    </factura>
+
+    <factura codigo="FAC003">
+        <tipoPago formaPago="cuenta_bancaria">
+            <numeroCuenta>ES1234567890123456789012</numeroCuenta>
+            <cantidadPago>666.66</cantidadPago>
+        </tipoPago>
+        <fechaEmision>
+            <fecha>2024-04-01</fecha>
+            <hora>16:45:00</hora>
+        </fechaEmision>
+        <cliente tipoCliente="particular">
+            <datosCliente>
+                <DNI-NIF>99999999A</DNI-NIF>
+                <nombreCompleto>
+                    <nombre>Peladin</nombre>
+                    <apellido1>Cuidadin</apellido1>
+                    <apellido2>El Audaz</apellido2>
+                </nombreCompleto>
+                <direccion>
+                    <tipoVia>Calle</tipoVia>
+                    <nombreVia>Jaja</nombreVia>
+                    <numero>66</numero>
+                    <piso>6</piso>
+                    <puerta>Z</puerta>
+                </direccion>
+                <codigoPostal>03007</codigoPostal>
+                <poblacion>Alicante</poblacion>
+                <telefono>666666666</telefono>
+            </datosCliente>
+        </cliente>
+        <lineaPedidos sumaTotal="666.66">
+            <linea1>
+                <denominacion>Pañuelos</denominacion>
+                <precioUnitario>1.00</precioUnitario>
+                <descuentoProducto>0.00</descuentoProducto>
+                <precioDescontado>1.00</precioDescontado>
+                <IVA>1.21</IVA>
+                <precioIVA>1.21</precioIVA>
+                <unidades>100</unidades>
+                <precioFinal>121.00</precioFinal>
+            </linea1>
+            <linea2>
+                <denominacion>Pantalla Con IA Integrada</denominacion>
+                <precioUnitario>450.95</precioUnitario>
+                <descuentoProducto>0.00</descuentoProducto>
+                <precioDescontado>450.95</precioDescontado>
+                <IVA>1.21</IVA>
+                <precioIVA>545.66</precioIVA>
+                <unidades>1</unidades>
+                <precioFinal>545.66</precioFinal>
+            </linea2>
+        </lineaPedidos>
+    </factura> 
+</resultado>
