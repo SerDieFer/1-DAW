@@ -53,7 +53,7 @@
             <fecha>2024-04-04</fecha>
             <hora>09:30:00</hora>
         </fechaEmision>
-        <cliente tipoCliente="empresa">
+        <cliente tipoCliente = "empresa">
             <datosCliente>
                 <DNI-NIF>98765432X</DNI-NIF>
                 <nombreCompleto>
@@ -73,7 +73,7 @@
                 <telefono>912345678</telefono>
             </datosCliente>
         </cliente>
-        <lineaPedidos sumaTotal="13388.18">
+        <lineaPedidos sumaTotal = "13388.18">
             <linea1>
                 <denominacion>Rifle Asalto AK-47</denominacion>
                 <precioUnitario>1652.89</precioUnitario>
@@ -117,8 +117,8 @@
         </lineaPedidos>
     </factura>
 
-    <factura codigo="FAC003">
-        <tipoPago formaPago="cuenta_bancaria">
+    <factura codigo = "FAC003">
+        <tipoPago formaPago = "cuenta_bancaria">
             <numeroCuenta>ES1234567890123456789012</numeroCuenta>
             <cantidadPago>666.66</cantidadPago>
         </tipoPago>
@@ -126,7 +126,7 @@
             <fecha>2024-04-01</fecha>
             <hora>16:45:00</hora>
         </fechaEmision>
-        <cliente tipoCliente="particular">
+        <cliente tipoCliente = "particular">
             <datosCliente>
                 <DNI-NIF>99999999A</DNI-NIF>
                 <nombreCompleto>
@@ -146,7 +146,7 @@
                 <telefono>666666666</telefono>
             </datosCliente>
         </cliente>
-        <lineaPedidos sumaTotal="666.66">
+        <lineaPedidos sumaTotal = "666.66">
             <linea1>
                 <denominacion>Pañuelos</denominacion>
                 <precioUnitario>1.00</precioUnitario>

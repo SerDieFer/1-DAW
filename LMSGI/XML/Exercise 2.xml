@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resultado>
+    <nombre>Pizza Casera</nombre>
+    <autor>Sergio</autor>
+    <porciones>8</porciones>
+    <dificultad>Sencilla</dificultad>
+    <tiempoPreparacion>
+        <horas>1</horas>
+        <minutos>40</minutos>
+    </tiempoPreparacion>
+    <listaIngredientes>
+        <ingrediente1>
+            <nombre>Masa de pizza</nombre>
+            <ingredientesMasa>
+                <ingredienteMasa1>
+                    <nombre>Harina de trigo</nombre>
+                    <cantidad medida = "gramos">400</cantidad>
+                </ingredienteMasa1>
+                <ingredienteMasa2>
+                    <nombre>Agua tibia</nombre>
+                    <cantidad medida = "mililitros">250</cantidad>
+                </ingredienteMasa2>
+                <ingredienteMasa3>
+                    <nombre>Levadura seca</nombre>
+                    <cantidad medida = "gramos">7</cantidad>
+                </ingredienteMasa3>
+                <ingredienteMasa4>
+                    <nombre>Aceite de oliva</nombre>
+                    <cantidad medida = "cucharadas">2</cantidad>
+                </ingredienteMasa4>
+                <ingredienteMasa5>
+                    <nombre>Azúcar</nombre>
+                    <cantidad medida = "cucharadita">1</cantidad>
+                </ingredienteMasa5>
+                <ingredienteMasa6>
+                    <nombre>Sal</nombre>
+                    <cantidad medida = "cucharadita">1</cantidad>
+                </ingredienteMasa6>
+            </ingredientesMasa>
+        </ingrediente1>
+        <ingrediente2>
+            <nombre>Salsa de tomate</nombre>
+            <cantidad medida = "gramos">200</cantidad>
+        </ingrediente2>
+        <ingrediente3>
+            <nombre>Queso mozzarella</nombre>
+            <cantidad medida = "gramos">200</cantidad>
+        </ingrediente3>
+        <ingrediente4>
+            <nombre>Jamón</nombre>
+            <cantidad medida = "gramos">100</cantidad>
+        </ingrediente4>
+        <ingrediente5>
+            <nombre>Champiñones</nombre>
+            <cantidad medida = "gramos">100</cantidad>
+        </ingrediente5>
+        <ingrediente6>
+            <nombre>Orégano</nombre>
+            <cantidad medida = "al_gusto">Al gusto</cantidad>
+        </ingrediente6>
+    </listaIngredientes>
+    <procesoElaboracion>
+        <listaPasos>
+            <paso1>En un bol grande, mezclar la harina, la levadura, el azúcar y la sal.</paso1>
+            <paso2>Añadir el aceite de oliva y el agua tibia gradualmente, y mezclar hasta formar una masa homogénea.</paso2>
+            <paso3>Amasar la masa sobre una superficie enharinada durante unos 10 minutos, hasta que esté suave y elástica.</paso3>
+            <paso4>Formar una bola con la masa y colocarla en un bol ligeramente engrasado.</paso4>
+            <paso5>Cubrir el bol con un paño húmedo y dejar reposar la masa en un lugar cálido durante aproximadamente 1 hora, o hasta que duplique su tamaño.</paso5>
+            <paso6>Estirar la masa sobre una bandeja para horno.</paso6>
+            <paso7>Cubrir la masa con la salsa de tomate.</paso7>
+            <paso8>Agregar el queso mozzarella rallado.</paso8>
+            <paso9>Colocar el jamón y los champiñones cortados en rodajas.</paso9>
+            <paso10>Espolvorear con orégano al gusto.</paso10>
+            <paso11>Hornear a 200°C durante 15-20 minutos o hasta que la pizza esté dorada y crujiente.</paso11>
+            <paso12>Servir caliente y disfrutar.</paso12>
+        </listaPasos>
+    </procesoElaboracion>
+</resultado>
