@@ -19,8 +19,8 @@ namespace Exercise_5
             personList = new List<Person>();
         }
 
-        // do an alumn grades list to show while you delete them to show the actual ones
-        // same as teacher subjects
+        // si el alumno no tiene notas que no se pueda selecciona - lo mismo con los profesores y asignaturas
+        // no muestra asignaturas ya añadidad y que no se repitan
         // check is a teacher before adding and removing subjects by id
 
         // TEACHERS RELATED METHODS //
@@ -58,14 +58,17 @@ namespace Exercise_5
             bool subjectAdded = false;
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(teacherID);
                 int personType = CheckTypeOfPerson(teacherID);
 
                 // TYPE 1 IS A TEACHER
-                if (personType == 1 && position != -1)
+                if (personType == 1)
                 {
-                    ((Teacher)personList[position]).AddsSelectedTeacherSubject(teacherID, subjectName);
-                    subjectAdded = true;
+                    int position = ReturnPersonPosition(teacherID);
+                    if (position != -1)
+                    {
+                        ((Teacher)personList[position]).AddsSelectedTeacherSubject(teacherID, subjectName);
+                        subjectAdded = true;
+                    }
                 }
             }
             return subjectAdded;
@@ -76,7 +79,7 @@ namespace Exercise_5
             bool added = false;
             do
             {
-                string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: ");
+                string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: \n\n" + ((Teacher)personList[ReturnPersonPosition(teacherID)]).StoresTeacherSubjectsInfo());
                 if (CustomRegex.RegexName(subjectName))
                 {
                     if (SubjectAdding(teacherID, subjectName))
@@ -108,13 +111,16 @@ namespace Exercise_5
             bool subjectExist = false;
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(teacherID);
                 int personType = CheckTypeOfPerson(teacherID);
 
                 // TYPE 1 IS A TEACHER
-                if (position != -1 && personType == 1)
+                if (personType == 1)
                 {
-                    subjectExist = ((Teacher)personList[position]).ChecksTeacherSelectedSubject(teacherID, subjectName);
+                    int position = ReturnPersonPosition(teacherID);
+                    if (position != -1)
+                    {
+                        subjectExist = ((Teacher)personList[position]).ChecksTeacherSelectedSubject(teacherID, subjectName);
+                    }
                 }
             }
             return subjectExist;
@@ -124,13 +130,16 @@ namespace Exercise_5
         {
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(teacherID);
                 int personType = CheckTypeOfPerson(teacherID);
 
                 // TYPE 1 IS A TEACHER
-                if (position != -1 && personType == 1)
+                if (personType == 1)
                 {
-                    ((Teacher)personList[position]).RemovesSelectedTeacherSubject(teacherID, subjectName);
+                    int position = ReturnPersonPosition(teacherID);
+                    if (position != -1)
+                    {
+                        ((Teacher)personList[position]).RemovesSelectedTeacherSubject(teacherID, subjectName);
+                    }
                 }
             }
         }
@@ -186,13 +195,17 @@ namespace Exercise_5
         {
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(teacherID);
                 int personType = CheckTypeOfPerson(teacherID);
 
+
                 // TYPE 1 IS A TEACHER
-                if (position != -1 && personType == 1)
+                if (personType == 1)
                 {
-                    ((Teacher)personList[position]).ClearSubjectsFromTeacher(teacherID);
+                    int position = ReturnPersonPosition(teacherID);
+                    if (position != -1)
+                    {
+                        ((Teacher)personList[position]).ClearSubjectsFromTeacher(teacherID);
+                    }
                 }
             }
         }
@@ -241,13 +254,16 @@ namespace Exercise_5
             string teacherTxt = "";
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(teacherID);
                 int personType = CheckTypeOfPerson(teacherID);
 
                 // TYPE 1 IS A TEACHER
-                if (position != -1 && personType == 1)
+                if (personType == 1)
                 {
-                    teacherTxt = ((Teacher)personList[position]).ShowsPersonData();
+                    int position = ReturnPersonPosition(teacherID);
+                    if (position != -1)
+                    {
+                        teacherTxt = ((Teacher)personList[position]).ShowsPersonData();
+                    }
                 }
             }
             return teacherTxt;
@@ -499,7 +515,8 @@ namespace Exercise_5
                         {
                             do
                             {
-                                string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: ");
+                                int position = ReturnPersonPosition(selectedTeacherID);
+                                string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: \n\n" + ((Teacher)personList[position]).StoresTeacherSubjectsInfo());
                                 if (CustomRegex.RegexName(subjectName))
                                 {
                                     SubjectAdding(selectedTeacherID, subjectName);
@@ -598,7 +615,8 @@ namespace Exercise_5
                         {
                             do
                             {
-                                string subjectName = Interaction.InputBox("Introduce the subject's name to remove to this teacher: ");
+                                int position = ReturnPersonPosition(selectedTeacherID);
+                                string subjectName = Interaction.InputBox("Introduce the subject's name to remove to this teacher: \n\n" + ((Teacher)personList[position]).StoresTeacherSubjectsInfo());
                                 //MultipleSubjectsRemovalFromSelectedTeacher(selectedTeacherID); -- this may work?
                                 if (CustomRegex.RegexName(subjectName))
                                 {
@@ -912,16 +930,19 @@ namespace Exercise_5
             bool gradeAdded = false;
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(alumnID);
                 int personType = CheckTypeOfPerson(alumnID);
 
                 // TYPE 0 IS AN ALUMN
-                if (position != -1 && personType == 0)
+                if (personType == 0)
                 {
-                    if (alumnGrade >= 0 && alumnGrade <= 10)
+                    int position = ReturnPersonPosition(alumnID);
+                    if (position != -1)
                     {
-                        ((Alumn)personList[position]).AddsSelectedAlumnGrade(alumnID, alumnGrade);
-                        gradeAdded = true;
+                        if (alumnGrade >= 0 && alumnGrade <= 10)
+                        {
+                            ((Alumn)personList[position]).AddsSelectedAlumnGrade(alumnID, alumnGrade);
+                            gradeAdded = true;
+                        }
                     }
                 }
             }
@@ -933,7 +954,8 @@ namespace Exercise_5
             bool added = false;
             do
             {
-                string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: ");
+                int position = ReturnPersonPosition(alumnID);
+                string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: \n\n" + ((Alumn)personList[position]).StoresAlumnGradesInfo());
                 if (CustomRegex.RegexGradeValue(gradeValue))
                 {
                     double grade = double.Parse(gradeValue);
@@ -967,15 +989,18 @@ namespace Exercise_5
             bool gradeExist = false;
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(alumnID);
                 int personType = CheckTypeOfPerson(alumnID);
 
-
-                if (position != -1 && personType == 0)
+                // TYPE 0 IS AN ALUMN
+                if (personType == 0)
                 {
-                    if (alumnGrade >= 0 && alumnGrade <= 10)
+                    int position = ReturnPersonPosition(alumnID);
+                    if (position != -1)
                     {
-                        gradeExist = ((Alumn)personList[position]).ChecksAlumnSelectedGrade(alumnID, alumnGrade);
+                        if (alumnGrade >= 0 && alumnGrade <= 10)
+                        {
+                            gradeExist = ((Alumn)personList[position]).ChecksAlumnSelectedGrade(alumnID, alumnGrade);
+                        }
                     }
                 }
             }
@@ -986,14 +1011,18 @@ namespace Exercise_5
         {
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(alumnID);
                 int personType = CheckTypeOfPerson(alumnID);
 
-                if (position != -1 && personType == 0)
+                // TYPE 0 IS AN ALUMN
+                if (personType == 0)
                 {
-                    if (alumnGrade >= 0 && alumnGrade <= 10)
+                    int position = ReturnPersonPosition(alumnID);
+                    if (position != -1)
                     {
-                        ((Alumn)personList[position]).RemovesSelectedAlumnGrade(alumnID, alumnGrade);
+                        if (alumnGrade >= 0 && alumnGrade <= 10)
+                        {
+                            ((Alumn)personList[position]).RemovesSelectedAlumnGrade(alumnID, alumnGrade);
+                        }
                     }
                 }
             }
@@ -1006,7 +1035,8 @@ namespace Exercise_5
                 bool removed = false;
                 do
                 {
-                    string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: ");
+                    int position = ReturnPersonPosition(alumnID);
+                    string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: " + ((Alumn)personList[position]).StoresAlumnGradesInfo());
                     if (CustomRegex.RegexGradeValue(gradeValue))
                     {
                         double grade = double.Parse(gradeValue);
@@ -1051,12 +1081,16 @@ namespace Exercise_5
         {
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(alumnID);
                 int personType = CheckTypeOfPerson(alumnID);
 
-                if (position != -1 && personType == 0)
+                // TYPE 0 IS AN ALUMN
+                if (personType == 0)
                 {
-                    ((Alumn)personList[position]).ClearGradesFromAlumn(alumnID);
+                    int position = ReturnPersonPosition(alumnID);
+                    if (position != -1)
+                    {
+                        ((Alumn)personList[position]).ClearGradesFromAlumn(alumnID);
+                    }
                 }
             }
         }
@@ -1084,12 +1118,16 @@ namespace Exercise_5
             string alumnTxt = "";
             if (personList.Count != 0)
             {
-                int position = ReturnPersonPosition(alumnID);
                 int personType = CheckTypeOfPerson(alumnID);
 
-                if (position != -1 && personType == 0)
+                // TYPE 0 IS AN ALUMN
+                if (personType == 0)
                 {
-                    alumnTxt = ((Alumn)personList[position]).ShowsPersonData();
+                    int position = ReturnPersonPosition(alumnID);
+                    if (position != -1)
+                    {
+                        alumnTxt = ((Alumn)personList[position]).ShowsPersonData();
+                    }
                 }
             }
             return alumnTxt;
@@ -1146,7 +1184,7 @@ namespace Exercise_5
 
                 for (int i = 0; i < matchingAlumnsName.Count; i++)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i]);
+                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
                 }
 
                 infoMessage.AppendLine("Select the number to delete from list:\n");
@@ -1215,7 +1253,7 @@ namespace Exercise_5
                         if (alumnName == personList[i].Name)
                         {
                             found = true;
-                            string alumnData = ((Alumn)personList[i]).ShowsPersonData();
+                            string alumnData = ((Alumn)personList[i]).ShowsSimplierPersonData();
                             matchingAlumnsName.Add(alumnData);
                         }
                     }
@@ -1291,7 +1329,7 @@ namespace Exercise_5
                         if (alumnName == personList[i].Name)
                         {
                             found = true;
-                            string alumnData = ((Alumn)personList[i]).ShowsPersonData();
+                            string alumnData = ((Alumn)personList[i]).ShowsSimplierPersonData();
                             string alumnID = personList[i].ID;
                             matchingAlumnsName.Add(alumnData);
                             SameNameAlumnsID.Add(alumnID);
@@ -1332,7 +1370,8 @@ namespace Exercise_5
                         {
                             do
                             {
-                                string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: ");
+                                int position = ReturnPersonPosition(selectedAlumnID);
+                                string gradeValue = Interaction.InputBox("Introduce the alumn's grade to add to this alumn: \n\n" + ((Alumn)personList[position]).StoresAlumnGradesInfo());
                                 if (CustomRegex.RegexGradeValue(gradeValue))
                                 {
                                     double grade = double.Parse(gradeValue);
@@ -1429,7 +1468,8 @@ namespace Exercise_5
                             {
                                 do
                                 {
-                                    string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: ");
+                                    int position = ReturnPersonPosition(selectedAlumnID);
+                                    string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: \n\n" + ((Alumn)personList[position]).StoresAlumnGradesInfo());
                                     if (CustomRegex.RegexGradeValue(gradeValue))
                                     {
                                         double grade = double.Parse(gradeValue);
@@ -1733,14 +1773,17 @@ namespace Exercise_5
         {
             bool hasGrades = false;
             int personType = CheckTypeOfPerson(aID);
-            int personPosition = ReturnPersonPosition(aID);
 
-            // TYPE 0 IS ALUMN
-            if(personType == 0)
-            { 
-                if (((Alumn)personList[personPosition]).GradesList.Count() != 0)
+            // TYPE 0 IS AN ALUMN
+            if (personType == 0)
+            {
+                int position = ReturnPersonPosition(aID);
+                if (position != -1)
                 {
-                    hasGrades = true;
+                    if (((Alumn)personList[position]).GradesList.Count() != 0)
+                    {
+                        hasGrades = true;
+                    }
                 }
             }
             return hasGrades;

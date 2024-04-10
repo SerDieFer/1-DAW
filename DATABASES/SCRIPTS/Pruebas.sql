@@ -166,3 +166,89 @@ IF @return <> -1
 
 PRINT @cliName
 PRINT CONCAT (CHAR(10), 'Succesful procedure')
+
+------------------------------------------------------------------------------------------------
+
+-- Procedimiento que cree un nuevo fabricante
+   -- PK -> id lo inserta él solo / parámetro de salida: @codFabri INT OUTPUT
+
+USE TIENDA
+GO
+EXEC sp_help FABRICANTE
+GO
+CREATE OR ALTER PROCEDURE createManufacturer (@nameManufacturer VARCHAR(100),
+                                              @newCode INT OUTPUT)
+AS
+BEGIN
+  BEGIN TRY
+    IF @nameManufacturer IS NULL
+    BEGIN
+      PRINT 'The name parameter is mandatory'
+      RETURN -1
+    END
+
+  INSERT INTO FABRICANTE
+  VALUES (@nameManufacturer)
+
+  SET @newCode = SCOPE_IDENTITY()
+
+  END TRY
+  BEGIN CATCH
+    PRINT CONCAT ('ERROR = ', ERROR_NUMBER(),
+                  'LINE = ', ERROR_LINE(),
+                  'DESCRIPTION = ', ERROR_MESSAGE(),
+                  'PROCEDURE = ', ERROR_PROCEDURE())
+  END CATCH
+END
+
+GO
+DECLARE @nameToInsert VARCHAR(100) = 'Apple'
+DECLARE @newCode INT
+DECLARE @return INT
+
+EXEC @return = createManufacturer @nameToInsert,
+                                  @newCode OUTPUT
+IF @return <> 0
+  RETURN
+
+PRINT CONCAT('The new manufactures code is: ', @newCode)
+
+
+-- Procedimiento que reciba un condigo de fabricante y devuelva su nombre
+
+GO
+CREATE OR ALTER PROCEDURE returnManufacturerName (@codManufacturer INT,
+                                                  @newName VARCHAR(100) OUTPUT)
+AS
+BEGIN
+  BEGIN TRY
+    IF @codManufacturer IS NULL
+    BEGIN
+      PRINT 'The cod parameter is mandatory'
+      RETURN -1
+    END
+
+  SET @newName = (SELECT nombre
+                    FROM FABRICANTE
+                   WHERE codigo = @codManufacturer)
+
+  END TRY
+  BEGIN CATCH
+    PRINT CONCAT ('ERROR = ', ERROR_NUMBER(),
+                  'LINE = ', ERROR_LINE(),
+                  'DESCRIPTION = ', ERROR_MESSAGE(),
+                  'PROCEDURE = ', ERROR_PROCEDURE())
+  END CATCH
+END
+
+GO
+DECLARE @codToCheck INT = 1002
+DECLARE @newName VARCHAR(100)
+DECLARE @return INT
+
+EXEC @return = returnManufacturerName @codToCheck,
+                                      @newName OUTPUT
+IF @return <> 0
+  RETURN
+
+PRINT CONCAT('The new manufactures name is: ', @newName)

@@ -59,9 +59,17 @@ namespace Exercise_5
         public static bool RegexGradeValue(string x)
         {
             /* THIS METHOD VALIDATES WHETHER THE INPUT STRING REPRESENTS A VALID GRADE VALUE.
-                * THE REGULAR EXPRESSION PATTERN "^[0-9]0?$" ENSURES THAT THE STRING STARTS WITH A DIGIT, AND IT CAN BE FOLLOWED BY A '0' (OPTIONAL). */
+                 * THE REGULAR EXPRESSION PATTERN "^(10(\.0+)?|[0-9](\.[0-9]+)?)$" ENSURES THAT THE STRING MATCHES THE FOLLOWING CRITERIA:
+                 * ^            : ASSERTS THE START OF THE STRING.
+                 * (            : START OF THE GROUP FOR MATCHING EITHER:
+                 * 10(\.0+)?    : MATCH '10' OPTIONALLY FOLLOWED BY A DOT AND ONE OR MORE '0'S (E.G., 10, 10.0, 10.00).
+                 * |            : OR
+                 * [0-9]        : MATCH ANY DIGIT FROM 0 TO 9 (THE FIRST DIGIT OF A NUMBER).
+                 * (\.[0-9]+)?  : OPTIONALLY MATCH A DOT FOLLOWED BY ONE OR MORE DIGITS (TO ALLOW DECIMALS LIKE 7.5, 8.9).
+                 * )            : END OF THE GROUP FOR MATCHING EITHER.
+                 * $            : ASSERTS THE END OF THE STRING. */
 
-            string regexPattern = "^[0-9]0?$";
+            string regexPattern = "^(10(\\.0+)?|[0-9](\\.[0-9]+)?)$";
             return new Regex(regexPattern).IsMatch(x);
         }
     }

@@ -118,8 +118,8 @@ namespace Exercise_5
 
         public override string ShowsPersonData()
         {
-            string aInfoTxt =  base.ShowsPersonData() + "\n" + "Course Cod: " + CourseCod + "\n";
-            aInfoTxt += "\n" + StoresAlumnGradesInfo() + "\n";
+            string aInfoTxt =  base.ShowsPersonData() + "Course Cod: " + CourseCod + "\n\n";
+            aInfoTxt += StoresAlumnGradesInfo() + "\n";
             return aInfoTxt;
         }
     }
