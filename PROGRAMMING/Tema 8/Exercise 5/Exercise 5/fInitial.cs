@@ -28,8 +28,17 @@ namespace Exercise_5
 
         private void btnAlumn_Click(object sender, EventArgs e)
         {
+
             AlumnForm alumnForm = new AlumnForm(personList, courseList);
-            alumnForm.ShowDialog();
+
+            if (courseList.CountsTotalCourses() != 0)
+            {
+                alumnForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Can't add alumns if there's not any course created, try again");
+            }
         }
 
         private void btnTeacher_Click(object sender, EventArgs e)

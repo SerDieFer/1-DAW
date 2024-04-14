@@ -47,7 +47,7 @@ namespace Exercise_5
 
         public void AddsSelectedTeacherSubject(string teacherID, string subjectName)
         {
-            tSubjectsList.Add(subjectName);
+                tSubjectsList.Add(subjectName);
         }
 
         public void RemovesSelectedTeacherSubject(string teacherID, string subjectName)
@@ -91,7 +91,7 @@ namespace Exercise_5
                     counter++;
 
                 }
-                AllSubjectsTxt = "And the subjects from " + Name + " are:\n\n" + subjectsTxt; ;
+                AllSubjectsTxt = "And the subjects from " + Name + " are: \n\n" + subjectsTxt; ;
             }
             else
             {

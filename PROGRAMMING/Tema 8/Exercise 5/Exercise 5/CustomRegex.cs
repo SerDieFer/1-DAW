@@ -50,9 +50,9 @@ namespace Exercise_5
         public static bool RegexCourseCod(string x)
         {
             /* THIS METHOD VALIDATES WHETHER THE INPUT STRING REPRESENTS A VALID COURSE CODE.
-                * THE REGULAR EXPRESSION PATTERN "^(0|[1-9][0-9]*)$" CHECKS IF THE STRING IS EITHER '0' OR A POSITIVE INTEGER.*/
+                * THE REGULAR EXPRESSION PATTERN "^(0*[1-9][0-9]*)$" CHECKS IF THE STRING IS EITHER '0' OR A POSITIVE INTEGER.*/
 
-            string regexPattern = "^(0|[1-9][0-9]*)$";
+            string regexPattern = "^(0*[1-9][0-9]*)$";
             return new Regex(regexPattern).IsMatch(x);
         }
 

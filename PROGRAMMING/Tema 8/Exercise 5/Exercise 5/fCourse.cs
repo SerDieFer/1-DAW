@@ -41,9 +41,10 @@ namespace Exercise_5
             do
             {
                 string courseCodValue = Interaction.InputBox("Introduce the desired course code \n(MUST BE BIGGER THAN 0): ");
-                int courseCod = int.Parse(courseCodValue);
-                if (CustomRegex.RegexCourseCod(courseCodValue) && courseCod > 0)
+
+                if (CustomRegex.RegexCourseCod(courseCodValue))
                 {
+                    int courseCod = int.Parse(courseCodValue);
                     if (!courseList.AlreadyUsedCourseCod(courseCod))
                     {
                         string courseName = Interaction.InputBox("Introduce the course's name (ONLY LETTERS): ");
