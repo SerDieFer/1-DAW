@@ -126,7 +126,7 @@ namespace Exercise_5
                             int alumnPosition = personList.GetPositionFromUniqueName(alumnName);
                             string alumnID = personList.ReturnsPersonIDFromPosition(alumnPosition);
                             personList.RemovesAlumn(alumnPosition);
-                            MessageBox.Show("The alumn ( " + alumnName + " ) with the ID ( " + alumnID + " ) was cleared.");
+                            MessageBox.Show("The alumn ( " + alumnName + " ) with the ID ( " + alumnID + " ) was removed.");
                             introduced = true;
                         }
                         else

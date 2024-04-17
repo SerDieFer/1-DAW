@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resultado>
-    <nombre>Pizza Casera</nombre>
+    <nombreReceta>Pizza Casera</nombreReceta>
     <autor>Sergio</autor>
     <porciones>8</porciones>
     <dificultad>Sencilla</dificultad>

@@ -17,7 +17,7 @@
                     <nombre>Santiago</nombre>
                     <apellido1>Lorenzano</apellido1>
                     <apellido2></apellido2>
-                <nombreCompleto>
+                </nombreCompleto>
                 <direccion>
                     <tipoVia>Calle</tipoVia>
                     <nombreVia>Republica Argentina</nombreVia>

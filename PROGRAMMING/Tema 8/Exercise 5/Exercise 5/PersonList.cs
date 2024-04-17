@@ -19,10 +19,6 @@ namespace Exercise_5
             personList = new List<Person>();
         }
 
-        // si el alumno no tiene notas que no se pueda selecciona - lo mismo con los profesores y asignaturas
-        // no muestra asignaturas ya añadidad y que no se repitan
-        // check is a teacher before adding and removing subjects by id
-
         // TEACHERS RELATED METHODS //
 
         public void AddsTeacher(string teacherName, string teacherID, int teacherPhone, string teacherEmail, int courseMentorCod)
@@ -77,26 +73,36 @@ namespace Exercise_5
         public void MultipleSubjectsAddingFromSelectedTeacher(string teacherID)
         {
             bool added = false;
+            int position = ReturnPersonPosition(teacherID);
             do
             {
-                string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: \n\n" + ((Teacher)personList[ReturnPersonPosition(teacherID)]).StoresTeacherSubjectsInfo());
+                string subjectName = Interaction.InputBox("Introduce the subject's name to add to this teacher: \n" + ((Teacher)personList[ReturnPersonPosition(teacherID)]).StoresTeacherSubjectsInfo());
                 if (CustomRegex.RegexName(subjectName))
                 {
-                    if (SubjectAdding(teacherID, subjectName))
-                    {
-                        MessageBox.Show("A subject named " + subjectName + " has been added to this teacher.");
+                    bool alreadyAdded = SubjectExistanceCheck(teacherID, subjectName);
 
-                        //THIS RE ASKS IF YOU WANT TO ADD MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
-                        DialogResult keepAdding = MessageBox.Show("Do you want to keep adding subjects?", "Keep Adding Subjects", MessageBoxButtons.YesNo);
-                        if (keepAdding == DialogResult.No)
+                    if (!alreadyAdded)
+                    {
+                        if (SubjectAdding(teacherID, subjectName))
                         {
+                            MessageBox.Show("A subject named " + subjectName + " has been added to this teacher.");
+
+                            //THIS RE ASKS IF YOU WANT TO ADD MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
+                            DialogResult keepAdding = MessageBox.Show("Do you want to keep adding subjects?", "Keep Adding Subjects", MessageBoxButtons.YesNo);
+                            if (keepAdding == DialogResult.No)
+                            {
+                                added = true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("The selected ID is not from a teacher");
                             added = true;
                         }
                     }
                     else
                     {
-                        MessageBox.Show("The selected ID is not from a teacher");
-                        added = true;
+                        MessageBox.Show("The selected subject was already added, so there's no point in adding it again.");
                     }
                 }
                 else
@@ -126,7 +132,7 @@ namespace Exercise_5
             return subjectExist;
         }
 
-        public void SubjecRemoval(string teacherID, string subjectName)
+        public void SubjectRemoval(string teacherID, string subjectName)
         {
             if (personList.Count != 0)
             {
@@ -151,12 +157,12 @@ namespace Exercise_5
                 bool removed = false;
                 do
                 {
-                    string subject = Interaction.InputBox("Introduce the subject's name to remove from all the teacher subjects: " + "\n\n" + ((Teacher)personList[ReturnPersonPosition(teacherID)]).StoresTeacherSubjectsInfo());
-                    if (CustomRegex.RegexGradeValue(subject))
+                    string subject = Interaction.InputBox("Introduce the subject's name to remove from all the teacher subjects: " + "\n" + ((Teacher)personList[ReturnPersonPosition(teacherID)]).StoresTeacherSubjectsInfo());
+                    if (CustomRegex.RegexName(subject))
                     {
                         if (SubjectExistanceCheck(teacherID, subject))
                         {
-                            SubjecRemoval(teacherID, subject);
+                            SubjectRemoval(teacherID, subject);
                             MessageBox.Show("A subject named " + subject + " has been removed from this teacher.");
 
                             if (SelectedTeacherHasSubject(teacherID))
@@ -242,7 +248,7 @@ namespace Exercise_5
                 {
                     if (((Teacher)personList[i]).ChecksTeacherSelectedSubject(teacherID, subjectName))
                     {
-                        subjectTeachersTxt += personList[i].ShowsSimplierPersonData() + "\n";
+                        subjectTeachersTxt += "\n" + personList[i].ShowsSimplierPersonData() + "\n";
                     }
                 }
             }
@@ -293,8 +299,8 @@ namespace Exercise_5
 
         public void SelectSameNameTeachersToDelete(string teacherName)
         {
-            bool found = false;
             List<string> matchingTeachersName = new List<string>();
+            List<string> matchingTeachersNameID = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -307,52 +313,45 @@ namespace Exercise_5
                         // TYPE 1 IS A TEACHER
                         if (personType == 1)
                         {
-                            found = true;
                             string teacherData = personList[i].ShowsSimplierPersonData();
                             matchingTeachersName.Add(teacherData);
+                            matchingTeachersNameID.Add(personList[i].ID);
                         }
                     }
                 }
             }
 
-            if (found)
+            if (matchingTeachersName.Count > 0)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT TEACHERS
-                StringBuilder infoMessage = new StringBuilder("Teachers with the same name: \n\n");
+                bool deleted = false;
+                int selectedTeacherIndex = 0;
 
-                for (int i = 0; i < matchingTeachersName.Count; i++)
+                while (!deleted)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
-                }
+                    StringBuilder infoMessage = new StringBuilder("Teachers with the same name:\n\n");
 
-                infoMessage.AppendLine("Select the number to delete from list:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedTeacherIndex;
-
-                // THIS MAKES THE INPUT SELECTED TO ASIGN IT TO A TEACHER INDEX AND NEXT IT WILL ASK IF YOU WANT TO REMOVE THE SELECTED ONE
-                if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
-                {
-                    // GETS THE SELECTED TEACHER INFO
-                    string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
-
-                    // ASKS THE USER IF THEY WANT TO REMOVE THE SELECTED TEACHER
-                    DialogResult result = MessageBox.Show(selectedTeacherInfo + "Do you want to remove this teacher?", "Remove Teacher", MessageBoxButtons.YesNo);
-                    bool deleted = false;
-                    do
+                    for (int i = 0; i < matchingTeachersName.Count; i++)
                     {
+                        infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number to delete from list:\n");
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
+                    {
+                        string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
+                        string selectedTeacherID = matchingTeachersNameID[selectedTeacherIndex - 1];
+
+                        DialogResult result = MessageBox.Show(selectedTeacherInfo + "\n\nDo you want to remove this teacher?", "Remove Teacher", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
-                            // FIND THE MATCHING TEACHER IN THE TEACHER LIST AND REMOVE IT
                             for (int i = 0; i < personList.Count && !deleted; i++)
                             {
                                 int personType = CheckTypeOfPerson(personList[i].ID);
-
-                                // TYPE 1 IS A TEACHER
                                 if (personType == 1)
                                 {
-                                    if (teacherName == personList[i].Name)
+                                    if (teacherName == personList[i].Name && personList[i].ID == selectedTeacherID)
                                     {
                                         RemovesTeacher(i);
                                         MessageBox.Show("Teacher removed successfully.");
@@ -363,26 +362,25 @@ namespace Exercise_5
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
-                            result = MessageBox.Show(selectedTeacherInfo + "\nDo you want to remove this teacher?", "Remove Teacher", MessageBoxButtons.YesNo);
+                            MessageBox.Show("Please select a different teacher.");
                         }
-                    } while (!deleted);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid input. Please enter a valid number corresponding to a teacher.");
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("No teachers found with the given name.");
+                MessageBox.Show("No teachers found with the selected name.");
             }
         }
 
         public void SelectSameNameTeachersToShow(string teacherName)
         {
-            bool found = false;
             List<string> matchingTeachersName = new List<string>();
+            List<string> extraTeachersInfo = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -395,72 +393,68 @@ namespace Exercise_5
                     {
                         if (teacherName == personList[i].Name)
                         {
-                            found = true;
                             string teacherData = personList[i].ShowsSimplierPersonData();
+                            string extraData = ((Teacher)personList[i]).ShowsPersonData();
                             matchingTeachersName.Add(teacherData);
+                            extraTeachersInfo.Add(extraData);
                         }
                     }
                 }
             }
+            
+            if (matchingTeachersName.Count > 0)
+            { 
+                bool showed = false;
+                int selectedTeacherIndex = 0;
 
-            if (found)
-            {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT TEACHERS
-                StringBuilder infoMessage = new StringBuilder("Teachers with the same name: \n\n");
-
-                for (int i = 0; i < matchingTeachersName.Count; i++)
+                while (!showed)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
-                }
+                    StringBuilder infoMessage = new StringBuilder("Teachers with the same name:\n\n");
 
-                infoMessage.AppendLine("Select the number of teacher to check more data from it:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedTeacherIndex;
-
-                // THIS MAKES THE INPUT SELECTED TO ASIGN IT TO A TEACHER INDEX AND NEXT IT WILL ASK IF YOU WANT TO SHOW THE SELECTED ONE
-                if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
-                {
-                    // GETS THE SELECTED TEACHER INFO
-                    string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
-
-                    // ASKS THE USER IF THEY WANT TO SHOW THE SELECTED TEACHER
-                    DialogResult result = MessageBox.Show(selectedTeacherInfo + "\nIs this teacher the one that you wanted to see info?", "Check Teacher", MessageBoxButtons.YesNo);
-                    bool showed = false;
-                    do
+                    for (int i = 0; i < matchingTeachersName.Count; i++)
                     {
+                        infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number of the teacher to view more data:");
+
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
+                    {
+                        string selectedTeacherInfo = extraTeachersInfo[selectedTeacherIndex - 1];
+
+                        DialogResult result = MessageBox.Show(selectedTeacherInfo + "\n\nIs this the teacher you want to check info?", "Check Teacher Info", MessageBoxButtons.YesNo);
+
                         if (result == DialogResult.Yes)
                         {
                             showed = true;
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
-                            result = MessageBox.Show(selectedTeacherInfo + "\nIs this teacher the one that you wanted to see info?", "Check Teacher", MessageBoxButtons.YesNo);
+                            MessageBox.Show("Please select a different teacher.");
                         }
-                    } while (!showed);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid input. Please enter a valid number corresponding to a teacher.");
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("No teachers found with the given name.");
+                MessageBox.Show("No teachers found with the selected name.");
             }
         }
 
         public void SelectSameNameTeachersToAddSubjects(string teacherName)
         {
-            bool found = false;
 
             // THIS STORES THE TEACHERS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM TEACHERS LIST
             List<string> matchingTeachersName = new List<string>();
 
             // THIS STORES THESE TEACHERS ID IN ANOTHER LIST TO REUSE THEIR ID LATER
-            List<string> SameNameTeachersID = new List<string>();
+            List<string> matchingTeachersNameID = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -473,44 +467,37 @@ namespace Exercise_5
                     {
                         if (teacherName == personList[i].Name)
                         {
-                            found = true;
                             string teacherData = personList[i].ShowsSimplierPersonData();
                             string teacherID = personList[i].ID;
                             matchingTeachersName.Add(teacherData);
-                            SameNameTeachersID.Add(teacherID);
+                            matchingTeachersNameID.Add(teacherID);
                         }
                     }
                 }
             }
 
-            if (found)
+            if (matchingTeachersName.Count > 0)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT TEACHERS
-                StringBuilder infoMessage = new StringBuilder("Teachers with the same name: \n\n");
+                bool added = false;
+                int selectedTeacherIndex = 0;
 
-                for (int i = 0; i < matchingTeachersName.Count; i++)
+                while (!added)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
-                }
+                    StringBuilder infoMessage = new StringBuilder("Teachers with the same name:\n\n");
 
-                infoMessage.AppendLine("Select the number of teacher to add a subject from the list:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedTeacherIndex;
-
-                if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
-                {
-                    // GETS THE SELECTED TEACHER INFO AND ID
-                    string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
-                    string selectedTeacherID = SameNameTeachersID[selectedTeacherIndex - 1];
-
-                    DialogResult result;
-                    bool added = false;
-                    do
+                    for (int i = 0; i < matchingTeachersName.Count; i++)
                     {
-                        // ASKS THE USER IF THIS IS THE ACTUAL TEACHER WHOSE INFO WAS REQUIRED
-                        result = MessageBox.Show(selectedTeacherInfo + "\nIs this teacher the one that you wanted to add a subject?", "Add Subject", MessageBoxButtons.YesNo);
+                        infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number to delete from list:\n");
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
+                    {
+                        string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
+                        string selectedTeacherID = matchingTeachersNameID[selectedTeacherIndex - 1];
+                        DialogResult result = MessageBox.Show(selectedTeacherInfo + "\n\nDo you want to add subjects to this teacher?", "Add Subjects", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
                             do
@@ -537,13 +524,13 @@ namespace Exercise_5
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            MessageBox.Show("Please select a different teacher.");
                         }
-                    } while (!added);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
                 }
             }
             else
@@ -554,13 +541,11 @@ namespace Exercise_5
 
         public void SelectSameNameTeachersToRemoveSubjects(string teacherName)
         {
-            bool found = false;
-
             // THIS STORES THE TEACHERS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM TEACHERS LIST
             List<string> matchingTeachersName = new List<string>();
 
             // THIS STORES THESE TEACHERS ID IN ANOTHER LIST TO REUSE THEIR ID LATER
-            List<string> SameNameTeachersID = new List<string>();
+            List<string> matchingTeachersNameID = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -573,59 +558,71 @@ namespace Exercise_5
                     {
                         if (teacherName == personList[i].Name)
                         {
-                            found = true;
-                            string teacherData = personList[i].ShowsSimplierPersonData();
-                            string teacherID = personList[i].ID;
-                            matchingTeachersName.Add(teacherData);
-                            SameNameTeachersID.Add(teacherID);
+                            if (SelectedTeacherHasSubject(ReturnsPersonIDFromPosition(i)))
+                            {
+                                string teacherData = personList[i].ShowsSimplierPersonData();
+                                string teacherID = personList[i].ID;
+                                matchingTeachersName.Add(teacherData);
+                                matchingTeachersNameID.Add(teacherID);
+                            }
                         }
                     }
                 }
             }
 
-            if (found)
+            if (matchingTeachersName.Count == 1)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT TEACHERS
-                StringBuilder infoMessage = new StringBuilder("Teachers with the same name: \n\n");
+                // STARTS REMOVING THE GRADES FROM THE ONLY ONE IN THE LIST
+                string selectedTeacherID = matchingTeachersNameID[0];
+                MultipleSubjectsRemovalFromSelectedTeacher(selectedTeacherID);
+            }
+            else if (matchingTeachersName.Count > 1)
+            {
+                bool removed = false;
 
-                for (int i = 0; i < matchingTeachersName.Count; i++)
+                while (!removed)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
-                }
+                    // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                    // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT TEACHERS
+                    StringBuilder infoMessage = new StringBuilder("Teachers with the same name: \n\n");
 
-                infoMessage.AppendLine("Select the number of teacher to remove a subject from the list:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedTeacherIndex;
-
-                if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
-                {
-                    // GETS THE SELECTED TEACHER INFO AND ID
-                    string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
-                    string selectedTeacherID = SameNameTeachersID[selectedTeacherIndex - 1];
-
-                    DialogResult result;
-                    bool removed = false;
-                    do
+                    for (int i = 0; i < matchingTeachersName.Count; i++)
                     {
+                        infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number of teacher to remove a subject from the list:\n");
+
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+                    int selectedTeacherIndex;
+
+                    if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
+                    {
+                        // GETS THE SELECTED ALUMN INFU AND ID
+                        string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
+                        string selectedTeacherID = matchingTeachersNameID[selectedTeacherIndex - 1];
+                        DialogResult result = MessageBox.Show(selectedTeacherInfo + "\nIs this teacher the one that you wanted to remove a subject?", "Remove Subject", MessageBoxButtons.YesNo);
+
                         // ASKS THE USER IF THIS IS THE ACTUAL TEACHER WHOSE INFO WAS REQUIRED
-                        result = MessageBox.Show(selectedTeacherInfo + "\nIs this teacher the one that you wanted to remove a subject?", "Remove Subject", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
                             do
                             {
                                 int position = ReturnPersonPosition(selectedTeacherID);
                                 string subjectName = Interaction.InputBox("Introduce the subject's name to remove to this teacher: \n\n" + ((Teacher)personList[position]).StoresTeacherSubjectsInfo());
-                                //MultipleSubjectsRemovalFromSelectedTeacher(selectedTeacherID); -- this may work?
                                 if (CustomRegex.RegexName(subjectName))
                                 {
                                     if (SubjectExistanceCheck(selectedTeacherID, subjectName))
                                     {
-                                        SubjecRemoval(selectedTeacherID, subjectName);
+                                        SubjectRemoval(selectedTeacherID, subjectName);
                                         MessageBox.Show("A subject named " + subjectName + " has been removed to this teacher.");
 
-                                        if (SelectedTeacherHasSubject(selectedTeacherID))
+                                        if (!SelectedTeacherHasSubject(selectedTeacherID))
+                                        {
+                                            MessageBox.Show("The selected teacher doesn't have any subjects more to remove.");
+                                            removed = true;
+                                        }
+                                        else
                                         {
                                             //THIS RE ASKS IF YOU WANT TO REMOVE MORE SUBJECTS TO THE SAME TEACHER ALREADY SELECTED
                                             DialogResult keepRemoving = MessageBox.Show("Do you want to keep removing subjects?", "Keep Removing Subjects", MessageBoxButtons.YesNo);
@@ -634,15 +631,10 @@ namespace Exercise_5
                                                 removed = true;
                                             }
                                         }
-                                        else
-                                        {
-                                            MessageBox.Show("This teacher doesn't have any subjects left to remove.");
-                                            removed = true;
-                                        }
                                     }
                                     else
                                     {
-                                        MessageBox.Show("The teacher has not any subject with that name, try another name.");
+                                        MessageBox.Show("The selected subject does not exist in this teacher's subjects list.");
                                     }
                                 }
                                 else
@@ -653,13 +645,13 @@ namespace Exercise_5
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            MessageBox.Show("Please select a different teacher.");
                         }
-                    } while (!removed);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
                 }
             }
             else
@@ -670,13 +662,12 @@ namespace Exercise_5
 
         public void SelectSameNameTeachersToClearSubjects(string teacherName)
         {
-            bool found = false;
 
             // THIS STORES THE TEACHERS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM TEACHERS LIST
             List<string> matchingTeachersName = new List<string>();
 
             // THIS STORES THESE TEACHERS ID IN ANOTHER LIST TO REUSE THEIR ID LATER
-            List<string> SameNameTeachersID = new List<string>();
+            List<string> matchingTeachersNameID = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -689,67 +680,79 @@ namespace Exercise_5
                     {
                         if (teacherName == personList[i].Name)
                         {
-                            found = true;
-                            string teacherData = personList[i].ShowsSimplierPersonData();
-                            string teacherID = personList[i].ID;
-                            matchingTeachersName.Add(teacherData);
-                            SameNameTeachersID.Add(teacherID);
+                            if (SelectedTeacherHasSubject(ReturnsPersonIDFromPosition(i)))
+                            {
+                                string teacherData = personList[i].ShowsSimplierPersonData();
+                                string teacherID = personList[i].ID;
+                                matchingTeachersName.Add(teacherData);
+                                matchingTeachersNameID.Add(teacherID);
+                            }
                         }
                     }
                 }
             }
 
-            if (found)
+            if (matchingTeachersName.Count == 1)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT TEACHERS
-                StringBuilder infoMessage = new StringBuilder("Teachers with the same name: \n\n");
+                // CLEAR ALL THE SUBJECTS FROM THE ONLY ONE IN THE LIST
+                string selectedTeacherInfo = matchingTeachersName[0];
+                string selectedTeacherID = matchingTeachersNameID[0];
 
-                for (int i = 0; i < matchingTeachersName.Count; i++)
+                if (SelectedTeacherHasSubject(selectedTeacherID))
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
+                    SubjectsClearing(selectedTeacherID);
+                    MessageBox.Show("All subjects for this teacher have been cleared.");
                 }
-
-                infoMessage.AppendLine("Select the number of teacher to clear all the subjects from the list:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedTeacherIndex;
-
-                if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
+            }
+            else if (matchingTeachersName.Count > 1)
+            {
+                bool cleared = false;
+                while (!cleared)
                 {
-                    // GETS THE SELECTED TEACHER INFO AND ID
-                    string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
-                    string selectedTeacherID = SameNameTeachersID[selectedTeacherIndex - 1];
+                    // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                    // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT TEACHERS
+                    StringBuilder infoMessage = new StringBuilder("Teachers with the same name: \n\n");
 
-                    DialogResult result;
-                    bool cleared = false;
-                    do
+                    for (int i = 0; i < matchingTeachersName.Count; i++)
                     {
-                        // ASKS THE USER IF THIS IS THE ACTUAL TEACHER WHOSE INFO WAS REQUIRED
-                        result = MessageBox.Show(selectedTeacherInfo + "\nIs this teacher the one that you wanted to clear all subjects?", "Clear Subjects", MessageBoxButtons.YesNo);
+                        infoMessage.AppendLine((i + 1) + ") " + matchingTeachersName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number of teacher to clear all its subjects from the list:\n");
+
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+                    int selectedTeacherIndex;
+
+                    if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersName.Count)
+                    {
+                        // GETS THE SELECTED TEACHER INFU AND ID
+                        string selectedTeacherInfo = matchingTeachersName[selectedTeacherIndex - 1];
+                        string selectedTeacherID = matchingTeachersNameID[selectedTeacherIndex - 1];
+                        DialogResult result = MessageBox.Show(selectedTeacherInfo + "\nIs this teacher the one that you wanted to clear all it's subjects?", "Clear Subjects", MessageBoxButtons.YesNo);
+
                         if (result == DialogResult.Yes)
                         {
                             if (SelectedTeacherHasSubject(selectedTeacherID))
                             {
                                 SubjectsClearing(selectedTeacherID);
-                                MessageBox.Show("All subjetcs from this teacher has been cleared");
+                                MessageBox.Show("All subjects have been removed from this teacher.");
                                 cleared = true;
                             }
                             else
                             {
-                                MessageBox.Show("This teacher doesn't have any subjects added.");
+                                MessageBox.Show("The selected teacher doesn't have any subjects more to remove.");
                                 cleared = true;
                             }
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            MessageBox.Show("Please select a different teacher.");
                         }
-                    } while (!cleared);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
                 }
             }
             else
@@ -1156,8 +1159,8 @@ namespace Exercise_5
 
         public void SelectSameNameAlumnsToDelete(string alumnName)
         {
-            bool found = false;
             List<string> matchingAlumnsName = new List<string>();
+            List<string> matchingAlumnsID = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -1168,53 +1171,48 @@ namespace Exercise_5
                     {
                         if (alumnName == personList[i].Name)
                         {
-                            found = true;
                             string alumnData = personList[i].ShowsSimplierPersonData();
                             matchingAlumnsName.Add(alumnData);
+                            matchingAlumnsID.Add(personList[i].ID);
                         }
                     }
                 }
             }
 
-            if (found)
+            if (matchingAlumnsName.Count > 0)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+                bool deleted = false;
+                int selectedAlumnIndex = 0;
 
-                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                while (!deleted)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
-                }
+                    StringBuilder infoMessage = new StringBuilder("Alumns with the same name:\n\n");
 
-                infoMessage.AppendLine("Select the number to delete from list:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedAlumnIndex;
-
-                // THIS MAKES THE INPUT SELECTED TO ASIGN IT TO AN ALUMN INDEX AND NEXT IT WILL DELETE ASK IF YOU WANT TO REMOVE THE SELECTED ONE
-                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
-                {
-                    // GETS THE SELECTED ALUMN INFU
-                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
-
-                    // ASKS THE USER IF THEY WANT TO REMOVE THE SELECTED ALUMN
-                    DialogResult result = MessageBox.Show(selectedAlumnInfo + "Do you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
-                    bool deleted = false;
-                    do
+                    for (int i = 0; i < matchingAlumnsName.Count; i++)
                     {
+                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number to delete from list:\n");
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                    {
+                        string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+                        string selectedAlumnID = matchingAlumnsID[selectedAlumnIndex - 1];
+
+                        DialogResult result = MessageBox.Show(selectedAlumnInfo + "\n\nDo you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
-                            // FIND THE MATCHING ALUMN IN THE ALUMNLIST AND REMOVE IT
                             for (int i = 0; i < personList.Count && !deleted; i++)
                             {
                                 int personType = CheckTypeOfPerson(personList[i].ID);
                                 if (personType == 0)
                                 {
-                                    if (alumnName == personList[i].Name)
+                                    if (alumnName == personList[i].Name && personList[i].ID == selectedAlumnID)
                                     {
                                         RemovesAlumn(i);
-                                        MessageBox.Show("Alumn cleared successfully.");
+                                        MessageBox.Show("Alumn removed successfully.");
                                         deleted = true;
                                     }
                                 }
@@ -1222,26 +1220,26 @@ namespace Exercise_5
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
-                            result = MessageBox.Show(selectedAlumnInfo + "\nDo you want to remove this alumn?", "Remove Alumn", MessageBoxButtons.YesNo);
+                            MessageBox.Show("Please select a different alumn.");
                         }
-                    } while (!deleted);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid input. Please enter a valid number corresponding to an alumn.");
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("No alumns found with the given name.");
+                MessageBox.Show("No alumns found with the selected name.");
             }
         }
+    
 
         public void SelectSameNameAlumnsToShow(string alumnName)
         {
-            bool found = false;
             List<string> matchingAlumnsName = new List<string>();
+            List<string> extraAlumnsInfo = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -1252,67 +1250,63 @@ namespace Exercise_5
                     {
                         if (alumnName == personList[i].Name)
                         {
-                            found = true;
                             string alumnData = ((Alumn)personList[i]).ShowsSimplierPersonData();
+                            string extraData = ((Alumn)personList[i]).ShowsPersonData();
                             matchingAlumnsName.Add(alumnData);
+                            extraAlumnsInfo.Add(extraData);
                         }
                     }
                 }
             }
 
-            if (found)
+            if (matchingAlumnsName.Count > 0)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+                bool showed = false;
+                int selectedAlumnIndex = 0;
 
-                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                while (!showed)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
-                }
+                    StringBuilder infoMessage = new StringBuilder("Alumns with the same name:\n\n");
 
-                infoMessage.AppendLine("Select the number of alumn to check more data from it:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedAlumnIndex;
-
-                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
-                {
-                    // GETS THE SELECTED ALUMN INFU
-                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
-
-                    // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
-                    DialogResult result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
-                    bool showed = false;
-                    do
+                    for (int i = 0; i < matchingAlumnsName.Count; i++)
                     {
+                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number of the alumn to view more data:");
+
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                    {
+                        string selectedAlumnInfo = extraAlumnsInfo[selectedAlumnIndex - 1];
+
+                        DialogResult result = MessageBox.Show(selectedAlumnInfo + "\n\nIs this the alumn you want to check info?", "Check Alumn Info", MessageBoxButtons.YesNo);
+
                         if (result == DialogResult.Yes)
                         {
                             showed = true;
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
-                            result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to see info?", "Check Alumn", MessageBoxButtons.YesNo);
+                            MessageBox.Show("Please select a different alumn.");
                         }
-                    } while (!showed);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid input. Please enter a valid number corresponding to an alumn.");
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("No alumns found with the given name.");
+                MessageBox.Show("No alumns found with the selected name.");
             }
         }
 
         // FUNCTION WHICH COLLECTS ALL DATA FROM ALL THE ALUMNS WITH SAME NAME ADDED INTO THE ALUMNS LIST TO ADD THEM GRADES
         public void SelectSameNameAlumnsToAddGrade(string alumnName)
         {
-            bool found = false;
-
             // THIS STORES THE ALUMNS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM ALUMNS LIST
             List<string> matchingAlumnsName = new List<string>();
 
@@ -1328,7 +1322,6 @@ namespace Exercise_5
                     {
                         if (alumnName == personList[i].Name)
                         {
-                            found = true;
                             string alumnData = ((Alumn)personList[i]).ShowsSimplierPersonData();
                             string alumnID = personList[i].ID;
                             matchingAlumnsName.Add(alumnData);
@@ -1338,34 +1331,29 @@ namespace Exercise_5
                 }
             }
 
-            if (found)
+            if (matchingAlumnsName.Count > 0)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+                bool added = false;
+                int selectedAlumnIndex = 0;
 
-                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                while (!added)
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
-                }
+                    StringBuilder infoMessage = new StringBuilder("Alumns with the same name:\n\n");
 
-                infoMessage.AppendLine("Select the number of alumn to add a grade from the list:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedAlumnIndex;
-
-                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
-                {
-                    // GETS THE SELECTED ALUMN INFU AND ID
-                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
-                    string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
-
-                    DialogResult result;
-                    bool added = false;
-                    do
+                    for (int i = 0; i < matchingAlumnsName.Count; i++)
                     {
-                        // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
-                        result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to add a grade?", "Add Grade", MessageBoxButtons.YesNo);
+                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the alumn to add grades from list:\n");
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                    {
+                        string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+                        string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
+
+                        DialogResult result = MessageBox.Show(selectedAlumnInfo + "\n\nDo you want to add grades to this alumn?", "Add Grades", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
                             do
@@ -1390,16 +1378,16 @@ namespace Exercise_5
                                     MessageBox.Show("Grade value invalid, select a value between 0 and 10.");
                                 }
                             } while (!added);
-                        }
+                        } 
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            MessageBox.Show("Please select a different alumn.");
                         }
-                    } while (!added);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
                 }
             }
             else
@@ -1410,13 +1398,12 @@ namespace Exercise_5
 
         public void SelectSameNameAlumnsToRemoveGrade(string alumnName)
         {
-            bool found = false;
 
             // THIS STORES THE ALUMNS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM ALUMNS LIST
             List<string> matchingAlumnsName = new List<string>();
 
             // THIS STORES THESE ALUMNS ID IN ANOTHER LIST TO REUSE THEIR ID LATER
-            List<string> SameNameAlumnsID = new List<string>();
+            List<string> matchingAlumnsNameID = new List<string>();
 
             if (personList.Count != 0)
             {
@@ -1427,92 +1414,107 @@ namespace Exercise_5
                     {
                         if (alumnName == personList[i].Name)
                         {
-                            string alumnData = personList[i].ShowsSimplierPersonData();
-                            string alumnID = personList[i].ID;
-                            matchingAlumnsName.Add(alumnData);
-                            SameNameAlumnsID.Add(alumnID);
-                            found = true;
+                            if (SelectedAlumnHasGrades(ReturnsPersonIDFromPosition(i)))
+                            {
+                                string alumnData = personList[i].ShowsSimplierPersonData();
+                                string alumnID = personList[i].ID;
+                                matchingAlumnsName.Add(alumnData);
+                                matchingAlumnsNameID.Add(alumnID);
+                            }
                         }
                     }
                 }
-
-                if (found)
+                if (matchingAlumnsName.Count == 1)
                 {
-                    // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                    // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                    StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+                    // STARTS REMOVING THE GRADES FROM THE ONLY ONE IN THE LIST
+                    string selectedAlumnID = matchingAlumnsNameID[0];
+                    MultipleGradeRemovingFromSelectedAlumn(selectedAlumnID);
+                }
+                else if (matchingAlumnsName.Count > 1)
+                {
+                    bool removed = false;
 
-                    for (int i = 0; i < matchingAlumnsName.Count; i++)
+                    while (!removed)
                     {
-                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
-                    }
+                        // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                        // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
+                        StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
 
-                    infoMessage.AppendLine("Select the number of alumn to remove a grade from the list:\n");
-
-                    string userInput = Interaction.InputBox(infoMessage.ToString());
-                    int selectedAlumnIndex;
-
-                    if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
-                    {
-                        // GETS THE SELECTED ALUMN INFU AND ID
-                        string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
-                        string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
-
-                        DialogResult result;
-                        bool removed = false;
-                        do
+                        for (int i = 0; i < matchingAlumnsName.Count; i++)
                         {
-                            // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
-                            result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to remove a grade?", "Add Grade", MessageBoxButtons.YesNo);
-                            if (result == DialogResult.Yes)
-                            {
-                                do
-                                {
-                                    int position = ReturnPersonPosition(selectedAlumnID);
-                                    string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from all the alumn grades: \n\n" + ((Alumn)personList[position]).StoresAlumnGradesInfo());
-                                    if (CustomRegex.RegexGradeValue(gradeValue))
-                                    {
-                                        double grade = double.Parse(gradeValue);
-                                        if (GradeExistanceCheck(selectedAlumnID, grade))
-                                        {
-                                            GradeRemoval(selectedAlumnID, grade);
-                                            MessageBox.Show("A grade with a value of " + grade + " has been cleared from this alumn.");
+                            infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
+                        }
 
-                                            if (SelectedAlumnHasGrades(selectedAlumnID))
+                        infoMessage.AppendLine("Select the number of alumn to remove a grade from the list:\n");
+
+                        string userInput = Interaction.InputBox(infoMessage.ToString());
+                        int selectedAlumnIndex;
+
+                        if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                        {
+                            // GETS THE SELECTED ALUMN INFU AND ID
+                            string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+                            string selectedAlumnID = matchingAlumnsNameID[selectedAlumnIndex - 1];
+                            DialogResult result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to remove a grade?", "Add Grade", MessageBoxButtons.YesNo);
+
+                            if (SelectedAlumnHasGrades(selectedAlumnID))
+                            {
+                                // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
+                                if (result == DialogResult.Yes)
+                                {
+                                    do
+                                    {
+                                        int position = ReturnPersonPosition(selectedAlumnID);
+                                        string gradeValue = Interaction.InputBox("Introduce the alumn's grade to remove from this alumn: \n\n" + ((Alumn)personList[position]).StoresAlumnGradesInfo());
+                                        if (CustomRegex.RegexGradeValue(gradeValue))
+                                        {
+                                            double grade = double.Parse(gradeValue);
+                                            if (GradeExistanceCheck(selectedAlumnID, grade))
                                             {
-                                                //THIS RE ASKS IF YOU WANT TO ADD MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
-                                                DialogResult keepRemoving = MessageBox.Show("Do you want to keep removing grades?", "Keep Removing Grades", MessageBoxButtons.YesNo);
-                                                if (keepRemoving == DialogResult.No)
+                                                GradeRemoval(selectedAlumnID, grade);
+                                                MessageBox.Show("A grade with a value of " + grade + " has been removed from this alumn.");
+
+                                                if (!SelectedAlumnHasGrades(selectedAlumnID))
                                                 {
+                                                    MessageBox.Show("The selected alumn doesn't have any grade more to remove.");
                                                     removed = true;
+                                                }
+                                                else
+                                                {
+                                                    //THIS RE ASKS IF YOU WANT TO REMOVE MORE GRADES TO THE SAME ALUMN ALREADY SELECTED
+                                                    DialogResult keepRemoving = MessageBox.Show("Do you want to keep removing grades?", "Keep Adding Grades", MessageBoxButtons.YesNo);
+                                                    if (keepRemoving == DialogResult.No)
+                                                    {
+                                                        removed = true;
+                                                    }
                                                 }
                                             }
                                             else
                                             {
-                                                MessageBox.Show("This alumn doesn't have any grades left to remove.");
-                                                removed = true;
+                                                MessageBox.Show("The selected grade does not exist in this alumn's grades list.");
                                             }
                                         }
                                         else
                                         {
-                                            MessageBox.Show("The alumn has not any grade with that value, try another value.");
+                                            MessageBox.Show("Grade value invalid, select a value between 0 and 10.");
                                         }
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Grade value invalid, select a value between 0 and 10.");
-                                    }
-                                } while (!removed);
+                                    } while (!removed);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Please select a different alumn.");
+                                }
                             }
                             else
                             {
-                                userInput = Interaction.InputBox(infoMessage.ToString());
+                                MessageBox.Show("This alumn doesn't have any grades.");
+                                removed = true;
                             }
-                        } while (!removed);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid number input. Please enter a valid number.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid number input. Please enter a valid number.");
+                        }
                     }
                 }
                 else
@@ -1522,11 +1524,8 @@ namespace Exercise_5
             }
         }
 
-
         public void SelectSameNameAlumnsToClearGrades(string alumnName)
         {
-            bool found = false;
-
             // THIS STORES THE ALUMNS WITH THE SAME NAME AS A STRING WITH ALL THEIR DATA FROM ALUMNS LIST
             List<string> matchingAlumnsName = new List<string>();
 
@@ -1544,67 +1543,78 @@ namespace Exercise_5
                     {
                         if (alumnName == personList[i].Name)
                         {
-                            string alumnData = personList[i].ShowsSimplierPersonData();
-                            string alumnID = personList[i].ID;
-                            matchingAlumnsName.Add(alumnData);
-                            SameNameAlumnsID.Add(alumnID);
-                            found = true;
+                            if (SelectedAlumnHasGrades(ReturnsPersonIDFromPosition(i)))
+                            {
+                                string alumnData = personList[i].ShowsSimplierPersonData();
+                                string alumnID = personList[i].ID;
+                                matchingAlumnsName.Add(alumnData);
+                                SameNameAlumnsID.Add(alumnID);
+                            }
                         }
                     }
                 }
             }
-
-            if (found)
+            if (matchingAlumnsName.Count == 1)
             {
-                // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
-                // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
-                StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
+                // CLEAR ALL THE GRADES FROM THE ONLY ONE IN THE LIST
+                string selectedAlumnInfo = matchingAlumnsName[0];
+                string selectedAlumnID = SameNameAlumnsID[0];
 
-                for (int i = 0; i < matchingAlumnsName.Count; i++)
+                if (SelectedAlumnHasGrades(selectedAlumnID))
                 {
-                    infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
+                    GradesClearing(selectedAlumnID);
+                    MessageBox.Show("All grades for this alumn have been cleared.");
                 }
-
-                infoMessage.AppendLine("Select the number of alumn to clear all its grades from the list:\n");
-
-                string userInput = Interaction.InputBox(infoMessage.ToString());
-                int selectedAlumnIndex;
-
-                if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+            }
+            else if (matchingAlumnsName.Count > 1)
+            {
+                bool cleared = false;
+                while (!cleared)
                 {
-                    // GETS THE SELECTED ALUMN INFU AND ID
-                    string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
-                    string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
+                    // I HAD TO SEARCH THIS PART TO SHOW MULTIPLE INFO AND SELECT ONE FROM ALL OF THEM
+                    // THIS DISPLAYS ALL INFORMATION FROM ALL MATCHING NAMES FROM DIFFERENT ALUMNS
+                    StringBuilder infoMessage = new StringBuilder("Alumns with the same name: \n\n");
 
-                    DialogResult result;
-                    bool cleared = false;
-                    do
+                    for (int i = 0; i < matchingAlumnsName.Count; i++)
                     {
-                        // ASKS THE USER IF THIS IS THE ACTUAL ALUMN WHOSE INFO WAS REQUIRED
-                        result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to clear it's grades?", "Clear Grades", MessageBoxButtons.YesNo);
+                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsName[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number of alumn to clear all its grades from the list:\n");
+
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+                    int selectedAlumnIndex;
+
+                    if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsName.Count)
+                    {
+                        // GETS THE SELECTED ALUMN INFU AND ID
+                        string selectedAlumnInfo = matchingAlumnsName[selectedAlumnIndex - 1];
+                        string selectedAlumnID = SameNameAlumnsID[selectedAlumnIndex - 1];
+                        DialogResult result = MessageBox.Show(selectedAlumnInfo + "\nIs this alumn the one that you wanted to clear it's grades?", "Clear Grades", MessageBoxButtons.YesNo);
+
                         if (result == DialogResult.Yes)
                         {
                             if (SelectedAlumnHasGrades(selectedAlumnID))
                             {
                                 GradesClearing(selectedAlumnID);
-                                MessageBox.Show("All grades from this alumn has been cleared");
+                                MessageBox.Show("All grades have been removed from this alumn.");
                                 cleared = true;
                             }
                             else
                             {
-                                MessageBox.Show("This alumn doesn't have any grades added.");
+                                MessageBox.Show("The selected alumn doesn't have any grades more to remove.");
                                 cleared = true;
                             }
                         }
                         else
                         {
-                            userInput = Interaction.InputBox(infoMessage.ToString());
+                            MessageBox.Show("Please select a different alumn.");
                         }
-                    } while (!cleared);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }   
+                    else
+                    {
+                        MessageBox.Show("Invalid number input. Please enter a valid number.");
+                    }
                 }
             }
             else
@@ -1612,7 +1622,6 @@ namespace Exercise_5
                 MessageBox.Show("No alumns found with the given name.");
             }
         }
-
 
         public string ShowsAlumnsWhoseGradesAvgIsEqualOrBiggerThan5()
         {

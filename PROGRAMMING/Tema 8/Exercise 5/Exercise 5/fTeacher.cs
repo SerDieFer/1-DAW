@@ -36,10 +36,6 @@ namespace Exercise_5
             this.courseList = courseList;
         }
 
-        // show selected by id no devuelve error en caso de no existir ese dni en profesores
-        // que no se repitan las materias en el mismo profesor
-        // que no se puedan añadir/borrar/limpiar materias de alumnos
-
         // ADDS A TEACHER
         private void btnAddTeacher_Click(object sender, EventArgs e)
         {
