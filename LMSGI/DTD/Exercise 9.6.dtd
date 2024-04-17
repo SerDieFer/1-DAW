@@ -1,0 +1,15 @@
+    <!ELEMENT albumes (album*)>
+    <!ELEMENT album (artista, titulo, sello, referencia, anyo, formato, genero, canciones)>
+    <!ELEMENT artista (#PCDATA)>
+    <!ELEMENT titulo (#PCDATA)>
+    <!ELEMENT sello (#PCDATA)>
+    <!ELEMENT referencia (#PCDATA)>
+    <!ELEMENT anyo (#PCDATA)>
+    <!ELEMENT formato (#PCDATA)>
+    <!ELEMENT genero (#PCDATA)>
+    <!ELEMENT canciones (cancion*)>
+    <!ELEMENT cancion (titulo, duracion?)>
+    <!ATTLIST cancion pista CDATA #REQUIRED>
+    <!ELEMENT duracion (minutos, segundos)>
+    <!ELEMENT minutos (#PCDATA)>
+    <!ELEMENT segundos (#PCDATA)>

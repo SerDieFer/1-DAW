@@ -1,0 +1,14 @@
+    <!ELEMENT AGENDA (contacto+)>
+    <!ELEMENT contacto (nombre, apellidos, domicilio, telefono+, email)>
+    <!ELEMENT nombre (#PCDATA)>
+    <!ELEMENT apellidos (#PCDATA)>
+    <!ELEMENT domicilio (direccion, (provincia | poblacion)*, cod_postal)>
+    <!ELEMENT direccion (#PCDATA)>
+    <!ATTLIST direccion tipo CDATA #REQUIRED>
+    <!ELEMENT provincia (#PCDATA)>
+    <!ELEMENT cod_postal (#PCDATA)>
+    <!ELEMENT poblacion (#PCDATA)>
+    <!ELEMENT telefono (#PCDATA)>
+    <!ATTLIST telefono tipo (fijo | movil) #REQUIRED>
+    <!ATTLIST telefono clase (profesional | personal) #IMPLIED>
+    <!ELEMENT email (#PCDATA)>

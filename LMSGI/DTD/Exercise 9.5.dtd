@@ -1,0 +1,13 @@
+    <!ELEMENT CD (artista, nombre, fecha_creacion, descripcion, canciones)>
+    <!ELEMENT artista (#PCDATA)>
+    <!ELEMENT nombre (#PCDATA)>
+    <!ELEMENT fecha_creacion (#PCDATA)>
+    <!ELEMENT descripcion (#PCDATA)>
+    <!ELEMENT canciones (cancion*)>
+    <!ELEMENT cancion (titulo, autor, duracion)>
+    <!ATTLIST cancion genero CDATA #REQUIRED>
+    <!ELEMENT titulo (#PCDATA)>
+    <!ELEMENT autor (#PCDATA)>
+    <!ELEMENT duracion (minutos, segundos)>
+    <!ELEMENT minutos (#PCDATA)>
+    <!ELEMENT segundos (#PCDATA)>

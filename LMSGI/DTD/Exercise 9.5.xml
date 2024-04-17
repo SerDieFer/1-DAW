@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE CD SYSTEM "Exercise 9.5.dtd">
+<CD>
+  <artista>Compay Segundo</artista>
+  <nombre>Calle Salud</nombre>
+  <fecha_creacion>Marzo 1999</fecha_creacion>
+  <descripcion>
+    Uno de los mejores álbumes de música tradicional cubana,
+    interpretado por un conjunto de artístas de ensueño que
+    durante muchos años permanecieron en el olvido
+  </descripcion>
+  <canciones>
+      <cancion genero="Son-afro">
+          <titulo>Saludo a Chango</titulo>
+          <autor>Armando Dulfo</autor>
+          <duracion>
+            <minutos>5</minutos>
+            <segundos>46</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Bolero-son">
+          <titulo>Amor Gigante</titulo>
+          <autor>Francisco Repilado</autor>
+          <duracion>
+            <minutos>2</minutos>
+            <segundos>52</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Bolero-son">
+          <titulo>Una Rosa de Francia</titulo>
+          <autor>Rodrigo Prats</autor>
+          <duracion>
+            <minutos>5</minutos>
+            <segundos>20</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Merengue">
+          <titulo> María en la Playa </titulo>
+          <autor> Francisco Repilado </autor>
+          <duracion>
+            <minutos> 2 </minutos>
+            <segundos> 49 </segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Bolero-son">
+          <titulo>Versos para Tí</titulo>
+          <autor>Francisco Repilado</autor>
+          <duracion>
+            <minutos>3</minutos>
+            <segundos>56</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Bolero-son">
+          <titulo>La Engañadora</titulo>
+          <autor>Enrique Jorrín</autor>
+          <duracion>
+            <minutos>4</minutos>
+            <segundos>20</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Son">
+          <titulo>Viejos Sones de Santiago</titulo>
+          <autor>Popular</autor>
+          <duracion>
+            <minutos>4</minutos>
+            <segundos>21</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Bolero">
+          <titulo>El Día que me Quieras</titulo>
+          <autor>Carlos Gardél</autor>
+          <duracion>
+            <minutos>4</minutos>
+            <segundos>03</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Sabroso">
+          <titulo>Se Perdió la Flauta</titulo>
+          <autor>Compay Segundo</autor>
+          <duracion>
+            <minutos>4</minutos>
+            <segundos>52</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Bolero">
+          <titulo>Morir de Amor</titulo>
+          <autor>Charles Aznavour</autor>
+          <duracion>
+            <minutos>3</minutos>
+            <segundos>29</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Son">
+          <titulo>Lágrimas Negras</titulo>
+          <autor>Miguel Matamoros</autor>
+          <duracion>
+            <minutos>3</minutos>
+            <segundos>45</segundos>
+          </duracion>
+      </cancion>
+      <cancion genero="Son">
+          <titulo>Balcón de Santiago</titulo>
+          <autor>Francisco Repilado</autor>
+          <duracion>
+            <minutos>5</minutos>
+            <segundos>40</segundos>
+          </duracion>
+        </cancion>
+      <cancion genero="Son">
+          <titulo>Chan Chan</titulo>
+          <autor>Francisco Repilado</autor>
+          <duracion>
+            <minutos>5</minutos>
+            <segundos>30</segundos>
+          </duracion>
+      </cancion>
+  </canciones>
+</CD>

@@ -1,0 +1,16 @@
+    <!ELEMENT resultado (libreria*)>
+    <!ATTLIST resultado tema CDATA #FIXED "XML">
+    <!ELEMENT libreria (libro+)>
+    <!ATTLIST libreria nombre CDATA #REQUIRED>
+    <!ATTLIST libreria web CDATA #REQUIRED>
+    <!ELEMENT libro (titulo, autores, editorial, anyo, web, precio)>
+    <!ATTLIST libro isbn ID #REQUIRED>
+    <!ATTLIST libro nivel (basico | intermedio | avanzado) #IMPLIED>
+    <!ELEMENT titulo (#PCDATA)>
+    <!ELEMENT autores (autor*)>
+    <!ELEMENT autor (#PCDATA)>
+    <!ELEMENT editorial (#PCDATA)>
+    <!ELEMENT anyo (#PCDATA)>
+    <!ELEMENT web (#PCDATA)>
+    <!ELEMENT precio (#PCDATA)>
+    <!ATTLIST precio moneda (Euro | Dolar | Libra) #REQUIRED>

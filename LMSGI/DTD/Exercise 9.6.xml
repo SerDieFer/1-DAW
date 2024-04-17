@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE albumes SYSTEM "Exercise 9.6.dtd">
+<albumes>
+  <album>
+    <artista>THE BEATLES</artista>
+    <titulo>A HARD DAY'S NIGHT</titulo>
+    <sello>EMI RECORDS</sello>
+    <referencia>07777-46437-2</referencia>
+    <anyo>1964</anyo>
+    <formato>CD</formato>
+    <genero>Pop</genero>
+    <canciones>
+      <cancion pista="1">
+        <titulo>A Hard Day's Night</titulo>
+      </cancion>
+      <cancion pista="2">
+        <titulo>I Should HAve Known Better</titulo>
+      </cancion>
+      <cancion pista="3">
+        <titulo>If I Feel</titulo>
+      </cancion>
+      <cancion pista="4">
+        <titulo>I'm Happy Just to Dance With You</titulo>
+      </cancion>
+      <cancion pista="5">
+        <titulo>And I Love Her</titulo>
+      </cancion>
+      <cancion pista="6">
+        <titulo>Tell Me Why</titulo>
+      </cancion>
+      <cancion pista="7">
+        <titulo>Can't Buy Me Love</titulo>
+      </cancion>
+      <cancion pista="8">
+        <titulo>Any Time at All</titulo>
+      </cancion>
+      <cancion pista="9">
+        <titulo>I'll Cry Instead</titulo>
+      </cancion>
+      <cancion pista="10">
+        <titulo>Things We Say Today</titulo>
+      </cancion>
+      <cancion pista="11">
+        <titulo>When I Get Home</titulo>
+      </cancion>
+      <cancion pista="12">
+        <titulo>You Cn't Do That</titulo>
+      </cancion>
+      <cancion pista="13">
+        <titulo>I'll Be Back</titulo>
+      </cancion>
+    </canciones>
+  </album>
+  <album>
+    <artista>THE BEATLES</artista>
+    <titulo>ABBEY ROAD</titulo>
+    <sello>EMI RECORDS</sello>
+    <referencia>07777-46446-2</referencia>
+    <anyo>1969</anyo>
+    <formato>CD</formato>
+    <genero>Pop</genero>
+    <canciones>
+      <cancion pista="1">
+        <titulo>Come Together</titulo>
+      </cancion>
+      <cancion pista="2">
+        <titulo>Something</titulo>
+      </cancion>
+      <cancion pista="3">
+        <titulo>Maxwell's Silver Hammer</titulo>
+      </cancion>
+      <cancion pista="4">
+        <titulo>OH! Darling</titulo>
+      </cancion>
+      <cancion pista="5">
+        <titulo>Octopus's Garden</titulo>
+      </cancion>
+      <cancion pista="6">
+        <titulo>I Want You (She'so Heavy)</titulo>
+      </cancion>
+      <cancion pista="7">
+        <titulo>Here Comes The Sun</titulo>
+      </cancion>
+      <cancion pista="8">
+        <titulo>Because</titulo>
+      </cancion>
+      <cancion pista="9">
+        <titulo>You Never Give Me Your Money</titulo>
+      </cancion>
+      <cancion pista="10">
+        <titulo>Sun King</titulo>
+      </cancion>
+      <cancion pista="11">
+        <titulo>Mean Mr Mustard</titulo>
+      </cancion>
+      <cancion pista="12">
+        <titulo>Polytheme Pam</titulo>
+      </cancion>
+      <cancion pista="13">
+        <titulo>She Came In Trought The Bathroom Window</titulo>
+      </cancion>
+      <cancion pista="14">
+        <titulo>Golden Slumbers</titulo>
+      </cancion>
+      <cancion pista="15">
+        <titulo>Carry That Weight</titulo>
+      </cancion>
+      <cancion pista="16">
+        <titulo>The End</titulo>
+      </cancion>
+      <cancion pista="17">
+        <titulo>Her Majesty</titulo>
+      </cancion>
+    </canciones>
+  </album>
+  <album>
+    <artista>THE ROLLING STONES</artista>
+    <titulo>FLOWERS</titulo>
+    <sello>THE DECCA RECORD COMPANY LIMITED</sello>
+    <referencia>042282-01392-7</referencia>
+    <anyo>1967</anyo>
+    <formato>CD</formato>
+    <genero>Pop</genero>
+    <canciones>
+      <cancion pista="1">
+        <titulo>Ruby Tuesday</titulo>
+        <duracion>
+          <minutos>3</minutos>
+          <segundos>15</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="2">
+        <titulo>Have You Seen Your Mother, BAby, Standing In the Shadow?</titulo>
+        <duracion>
+          <minutos>2</minutos>
+          <segundos>33</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="3">
+        <titulo>Let's Spend The Night Together</titulo>
+        <duracion>
+          <minutos>3</minutos>
+          <segundos>36</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="4">
+        <titulo>Lady Jane</titulo>
+        <duracion>
+          <minutos>3</minutos>
+          <segundos>06</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="5">
+        <titulo>Out Of TIme</titulo>
+        <duracion>
+          <minutos>3</minutos>
+          <segundos>42</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="6">
+        <titulo>My Girl</titulo>
+        <duracion>
+          <minutos>2</minutos>
+          <segundos>38</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="7">
+        <titulo>Back Street Girl</titulo>
+        <duracion>
+          <minutos>3</minutos>
+          <segundos>26</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="8">
+        <titulo>Please Go Home</titulo>
+        <duracion>
+          <minutos>3</minutos>
+          <segundos>16</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="9">
+        <titulo>Mother's Little Helper</titulo>
+        <duracion>
+          <minutos>2</minutos>
+          <segundos>43</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="10">
+        <titulo>TaKe It Or Leave It</titulo>
+        <duracion>
+          <minutos>2</minutos>
+          <segundos>46</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="11">
+        <titulo>Ride On, Baby</titulo>
+        <duracion>
+          <minutos>2</minutos>
+          <segundos>53</segundos>
+        </duracion>
+      </cancion>
+      <cancion pista="12">
+        <titulo>Sittin'On A Fence</titulo>
+        <duracion>
+          <minutos>3</minutos>
+          <segundos>02</segundos>
+        </duracion>
+      </cancion>
+    </canciones>
+  </album>
+</albumes>
