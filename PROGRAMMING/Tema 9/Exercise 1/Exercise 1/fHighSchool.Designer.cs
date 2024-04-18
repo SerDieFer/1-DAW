@@ -39,13 +39,22 @@
             this.txtbName = new System.Windows.Forms.TextBox();
             this.txtbID = new System.Windows.Forms.TextBox();
             this.gbData = new System.Windows.Forms.GroupBox();
+            this.lblRecord = new System.Windows.Forms.Label();
             this.gpNavigate = new System.Windows.Forms.GroupBox();
-            this.btnFirst = new System.Windows.Forms.Button();
-            this.btnLast = new System.Windows.Forms.Button();
-            this.btnNext = new System.Windows.Forms.Button();
             this.btnPrevious = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnLast = new System.Windows.Forms.Button();
+            this.btnFirst = new System.Windows.Forms.Button();
+            this.gpNewRegistry = new System.Windows.Forms.GroupBox();
+            this.btnClear = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.gpUpdateDelete = new System.Windows.Forms.GroupBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.gbData.SuspendLayout();
             this.gpNavigate.SuspendLayout();
+            this.gpNewRegistry.SuspendLayout();
+            this.gpUpdateDelete.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblID
@@ -108,7 +117,7 @@
             this.txtbSurnames.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbSurnames.Location = new System.Drawing.Point(153, 130);
             this.txtbSurnames.Name = "txtbSurnames";
-            this.txtbSurnames.Size = new System.Drawing.Size(178, 22);
+            this.txtbSurnames.Size = new System.Drawing.Size(217, 22);
             this.txtbSurnames.TabIndex = 5;
             // 
             // txtbPhone
@@ -116,7 +125,7 @@
             this.txtbPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbPhone.Location = new System.Drawing.Point(153, 172);
             this.txtbPhone.Name = "txtbPhone";
-            this.txtbPhone.Size = new System.Drawing.Size(178, 22);
+            this.txtbPhone.Size = new System.Drawing.Size(217, 22);
             this.txtbPhone.TabIndex = 6;
             // 
             // txtbEmail
@@ -124,7 +133,7 @@
             this.txtbEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbEmail.Location = new System.Drawing.Point(153, 214);
             this.txtbEmail.Name = "txtbEmail";
-            this.txtbEmail.Size = new System.Drawing.Size(178, 22);
+            this.txtbEmail.Size = new System.Drawing.Size(217, 22);
             this.txtbEmail.TabIndex = 7;
             // 
             // txtbName
@@ -132,7 +141,7 @@
             this.txtbName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbName.Location = new System.Drawing.Point(153, 88);
             this.txtbName.Name = "txtbName";
-            this.txtbName.Size = new System.Drawing.Size(178, 22);
+            this.txtbName.Size = new System.Drawing.Size(217, 22);
             this.txtbName.TabIndex = 8;
             // 
             // txtbID
@@ -140,11 +149,12 @@
             this.txtbID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbID.Location = new System.Drawing.Point(153, 48);
             this.txtbID.Name = "txtbID";
-            this.txtbID.Size = new System.Drawing.Size(178, 22);
+            this.txtbID.Size = new System.Drawing.Size(217, 22);
             this.txtbID.TabIndex = 9;
             // 
             // gbData
             // 
+            this.gbData.Controls.Add(this.lblRecord);
             this.gbData.Controls.Add(this.txtbID);
             this.gbData.Controls.Add(this.txtbName);
             this.gbData.Controls.Add(this.txtbEmail);
@@ -158,10 +168,19 @@
             this.gbData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbData.Location = new System.Drawing.Point(12, 12);
             this.gbData.Name = "gbData";
-            this.gbData.Size = new System.Drawing.Size(361, 262);
+            this.gbData.Size = new System.Drawing.Size(397, 274);
             this.gbData.TabIndex = 10;
             this.gbData.TabStop = false;
             this.gbData.Text = "TEACHER DATA";
+            // 
+            // lblRecord
+            // 
+            this.lblRecord.AutoSize = true;
+            this.lblRecord.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRecord.Location = new System.Drawing.Point(169, 0);
+            this.lblRecord.Name = "lblRecord";
+            this.lblRecord.Size = new System.Drawing.Size(0, 20);
+            this.lblRecord.TabIndex = 10;
             // 
             // gpNavigate
             // 
@@ -170,50 +189,17 @@
             this.gpNavigate.Controls.Add(this.btnLast);
             this.gpNavigate.Controls.Add(this.btnFirst);
             this.gpNavigate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpNavigate.Location = new System.Drawing.Point(407, 12);
+            this.gpNavigate.Location = new System.Drawing.Point(434, 12);
             this.gpNavigate.Name = "gpNavigate";
-            this.gpNavigate.Size = new System.Drawing.Size(217, 262);
+            this.gpNavigate.Size = new System.Drawing.Size(223, 274);
             this.gpNavigate.TabIndex = 11;
             this.gpNavigate.TabStop = false;
             this.gpNavigate.Text = "NAVIGATE TO";
             // 
-            // btnFirst
-            // 
-            this.btnFirst.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFirst.Location = new System.Drawing.Point(21, 32);
-            this.btnFirst.Name = "btnFirst";
-            this.btnFirst.Size = new System.Drawing.Size(178, 41);
-            this.btnFirst.TabIndex = 0;
-            this.btnFirst.Text = "FIRST";
-            this.btnFirst.UseVisualStyleBackColor = true;
-            this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
-            // 
-            // btnLast
-            // 
-            this.btnLast.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLast.Location = new System.Drawing.Point(21, 89);
-            this.btnLast.Name = "btnLast";
-            this.btnLast.Size = new System.Drawing.Size(178, 41);
-            this.btnLast.TabIndex = 1;
-            this.btnLast.Text = "LAST";
-            this.btnLast.UseVisualStyleBackColor = true;
-            this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
-            // 
-            // btnNext
-            // 
-            this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Location = new System.Drawing.Point(21, 145);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(178, 41);
-            this.btnNext.TabIndex = 2;
-            this.btnNext.Text = "NEXT";
-            this.btnNext.UseVisualStyleBackColor = true;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
-            // 
             // btnPrevious
             // 
-            this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrevious.Location = new System.Drawing.Point(21, 203);
+            this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrevious.Location = new System.Drawing.Point(21, 208);
             this.btnPrevious.Name = "btnPrevious";
             this.btnPrevious.Size = new System.Drawing.Size(178, 41);
             this.btnPrevious.TabIndex = 3;
@@ -221,11 +207,114 @@
             this.btnPrevious.UseVisualStyleBackColor = true;
             this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
+            // btnNext
+            // 
+            this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNext.Location = new System.Drawing.Point(21, 150);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(178, 41);
+            this.btnNext.TabIndex = 2;
+            this.btnNext.Text = "NEXT";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // btnLast
+            // 
+            this.btnLast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLast.Location = new System.Drawing.Point(21, 94);
+            this.btnLast.Name = "btnLast";
+            this.btnLast.Size = new System.Drawing.Size(178, 41);
+            this.btnLast.TabIndex = 1;
+            this.btnLast.Text = "LAST";
+            this.btnLast.UseVisualStyleBackColor = true;
+            this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
+            // 
+            // btnFirst
+            // 
+            this.btnFirst.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFirst.Location = new System.Drawing.Point(21, 37);
+            this.btnFirst.Name = "btnFirst";
+            this.btnFirst.Size = new System.Drawing.Size(178, 41);
+            this.btnFirst.TabIndex = 0;
+            this.btnFirst.Text = "FIRST";
+            this.btnFirst.UseVisualStyleBackColor = true;
+            this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
+            // 
+            // gpNewRegistry
+            // 
+            this.gpNewRegistry.Controls.Add(this.btnClear);
+            this.gpNewRegistry.Controls.Add(this.btnSave);
+            this.gpNewRegistry.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gpNewRegistry.Location = new System.Drawing.Point(12, 312);
+            this.gpNewRegistry.Name = "gpNewRegistry";
+            this.gpNewRegistry.Size = new System.Drawing.Size(314, 92);
+            this.gpNewRegistry.TabIndex = 12;
+            this.gpNewRegistry.TabStop = false;
+            this.gpNewRegistry.Text = "NEW REGISTRY";
+            // 
+            // btnClear
+            // 
+            this.btnClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClear.Location = new System.Drawing.Point(23, 32);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(120, 41);
+            this.btnClear.TabIndex = 0;
+            this.btnClear.Text = "CLEAR DATA";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Location = new System.Drawing.Point(162, 32);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(120, 41);
+            this.btnSave.TabIndex = 1;
+            this.btnSave.Text = "SAVE AS NEW";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // gpUpdateDelete
+            // 
+            this.gpUpdateDelete.Controls.Add(this.btnDelete);
+            this.gpUpdateDelete.Controls.Add(this.btnUpdate);
+            this.gpUpdateDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gpUpdateDelete.Location = new System.Drawing.Point(349, 312);
+            this.gpUpdateDelete.Name = "gpUpdateDelete";
+            this.gpUpdateDelete.Size = new System.Drawing.Size(308, 92);
+            this.gpUpdateDelete.TabIndex = 13;
+            this.gpUpdateDelete.TabStop = false;
+            this.gpUpdateDelete.Text = "UPDATE AND DELETE";
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Location = new System.Drawing.Point(160, 32);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(120, 41);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "DELETE";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdate.Location = new System.Drawing.Point(21, 32);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(120, 41);
+            this.btnUpdate.TabIndex = 0;
+            this.btnUpdate.Text = "UPDATE";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
             // fHighSchool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(649, 288);
+            this.ClientSize = new System.Drawing.Size(683, 429);
+            this.Controls.Add(this.gpUpdateDelete);
+            this.Controls.Add(this.gpNewRegistry);
             this.Controls.Add(this.gpNavigate);
             this.Controls.Add(this.gbData);
             this.Name = "fHighSchool";
@@ -234,6 +323,8 @@
             this.gbData.ResumeLayout(false);
             this.gbData.PerformLayout();
             this.gpNavigate.ResumeLayout(false);
+            this.gpNewRegistry.ResumeLayout(false);
+            this.gpUpdateDelete.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -256,6 +347,13 @@
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnLast;
         private System.Windows.Forms.Button btnFirst;
+        private System.Windows.Forms.GroupBox gpNewRegistry;
+        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.GroupBox gpUpdateDelete;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Label lblRecord;
     }
 }
 
