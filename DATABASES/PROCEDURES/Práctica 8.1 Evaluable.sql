@@ -48,8 +48,8 @@ BEGIN
    BEGIN CATCH
 		
 	PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
-				  'DESCRIPCION: ', ERROR_MESSAGE(), CHAR(10),
-				  'LINEA: ', ERROR_LINE())
+				  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
+				  'LINE: ', ERROR_LINE())
    END CATCH
 END
 
@@ -94,6 +94,14 @@ CREATE OR ALTER PROCEDURE getClientOrderPayments
 AS
 BEGIN
 	BEGIN TRY 
+		IF NOT EXISTS (SELECT *
+						 FROM CLIENTES
+						WHERE codCliente = @cliCod)
+		BEGIN
+			PRINT 'The selected client does not exist.';
+			RETURN -1
+		END
+
 		SELECT @cliOrdersCount = COUNT(codPedido)
 		FROM PEDIDOS
 		WHERE codCliente = @cliCod
@@ -103,26 +111,20 @@ BEGIN
 		WHERE codCliente = @cliCod
 
 		IF (@cliOrdersCount = 0) AND (@cliPaymentsCount = 0)
-			BEGIN
-				RETURN -1
-			END
-
-		IF NOT EXISTS (SELECT *
-						 FROM CLIENTES
-						WHERE codCliente = @cliCod)
-			BEGIN
-				RETURN -2
-			END
+		BEGIN
+			PRINT 'The selected client does not have orders or payments'
+			RETURN -1
+		END
 	END TRY
 	BEGIN CATCH
 		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
-					  'DESCRIPCION: ', ERROR_MESSAGE(), CHAR(10),
-					  'LINEA: ', ERROR_LINE())
+					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
+					  'LINE: ', ERROR_LINE())
 	END CATCH
 END
 
 GO
-DECLARE @cliCod INT = 10
+DECLARE @cliCod INT = 3
 DECLARE @return INT
 DECLARE @cliOrdersCount INT
 DECLARE @cliPaymentsCount INT
@@ -133,23 +135,12 @@ EXEC @return = getClientOrderPayments
 			   @cliPaymentsCount OUTPUT
 
 IF @return <> 0
-	BEGIN
-		IF @return = -2
-			BEGIN
-				PRINT 'The selected client does not exist.';
-			END
-		ELSE IF @return = -1
-			BEGIN
-				PRINT 'The selected client does not have orders or payments'
-			END
-	END
-ELSE
-	BEGIN
-		PRINT CONCAT('Client Nº', @cliCod, CHAR(10),
-					 'Orders: ', @cliOrdersCount, CHAR(10),
-					 'Payments: ', @cliPaymentsCount);
-		PRINT 'Successful procedure.';
-	END
+	RETURN
+
+PRINT CONCAT('Client Nº', @cliCod, CHAR(10),
+			 'Orders: ', @cliOrdersCount, CHAR(10),
+			 'Payments: ', @cliPaymentsCount);
+PRINT CONCAT(CHAR(10),'Successful procedure.');
 
 
 -------------------------------------------------------------------------------------------
@@ -175,8 +166,66 @@ ELSE
 --              IF @ret <> 0 ...
 -------------------------------------------------------------------------------------------
 
+EXEC SP_HELP CATEGORIA_PRODUCTOS
+GO
 
+CREATE OR ALTER PROCEDURE createProductCategory
+						  @categoryCod CHAR(2),
+						  @name VARCHAR(50),
+                          @txt_description VARCHAR(MAX), 
+                          @html_description VARCHAR(MAX),
+                          @image VARCHAR(255)
+AS
+BEGIN
+	BEGIN TRY 
+		IF EXISTS (SELECT *
+				   FROM CATEGORIA_PRODUCTOS
+				   WHERE codCategoria = @categoryCod)
+		BEGIN
+			PRINT 'The selected category already exists.';
+			RETURN -1
+		END
 
+		IF @categoryCod IS NULL OR @name IS NULL
+		BEGIN
+			PRINT 'Obligatory parameters not introduced'
+			RETURN -1
+		END
+
+		BEGIN TRAN
+			INSERT INTO CATEGORIA_PRODUCTOS (codCategoria, nombre, descripcion_texto, descripcion_html, imagen)
+			VALUES (@categoryCod, @name, @txt_description, @html_description, @image)
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
+					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
+					  'LINE: ', ERROR_LINE())
+	END CATCH
+END
+
+GO
+DECLARE @categoryCod CHAR(2) = 'WP'
+DECLARE @name VARCHAR(50) = 'Weapons'
+DECLARE @txt_description VARCHAR(MAX)
+DECLARE @html_description VARCHAR(MAX)
+DECLARE @image VARCHAR(255)
+DECLARE @return INT
+
+EXEC @return = createProductCategory
+			   @categoryCod,
+			   @name,
+			   @txt_description,
+			   @html_description,
+			   @image
+
+IF @return <> 0
+	RETURN
+
+PRINT CONCAT('Category: ', @categoryCod, CHAR(10),
+			 'Name: ', @name)
+PRINT CONCAT(CHAR(10),'Successful procedure.');
 
 
 -------------------------------------------------------------------------------------------
@@ -199,6 +248,43 @@ ELSE
 --
 -------------------------------------------------------------------------------------------
 
+
+EXEC SP_HELP PEDIDOS
+GO
+
+CREATE OR ALTER PROCEDURE updateReceiptClientOrderReceived
+						  @clientCod INT,
+						  @numUpdatedReceivedOrders INT
+AS
+BEGIN
+		IF NOT EXISTS (SELECT *
+						 FROM CLIENTES
+						WHERE codCliente = @clientCod)
+		BEGIN
+			PRINT 'The selected client do not exists.';
+			RETURN -1
+		END
+
+		IF NOT EXISTS (SELECT *
+						 FROM PEDIDOS
+						WHERE codCliente = @clientCod)
+		BEGIN
+			PRINT 'The selected client did not order anything.';
+			RETURN -1
+		END
+
+		IF @clientCod IS NULL
+		BEGIN
+			PRINT 'Obligatory parameters not introduced'
+			RETURN -1
+		END
+
+		BEGIN TRAN
+			UPDATE PEDIDOS (fecha_entrega, codEstado)
+			SET fecha_entrega = GETDATE(),
+				codEstado = 'E'
+			WHERE fecha_entrega = null AND codPedido <> 'E'
+		COMMIT
 
 
 
