@@ -51,10 +51,14 @@
             this.gpUpdateDelete = new System.Windows.Forms.GroupBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
+            this.btnListTeachers = new System.Windows.Forms.Button();
+            this.btnSearchTeacher = new System.Windows.Forms.Button();
+            this.gExtraOption = new System.Windows.Forms.GroupBox();
             this.gbData.SuspendLayout();
             this.gpNavigate.SuspendLayout();
             this.gpNewRegistry.SuspendLayout();
             this.gpUpdateDelete.SuspendLayout();
+            this.gExtraOption.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblID
@@ -119,6 +123,7 @@
             this.txtbSurnames.Name = "txtbSurnames";
             this.txtbSurnames.Size = new System.Drawing.Size(217, 22);
             this.txtbSurnames.TabIndex = 5;
+            this.txtbSurnames.TextChanged += new System.EventHandler(this.txtbSurnames_TextChanged);
             // 
             // txtbPhone
             // 
@@ -127,6 +132,7 @@
             this.txtbPhone.Name = "txtbPhone";
             this.txtbPhone.Size = new System.Drawing.Size(217, 22);
             this.txtbPhone.TabIndex = 6;
+            this.txtbPhone.TextChanged += new System.EventHandler(this.txtbPhone_TextChanged);
             // 
             // txtbEmail
             // 
@@ -135,6 +141,7 @@
             this.txtbEmail.Name = "txtbEmail";
             this.txtbEmail.Size = new System.Drawing.Size(217, 22);
             this.txtbEmail.TabIndex = 7;
+            this.txtbEmail.TextChanged += new System.EventHandler(this.txtbEmail_TextChanged);
             // 
             // txtbName
             // 
@@ -143,6 +150,7 @@
             this.txtbName.Name = "txtbName";
             this.txtbName.Size = new System.Drawing.Size(217, 22);
             this.txtbName.TabIndex = 8;
+            this.txtbName.TextChanged += new System.EventHandler(this.txtbName_TextChanged);
             // 
             // txtbID
             // 
@@ -151,6 +159,7 @@
             this.txtbID.Name = "txtbID";
             this.txtbID.Size = new System.Drawing.Size(217, 22);
             this.txtbID.TabIndex = 9;
+            this.txtbID.TextChanged += new System.EventHandler(this.txtbID_TextChanged);
             // 
             // gbData
             // 
@@ -231,6 +240,7 @@
             // 
             // btnFirst
             // 
+            this.btnFirst.Enabled = false;
             this.btnFirst.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFirst.Location = new System.Drawing.Point(21, 37);
             this.btnFirst.Name = "btnFirst";
@@ -308,11 +318,46 @@
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
+            // btnListTeachers
+            // 
+            this.btnListTeachers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnListTeachers.Location = new System.Drawing.Point(55, 32);
+            this.btnListTeachers.Name = "btnListTeachers";
+            this.btnListTeachers.Size = new System.Drawing.Size(259, 41);
+            this.btnListTeachers.TabIndex = 0;
+            this.btnListTeachers.Text = "LIST OF TEACHERS";
+            this.btnListTeachers.UseVisualStyleBackColor = true;
+            this.btnListTeachers.Click += new System.EventHandler(this.btnListTeachers_Click);
+            // 
+            // btnSearchTeacher
+            // 
+            this.btnSearchTeacher.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchTeacher.Location = new System.Drawing.Point(337, 32);
+            this.btnSearchTeacher.Name = "btnSearchTeacher";
+            this.btnSearchTeacher.Size = new System.Drawing.Size(259, 41);
+            this.btnSearchTeacher.TabIndex = 1;
+            this.btnSearchTeacher.Text = "SEARCH BY SURNAME";
+            this.btnSearchTeacher.UseVisualStyleBackColor = true;
+            this.btnSearchTeacher.Click += new System.EventHandler(this.btnSearchTeacher_Click);
+            // 
+            // gExtraOption
+            // 
+            this.gExtraOption.Controls.Add(this.btnListTeachers);
+            this.gExtraOption.Controls.Add(this.btnSearchTeacher);
+            this.gExtraOption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gExtraOption.Location = new System.Drawing.Point(12, 423);
+            this.gExtraOption.Name = "gExtraOption";
+            this.gExtraOption.Size = new System.Drawing.Size(645, 92);
+            this.gExtraOption.TabIndex = 13;
+            this.gExtraOption.TabStop = false;
+            this.gExtraOption.Text = "LIST AND SEARCH";
+            // 
             // fHighSchool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(683, 429);
+            this.ClientSize = new System.Drawing.Size(683, 527);
+            this.Controls.Add(this.gExtraOption);
             this.Controls.Add(this.gpUpdateDelete);
             this.Controls.Add(this.gpNewRegistry);
             this.Controls.Add(this.gpNavigate);
@@ -325,6 +370,7 @@
             this.gpNavigate.ResumeLayout(false);
             this.gpNewRegistry.ResumeLayout(false);
             this.gpUpdateDelete.ResumeLayout(false);
+            this.gExtraOption.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -354,6 +400,9 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Label lblRecord;
+        private System.Windows.Forms.Button btnListTeachers;
+        private System.Windows.Forms.Button btnSearchTeacher;
+        private System.Windows.Forms.GroupBox gExtraOption;
     }
 }
 
