@@ -230,24 +230,23 @@ PRINT CONCAT(CHAR(10),'Successful procedure.');
 
 -------------------------------------------------------------------------------------------
 -- 4. Implementa un procedimiento llamado 'acuseRecepcionPedidosCliente' que actualice la fecha de entrega de los pedidos
---      a la fecha del momento actual y su estado a 'Entregado' para el codCliente pasado por parámetro y solo para los 
---      pedidos que estén en estado 'Pendiente' y no tengan fecha de entrega.
+--    a la fecha del momento actual y su estado a 'Entregado' para el codCliente pasado por parámetro y solo para los 
+--    pedidos que estén en estado 'Pendiente' y no tengan fecha de entrega.
 
---		Parámetros de entrada: codCliente INT
---		Parámetros de salida:  numPedidosAct INT
---		Tabla: PEDIDOS
+--    Parámetros de entrada: codCliente INT
+--	  Parámetros de salida:  numPedidosAct INT
+--	  Tabla: PEDIDOS
 
 --	  * Comprueba que el funcionamiento es correcto realizando una llamada desde un script y comprobando la finalización del mismo
 --
---      Ayuda: Recuerda utilizar:
---              EXEC @ret = acuseRecepcionPedidosCliente ...
---              IF @ret <> 0 ...
+--    Ayuda: Recuerda utilizar:
+--           EXEC @ret = acuseRecepcionPedidosCliente ...
+--           IF @ret <> 0 ...
 --
 --	  * Ayuda para obtener el número de registros actualizados:
 --		Se puede hacer una SELECT antes de ejecutar la sentencia de actualización o bien utilizar la variable @@ROWCOUNT
 --
 -------------------------------------------------------------------------------------------
-
 
 EXEC SP_HELP PEDIDOS
 GO
@@ -261,7 +260,7 @@ BEGIN
 						 FROM CLIENTES
 						WHERE codCliente = @clientCod)
 		BEGIN
-			PRINT 'The selected client do not exists.';
+			 PRINT 'The selected client do not exists.';
 			RETURN -1
 		END
 
@@ -269,60 +268,158 @@ BEGIN
 						 FROM PEDIDOS
 						WHERE codCliente = @clientCod)
 		BEGIN
-			PRINT 'The selected client did not order anything.';
+			 PRINT 'The selected client did not order anything.';
 			RETURN -1
 		END
 
 		IF @clientCod IS NULL
 		BEGIN
-			PRINT 'Obligatory parameters not introduced'
+			 PRINT 'Obligatory parameters not introduced'
 			RETURN -1
 		END
 
-		BEGIN TRAN
 			UPDATE PEDIDOS (fecha_entrega, codEstado)
-			SET fecha_entrega = GETDATE(),
-				codEstado = 'E'
-			WHERE fecha_entrega = null AND codPedido <> 'E'
-		COMMIT
+			   SET fecha_entrega = GETDATE(),
+			       codEstado = 'E'
+			 WHERE fecha_entrega = null AND codPedido <> 'E'
 
+-- SIN ACABAR
 
 
 -------------------------------------------------------------------------------------------
 -- 5. Implementa un procedimiento llamado 'crearOficina' que inserte una nueva oficina en JARDINERIA.
---		Parámetros de entrada: codOficina CHAR(6)
---                             ciudad VARCHAR(40)
---                             pais VARCHAR(50)
---                             region VARCHAR(50) (no obligatorio)
---                             codigo_postal CHAR(5)
---                             telefono VARCHAR(15)
---                             linea_direccion1 VARCHAR(100)
---                             linea_direccion2 VARCHAR(100) (no obligatorio)
+--	Parámetros de entrada: codOficina CHAR(6)
+--                         ciudad VARCHAR(40)
+--                         pais VARCHAR(50)
+--                         codigo_postal CHAR(5)
+--                         telefono VARCHAR(15)
+--                         linea_direccion1 VARCHAR(100)
+--                         linea_direccion2 VARCHAR(100) (no obligatorio)
 
 --		Parámetros de salida: <ninguno>
 --		Tabla: OFICINAS
 --		
 --		# Se debe comprobar que todos los parámetros obligatorios están informados, sino devolver -1 y finalizar
 --		# Se debe comprobar que el codOficina no exista previamente en la tabla, y si así fuera, 
---			imprimir un mensaje indicándolo y se devolverá -1
+--		# imprimir un mensaje indicándolo y se devolverá -1
 --		
 --		El procedimiento devolverá 0 si finaliza correctamente.
 --		Debes utilizar TRY/CATCH, validación de parámetros y transacciones si fueran necesarias.
 --	
---	  * Comprueba que el funcionamiento es correcto realizando una llamada desde un script y comprobando la finalización del mismo
+--	    * Comprueba que el funcionamiento es correcto realizando una llamada desde un script y comprobando la finalización del mismo
 --
 --      Ayuda: Recuerda utilizar:
---              EXEC @ret = crearOficina ...
---              IF @ret <> 0 ...
+--             EXEC @ret = crearOficina ...
+--             IF @ret <> 0 ...
 -------------------------------------------------------------------------------------------
 
+EXEC SP_HELP OFICINAS
+GO
+
+CREATE OR ALTER PROCEDURE createOffice
+						  @officeCod CHAR(6),
+                          @officeCity VARCHAR(40),
+                          @officeCountry VARCHAR(50),
+                          @officePostalCode CHAR(5),
+                          @officePhone VARCHAR(15),
+                          @officeAdress1 VARCHAR(100),
+                          @officeAdress2 VARCHAR(100)
+AS
+BEGIN
+	BEGIN TRY 
+		IF EXISTS (SELECT *
+				     FROM OFICINAS
+				    WHERE codOficina = @officeCod)
+		BEGIN
+			 PRINT 'The selected office already exists.';
+			RETURN -1
+		END
+
+		IF @officeCod IS NULL OR @officeCod = '' OR LEN(@officeCod) <> 6 OR SUBSTRING(@officeCod, 4, 1) <> '-'
+        BEGIN
+             PRINT 'Office code must have 6 characters and be in the format "AAA-AA". Example: ELX-ES';
+            RETURN -1
+        END
+
+        IF @officeCity IS NULL OR @officeCity = '' OR @officeCity LIKE '%[0-9]%'
+        BEGIN
+             PRINT 'Office city must contain only alphabetical characters. Example: London';
+            RETURN -1
+        END
+
+        IF @officeCountry IS NULL OR @officeCountry = '' OR @officeCountry LIKE '%[0-9]%'
+        BEGIN
+             PRINT 'Office country must contain only alphabetical characters. Example: Spain';
+            RETURN -1
+        END
+
+        IF @officePostalCode IS NULL OR @officePostalCode = '' OR LEN(@officePostalCode) <> 5 OR @officePostalCode NOT LIKE '[0-9][0-9][0-9][0-9][0-9]'
+        BEGIN
+             PRINT 'Office postal code must contain exactly 5 numerical characters. Example: 03007';
+            RETURN -1
+        END
+
+        IF @officePhone IS NULL OR @officePhone = '' OR LEN(@officePhone) <> 9 OR @officePhone NOT LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+        BEGIN
+             PRINT 'Office phone must contain exactly 9 numerical characters. Example: 612345678';
+            RETURN -1
+        END
+
+		INSERT INTO OFICINAS (codOficina, ciudad, pais, 
+								codPostal, telefono, linea_direccion1, 
+								linea_direccion2)
+		VALUES (@officeCod, @officeCity, @officeCountry, 
+				@officePostalCode, @officePhone , @officeAdress1,
+				@officeAdress2)
+	END TRY
+	BEGIN CATCH
+		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
+					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
+					  'LINE: ', ERROR_LINE())
+	END CATCH
+END
+
+GO
+DECLARE @officeCod CHAR(6) = 'ELX-ES'
+DECLARE @officeCity VARCHAR(40) = 'Elx'
+DECLARE @officeCountry VARCHAR(50) = 'España'
+DECLARE @officePostalCode CHAR(5) = '03201'
+DECLARE @officePhone VARCHAR(15) = '612345678'
+DECLARE @officeAdress1 VARCHAR(100) = 'Avenida Ocho Once Ocho'
+DECLARE @officeAdress2 VARCHAR(100)
+DECLARE @return INT
 
 
+   EXEC @return = createOffice
+				    @officeCod,
+				    @officeCity,
+				    @officeCountry,
+				    @officePostalCode,
+				    @officePhone,
+				    @officeAdress1,
+				    @officeAdress2
 
+IF @return <> 0
+   RETURN
+
+PRINT CONCAT ('Office Code: ', @officeCod, CHAR(10),
+			  'Office City: ', @officeCity, CHAR(10),
+			  'Office Country: ', @officeCountry, CHAR(10),
+			  'Office Postal Code: ', @officePostalCode, CHAR(10),
+			  'Office Phone: ', @officePhone, CHAR(10),
+			  'Office Principal Adress: ', @officeAdress1, CHAR(10),
+			  'Office Secondary Adress: ', @officeAdress2)
+PRINT CONCAT ( CHAR(10),'Successful procedure.');
+
+SELECT *
+FROM OFICINAS
+
+DELETE FROM OFICINAS
+WHERE codOficina = 'ELX-ES'
 
 -------------------------------------------------------------------------------------------
 -- 6. Implementa un procedimiento llamado 'cambioJefes' que actualice el jefe/a de los empleados/as del
---      que tuvieran inicialmente (ant_codEmplJefe) al nuevo/a (des_codEmplJefe)
+--    que tuvieran inicialmente (ant_codEmplJefe) al nuevo/a (des_codEmplJefe)
 --    NOTA: Es un proceso que ocurre si alguien asciende de categoría.
 
 --		Parámetros de entrada: ant_codEmplJefe INT

@@ -54,6 +54,7 @@
             this.btnListTeachers = new System.Windows.Forms.Button();
             this.btnSearchTeacher = new System.Windows.Forms.Button();
             this.gExtraOption = new System.Windows.Forms.GroupBox();
+            this.btnCancelAddRegistry = new System.Windows.Forms.Button();
             this.gbData.SuspendLayout();
             this.gpNavigate.SuspendLayout();
             this.gpNewRegistry.SuspendLayout();
@@ -252,12 +253,13 @@
             // 
             // gpNewRegistry
             // 
+            this.gpNewRegistry.Controls.Add(this.btnCancelAddRegistry);
             this.gpNewRegistry.Controls.Add(this.btnClear);
             this.gpNewRegistry.Controls.Add(this.btnSave);
             this.gpNewRegistry.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpNewRegistry.Location = new System.Drawing.Point(12, 312);
+            this.gpNewRegistry.Location = new System.Drawing.Point(12, 423);
             this.gpNewRegistry.Name = "gpNewRegistry";
-            this.gpNewRegistry.Size = new System.Drawing.Size(314, 92);
+            this.gpNewRegistry.Size = new System.Drawing.Size(645, 92);
             this.gpNewRegistry.TabIndex = 12;
             this.gpNewRegistry.TabStop = false;
             this.gpNewRegistry.Text = "NEW REGISTRY";
@@ -265,9 +267,9 @@
             // btnClear
             // 
             this.btnClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.Location = new System.Drawing.Point(23, 32);
+            this.btnClear.Location = new System.Drawing.Point(18, 32);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(120, 41);
+            this.btnClear.Size = new System.Drawing.Size(187, 41);
             this.btnClear.TabIndex = 0;
             this.btnClear.Text = "CLEAR DATA";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -276,9 +278,9 @@
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(162, 32);
+            this.btnSave.Location = new System.Drawing.Point(440, 32);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(120, 41);
+            this.btnSave.Size = new System.Drawing.Size(186, 41);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "SAVE AS NEW";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -321,9 +323,9 @@
             // btnListTeachers
             // 
             this.btnListTeachers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnListTeachers.Location = new System.Drawing.Point(55, 32);
+            this.btnListTeachers.Location = new System.Drawing.Point(156, 34);
             this.btnListTeachers.Name = "btnListTeachers";
-            this.btnListTeachers.Size = new System.Drawing.Size(259, 41);
+            this.btnListTeachers.Size = new System.Drawing.Size(120, 41);
             this.btnListTeachers.TabIndex = 0;
             this.btnListTeachers.Text = "LIST OF TEACHERS";
             this.btnListTeachers.UseVisualStyleBackColor = true;
@@ -332,9 +334,9 @@
             // btnSearchTeacher
             // 
             this.btnSearchTeacher.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchTeacher.Location = new System.Drawing.Point(337, 32);
+            this.btnSearchTeacher.Location = new System.Drawing.Point(17, 34);
             this.btnSearchTeacher.Name = "btnSearchTeacher";
-            this.btnSearchTeacher.Size = new System.Drawing.Size(259, 41);
+            this.btnSearchTeacher.Size = new System.Drawing.Size(120, 41);
             this.btnSearchTeacher.TabIndex = 1;
             this.btnSearchTeacher.Text = "SEARCH BY SURNAME";
             this.btnSearchTeacher.UseVisualStyleBackColor = true;
@@ -345,12 +347,23 @@
             this.gExtraOption.Controls.Add(this.btnListTeachers);
             this.gExtraOption.Controls.Add(this.btnSearchTeacher);
             this.gExtraOption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gExtraOption.Location = new System.Drawing.Point(12, 423);
+            this.gExtraOption.Location = new System.Drawing.Point(12, 312);
             this.gExtraOption.Name = "gExtraOption";
-            this.gExtraOption.Size = new System.Drawing.Size(645, 92);
+            this.gExtraOption.Size = new System.Drawing.Size(299, 92);
             this.gExtraOption.TabIndex = 13;
             this.gExtraOption.TabStop = false;
             this.gExtraOption.Text = "LIST AND SEARCH";
+            // 
+            // btnCancelAddRegistry
+            // 
+            this.btnCancelAddRegistry.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelAddRegistry.Location = new System.Drawing.Point(222, 32);
+            this.btnCancelAddRegistry.Name = "btnCancelAddRegistry";
+            this.btnCancelAddRegistry.Size = new System.Drawing.Size(200, 41);
+            this.btnCancelAddRegistry.TabIndex = 2;
+            this.btnCancelAddRegistry.Text = "CANCEL REGISTRY ADDITION";
+            this.btnCancelAddRegistry.UseVisualStyleBackColor = true;
+            this.btnCancelAddRegistry.Click += new System.EventHandler(this.btnCancelAddRegistry_Click);
             // 
             // fHighSchool
             // 
@@ -403,6 +416,7 @@
         private System.Windows.Forms.Button btnListTeachers;
         private System.Windows.Forms.Button btnSearchTeacher;
         private System.Windows.Forms.GroupBox gExtraOption;
+        private System.Windows.Forms.Button btnCancelAddRegistry;
     }
 }
 

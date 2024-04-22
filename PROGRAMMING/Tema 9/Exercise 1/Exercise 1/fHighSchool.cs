@@ -22,19 +22,57 @@ namespace Exercise_1
             InitializeComponent();
         }
 
+        // CREATION OF DATASET AND ADAPTER
         DataSet dataSetTeachers;
         SqlDataAdapter dataAdapterTeachers;
 
+        // CREATION OF GLOBAL VARIABLES
         private int pos = -1;
         private int maxRecords = 0;
-        private bool changeDetected = false;
 
+        // FORM LOADING HANDLING
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // DB CONNECTION
+            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\Highschool.mdf;";
+
+            SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
+            "AttachDbFilename=" + path + "Integrated Security=True");
+
+            // OPENS CONNECTION
+            con.Open();
+
+            dataSetTeachers = new DataSet();
+            string stringSQL = "SELECT * FROM Profesores";
+
+            dataAdapterTeachers = new SqlDataAdapter(stringSQL, con);
+
+            dataAdapterTeachers.Fill(dataSetTeachers, "Profesores");
+
+            // GETS TOTAL RECORDS
+            maxRecords = dataSetTeachers.Tables["Profesores"].Rows.Count;
+
+            // SETS FIRST POSITION, UPDATES THE VISUALS AND CHECKS THE ACTUAL BUTTONS STATUS WHEN FIRST LOADED
+            pos = 0;
+            recordPositionLabel(pos);
+            showRecord(pos);
+            ButtonsCheck();
+
+            // CLOSES CONNECTION
+            con.Close();
+        }
+
+
+        // THESE ARE FOR DETECTING STRING CHANGES IN THE TEXT BOXES SINCE AN ORIGINAL
+        // IS REQUIRED TO CHECK BETWEEN THAT ONE AND THE USER CHANGED INPUT
+        private bool changeDetected = false;
         private string originalID;
         private string originalName;
         private string originalSurnames;
         private string originalPhone;
         private string originalEmail;
 
+        // FUNCTION WHICH UPDATES THE VISUAL PART OF THE FORM AND CREATES A SAVE OF THE TEXT BOXES INPUTS IN THAT POSITION
         private void showRecord(int pos)
         {
             if (maxRecords > 0)
@@ -59,98 +97,16 @@ namespace Exercise_1
                 originalPhone = txtbPhone.Text;
                 originalEmail = txtbEmail.Text;
 
+                // DETECTED CHANGES RESET AND CHECKS THE ACTUAL BUTTONS STATUS
                 changeDetected = false;
                 ButtonsCheck();
             }
             else if(maxRecords == 0)
             {
+                // CLEAR EVERY DATA FROM THE TEXT BOXES AND CHECKS THE ACTUAL BUTTONS STATUS
                 btnClear.PerformClick();
                 ButtonsCheck();
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            /* CLASSROOM PC CONNECTION
-            string connectLink = "Data Source =(LocalDB)\\MSSQLLocalDB;" +
-            "AttachDbFilename=C:\\Users\\serdiefer\\Desktop\\1-DAW\\PROGRAMMING\\Tema 9\\Exercise 1\\Exercise 1\\App_Data\\Highschool.mdf;" +
-            "Integrated Security=True"; */
-
-            // HOME PC CONNECTION
-            string connectLink = "Data Source =(LocalDB)\\MSSQLLocalDB;" +
-            "AttachDbFilename=C:\\Users\\astur\\Desktop\\Repository\\1-DAW\\PROGRAMMING\\Tema 9\\Exercise 1\\Exercise 1\\App_Data\\Highschool.mdf;" +
-            "Integrated Security=True";
-
-            SqlConnection con = new SqlConnection(connectLink);
-
-            // OPENS CONNECTION
-            con.Open();
-
-            dataSetTeachers = new DataSet();
-            string stringSQL = "SELECT * FROM Profesores";
-
-            dataAdapterTeachers = new SqlDataAdapter(stringSQL, con);
-
-            dataAdapterTeachers.Fill(dataSetTeachers, "Profesores");
-
-            // GETS TOTAL RECORDS
-            maxRecords = dataSetTeachers.Tables["Profesores"].Rows.Count;
-
-            // SETS FIRST POSITION
-            pos = 0;
-            recordPositionLabel(pos);
-            showRecord(pos);
-            ButtonsCheck();
-
-            // CLOSES CONNECTION
-            con.Close();
-
-        }
-
-        // FUNCTION TO CHECK THE INPUTS FROM THE LABELS
-        private bool checkRecordsInput()
-        {
-            bool allValid = true;
-
-            if (!CustomRegex.RegexID(txtbID.Text))
-            {
-                allValid = false;
-            }
-
-            if (!CustomRegex.RegexName(txtbName.Text))
-            {
-                allValid = false;
-            }
-
-            if (!CustomRegex.RegexName(txtbSurnames.Text))
-            {
-                allValid = false;
-            }
-
-            if (!CustomRegex.RegexPhone(txtbPhone.Text))
-            {
-                allValid = false;
-            }
-
-            if (!CustomRegex.RegexEmail(txtbEmail.Text))
-            {
-                allValid = false;
-            }
-
-            return allValid;
-        }
-
-        // ERROR STRING IF INPUT IS INVALID
-        private string returnErrorInput()
-        {
-            string errorMessage = "Error, not valid data, try again. " +
-                                  "\n\nEXAMPLE:" +
-                                  "\nID: 12345678X / X1234567X" +
-                                  "\nNAME: Sergio" +
-                                  "\nSURNAMES: Diez Fernández" +
-                                  "\nPHONE: 600000000 / 799999999" +
-                                  "\nEMAIL: x@iesmarenostrum.com";
-            return errorMessage;
         }
 
         // SET POSITION COUNTER FROM ALL RECORDS
@@ -165,6 +121,224 @@ namespace Exercise_1
                 lblRecord.Text = "";
             } 
         }
+
+        // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE
+        private bool compareActualDataWithTheStoredOne(int pos)
+        {
+            // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
+            DataRow dCompareRecord;
+
+            // TAKING THE RECORD OF "pos" POSITION IN TEACHERS TABLE
+            dCompareRecord = dataSetTeachers.Tables["Profesores"].Rows[pos];
+
+            // CREATE A VECTOR TO STORE THE 5 VALUES TEMPORARILY AND ASSIGN THE ACTUAL VALUES IN THE TEXT BOXES
+            string[] actualRecords = new string[5];
+
+            actualRecords[0] = txtbID.Text;
+            actualRecords[1] = txtbName.Text;
+            actualRecords[2] = txtbSurnames.Text;
+            actualRecords[3] = txtbPhone.Text;
+            actualRecords[4] = txtbEmail.Text;
+
+            bool same = true;
+            for (int i = 0; i < 5 && same; i++)
+            {
+                if (dCompareRecord[i].ToString() != actualRecords[i])
+                {
+                    same = false;
+                }
+            }
+            return same;
+        }
+
+        private void askToUpdateIfChangesWereMade(bool choice)
+        {
+            if(!choice) 
+            {
+                DialogResult update = MessageBox.Show("Do you want to keep changes of this record (Y/N)?", "Keep Changes?", MessageBoxButtons.YesNo);
+
+                if (update == DialogResult.Yes)
+                {
+                    btnUpdate.PerformClick();
+                }
+            }
+        }
+
+        public int TeachersCounter()
+        {
+            int counter = 0;
+            if (maxRecords != 0)
+            {
+                for (int i = 0; i < dataSetTeachers.Tables["Profesores"].Rows.Count; i++)
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+
+        public string getTeacherDataFromPosition(int pos)
+        {
+            DataRow teacherRow = dataSetTeachers.Tables["Profesores"].Rows[pos];
+            string teacherData = "ID: " + teacherRow["DNI"] + "\n" +
+                                 "Name: " + teacherRow["Nombre"] + "\n" +
+                                 "Surnames: " + teacherRow["Apellido"] + "\n" +
+                                 "Phone: " + teacherRow["Tlf"] + "\n" +
+                                 "Email: " + teacherRow["Email"] + "\n";
+            return teacherData;
+        }
+
+        public string getTeacherFullNameFromPosition(int pos)
+        {
+            DataRow teacherRow = dataSetTeachers.Tables["Profesores"].Rows[pos];
+            string teacherFullName =(teacherRow["Nombre"] + " " + teacherRow["Apellido"]).ToString();
+            return teacherFullName;
+        } 
+
+        public int SimilarTeacherSurnamesCounter(string teacherSurname)
+        {
+            int counter = 0;
+            if (maxRecords != 0)
+            {
+                for (int i = 0; i < dataSetTeachers.Tables["Profesores"].Rows.Count; i++)
+                {
+                    DataRow teacherRow = dataSetTeachers.Tables["Profesores"].Rows[i];
+                    string stringToCheck = teacherRow[2].ToString().ToLower();
+                    if (stringToCheck.Contains(teacherSurname.ToLower()))
+                    {
+                        counter++;                 
+                    }
+                }
+            }
+            return counter;
+        }
+
+        public string ShowsTeachersList()
+        {
+            string result = "";
+            if (TeachersCounter() > 0)
+            {
+                string teacherListTxt = "List of teachers: \n\n";
+
+                if (TeachersCounter() > 1)
+                {
+                    if (maxRecords != 0)
+                    {
+                        DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+
+                        foreach (DataRow row in teachersTable.Rows)
+                        {
+                            string teacherInfo = "ID: " + row["DNI"] + "\n" +
+                                                 "Name: " + row["Nombre"] + "\n" +
+                                                 "Surnames: " + row["Apellido"] + "\n" +
+                                                 "Phone: " + row["Tlf"] + "\n" +
+                                                 "Email: " + row["Email"] + "\n";
+
+                            teacherListTxt += teacherInfo + "\n";
+                        }
+                    }
+                    result = teacherListTxt;
+                }
+                else if (TeachersCounter() == 1)
+                {
+                    teacherListTxt = "Teacher Data: \n\n" + getTeacherDataFromPosition(0);
+                    result = teacherListTxt;
+                }
+            }
+            else
+            {
+                result = "No teachers added in the DB.";
+            }
+            return result;
+        }
+
+        public void SelectSimilarNameTeachersToShow(string teacherSurname)
+        {
+            List<string> matchingTeachersSurname = new List<string>();
+            List<string> extraTeachersInfo = new List<string>();
+            List<int> teachersPositions = new List<int>();
+
+            if (maxRecords != 0)
+            {
+                DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+                for (int i = 0; i < teachersTable.Rows.Count; i++)
+                {
+                    DataRow row = dataSetTeachers.Tables["Profesores"].Rows[i];
+                    string stringToCheck = row[2].ToString().ToLower();
+                    if (stringToCheck.Contains(teacherSurname.ToLower()))
+                    {
+                        string fullName = (row["Nombre"] + " " + row["Apellido"]).ToString();
+                        matchingTeachersSurname.Add(fullName);
+
+                        string extraTeacherInfo = "ID: " + row["DNI"] + "\n" +
+                                                  "Name: " + row["Nombre"] + "\n" +
+                                                  "Surnames: " + row["Apellido"] + "\n" +
+                                                  "Phone: " + row["Tlf"] + "\n" +
+                                                  "Email: " + row["Email"] + "\n";
+
+                        extraTeachersInfo.Add(extraTeacherInfo);
+                        teachersPositions.Add(i);
+                    }
+                }
+                
+            }
+            if (matchingTeachersSurname.Count == 1)
+            {
+                MessageBox.Show("The data from " + matchingTeachersSurname[0] + " is: \n\n" + extraTeachersInfo[0]);
+                pos = teachersPositions[0];
+                showRecord(pos);
+                recordPositionLabel(pos);
+            }
+            else if (matchingTeachersSurname.Count > 1)
+            {
+                bool showed = false;
+                int selectedTeacherIndex = 0;
+
+                while (!showed)
+                {
+                    StringBuilder infoMessage = new StringBuilder("Teachers with the same surname:\n\n");
+
+                    for (int i = 0; i < matchingTeachersSurname.Count; i++)
+                    {
+                        infoMessage.AppendLine((i + 1) + ") " + matchingTeachersSurname[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number of the teacher to view more data:");
+
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersSurname.Count)
+                    {
+                        string selectedTeacherInfo = extraTeachersInfo[selectedTeacherIndex - 1];
+                        int selectedTeacherPositionInDB = teachersPositions[selectedTeacherIndex - 1];
+
+                        DialogResult result = MessageBox.Show(selectedTeacherInfo + "\n\nIs this the teacher you want to check info?", "Check Teacher Info", MessageBoxButtons.YesNo);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            pos = selectedTeacherPositionInDB;
+                            showRecord(pos);
+                            recordPositionLabel(pos);
+                            showed = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please select a different teacher.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid input. Please enter a valid number corresponding to a teacher.");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No teachers found with the selected name.");
+            }
+        }
+
+        /* ---------------- BUTTONS HANDLING START --------------------- */
 
         private void btnFirst_Click(object sender, EventArgs e)
         {
@@ -222,7 +396,7 @@ namespace Exercise_1
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if(pos == -1)
+            if (pos == -1)
             {
                 btnFirst.PerformClick();
             }
@@ -272,14 +446,14 @@ namespace Exercise_1
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-                txtbID.Clear();
-                txtbName.Clear();
-                txtbSurnames.Clear();
-                txtbPhone.Clear();
-                txtbEmail.Clear();
-                pos = -1;
-                lblRecord.Text = "";
-                ButtonsCheck();
+            txtbID.Clear();
+            txtbName.Clear();
+            txtbSurnames.Clear();
+            txtbPhone.Clear();
+            txtbEmail.Clear();
+            pos = -1;
+            lblRecord.Text = "";
+            ButtonsCheck();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -311,47 +485,6 @@ namespace Exercise_1
             else
             {
                 MessageBox.Show(returnErrorInput());
-            }
-        }
-
-        private bool compareActualDataWithTheStoredOne(int pos)
-        {
-            // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
-            DataRow dCompareRecord;
-
-            // TAKING THE RECORD OF "pos" POSITION IN TEACHERS TABLE
-            dCompareRecord = dataSetTeachers.Tables["Profesores"].Rows[pos];
-
-            // CREATE A VECTOR TO STORE THE 5 VALUES TEMPORARILY AND ASSIGN THE ACTUAL VALUES IN THE TEXT BOXES
-            string[] actualRecords = new string[5];
-
-            actualRecords[0] = txtbID.Text;
-            actualRecords[1] = txtbName.Text;
-            actualRecords[2] = txtbSurnames.Text;
-            actualRecords[3] = txtbPhone.Text;
-            actualRecords[4] = txtbEmail.Text;
-
-            bool same = true;
-            for (int i = 0; i < 5 && same; i++)
-            {
-                if (dCompareRecord[i].ToString() != actualRecords[i])
-                {
-                    same = false;
-                }
-            }
-            return same;
-        }
-
-        private void askToUpdateIfChangesWereMade(bool choice)
-        {
-            if(!choice) 
-            {
-                DialogResult update = MessageBox.Show("Do you want to keep changes of this record (Y/N)?", "Keep Changes?", MessageBoxButtons.YesNo);
-
-                if (update == DialogResult.Yes)
-                {
-                    btnUpdate.PerformClick();
-                }
             }
         }
 
@@ -424,179 +557,22 @@ namespace Exercise_1
                     MessageBox.Show("Delete is not possible when no teacher is selected.");
                 }
             }
-            else if(maxRecords == 0)
+            else if (maxRecords == 0)
             {
                 MessageBox.Show("Delete is not possible when no elements are in the database.");
             }
         }
 
-        public int TeachersCounter()
+        private void btnCancelAddRegistry_Click(object sender, EventArgs e)
         {
-            int counter = 0;
-            if (maxRecords != 0)
-            {
-                for (int i = 0; i < dataSetTeachers.Tables["Profesores"].Rows.Count; i++)
-                {
-                    counter++;
-                }
-            }
-            return counter;
-        }
-
-        public string getTeacherDataFromPosition(int pos)
-        {
-            DataRow teacherRow = dataSetTeachers.Tables["Profesores"].Rows[pos];
-            string teacherData = "ID: " + teacherRow["DNI"] + "\n" +
-                                 "Name: " + teacherRow["Nombre"] + "\n" +
-                                 "Surnames: " + teacherRow["Apellido"] + "\n" +
-                                 "Phone: " + teacherRow["Tlf"] + "\n" +
-                                 "Email: " + teacherRow["Email"] + "\n";
-            return teacherData;
-        }
-
-        public string getTeacherFullNameFromPosition(int pos)
-        {
-            DataRow teacherRow = dataSetTeachers.Tables["Profesores"].Rows[pos];
-            string teacherFullName =(teacherRow["Nombre"] + " " + teacherRow["Apellido"]).ToString();
-            return teacherFullName;
-        } 
-
-        public int SameTeacherSurnamesCounter(string teacherSurname)
-        {
-            int counter = 0;
-            if (maxRecords != 0)
-            {
-                for (int i = 0; i < dataSetTeachers.Tables["Profesores"].Rows.Count; i++)
-                {
-                    DataRow teacherRow = dataSetTeachers.Tables["Profesores"].Rows[i];
-                    if (teacherSurname == teacherRow[2].ToString())
-                    {
-                        counter++;                 
-                    }
-                }
-            }
-            return counter;
-        }
-
-        public string ShowsTeachersList()
-        {
-            string result = "";
-            if (TeachersCounter() > 0)
-            {
-                string teacherListTxt = "List of teachers: \n\n";
-
-                if (TeachersCounter() > 1)
-                {
-                    if (maxRecords != 0)
-                    {
-                        DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
-
-                        foreach (DataRow row in teachersTable.Rows)
-                        {
-                            string teacherInfo = "ID: " + row["DNI"] + "\n" +
-                                                 "Name: " + row["Nombre"] + "\n" +
-                                                 "Surnames: " + row["Apellido"] + "\n" +
-                                                 "Phone: " + row["Tlf"] + "\n" +
-                                                 "Email: " + row["Email"] + "\n";
-
-                            teacherListTxt += teacherInfo + "\n";
-                        }
-                    }
-                    result = teacherListTxt;
-                }
-                else if (TeachersCounter() == 1)
-                {
-                    teacherListTxt = "Teacher Data: \n\n" + getTeacherDataFromPosition(0);
-                    result = teacherListTxt;
-                }
-            }
-            else
-            {
-                result = "No teachers added in the DB.";
-            }
-            return result;
-        }
-
-        public void SelectSameNameTeachersToShow(string teacherSurname)
-        {
-            List<string> matchingTeachersSurname = new List<string>();
-            List<string> extraTeachersInfo = new List<string>();
-
-            if (maxRecords != 0)
-            {
-                DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
-                for (int i = 0; i < teachersTable.Rows.Count; i++)
-                {
-                    DataRow row = dataSetTeachers.Tables["Profesores"].Rows[i];
-
-                    if (teacherSurname == row[2].ToString())
-                    {
-                        string fullName = (row["Nombre"] + " " + row["Apellido"]).ToString();
-                        matchingTeachersSurname.Add(fullName);
-
-                        string extraTeacherInfo = "ID: " + row["DNI"] + "\n" +
-                                                  "Name: " + row["Nombre"] + "\n" +
-                                                  "Surnames: " + row["Apellido"] + "\n" +
-                                                  "Phone: " + row["Tlf"] + "\n" +
-                                                  "Email: " + row["Email"] + "\n";
-
-                        extraTeachersInfo.Add(extraTeacherInfo);
-                    }
-                }
-                
-            }
-            if (matchingTeachersSurname.Count == 1)
-            {
-                MessageBox.Show("The data from " + matchingTeachersSurname[0] + " is: \n\n" + extraTeachersInfo[0]);
-            }
-            else if (matchingTeachersSurname.Count > 1)
-            {
-                bool showed = false;
-                int selectedTeacherIndex = 0;
-
-                while (!showed)
-                {
-                    StringBuilder infoMessage = new StringBuilder("Teachers with the same surname:\n\n");
-
-                    for (int i = 0; i < matchingTeachersSurname.Count; i++)
-                    {
-                        infoMessage.AppendLine((i + 1) + ") " + matchingTeachersSurname[i] + "\n");
-                    }
-
-                    infoMessage.AppendLine("Select the number of the teacher to view more data:");
-
-                    string userInput = Interaction.InputBox(infoMessage.ToString());
-
-                    if (int.TryParse(userInput, out selectedTeacherIndex) && selectedTeacherIndex > 0 && selectedTeacherIndex <= matchingTeachersSurname.Count)
-                    {
-                        string selectedTeacherInfo = extraTeachersInfo[selectedTeacherIndex - 1];
-
-                        DialogResult result = MessageBox.Show(selectedTeacherInfo + "\n\nIs this the teacher you want to check info?", "Check Teacher Info", MessageBoxButtons.YesNo);
-
-                        if (result == DialogResult.Yes)
-                        {
-                            showed = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please select a different teacher.");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid input. Please enter a valid number corresponding to a teacher.");
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("No teachers found with the selected name.");
-            }
+            pos = 0;
+            showRecord(pos);
+            recordPositionLabel(pos);
         }
 
         private void btnSearchTeacher_Click(object sender, EventArgs e)
         {
-            if(TeachersCounter() > 1)
+            if (TeachersCounter() > 1)
             {
                 if (maxRecords > 0)
                 {
@@ -607,9 +583,9 @@ namespace Exercise_1
 
                         if (CustomRegex.RegexName(teacherSurname))
                         {
-                            if (SameTeacherSurnamesCounter(teacherSurname) > 0)
+                            if (SimilarTeacherSurnamesCounter(teacherSurname) > 0)
                             {
-                                SelectSameNameTeachersToShow(teacherSurname);
+                                SelectSimilarNameTeachersToShow(teacherSurname);
                                 showed = true;
                             }
                             else
@@ -642,32 +618,89 @@ namespace Exercise_1
             MessageBox.Show(ShowsTeachersList());
         }
 
-        /* ---------------- TEXTBOX CHANGE HANDLING --------------------- */
+            /* ---------------- BUTTONS HANDLING END --------------------- */
+
+
+        /* ---------------- REGEX HANDLING FUNCTIONS START --------------------- */
+
+        // FUNCTION TO CHECK ALL THE INPUTS FROM THE LABELS OF THE TEXT BOXES
+        private bool checkRecordsInput()
+        {
+            bool allValid = true;
+
+            if (!CustomRegex.RegexID(txtbID.Text))
+            {
+                allValid = false;
+            }
+
+            if (!CustomRegex.RegexName(txtbName.Text))
+            {
+                allValid = false;
+            }
+
+            if (!CustomRegex.RegexName(txtbSurnames.Text))
+            {
+                allValid = false;
+            }
+
+            if (!CustomRegex.RegexPhone(txtbPhone.Text))
+            {
+                allValid = false;
+            }
+
+            if (!CustomRegex.RegexEmail(txtbEmail.Text))
+            {
+                allValid = false;
+            }
+
+            return allValid;
+        }
+
+        // ERROR STRING IF INPUT IS INVALID
+        private string returnErrorInput()
+        {
+            string errorMessage = "Error, not valid data, try again. " +
+                                  "\n\nEXAMPLE:" +
+                                  "\nID: 12345678X / X1234567X" +
+                                  "\nNAME: Sergio" +
+                                  "\nSURNAMES: Diez Fernández" +
+                                  "\nPHONE: 600000000 / 799999999" +
+                                  "\nEMAIL: x@iesmarenostrum.com";
+            return errorMessage;
+        }
+
+            /* ---------------- REGEX HANDLING FUNCTIONS END --------------------- */
+
+        /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS START --------------------- */
 
         public void ButtonsCheck()
         {
             bool recordsExist = (maxRecords > 0);
             bool noRecordSelected = (pos == -1);
 
-            // Habilitar/deshabilitar botones de navegación
-            btnNext.Enabled = (recordsExist && pos < maxRecords - 1) || noRecordSelected;
-            btnLast.Enabled = (recordsExist && pos < maxRecords - 1) || noRecordSelected;
-            btnPrevious.Enabled = (recordsExist && pos > 0) || noRecordSelected;
-            btnFirst.Enabled = (recordsExist && pos > 0) || noRecordSelected;
+            // ENABLE/DISABLE NAVIGATION BUTTONS
+            btnNext.Enabled = (recordsExist && pos < maxRecords - 1) && !noRecordSelected;
+            btnLast.Enabled = (recordsExist && pos < maxRecords - 1) && !noRecordSelected;
+            btnPrevious.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
+            btnFirst.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
 
-            // Habilitar/deshabilitar botón de guardar si no hay un registro seleccionado
+            // ENABLE/DISABLE SAVE BUTTON IF NO RECORD IS SELECTED
             btnSave.Enabled = noRecordSelected;
 
-            // Habilitar/deshabilitar botones de eliminar y actualizar si hay un registro seleccionado
+            // ENABLE/DISABLE CANCEL ADD REGISTRY BUTTON IF NO RECORD IS SELECTED
+            btnCancelAddRegistry.Enabled = noRecordSelected;
+
+            // ENABLE/DISABLE DELETE AND UPDATE BUTTONS IF A RECORD IS SELECTED
             btnDelete.Enabled = recordsExist && !noRecordSelected;
             btnUpdate.Enabled = recordsExist && !noRecordSelected && changeDetected;
 
-            // Habilitar/deshabilitar otros botones según la existencia de registros
+            // ENABLE/DISABLE OTHER BUTTONS BASED ON RECORD EXISTENCE
             btnClear.Enabled = recordsExist && !noRecordSelected;
             btnListTeachers.Enabled = recordsExist;
             btnSearchTeacher.Enabled = recordsExist;
         }
 
+        // THIS FUNCTION AUTO CHECKS THE CHANGES DETECTED IN THE FOLLOWING TEXT BOXES BETWEEN THE ORIGINAL STRING AND THE NEW CHANGED
         private void UpdateChangeDetected(string currentValue, string originalValue)
         {
             bool anyChangeDetected = (currentValue != originalValue);
@@ -698,5 +731,7 @@ namespace Exercise_1
         {
             UpdateChangeDetected(txtbEmail.Text, originalEmail);
         }
+
+            /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
     }
 }
