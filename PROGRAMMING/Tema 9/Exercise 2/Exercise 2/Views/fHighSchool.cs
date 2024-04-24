@@ -19,9 +19,11 @@ namespace Exercise_2
     // ERROR AL BORRAR TODOS
     public partial class fHighSchool : Form
     {
+        private PersonList personList;
         public fHighSchool()
         {
             InitializeComponent();
+            personList = new PersonList();
         }
 
         // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
@@ -88,68 +90,33 @@ namespace Exercise_2
             }
         }
 
-        public int TeachersCounter()
-        {
-            int counter = 0;
-            if (maxRecords != 0)
-            {
-                for (int i = 0; i < dataSetTeachers.Tables["Profesores"].Rows.Count; i++)
-                {
-                    counter++;
-                }
-            }
-            return counter;
-        }
-
-
-
-        public int SimilarTeacherSurnamesCounter(string teacherSurname)
-        {
-            int counter = 0;
-            if (maxRecords != 0)
-            {
-                for (int i = 0; i < dataSetTeachers.Tables["Profesores"].Rows.Count; i++)
-                {
-                    DataRow teacherRow = dataSetTeachers.Tables["Profesores"].Rows[i];
-                    string stringToCheck = teacherRow[2].ToString().ToLower();
-                    if (stringToCheck.Contains(teacherSurname.ToLower()))
-                    {
-                        counter++;                 
-                    }
-                }
-            }
-            return counter;
-        }
-
         public string ShowsTeachersList()
         {
             string result = "";
-            if (TeachersCounter() > 0)
+            if (handleDB.TeachersQuantity != 0)
             {
                 string teacherListTxt = "List of teachers: \n\n";
 
-                if (TeachersCounter() > 1)
+                if (handleDB.TeachersQuantity > 1)
                 {
-                    if (maxRecords != 0)
+                    DataTable teachersTable = handleDB.ImportTeachersDataTable();
+
+                    foreach (DataRow row in teachersTable.Rows)
                     {
-                        DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+                        string teacherInfo = "ID: " + row["DNI"] + "\n" +
+                                                "Name: " + row["Nombre"] + "\n" +
+                                                "Surnames: " + row["Apellido"] + "\n" +
+                                                "Phone: " + row["Tlf"] + "\n" +
+                                                "Email: " + row["Email"] + "\n";
 
-                        foreach (DataRow row in teachersTable.Rows)
-                        {
-                            string teacherInfo = "ID: " + row["DNI"] + "\n" +
-                                                 "Name: " + row["Nombre"] + "\n" +
-                                                 "Surnames: " + row["Apellido"] + "\n" +
-                                                 "Phone: " + row["Tlf"] + "\n" +
-                                                 "Email: " + row["Email"] + "\n";
-
-                            teacherListTxt += teacherInfo + "\n";
-                        }
+                        teacherListTxt += teacherInfo + "\n";
                     }
                     result = teacherListTxt;
                 }
-                else if (TeachersCounter() == 1)
+                else if (handleDB.TeachersQuantity == 1)
                 {
-                    teacherListTxt = "Teacher Data: \n\n" + getTeacherDataFromPosition(0);
+                    Teacher singleTeacher = handleDB.GetTeacherObject(0);
+                    teacherListTxt = "Teacher Data: \n\n" + handleDB.getTeacherDataFromPosition(singleTeacher, 0);
                     result = teacherListTxt;
                 }
             }
@@ -160,29 +127,46 @@ namespace Exercise_2
             return result;
         }
 
+        public int SimilarTeacherSurnamesCounter(string teacherSurname)
+        {
+            int counter = 0;
+            if (handleDB.TeachersQuantity != 0)
+            {
+                for (int i = 0; i < handleDB.TeachersQuantity; i++)
+                {
+                    DataRow teacherRow = handleDB.ImportTeachersDataTable().Rows[i];
+                    string stringToCheck = teacherRow[2].ToString().ToLower();
+                    if (stringToCheck.Contains(teacherSurname.ToLower()))
+                    {
+                        counter++;
+                    }
+                }
+            }
+            return counter;
+        }
+
         public void SelectSimilarNameTeachersToShow(string teacherSurname)
         {
             List<string> matchingTeachersSurname = new List<string>();
             List<string> extraTeachersInfo = new List<string>();
             List<int> teachersPositions = new List<int>();
 
-            if (maxRecords != 0)
+            if (handleDB.TeachersQuantity != 0)
             {
-                DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
-                for (int i = 0; i < teachersTable.Rows.Count; i++)
+                for (int i = 0; i < handleDB.TeachersQuantity; i++)
                 {
-                    DataRow row = dataSetTeachers.Tables["Profesores"].Rows[i];
-                    string stringToCheck = row[2].ToString().ToLower();
+                    DataRow teacherRow = handleDB.ImportTeachersDataTable().Rows[i];
+                    string stringToCheck = teacherRow[2].ToString().ToLower();
                     if (stringToCheck.Contains(teacherSurname.ToLower()))
                     {
-                        string fullName = (row["Nombre"] + " " + row["Apellido"]).ToString();
+                        string fullName = (teacherRow["Nombre"] + " " + teacherRow["Apellido"]).ToString();
                         matchingTeachersSurname.Add(fullName);
 
-                        string extraTeacherInfo = "ID: " + row["DNI"] + "\n" +
-                                                  "Name: " + row["Nombre"] + "\n" +
-                                                  "Surnames: " + row["Apellido"] + "\n" +
-                                                  "Phone: " + row["Tlf"] + "\n" +
-                                                  "Email: " + row["Email"] + "\n";
+                        string extraTeacherInfo = "ID: " + teacherRow["DNI"] + "\n" +
+                                                  "Name: " + teacherRow["Nombre"] + "\n" +
+                                                  "Surnames: " + teacherRow["Apellido"] + "\n" +
+                                                  "Phone: " + teacherRow["Tlf"] + "\n" +
+                                                  "Email: " + teacherRow["Email"] + "\n";
 
                         extraTeachersInfo.Add(extraTeacherInfo);
                         teachersPositions.Add(i);
@@ -393,55 +377,93 @@ namespace Exercise_2
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Teacher savedTeacher = Teacher.TeacherCreation(txtbID.Text,
-                                                           txtbName.Text,
-                                                           txtbSurnames.Text,
-                                                           txtbPhone.Text,
-                                                           txtbEmail.Text);
-
-            if(savedTeacher != null)
+            if (!handleDB.DuplicatedIDData(txtbID.Text))
             {
-                // FUNCTION WHICH CREATES A NEW TEACHER INTO THE DB
-                // AFTER THAT UPDATES THE POSITION AND THE COUNT OF TEACHER'S RECORDS
-                handleDB.AddNewTeacher(savedTeacher);
+                if (!handleDB.DuplicatedPhoneData(txtbPhone.Text))
+                {
+                    if (!handleDB.DuplicatedEmailData(txtbEmail.Text))
+                    {
+                        Teacher savedTeacher = Teacher.TeacherCreation(txtbID.Text,
+                                                                       txtbName.Text,
+                                                                       txtbSurnames.Text,
+                                                                       txtbPhone.Text,
+                                                                       txtbEmail.Text);
 
-                /* to fix
-                pos = maxRecords - 1;
-                RecordPositionLabel(pos); */
+                        if (savedTeacher != null)
+                        {
+                            // FUNCTION WHICH CREATES A NEW TEACHER INTO THE DB
+                            // AFTER THAT UPDATES THE POSITION AND THE COUNT OF TEACHER'S RECORDS
+                            handleDB.AddNewTeacher(savedTeacher);
+
+                            /* to fix
+                            pos = maxRecords - 1;
+                            RecordPositionLabel(pos); */
+                        }
+                        else
+                        {
+                            MessageBox.Show(returnErrorInput());
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("This email is already used, try another one");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("This phone is already used, try another one");
+                }
             }
             else
             {
-                MessageBox.Show(returnErrorInput());
+                MessageBox.Show("This ID is already used, try another one");
             }
+
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (pos != -1 && changeDetected)
             {
-                handleDB.UpdateTeacher(pos);
+                if (!handleDB.DuplicatedIDData(txtbID.Text))
+                {
+                    if (!handleDB.DuplicatedPhoneData(txtbPhone.Text))
+                    {
+                        if (!handleDB.DuplicatedEmailData(txtbEmail.Text))
+                        {
+                            handleDB.UpdateTeacher(pos);
 
-                ShowTeacherRecords(pos);
+                            ShowTeacherRecords(pos);
 
-                RecordPositionLabel(pos);
+                            RecordPositionLabel(pos);
 
-                changeDetected = false;
+                            changeDetected = false;
 
-                ButtonsCheck();
-
+                            ButtonsCheck();
+                        }
+                        else
+                        {
+                            MessageBox.Show("This email is already used, try another one");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("This phone is already used, try another one");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("This ID is already used, try another one");
+                }
+            }
+            else if (handleDB.TeachersQuantity == 0)
+            {
+                MessageBox.Show("Updating without having atleast one teacher in the DB is meaningless, try again after adding a teacher to the DB.");
             }
             else
             {
                 MessageBox.Show(returnErrorInput());
             }
-             /*
-
-            }
-            else
-            {
-                MessageBox.Show("Updating without having atleast one teacher in the DB is meaningless, try again after adding a teacher to the DB.");
-            }
-             */
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -473,9 +495,6 @@ namespace Exercise_2
                 MessageBox.Show("Delete is not possible when no elements are in the database.");
             }
         }
-
-
-
 
         private void btnSearchTeacher_Click(object sender, EventArgs e)
         {
@@ -510,7 +529,8 @@ namespace Exercise_2
             else if (handleDB.TeachersQuantity == 1)
             {
                 MessageBox.Show("There's only one teacher so it's data will be the one showed.");
-                MessageBox.Show("The data from " + getTeacherFullNameFromPosition(0) + " is: \n\n" + getTeacherDataFromPosition(0));
+                MessageBox.Show("The data from " + handleDB.getTeacherFullNameFromPosition(handleDB.GetTeacherObject(0), 0) +
+                                " is: \n\n" + handleDB.getTeacherDataFromPosition(handleDB.GetTeacherObject(0), 0));
             }
             else
             {

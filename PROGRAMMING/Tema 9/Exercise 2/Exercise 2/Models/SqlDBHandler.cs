@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Exercise_2
 {
@@ -50,6 +53,13 @@ namespace Exercise_2
             con.Close();
         }
 
+        public DataTable ImportTeachersDataTable()
+        {
+            // RETURNS THE DATA TABLE WHICH CONTAINS TEACHERS DATA
+            return dataSetTeachers.Tables["Profesores"];
+        }
+
+
         // METHOD WHICH RECONNECTS TO THE DATABASE AND UPDATES IT
         private void ReconnectionToDB()
         {
@@ -57,6 +67,88 @@ namespace Exercise_2
             SqlCommandBuilder update = new SqlCommandBuilder(dataAdapterTeachers);
             dataAdapterTeachers.Update(dataSetTeachers, "Profesores");
         }
+
+        // FUNCTION WHICH STORES ALL THE PERSON DATA FROM THE DB INTO A LIST OF PERSON OBJECTS
+        public List<Person> InsertsInitialPersonFromDBIntoList()
+        {
+            List<Person> personList = new List<Person>();
+
+            for (int i = 0; i < _teachersQuantity; i++)
+            {
+                personList.Add(GetTeacherObject(i));
+            }
+
+            return personList;
+        }
+
+        public bool CheckAllPosibleDuplicatedData(string id, string phone, string email)
+        {
+            bool duplicatedData = false;
+            if (DuplicatedIDData(id) || DuplicatedPhoneData(phone) || DuplicatedEmailData(email))
+            {
+                duplicatedData = true;
+            }
+            return duplicatedData;
+        }
+
+        public bool DuplicatedIDData(string id)
+        {
+            bool usedID = false;
+
+            // GETS THE FULL TEACHERS TABLE DATA
+            DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+
+            // SEARCHS IN THE ROWS FROM THE TEACHERS TABLE
+            foreach (DataRow teacherRow in teachersTable.Rows)
+            {
+                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                if (teacherRow["DNI"].ToString() == id)
+                {
+                    usedID = true;
+                }
+            }
+            return usedID;
+        }
+
+        public bool DuplicatedPhoneData(string phone)
+        {
+            bool usedPhone = false;
+
+            // GETS THE FULL TEACHERS TABLE DATA
+            DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+
+            // SEARCHS IN THE ROWS FROM THE TEACHERS TABLE
+            foreach (DataRow teacherRow in teachersTable.Rows)
+            {
+                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                if (teacherRow["Tlf"].ToString() == phone)
+                {
+                    usedPhone = true;
+                }
+            }
+            return usedPhone;
+        }
+
+        public bool DuplicatedEmailData(string email)
+        {
+            bool usedMail = false;
+
+            // GETS THE FULL TEACHERS TABLE DATA
+            DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+
+            // SEARCHS IN THE ROWS FROM THE TEACHERS TABLE
+            foreach (DataRow teacherRow in teachersTable.Rows)
+            {
+                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                if (teacherRow["Email"].ToString() == email)
+                {
+                    usedMail = true;
+                }
+            }
+            return usedMail;
+        }
+
+
 
         // METHOD WHICH RETURNS A TEACHER'S DATA FROM A SELECTED POSITION
         public Teacher GetTeacherObject(int pos)
@@ -114,14 +206,18 @@ namespace Exercise_2
             dNewRecord[3] = teacherToAdd.Phone;
             dNewRecord[4] = teacherToAdd.Email;
 
-            // ADDS THE REGISTRY TO THE DATA SET
-            dataSetTeachers.Tables["Profesores"].Rows.Add(dNewRecord);
+            if (!CheckAllPosibleDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email))
+            {
+                // ADDS THE REGISTRY TO THE DATA SET
+                dataSetTeachers.Tables["Profesores"].Rows.Add(dNewRecord);
 
-            // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-            ReconnectionToDB();
+                // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                ReconnectionToDB();
 
-            // UPDATES THE POSITION AND THE COUNT OF RECORDS
-            _teachersQuantity++;
+                // UPDATES THE POSITION AND THE COUNT OF RECORDS
+                _teachersQuantity++;
+            }
+
         }
 
         // METHOD TO UPDATE A TEACHER INTO THE DATABASE
@@ -143,9 +239,13 @@ namespace Exercise_2
             dRecord[3] = teacherToUpdate.Phone;
             dRecord[4] = teacherToUpdate.Email;
 
-            // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-            ReconnectionToDB();
+            if (!CheckAllPosibleDuplicatedData(teacherToUpdate.ID, teacherToUpdate.Phone, teacherToUpdate.Email))
+            {
+                // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                ReconnectionToDB();
+            }
         }
+
         public void DeleteTeacher(int pos)
         {
             // DELETE THE RECORD FROM THE SELECTED POSITION

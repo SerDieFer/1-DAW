@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\CustomRegex.cs" />
-    <Compile Include="Models\newPersonList.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\PersonList.cs" />
     <Compile Include="Models\SqlDBHandler.cs" />

@@ -16,7 +16,6 @@ namespace Exercise_2
         private string tID, tName, tSurnames, tPhone, tEmail;
 
         // PROPERTIES
-
         public string Email
         {
             get => tEmail;
@@ -48,6 +47,7 @@ namespace Exercise_2
             }
         }
 
+
         public override string ShowsPersonData()
         {
             string tInfoTxt = "";
@@ -58,7 +58,7 @@ namespace Exercise_2
         public string ShowsTeachersList()
         {
             string result = "";
-            if ((SqlDBHandler) > 0)
+            if ((SqlDBHandler)SqlDBHandler.) > 0)
             {
                 string teacherListTxt = "List of teachers: \n\n";
 

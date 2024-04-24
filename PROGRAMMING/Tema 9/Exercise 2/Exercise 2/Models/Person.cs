@@ -11,10 +11,7 @@ namespace Exercise_2
 {
     abstract public class Person
     {
-        private string pID;
-        private string pName;
-        private string pSurnames;
-        private string pPhone;
+        private string pID, pName, pSurnames, pPhone;
 
         public string ID
         {
@@ -38,20 +35,12 @@ namespace Exercise_2
             set => pPhone = value;
         }
 
-        public Person()
-        {
-            pID = "";
-            pName = "";
-            pSurnames = "";
-            pPhone = "";
-        }
-
         public Person(string pID, string pName, string pSurnames, string pPhone)
         {
-            pID = this.pID;
-            pName = this.pName;
-            pSurnames = this.pSurnames;
-            pPhone = this.pPhone;
+            ID = string.Empty;
+            Name = string.Empty;
+            Surnames = string.Empty;
+            Phone = string.Empty;
         }
 
         public virtual string ShowsPersonData()
