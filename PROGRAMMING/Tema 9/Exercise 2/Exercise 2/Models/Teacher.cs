@@ -47,51 +47,11 @@ namespace Exercise_2
             }
         }
 
-
         public override string ShowsPersonData()
         {
             string tInfoTxt = "";
             tInfoTxt += base.ShowsPersonData() + "Email: " + Email + "\n";
             return tInfoTxt;
-        }
-
-        public string ShowsTeachersList()
-        {
-            string result = "";
-            if ((SqlDBHandler)SqlDBHandler.) > 0)
-            {
-                string teacherListTxt = "List of teachers: \n\n";
-
-                if (TeachersCounter() > 1)
-                {
-                    if (maxRecords != 0)
-                    {
-                        DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
-
-                        foreach (DataRow row in teachersTable.Rows)
-                        {
-                            string teacherInfo = "ID: " + row["DNI"] + "\n" +
-                                                 "Name: " + row["Nombre"] + "\n" +
-                                                 "Surnames: " + row["Apellido"] + "\n" +
-                                                 "Phone: " + row["Tlf"] + "\n" +
-                                                 "Email: " + row["Email"] + "\n";
-
-                            teacherListTxt += teacherInfo + "\n";
-                        }
-                    }
-                    result = teacherListTxt;
-                }
-                else if (TeachersCounter() == 1)
-                {
-                    teacherListTxt = "Teacher Data: \n\n" + getTeacherDataFromPosition(0);
-                    result = teacherListTxt;
-                }
-            }
-            else
-            {
-                result = "No teachers added in the DB.";
-            }
-            return result;
         }
     }
 }

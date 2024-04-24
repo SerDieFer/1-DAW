@@ -19,15 +19,15 @@ namespace Exercise_2
     // ERROR AL BORRAR TODOS
     public partial class fHighSchool : Form
     {
-        private PersonList personList;
+        private List<Person> personList;
+
         public fHighSchool()
         {
             InitializeComponent();
-            personList = new PersonList();
         }
 
         // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
-        SqlDBHandler handleDB;
+        TeacherDBHandler handleDB;
 
         /* ---------------- POSITION HANDLING START --------------------- */
 
@@ -377,27 +377,30 @@ namespace Exercise_2
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // CHECKS THAT THE ACTUAL TEXT BOX ID TEXT IS NOT USED ALREADY IN THE DB
             if (!handleDB.DuplicatedIDData(txtbID.Text))
             {
+                // CHECKS THAT THE ACTUAL TEXT BOX PHONE TEXT IS NOT USED ALREADY IN THE DB
                 if (!handleDB.DuplicatedPhoneData(txtbPhone.Text))
                 {
+                    // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
                     if (!handleDB.DuplicatedEmailData(txtbEmail.Text))
                     {
+                        // CREATES THE TEACHER TO SAVE
                         Teacher savedTeacher = Teacher.TeacherCreation(txtbID.Text,
                                                                        txtbName.Text,
                                                                        txtbSurnames.Text,
                                                                        txtbPhone.Text,
                                                                        txtbEmail.Text);
 
+                        // IF THIS OBJECT IS VALID IT WILL BE INSERTED INTO THE DB
                         if (savedTeacher != null)
                         {
                             // FUNCTION WHICH CREATES A NEW TEACHER INTO THE DB
                             // AFTER THAT UPDATES THE POSITION AND THE COUNT OF TEACHER'S RECORDS
                             handleDB.AddNewTeacher(savedTeacher);
-
-                            /* to fix
-                            pos = maxRecords - 1;
-                            RecordPositionLabel(pos); */
+                            pos = handleDB.TeachersQuantity - 1;
+                            RecordPositionLabel(pos);      
                         }
                         else
                         {
@@ -418,7 +421,6 @@ namespace Exercise_2
             {
                 MessageBox.Show("This ID is already used, try another one");
             }
-
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -434,7 +436,6 @@ namespace Exercise_2
                             handleDB.UpdateTeacher(pos);
 
                             ShowTeacherRecords(pos);
-
                             RecordPositionLabel(pos);
 
                             changeDetected = false;

@@ -12,23 +12,23 @@ using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Exercise_2
 {
-    internal class SqlDBHandler
+    abstract public class SqlDBHandler
     {
         // DATA SET AND DATA ADAPTER MEMBERS
-        DataSet dataSetTeachers;
-        SqlDataAdapter dataAdapterTeachers;
+        DataSet dataSet;
+        SqlDataAdapter dataAdapter;
 
         // TEACHERS TOTAL COUNT MEMBER
-        private int _teachersQuantity;
+        private int _selectedTeachersQuantity;
 
         // PROPERTIE OF TEACHERS TOTAL COUNT
         public int TeachersQuantity
         {
-            get => _teachersQuantity;
+            get => _selectedTeachersQuantity;
         }
 
         // SQLDBHANDLER CONSTRUCTOR WHICH HANDLES THE CONNECTION AND CREATION OF DATA SET AND DATA ADAPTER
-        public SqlDBHandler()
+        public SqlDBHandler(string selectedTable)
         {
             // DB CONNECTION
             string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\Highschool.mdf;";
@@ -39,16 +39,26 @@ namespace Exercise_2
             // OPENS CONNECTION
             con.Open();
 
-            dataSetTeachers = new DataSet();
-            string stringSQL = "SELECT * FROM Profesores";
+            dataSet = new DataSet();            
+            string stringSQL = "SELECT * FROM " + selectedTable;
 
-            dataAdapterTeachers = new SqlDataAdapter(stringSQL, con);
+            dataAdapter = new SqlDataAdapter(stringSQL, con);
 
-            dataAdapterTeachers.Fill(dataSetTeachers, "Profesores");
+            dataAdapter.Fill(dataSet, selectedTable);
 
-            // COUNT TOTAL TEACHERS
-            _teachersQuantity = dataSetTeachers.Tables["Profesores"].Rows.Count;
+            if (selectedTable == "Profesores")
+            {
+                // COUNT TOTAL TEACHERS
+                _selectedTeachersQuantity = dataSet.Tables[selectedTable].Rows.Count;
+            }
+            else if(selectedTable == "Cursos")
+            {
 
+            }
+            else if(selectedTable == "Alumnos")
+            {
+
+            }
             // CLOSES CONNECTION
             con.Close();
         }
@@ -56,29 +66,28 @@ namespace Exercise_2
         public DataTable ImportTeachersDataTable()
         {
             // RETURNS THE DATA TABLE WHICH CONTAINS TEACHERS DATA
-            return dataSetTeachers.Tables["Profesores"];
+            return dataSet.Tables["Profesores"];
         }
-
 
         // METHOD WHICH RECONNECTS TO THE DATABASE AND UPDATES IT
         private void ReconnectionToDB()
         {
             // RECONNECTS WITH THE DATA ADAPTER AND UPDATES THE DATABASE    
-            SqlCommandBuilder update = new SqlCommandBuilder(dataAdapterTeachers);
-            dataAdapterTeachers.Update(dataSetTeachers, "Profesores");
+            SqlCommandBuilder update = new SqlCommandBuilder(dataAdapter);
+            dataAdapter.Update(dataSet, "Profesores");
         }
 
         // FUNCTION WHICH STORES ALL THE PERSON DATA FROM THE DB INTO A LIST OF PERSON OBJECTS
         public List<Person> InsertsInitialPersonFromDBIntoList()
         {
-            List<Person> personList = new List<Person>();
+            List<Person> listOfPersons = new List<Person>();
 
-            for (int i = 0; i < _teachersQuantity; i++)
+            for (int i = 0; i < _selectedPersonTypeQuantity; i++)
             {
-                personList.Add(GetTeacherObject(i));
+                listOfPersons.Add(GetTeacherObject(i));
             }
 
-            return personList;
+            return listOfPersons;
         }
 
         public bool CheckAllPosibleDuplicatedData(string id, string phone, string email)
@@ -96,7 +105,7 @@ namespace Exercise_2
             bool usedID = false;
 
             // GETS THE FULL TEACHERS TABLE DATA
-            DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+            DataTable teachersTable = ImportTeachersDataTable();
 
             // SEARCHS IN THE ROWS FROM THE TEACHERS TABLE
             foreach (DataRow teacherRow in teachersTable.Rows)
@@ -115,7 +124,7 @@ namespace Exercise_2
             bool usedPhone = false;
 
             // GETS THE FULL TEACHERS TABLE DATA
-            DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+            DataTable teachersTable = ImportTeachersDataTable();
 
             // SEARCHS IN THE ROWS FROM THE TEACHERS TABLE
             foreach (DataRow teacherRow in teachersTable.Rows)
@@ -134,7 +143,7 @@ namespace Exercise_2
             bool usedMail = false;
 
             // GETS THE FULL TEACHERS TABLE DATA
-            DataTable teachersTable = dataSetTeachers.Tables["Profesores"];
+            DataTable teachersTable = ImportTeachersDataTable();
 
             // SEARCHS IN THE ROWS FROM THE TEACHERS TABLE
             foreach (DataRow teacherRow in teachersTable.Rows)
@@ -148,8 +157,6 @@ namespace Exercise_2
             return usedMail;
         }
 
-
-
         // METHOD WHICH RETURNS A TEACHER'S DATA FROM A SELECTED POSITION
         public Teacher GetTeacherObject(int pos)
         {
@@ -161,7 +168,7 @@ namespace Exercise_2
                 DataRow dRecord;
 
                 // TAKING THE RECORD OF "pos" POSITION IN TEACHERS TABLE
-                dRecord = dataSetTeachers.Tables["Profesores"].Rows[pos];
+                dRecord = ImportTeachersDataTable().Rows[pos];
 
                 // TAKE VALUE FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW TEACHER OBJECT
                 selectedTeacher = Teacher.TeacherCreation(dRecord[0].ToString(), 
@@ -197,7 +204,7 @@ namespace Exercise_2
         public void AddNewTeacher(Teacher teacherToAdd)
         {
             // CREATE A NEW REGISTRY
-            DataRow dNewRecord = dataSetTeachers.Tables["Profesores"].NewRow();
+            DataRow dNewRecord = ImportTeachersDataTable().NewRow();
 
             // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
             dNewRecord[0] = teacherToAdd.ID;
@@ -209,13 +216,13 @@ namespace Exercise_2
             if (!CheckAllPosibleDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email))
             {
                 // ADDS THE REGISTRY TO THE DATA SET
-                dataSetTeachers.Tables["Profesores"].Rows.Add(dNewRecord);
+                ImportTeachersDataTable().Rows.Add(dNewRecord);
 
                 // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
                 ReconnectionToDB();
 
                 // UPDATES THE POSITION AND THE COUNT OF RECORDS
-                _teachersQuantity++;
+                _selectedPersonTypeQuantity++;
             }
 
         }
@@ -230,7 +237,7 @@ namespace Exercise_2
             DataRow dRecord;
 
             // TAKING THE RECORD OF "pos" POSITION IN TEACHERS TABLE
-            dRecord = dataSetTeachers.Tables["Profesores"].Rows[pos];
+            dRecord = ImportTeachersDataTable().Rows[pos];
 
             // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
             dRecord[0] = teacherToUpdate.ID;
@@ -249,10 +256,10 @@ namespace Exercise_2
         public void DeleteTeacher(int pos)
         {
             // DELETE THE RECORD FROM THE SELECTED POSITION
-            dataSetTeachers.Tables["Profesores"].Rows[pos].Delete();
+            ImportTeachersDataTable().Rows[pos].Delete();
 
             // UPDATE THE RECORDS COUNT FROM THIS TABLE AND UPDATES THE DB
-            _teachersQuantity--;
+            _selectedPersonTypeQuantity--;
 
                         /* TOCHECK
                         pos = 0;
