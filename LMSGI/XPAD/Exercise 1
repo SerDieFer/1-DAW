@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<centroFormacion>
+ <nombre localidad="Alicante">IES Mare Nostrum</nombre>
+ <web>http://www.iesmarenostrum.com</web>
+ <correo>correo@iesmarenostrum.com</correo>
+ <ciclos>
+ <ciclo id="ASIR" familia="Informática y Comunicaciones">
+ <nombre>Administración de Sistemas Informáticos en Red</nombre>
+ <grado>Superior</grado>
+ <decretoTitulo año="2009" />
+ </ciclo>
+ <ciclo id="DAW" familia="Informática y Comunicaciones">
+ <nombre>Desarrollo de Aplicaciones Web</nombre>
+ <grado>Superior</grado>
+ <decretoTitulo año="2010" />
+ </ciclo>
+ <ciclo id="SMR" familia="Informática y Comunicaciones">
+ <nombre>Sistemas Microinformáticos y Redes</nombre>
+ <grado>Medio</grado>
+ <decretoTitulo año="2008" />
+ </ciclo>
+ <ciclo id="IO" familia="Informática y Comunicaciones">
+ <nombre>Informática de Oficina</nombre>
+ <grado>FP básica</grado>
+ <decretoTitulo año="2014" />
+ </ciclo>
+ <ciclo id="AF" familia="Administración y Gestión">
+ <nombre>Administración y Finanzas</nombre>
+ <grado>Superior</grado>
+ <decretoTitulo año="2011" />
+ </ciclo>
+ <ciclo id="AD" familia="Administración y Gestión">
+ <nombre>Asistencia a la Dirección</nombre>
+ <grado>Superior</grado>
+ <decretoTitulo año="2011" />
+ </ciclo>
+ <ciclo id="GA" familia="Administración y Gestión">
+ <nombre>Gestión Administrativa</nombre>
+ <grado>Medio</grado>
+ <decretoTitulo año="2009" />
+ </ciclo>
+ </ciclos>
+</centroFormacion>
