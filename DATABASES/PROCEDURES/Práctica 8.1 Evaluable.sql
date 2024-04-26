@@ -61,9 +61,10 @@ BEGIN
 		END
    END TRY
    BEGIN CATCH
-   		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
-				      'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
-				      'LINE: ', ERROR_LINE())
+		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
+					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
+					  'LINE: ', ERROR_LINE(), CHAR(10),
+					  'PROCEDURE: ', ERROR_PROCEDURE())
    END CATCH
 END
 
@@ -141,7 +142,8 @@ BEGIN
 	BEGIN CATCH
 		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
 					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
-					  'LINE: ', ERROR_LINE())
+					  'LINE: ', ERROR_LINE(), CHAR(10),
+					  'PROCEDURE: ', ERROR_PROCEDURE())
 	END CATCH
 END
 
@@ -242,7 +244,8 @@ BEGIN
 		ROLLBACK
 		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
 					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
-					  'LINE: ', ERROR_LINE())
+					  'LINE: ', ERROR_LINE(), CHAR(10),
+					  'PROCEDURE: ', ERROR_PROCEDURE())
 	END CATCH
 END
 
@@ -337,21 +340,22 @@ BEGIN
 	BEGIN CATCH
 		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
 					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
-					  'LINE: ', ERROR_LINE())
+					  'LINE: ', ERROR_LINE(), CHAR(10),
+					  'PROCEDURE: ', ERROR_PROCEDURE())
 	END CATCH
 END
 
 GO
 DECLARE @clientCod INT = 1
 DECLARE @countUpdatedReceivedOrders INT
-DECLARE @ordersUpdateString VARCHAR(50)
+DECLARE @ordersUpdateString VARCHAR(100)
 DECLARE @return INT
    EXEC @return = updateReceiptClientOrderReceived
 			      @clientCod,
 				  @countUpdatedReceivedOrders OUTPUT
 
-     IF @return <> 0
-	    RETURN
+	IF @return <> 0
+	RETURN
 
 	IF (@countUpdatedReceivedOrders <> 0)
 		SET @ordersUpdateString = CONCAT('The client has ', @countUpdatedReceivedOrders, ' recieved orders updated.')
@@ -361,7 +365,6 @@ DECLARE @return INT
     PRINT CONCAT('Client Code: ', @clientCod, CHAR(10),
 			     @ordersUpdateString, CHAR(10),
 			     CHAR(10), 'Successful procedure.')
-
 
 ---------------------------------------------------------------------------------
 --                                                                             --
@@ -460,7 +463,8 @@ BEGIN
 	BEGIN CATCH
 		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
 					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
-					  'LINE: ', ERROR_LINE())
+					  'LINE: ', ERROR_LINE(), CHAR(10),
+					  'PROCEDURE: ', ERROR_PROCEDURE())
 	END CATCH
 END
 
@@ -519,46 +523,280 @@ DECLARE @return INT
 --                                                                                  --
 --------------------------------------------------------------------------------------
 
+EXEC SP_HELP EMPLEADOS
+GO
+CREATE OR ALTER PROCEDURE interchangeBoss
+						  @oldBossCode INT,
+                          @newBossCode INT,
+						  @newBossEmployeeQuantity INT OUTPUT
+AS
+BEGIN
+	BEGIN TRY 
+		IF NOT EXISTS (SELECT *
+				         FROM EMPLEADOS
+				        WHERE codEmpleado = @oldBossCode)
+		BEGIN
+			 PRINT 'The selected boss do not exist.';
+			RETURN -1
+		END
+		IF NOT EXISTS (SELECT *
+				         FROM EMPLEADOS
+				        WHERE codEmpleado = @newBossCode)
+		BEGIN
+			 PRINT 'The selected employee do not exist.';
+			RETURN -1
+		END
+
+		IF (@oldBossCode IS NULL OR @oldBossCode = '' OR @oldBossCode NOT LIKE '%[0-9]%')
+        BEGIN
+             PRINT 'The selected boss code must have only numeric values. Example: 12';
+            RETURN -1
+        END
+
+		IF (@newBossCode IS NULL OR @newBossCode = '' OR @newBossCode NOT LIKE '%[0-9]%')
+        BEGIN
+             PRINT 'The selected employee code must have only numeric values. Example: 2';
+            RETURN -1
+        END
+
+		BEGIN TRAN
+
+		  UPDATE EMPLEADOS
+		     SET codEmplJefe = NULL
+		   WHERE codEmpleado = @newBossCode
+
+		   SET @newBossEmployeeQuantity = @@ROWCOUNT
+
+		  UPDATE EMPLEADOS
+			 SET codEmplJefe = @newBossCode
+		   WHERE codEmplJefe = @oldBossCode
+
+		     SET @newBossEmployeeQuantity += @@ROWCOUNT
+
+		  UPDATE EMPLEADOS
+		  	 SET codEmplJefe = @newBossCode
+		   WHERE codEmpleado = @oldBossCode
+
+		     SET @newBossEmployeeQuantity += @@ROWCOUNT
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
+					  'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
+					  'LINE: ', ERROR_LINE(), CHAR(10),
+					  'PROCEDURE: ', ERROR_PROCEDURE())
+	END CATCH	
+END
+
+GO
+DECLARE @newBossCode INT = 2
+DECLARE @oldBossCode INT = 1
+DECLARE @newBossEmployeeQuantity INT
+DECLARE @return INT
+   EXEC @return = interchangeBoss
+				    @oldBossCode,
+				    @newBossCode,
+				    @newBossEmployeeQuantity OUTPUT
+
+	 IF @return <> 0
+	    RETURN
+
+     PRINT CONCAT ('A quantity of ', @newBossEmployeeQuantity, ' employees had the boss updated',
+	 			   CHAR(10), CHAR(10), 'Successful procedure.')
 
 
+---------------------------------------------
+--                                         --
+--  7. Implementa una función llamada      --
+--  getCostePedidos que reciba como        --
+--  parámetro un codCliente y devuelva     --
+--	el coste de todos los pedidos          --
+--  realizados por dicho cliente.          --
+--	                                       --
+--	Recuerda que debes incluir la SELECT   --
+--  y comprobar el funcionamiento.         --
+--                                         --
+---------------------------------------------
 
+	-- WAY 1 // ONLY 1 FUNCTION
 
+EXEC SP_HELP DETALLE_PEDIDOS
+GO
 
+CREATE OR ALTER FUNCTION getTotalOrdersCost (@clientCode INT)
+RETURNS DECIMAL(14,2)
+AS
+BEGIN
+	DECLARE @return DECIMAL(14,2)
+		SET @return = (SELECT ISNULL(SUM(cantidad*precio_unidad), 0)
+						 FROM DETALLE_PEDIDOS
+						WHERE codPedido IN (SELECT codPedido
+											  FROM PEDIDOS
+											 WHERE codCliente = @clientCode))
+	 RETURN @return
+END
 
+GO
+SELECT codCliente, 
+	   dbo.getTotalOrdersCost(codCliente) AS totalOrdersCost
+  FROM CLIENTES
+ WHERE codCliente = 9
 
+	-- WAY 2 // USES TWO FUNCTIONS
 
--------------------------------------------------------------------------------------------
--- 7. Implementa una función llamada getCostePedidos que reciba como parámetro un codCliente y devuelva
---		el coste de todos los pedidos realizados por dicho cliente.
---	
---	Recuerda que debes incluir la SELECT y comprobar el funcionamiento
--------------------------------------------------------------------------------------------
-SELECT idCliente, <llamada a tu funcion>
-  FROM CLIENTES;
+EXEC SP_HELP DETALLE_PEDIDOS
+GO
 
+CREATE OR ALTER FUNCTION getOrderCost (@orderCode INT)
+RETURNS DECIMAL(14,2)
+AS
+BEGIN
+	DECLARE @return DECIMAL(14,2)
+		SET @return = (SELECT ISNULL(SUM(cantidad*precio_unidad), 0)
+						 FROM DETALLE_PEDIDOS
+						WHERE codPedido = @orderCode)
+	 RETURN @return
+END
+GO
+CREATE OR ALTER FUNCTION getVariousOrdersCost (@clientCode INT)
+RETURNS DECIMAL(14,2)
+AS
+BEGIN
+	DECLARE @return DECIMAL(14,2)
+		SET @return = (SELECT SUM(dbo.getOrderCost(codPedido))
+					     FROM PEDIDOS
+						WHERE codCliente = @clientCode)
+	 RETURN @return
+END
 
--------------------------------------------------------------------------------------------
--- 8. Implementa una función llamada numEmpleadosOfic que reciba como parámetro un codOficina y devuelva
---		el número de empleados que trabajan en ella
---	
---	Recuerda que debes incluir la SELECT y comprobar el funcionamiento
--------------------------------------------------------------------------------------------
+GO
+SELECT codCliente, 
+	   dbo.getVariousOrdersCost(codCliente) AS totalOrdersCost
+  FROM CLIENTES
+ WHERE codCliente = 9
 
+-----------------------------------------------
+--                                           --
+--  8. Implementa una función llamada        --
+--  numEmpleadosOfic que reciba como         --
+--  parámetro un codOficina y devuelva       --
+--	el número de empleados que trabajan      --
+--  en ella.                                 --
+--	                                         --
+--	Recuerda que debes incluir la SELECT     --
+--  y comprobar el funcionamiento            --
+--                                           --
+-----------------------------------------------
 
+EXEC SP_HELP EMPLEADOS
+EXEC SP_HELP OFICINAS
+GO
 
--------------------------------------------------------------------------------------------
--- 9. Implementa una función llamada clientePagos_SN que reciba como parámetro un codCliente y devuelva
---		'S' si ha realizado pagos y 'N' si no ha realizado ningún pago.
---	
---	Recuerda que debes incluir la SELECT y comprobar el funcionamiento
--------------------------------------------------------------------------------------------
+CREATE OR ALTER FUNCTION getEmployeeCountFromOffice (@officeCode CHAR(6))
+RETURNS INT
+AS
+BEGIN
+	DECLARE @return INT
+		SET @return = (SELECT ISNULL(COUNT(codEmpleado), 0)
+						 FROM EMPLEADOS
+						WHERE codOficina = @officeCode)
+	 RETURN @return
+END
 
+ 	-- WAY 1
 
+GO
+SELECT DISTINCT codOficina, 
+	   dbo.getEmployeeCountFromOffice(codOficina) AS totalEmployees
+  FROM EMPLEADOS
+ WHERE codOficina = 'BCN-ES'
 
--------------------------------------------------------------------------------------------
--- 10. Implementa una función llamada pedidosPendientesAnyo que reciba como parámetros 'estado' y 'anyo'
---	    y devuelva una TABLA con los pedidos pendientes del año 2009 (estos datos deben ponerse directamente en la SELECT, NO son dinámicos)
+ 	-- WAY 2
 
---	Recuerda que debes incluir la SELECT y comprobar el funcionamiento
--------------------------------------------------------------------------------------------
+GO
+DECLARE @officeCode CHAR(6) = 'BCN-ES'
+ SELECT DISTINCT @officeCode AS officeCode, dbo.getEmployeeCountFromOffice(@officeCode) AS totalEmployees
 
+---------------------------------------------
+--                                         --
+--  9. Implementa una función llamada      --
+--  clientePagos_SN que reciba como        --
+--  parámetro un codCliente y devuelva     --
+--  'S' si ha realizado pagos y 'N' si     --
+--  no ha realizado ningún pago.           --
+--	                                       --
+--	Recuerda que debes incluir la SELECT   --
+--  y comprobar el funcionamiento          --
+--                                         --
+---------------------------------------------
+
+EXEC SP_HELP CLIENTES
+GO
+
+CREATE OR ALTER FUNCTION clientHasOrders_YN (@clientCode INT)
+RETURNS CHAR(1) 
+AS
+BEGIN
+	DECLARE @return CHAR(1)
+	DECLARE @totalOrders INT
+
+	SET @totalOrders = (SELECT ISNULL(COUNT(*), 0)
+						  FROM PEDIDOS
+						 WHERE codCliente = @clientCode)
+
+	IF (@totalOrders > 0)
+	BEGIN
+		SET @return = 'Y'
+	END
+	ELSE
+	BEGIN
+		SET @return = 'N'
+	END
+
+	RETURN @return
+END
+
+GO
+SELECT codCliente, dbo.clientHasOrders_YN(codCliente) AS clientHasOrders
+ FROM CLIENTES;
+
+------------------------------------------------------------
+--                                                        --
+--  10. Implementa una función llamada                    --
+--  pedidosPendientesAnyo que reciba como                 --
+--  parámetros 'estado' y 'anyo' y devuelva               --
+--  una TABLA con los pedidos pendientes del              --
+--  año 2009 (estos datos deben ponerse directamente      --
+--  en la SELECT, NO son dinámicos)                       --
+--                                                        --        
+--  Recuerda que debes incluir la SELECT y comprobar      --
+--  el funcionamiento                                     --
+--                                                        --
+------------------------------------------------------------
+
+EXEC SP_HELP PEDIDOS
+GO
+
+CREATE OR ALTER FUNCTION getTablePendingOrdersByYear (@status CHAR(1), @year INT)
+RETURNS TABLE 
+AS
+	RETURN (SELECT *
+			  FROM PEDIDOS
+			 WHERE YEAR(fecha_pedido) = @year
+			   AND codEstado = @status)
+
+	-- WAY 1
+
+GO
+SELECT *
+  FROM dbo.getTablePendingOrdersByYear('P', 2009)
+
+	-- WAY 2
+
+GO
+DECLARE @status CHAR(1) = 'P'
+DECLARE @year INT = 2009
+
+SELECT *
+  FROM dbo.getTablePendingOrdersByYear(@status, @year)
