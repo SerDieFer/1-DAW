@@ -43,6 +43,12 @@ namespace Exercise_2
             Phone = string.Empty;
         }
 
+        public string GetPersonType()
+        {
+            var className = GetType().Name;
+            return className;
+        }
+
         public virtual string ShowsPersonData()
         {
             var className = GetType().Name;
@@ -50,7 +56,7 @@ namespace Exercise_2
             pInfoTxt = className
                        + " data: \n"
                        + "Name: " + Name + "\n" 
-                       + "Surnames: " + Name + "\n"
+                       + "Surnames: " + Surnames + "\n"
                        + "ID: " + ID + "\n"
                        + "Phone: " + Phone + "\n";
             return pInfoTxt;
@@ -63,7 +69,7 @@ namespace Exercise_2
             pInfoTxt = className
                        + " data: \n"
                        + "Name: " + Name + "\n"
-                       + "Surnames: " + Name + "\n"
+                       + "Surnames: " + Surnames + "\n"
                        + "ID: " + ID + "\n";
             return pInfoTxt;
         }
