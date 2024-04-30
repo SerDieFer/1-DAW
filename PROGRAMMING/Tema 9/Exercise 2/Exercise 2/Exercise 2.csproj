@@ -65,7 +65,6 @@
     <Compile Include="Models\CustomRegex.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\DBHandler.cs" />
-    <Compile Include="Models\TeacherDBHandler.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Views\fHighSchool.cs">
       <SubType>Form</SubType>

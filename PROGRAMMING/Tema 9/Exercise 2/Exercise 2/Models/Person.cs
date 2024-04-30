@@ -37,10 +37,10 @@ namespace Exercise_2
 
         public Person(string pID, string pName, string pSurnames, string pPhone)
         {
-            ID = string.Empty;
-            Name = string.Empty;
-            Surnames = string.Empty;
-            Phone = string.Empty;
+            ID = pID;
+            Name = pName;
+            Surnames = pSurnames;
+            Phone = pPhone;
         }
 
         public string GetPersonType()

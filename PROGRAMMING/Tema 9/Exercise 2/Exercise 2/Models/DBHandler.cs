@@ -13,7 +13,7 @@ using Microsoft.VisualBasic.Devices;
 
 namespace Exercise_2
 {
-    abstract public class SqlDBHandler
+    public class SqlDBHandler
     {
         // DATA SET AND DATA ADAPTER MEMBERS
         DataSet dataSet;
@@ -86,15 +86,15 @@ namespace Exercise_2
 
             if (selectedTable == "Profesores")
             {
-                toImport = dataSet.Tables[selectedTable];
+                toImport = dataSet.Tables["Profesores"];
             }
             else if (selectedTable == "Alumnos")
             {
-                toImport = dataSet.Tables[selectedTable];
+                toImport = dataSet.Tables["Alumnos"];
             }
-            else if (selectedTable == "Courses")
+            else if (selectedTable == "Cursos")
             {
-                toImport = dataSet.Tables[selectedTable];
+                toImport = dataSet.Tables["Cursos"];
             }
 
             // RETURNS THE DATA TABLE WHICH CONTAINS SELECTED TABLE DATA
@@ -238,6 +238,7 @@ namespace Exercise_2
                                                          dRecord[2].ToString(),
                                                          dRecord[3].ToString(),
                                                          dRecord[4].ToString());
+                    selectedObject = (Alumn)selectedObject;
                 }
             } */
 
@@ -292,173 +293,159 @@ namespace Exercise_2
         // FUNCTION WHICH RETURNS THE FULL NAME OF A PERSON
         public string GetPersonFullNameFromPosition(object selectedObject, int pos, string selectedTable)
         {
+            string selectedObjectDenomination = "";
             if (selectedObject is Person selectedPerson)
             {
                 // FIX THIS TO DEPENDACY OF TEACHER OR ALUMN
-                object selectedObject = (Person)selectedPerson;
-                selectedPerson = GetSelectedTypeObject(pos, selectedTable);
-                string selectedPersonFullName = (selectedObject.Name + " " + selectedObject.Surnames);
+                selectedObject = GetSelectedTypeObject(pos, selectedTable);
+                selectedObject = (Person)selectedPerson;
+                selectedObjectDenomination = (selectedPerson.Name + " " + selectedPerson.Surnames);
             }
-            return selectedPersonFullName;
+            /*/* TODO CREATE COURSE CLASS BEFORE CHECKING HERE
+            else if (selectedObject is Course selectedCourse)
+            {
+                selectedObject = GetSelectedTypeObject(pos, selectedTable);
+                selectedObject = (Course)selectedCourse;
+                selectedObjectDenomination = (selectedCourse.Name + "-" + selectedCourse.ID);
+            } */
+            return selectedObjectDenomination;
         }
 
         // METHOD TO ADD A NEW OBJECT TO THE DATABASE
         public void AddNewObject(object objectToAdd, string selectedTable)
         {
             // THE IS COMPARATOR IS TO COMPARE THE TYPE OF THE OBJECT
-            if (objectToAdd is Person personToAdd)
+            if (objectToAdd is Teacher teacherToAdd)
             {
                 // CREATE A NEW REGISTRY
                 DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
 
-                if (personToAdd.GetPersonType() == "Teacher")
+                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                dNewRecord[0] = teacherToAdd.ID;
+                dNewRecord[1] = teacherToAdd.Name;
+                dNewRecord[2] = teacherToAdd.Surnames;
+                dNewRecord[3] = teacherToAdd.Phone;
+                dNewRecord[4] = teacherToAdd.Email;
+
+                if (!CheckAllPosibleDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email, selectedTable))
                 {
-                    Teacher teacherToAdd = (Teacher)personToAdd;
-                    // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                    dNewRecord[0] = teacherToAdd.ID;
-                    dNewRecord[1] = teacherToAdd.Name;
-                    dNewRecord[2] = teacherToAdd.Surnames;
-                    dNewRecord[3] = teacherToAdd.Phone;
-                    dNewRecord[4] = teacherToAdd.Email;
+                    // ADDS THE REGISTRY TO THE DATA SET
+                    ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
 
-                    if (!CheckAllPosibleDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email, selectedTable))
-                    {
-                        // ADDS THE REGISTRY TO THE DATA SET
-                        ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
+                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
 
-                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                        ReconnectionToDB(selectedTable);
-
-                        // UPDATES THE POSITION AND THE COUNT OF RECORDS
-                        _selectedTeachersQuantity++;
-                    }
+                    // UPDATES THE POSITION AND THE COUNT OF RECORDS
+                    _selectedTeachersQuantity++;
                 }
-
-                /* TODO CREATE ALUMN CLASS BEFORE CHECKING HERE
-                else if (personToAdd.GetPersonType() == "Alumn")
-                {
-                    Alumn alumnToAdd = (Alumn)personToAdd;
-                    // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                    dNewRecord[0] = alumnToAdd.ID;
-                    dNewRecord[1] = alumnToAdd.Name;
-                    dNewRecord[2] = alumnToAdd.Surnames;
-                    dNewRecord[3] = alumnToAdd.Phone;
-                    dNewRecord[4] = alumnToAdd.Email;
-
-                    if (!CheckAllPosibleDuplicatedData(alumnToAdd.ID, alumnToAdd.Phone, alumnToAdd.Email, selectedTable))
-                    {
-                        // ADDS THE REGISTRY TO THE DATA SET
-                        ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
-
-                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                        ReconnectionToDB(selectedTable);
-
-                        // UPDATES THE POSITION AND THE COUNT OF RECORDS
-                        _selectedAlumnsQuantity++;
-                    }
-                }*/
-        }
-
-        /* TODO CREATE COURSE CLASS BEFORE CHECKING HERE
-        else if (objectToAdd is Course courseToAdd)
-        {
-            // CREATE A NEW REGISTRY
-            DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
-
-            // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-            dNewRecord[0] = courseToAdd.ID;
-            dNewRecord[1] = courseToAdd.Name;
-
-            if (!DuplicatedIDDataFromSelectedTable(courseToAdd.ID, , selectedTable))
-            {
-                // ADDS THE REGISTRY TO THE DATA SET
-                ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
-
-                // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                ReconnectionToDB(selectedTable);
-
-                // UPDATES THE POSITION AND THE COUNT OF RECORDS
-                _selectedCoursesQuantity++;
             }
-        }*/
-
-    }
-
-        // METHOD TO UPDATE A OBJECT INTO THE DATABASE
-        public void UpdateSelectedObjectFromPosition(int pos, string selectedTable)
-        {
-            if (selectedTable != "Courses")
+            
+            /*TODO CREATE ALUMN CLASS BEFORE CHECKING HERE
+            else if (objectToAdd is Alumn alumnToAdd)
             {
-                // GETS THE PERSON OBJECT DATA FROM THE POSITION SELECTED
-                Person personToUpdate = GetSelectedTypeObject(pos, selectedTable);
+                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                dNewRecord[0] = alumnToAdd.ID;
+                dNewRecord[1] = alumnToAdd.Name;
+                dNewRecord[2] = alumnToAdd.Surnames;
+                dNewRecord[3] = alumnToAdd.Phone;
+                dNewRecord[4] = alumnToAdd.Email;
 
-                // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
-                DataRow dRecord;
-
-                if (personToUpdate.GetPersonType() == "Teacher")
+                if (!CheckAllPosibleDuplicatedData(alumnToAdd.ID, alumnToAdd.Phone, alumnToAdd.Email, selectedTable))
                 {
-                    // TAKING THE RECORD OF "pos" POSITION IN SELECTED TABLE
-                    dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+                    // ADDS THE REGISTRY TO THE DATA SET
+                    ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
 
-                    Teacher teacherToUpdate = (Teacher)personToUpdate;
-                    // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                    dRecord[0] = teacherToUpdate.ID;
-                    dRecord[1] = teacherToUpdate.Name;
-                    dRecord[2] = teacherToUpdate.Surnames;
-                    dRecord[3] = teacherToUpdate.Phone;
-                    dRecord[4] = teacherToUpdate.Email;
+                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
 
-                    if (!CheckAllPosibleDuplicatedData(teacherToUpdate.ID, teacherToUpdate.Phone, teacherToUpdate.Email, selectedTable))
-                    {
-                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                        ReconnectionToDB(selectedTable);
-                    }
+                    // UPDATES THE POSITION AND THE COUNT OF RECORDS
+                    _selectedAlumnsQuantity++;
                 }
+            }*/
 
-                /* TODO CREATE ALUMN CLASS BEFORE CHECKING HERE
-                else if (personToAdd.GetPersonType() == "Alumn")
+            /* TODO CREATE COURSE CLASS BEFORE CHECKING HERE
+            else if (objectToAdd is Course courseToAdd)
+            {
+                // CREATE A NEW REGISTRY
+                DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
+
+                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                dNewRecord[0] = courseToAdd.ID;
+                dNewRecord[1] = courseToAdd.Name;
+
+                if (!DuplicatedIDDataFromSelectedTable(courseToAdd.ID, selectedTable))
                 {
-                    Alumn alumnToUpdate = (Alumn)personToUpdate;
-                    // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                    dNewRecord[0] = alumnToUpdate.ID;
-                    dNewRecord[1] = alumnToUpdate.Name;
-                    dNewRecord[2] = alumnToUpdate.Surnames;
-                    dNewRecord[3] = alumnToUpdate.Phone;
-                    dNewRecord[4] = alumnToUpdate.Email;
+                    // ADDS THE REGISTRY TO THE DATA SET
+                    ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
 
-                    if (!CheckAllPosibleDuplicatedData(alumnToUpdate.ID, alumnToUpdate.Phone, alumnToUpdate.Email, selectedTable))
-                    {
+                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
 
-                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                        ReconnectionToDB(selectedTable);
-                    }
-                }*/
+                    // UPDATES THE POSITION AND THE COUNT OF RECORDS
+                    _selectedCoursesQuantity++;
+                }
+            }*/
+
         }
 
-        /* TODO COURSE CLASS BEFORE CHECKING HERE
-        else
+        //TO FIX
+        // METHOD TO UPDATE A OBJECT INTO THE DATABASE
+        public void UpdateSelectedObjectFromPosition(object objectToUpdate, int pos, string selectedTable)
         {
-            // GETS THE COURSE OBJECT DATA FROM THE POSITION SELECTED
-            Course courseToUpdate = GetSelectedTypeObject(pos, selectedTable);
-
             // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
-            DataRow dRecord;
+            DataRow dUpdateRecord;
 
             // TAKING THE RECORD OF "pos" POSITION IN SELECTED TABLE
-            dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+            dUpdateRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
 
-            // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-            dRecord[0] = courseToUpdate.ID;
-            dRecord[1] = courseToUpdate.Name;
-
-            if (!DuplicatedIDDataFromSelectedTable(courseToUpdate.ID, selectedTable))
+            if (objectToUpdate is Teacher teacherToUpdate)
             {
-                // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                ReconnectionToDB(selectedTable);
+                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                dUpdateRecord[0] = teacherToUpdate.ID;
+                dUpdateRecord[1] = teacherToUpdate.Name;
+                dUpdateRecord[2] = teacherToUpdate.Surnames;
+                dUpdateRecord[3] = teacherToUpdate.Phone;
+                dUpdateRecord[4] = teacherToUpdate.Email;
+
+                if (!CheckAllPosibleDuplicatedData(teacherToUpdate.ID, teacherToUpdate.Phone, teacherToUpdate.Email, selectedTable))
+                {
+                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
+                }
             }
+
+            /* TODO CREATE ALUMN CLASS BEFORE CHECKING HERE
+            else if (objectToUpdate is Alumn alumnToUpdate)
+            {
+                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                dUpdateRecord[0] = alumnToUpdate.ID;
+                dUpdateRecord[1] = alumnToUpdate.Name;
+                dUpdateRecord[2] = alumnToUpdate.Surnames;
+                dUpdateRecord[3] = alumnToUpdate.Phone;
+                dUpdateRecord[4] = alumnToUpdate.Email;
+
+                if (!CheckAllPosibleDuplicatedData(alumnToUpdate.ID, alumnToUpdate.Phone, alumnToUpdate.Email, selectedTable))
+                {
+                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
+                }
+            }*/
+
+            /* TODO COURSE CLASS BEFORE CHECKING HERE
+            else if (objectToUpdate is Course courseToUpdate)
+            {
+                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                dUpdateRecord[0] = courseToUpdate.ID;
+                dUpdateRecord[1] = courseToUpdate.Name;
+
+                if (!DuplicatedIDDataFromSelectedTable(courseToUpdate.ID, selectedTable))
+                {
+                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
+                }
+            }*/
+
         }
-        */
-    }
 
         // METHOD TO DELETE A SELECTED OBJECT FROM THE DB
         public void DeleteSelectedObjectFromPosition(int pos, string selectedTable)
@@ -494,51 +481,43 @@ namespace Exercise_2
         {
             bool same = true;
 
-            if (selectedTable != "Courses")
+            object objectToUpdate = GetSelectedTypeObject(pos, selectedTable);
+
+            if (objectToUpdate is Teacher teacherToCompare)
             {
-                Person personToCompare = GetSelectedTypeObject(pos, selectedTable);
-
-                if (personToCompare.GetPersonType() == "Teacher")
+                if (teacherToCompare.ID != ID ||
+                    teacherToCompare.Name != name ||
+                    teacherToCompare.Surnames != surnames ||
+                    teacherToCompare.Phone != phone ||
+                    teacherToCompare.Email != email)
                 {
-                    Teacher teacherToCompare = (Teacher)personToCompare;
-                    if (teacherToCompare.ID != ID ||
-                        teacherToCompare.Name != name ||
-                        teacherToCompare.Surnames != surnames ||
-                        teacherToCompare.Phone != phone ||
-                        teacherToCompare.Email != email)
-                    {
-                        same = false;
-                    }
+                    same = false;
                 }
-
-                /* TODO CREATE ALUMN CLASS BEFORE CHECKING HERE
-                else if (personToCompare.GetPersonType() == "Alumn")
-                {
-                    Alumn alumnToCompare = (Alumn)personToCompare;
-                    if (alumnToCompare.ID != ID ||
-                        alumnToCompare.Name != name ||
-                        alumnToCompare.Surnames != surnames ||
-                        alumnToCompare.Phone != phone ||
-                        alumnToCompare.Email != email)
-                    {
-                        same = false;
-                    }
-                }
-                */
             }
 
-            /* TODO CREATE COURSE CLASS BEFORE CHECKING HERE
-            else
+            /* TODO CREATE ALUMN CLASS BEFORE CHECKING HERE
+            else if (objectToUpdate is Alumn alumnToCompare)
             {
-                Course courseToCompare = GetSelectedTypeObject(pos, selectedTable);
+                if (alumnToCompare.ID != ID ||
+                    alumnToCompare.Name != name ||
+                    alumnToCompare.Surnames != surnames ||
+                    alumnToCompare.Phone != phone ||
+                    alumnToCompare.Email != email)
+                {
+                    same = false;
+                }
+            } */
+
+            /* TODO CREATE COURSE CLASS BEFORE CHECKING HERE
+            else if (objectToUpdate is Course courseToCompare)
+                {
                 if (courseToCompare.ID != ID ||
                     courseToCompare.Name != name)
                 {
                     same = false;
                 }
-            }
-            */
-
+            }*/
+            
             return same;
         }
     }

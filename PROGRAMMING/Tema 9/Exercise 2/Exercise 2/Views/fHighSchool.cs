@@ -19,39 +19,18 @@ namespace Exercise_2
     // ERROR AL BORRAR TODOS
     public partial class fHighSchool : Form
     {
-        private List<Person> personList;
-
         public fHighSchool()
         {
             InitializeComponent();
         }
 
         // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
-        TeacherDBHandler handleDB;
-
-        /* ---------------- POSITION HANDLING START --------------------- */
-
-        // CREATION OF GLOBAL POSITION
-        private int pos = -1;
-
-        // SETS THE POSITION OF THE ACTUAL RECORD INTO A TEXT LABEL
-        private void RecordPositionLabel(int pos)
-        {
-            if (handleDB.TeachersQuantity > 0)
-            {
-                lblRecord.Text = "Record Nº" + (pos + 1) + " of " + handleDB.TeachersQuantity;
-            }
-            else if (handleDB.TeachersQuantity == 0)
-            {
-                lblRecord.Text = "";
-            }
-        }
-
-            /* ---------------- POSITION HANDLING END --------------------- */
+        SqlDBHandler dbHandler;
 
         // FORM LOADING HANDLING
         private void fHighSchool_Load(object sender, EventArgs e)
         {
+            dbHandler = new SqlDBHandler("Profesores");
             // SETS FIRST POSITION, UPDATES THE VISUALS AND CHECKS THE ACTUAL BUTTONS STATUS WHEN FIRST LOADED
             pos = 0;
             RecordPositionLabel(pos);
@@ -64,25 +43,49 @@ namespace Exercise_2
         private bool changeDetected = false;
 
 
+        /* ---------------- POSITION HANDLING START --------------------- */
+
+        // CREATION OF GLOBAL POSITION
+        private int pos = -1;
+
+        // SETS THE POSITION OF THE ACTUAL RECORD INTO A TEXT LABEL
+        private void RecordPositionLabel(int pos)
+        {
+            if (dbHandler.TeachersQuantity > 0)
+            {
+                lblRecord.Text = "Record Nº" + (pos + 1) + " of " + dbHandler.TeachersQuantity;
+            }
+            else if (dbHandler.TeachersQuantity == 0)
+            {
+                lblRecord.Text = "";
+            }
+        }
+
+            /* ---------------- POSITION HANDLING END --------------------- */
+
+   
         // FUNCTION WHICH UPDATES THE VISUAL PART OF THE FORM
         private void ShowTeacherRecords(int pos)
         {
-            if (handleDB.TeachersQuantity > 0)
+            if (dbHandler.TeachersQuantity > 0)
             {
-                Teacher selectedTeacherRecords = handleDB.GetTeacherObject(pos);
+                object selectedObjectRecords = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+                if (selectedObjectRecords is Teacher selectedTeacherRecords)
+                {
+    
+                    // TAKE VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE APPROPIATE TEXTBOX
+                    txtbID.Text = selectedTeacherRecords.ID;
+                    txtbName.Text = selectedTeacherRecords.Name;
+                    txtbSurnames.Text = selectedTeacherRecords.Surnames;
+                    txtbPhone.Text = selectedTeacherRecords.Phone;
+                    txtbEmail.Text = selectedTeacherRecords.Email;
 
-                // TAKE VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE APPROPIATE TEXTBOX
-                txtbID.Text = selectedTeacherRecords.ID;
-                txtbName.Text = selectedTeacherRecords.Name;
-                txtbSurnames.Text = selectedTeacherRecords.Surnames;
-                txtbPhone.Text = selectedTeacherRecords.Phone;
-                txtbEmail.Text = selectedTeacherRecords.Email;
-
-                // DETECTED CHANGES RESET AND CHECKS THE ACTUAL BUTTONS STATUS
-                changeDetected = false;
-                ButtonsCheck();
+                    // DETECTED CHANGES RESET AND CHECKS THE ACTUAL BUTTONS STATUS
+                    changeDetected = false;
+                    ButtonsCheck();
+                }
             }
-            else if(handleDB.TeachersQuantity == 0)
+            else if(dbHandler.TeachersQuantity == 0)
             {
                 // CLEAR EVERY DATA FROM THE TEXT BOXES AND CHECKS THE ACTUAL BUTTONS STATUS
                 btnClear.PerformClick();
@@ -93,30 +96,30 @@ namespace Exercise_2
         public string ShowsTeachersList()
         {
             string result = "";
-            if (handleDB.TeachersQuantity != 0)
+            if (dbHandler.TeachersQuantity != 0)
             {
                 string teacherListTxt = "List of teachers: \n\n";
 
-                if (handleDB.TeachersQuantity > 1)
+                if (dbHandler.TeachersQuantity > 1)
                 {
-                    DataTable teachersTable = handleDB.ImportTeachersDataTable();
+                    DataTable teachersTable = dbHandler.ImportSelectedDataTable("Profesores");
 
                     foreach (DataRow row in teachersTable.Rows)
                     {
                         string teacherInfo = "ID: " + row["DNI"] + "\n" +
-                                                "Name: " + row["Nombre"] + "\n" +
-                                                "Surnames: " + row["Apellido"] + "\n" +
-                                                "Phone: " + row["Tlf"] + "\n" +
-                                                "Email: " + row["Email"] + "\n";
+                                             "Name: " + row["Nombre"] + "\n" +
+                                             "Surnames: " + row["Apellido"] + "\n" +
+                                             "Phone: " + row["Tlf"] + "\n" +
+                                             "Email: " + row["Email"] + "\n";
 
                         teacherListTxt += teacherInfo + "\n";
                     }
                     result = teacherListTxt;
                 }
-                else if (handleDB.TeachersQuantity == 1)
+                else if (dbHandler.TeachersQuantity == 1)
                 {
-                    Teacher singleTeacher = handleDB.GetTeacherObject(0);
-                    teacherListTxt = "Teacher Data: \n\n" + handleDB.getTeacherDataFromPosition(singleTeacher, 0);
+                    object singleTeacher = dbHandler.GetSelectedTypeObject(0, "Profesores");
+                    teacherListTxt = "Teacher Data: \n\n" + dbHandler.GetObjectDataFromPosition(singleTeacher, 0, "Profesores");
                     result = teacherListTxt;
                 }
             }
@@ -130,11 +133,11 @@ namespace Exercise_2
         public int SimilarTeacherSurnamesCounter(string teacherSurname)
         {
             int counter = 0;
-            if (handleDB.TeachersQuantity != 0)
+            if (dbHandler.TeachersQuantity != 0)
             {
-                for (int i = 0; i < handleDB.TeachersQuantity; i++)
+                for (int i = 0; i < dbHandler.TeachersQuantity; i++)
                 {
-                    DataRow teacherRow = handleDB.ImportTeachersDataTable().Rows[i];
+                    DataRow teacherRow = dbHandler.ImportSelectedDataTable("Profesores").Rows[i];
                     string stringToCheck = teacherRow[2].ToString().ToLower();
                     if (stringToCheck.Contains(teacherSurname.ToLower()))
                     {
@@ -151,11 +154,11 @@ namespace Exercise_2
             List<string> extraTeachersInfo = new List<string>();
             List<int> teachersPositions = new List<int>();
 
-            if (handleDB.TeachersQuantity != 0)
+            if (dbHandler.TeachersQuantity != 0)
             {
-                for (int i = 0; i < handleDB.TeachersQuantity; i++)
+                for (int i = 0; i < dbHandler.TeachersQuantity; i++)
                 {
-                    DataRow teacherRow = handleDB.ImportTeachersDataTable().Rows[i];
+                    DataRow teacherRow = dbHandler.ImportSelectedDataTable("Profesores").Rows[i];
                     string stringToCheck = teacherRow[2].ToString().ToLower();
                     if (stringToCheck.Contains(teacherSurname.ToLower()))
                     {
@@ -234,7 +237,7 @@ namespace Exercise_2
 
         private bool CheckValuesChanged()
         {
-            return handleDB.CheckChangesStoredAndActualValues(pos, txtbID.Text, txtbName.Text, txtbSurnames.Text, txtbPhone.Text, txtbEmail.Text);
+            return dbHandler.CheckChangesStoredAndActualValues(pos, txtbID.Text, txtbName.Text, txtbSurnames.Text, txtbPhone.Text, txtbEmail.Text, "Profesores");
         }
 
 
@@ -290,7 +293,7 @@ namespace Exercise_2
         {
             if (pos == -1)
             {
-                pos = handleDB.TeachersQuantity - 1;
+                pos = dbHandler.TeachersQuantity - 1;
                 RecordPositionLabel(pos);
                 ShowTeacherRecords(pos);
             }
@@ -299,14 +302,14 @@ namespace Exercise_2
                 bool possiblyChangedValues = CheckValuesChanged();
                 if (possiblyChangedValues && (pos == -1))
                 {
-                    pos = handleDB.TeachersQuantity - 1;
+                    pos = dbHandler.TeachersQuantity - 1;
                     RecordPositionLabel(pos);
                     ShowTeacherRecords(pos);
                 }
                 else
                 {
                     askToUpdateIfChangesWereMade(possiblyChangedValues);
-                    pos = handleDB.TeachersQuantity - 1;
+                    pos = dbHandler.TeachersQuantity - 1;
                     RecordPositionLabel(pos);
                     ShowTeacherRecords(pos);
                 }
@@ -319,7 +322,7 @@ namespace Exercise_2
             {
                 btnFirst.PerformClick();
             }
-            else if (pos < (handleDB.TeachersQuantity - 1))
+            else if (pos < (dbHandler.TeachersQuantity - 1))
             {
                 bool possiblyChangedValues = CheckValuesChanged();
                 if (possiblyChangedValues && (pos == -1))
@@ -378,13 +381,13 @@ namespace Exercise_2
         private void btnSave_Click(object sender, EventArgs e)
         {
             // CHECKS THAT THE ACTUAL TEXT BOX ID TEXT IS NOT USED ALREADY IN THE DB
-            if (!handleDB.DuplicatedIDData(txtbID.Text))
+            if (!dbHandler.DuplicatedIDDataFromSelectedTable(txtbID.Text, "Profesores"))
             {
                 // CHECKS THAT THE ACTUAL TEXT BOX PHONE TEXT IS NOT USED ALREADY IN THE DB
-                if (!handleDB.DuplicatedPhoneData(txtbPhone.Text))
+                if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(txtbPhone.Text, "Profesores"))
                 {
                     // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
-                    if (!handleDB.DuplicatedEmailData(txtbEmail.Text))
+                    if (!dbHandler.DuplicatedEmailDataFromSelectedTable(txtbEmail.Text, "Profesores"))
                     {
                         // CREATES THE TEACHER TO SAVE
                         Teacher savedTeacher = Teacher.TeacherCreation(txtbID.Text,
@@ -398,8 +401,8 @@ namespace Exercise_2
                         {
                             // FUNCTION WHICH CREATES A NEW TEACHER INTO THE DB
                             // AFTER THAT UPDATES THE POSITION AND THE COUNT OF TEACHER'S RECORDS
-                            handleDB.AddNewTeacher(savedTeacher);
-                            pos = handleDB.TeachersQuantity - 1;
+                            dbHandler.AddNewObject(savedTeacher, "Profesores");
+                            pos = dbHandler.TeachersQuantity - 1;
                             RecordPositionLabel(pos);      
                         }
                         else
@@ -423,17 +426,19 @@ namespace Exercise_2
             }
         }
 
+        //tofix
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (pos != -1 && changeDetected)
             {
-                if (!handleDB.DuplicatedIDData(txtbID.Text))
+                object selectedTeacherToUpdate = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+                if (!dbHandler.DuplicatedIDDataFromSelectedTable(txtbID.Text, "Profesores"))
                 {
-                    if (!handleDB.DuplicatedPhoneData(txtbPhone.Text))
+                    if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(txtbPhone.Text, "Profesores"))
                     {
-                        if (!handleDB.DuplicatedEmailData(txtbEmail.Text))
+                        if (!dbHandler.DuplicatedEmailDataFromSelectedTable(txtbEmail.Text, "Profesores"))
                         {
-                            handleDB.UpdateTeacher(pos);
+                            dbHandler.UpdateSelectedObjectFromPosition(selectedTeacherToUpdate, pos, "Profesores");
 
                             ShowTeacherRecords(pos);
                             RecordPositionLabel(pos);
@@ -457,7 +462,7 @@ namespace Exercise_2
                     MessageBox.Show("This ID is already used, try another one");
                 }
             }
-            else if (handleDB.TeachersQuantity == 0)
+            else if (dbHandler.TeachersQuantity == 0)
             {
                 MessageBox.Show("Updating without having atleast one teacher in the DB is meaningless, try again after adding a teacher to the DB.");
             }
@@ -469,7 +474,7 @@ namespace Exercise_2
 
         private void btnDelete_Click(object sender, EventArgs e)
         { 
-            if (handleDB.TeachersQuantity > 0)
+            if (dbHandler.TeachersQuantity > 0)
             {
                 if (pos != -1)
                 {
@@ -478,7 +483,7 @@ namespace Exercise_2
 
                     if (delete == DialogResult.Yes)
                     {
-                        handleDB.DeleteTeacher(pos);
+                        dbHandler.DeleteSelectedObjectFromPosition(pos, "Profesores");
 
                         // RESETS POSITION
                         pos = 0;
@@ -491,7 +496,7 @@ namespace Exercise_2
                     MessageBox.Show("Delete is not possible when no teacher is selected.");
                 }
             }
-            else if (handleDB.TeachersQuantity == 0)
+            else if (dbHandler.TeachersQuantity == 0)
             {
                 MessageBox.Show("Delete is not possible when no elements are in the database.");
             }
@@ -499,7 +504,7 @@ namespace Exercise_2
 
         private void btnSearchTeacher_Click(object sender, EventArgs e)
         {
-            if (handleDB.TeachersQuantity > 1)
+            if (dbHandler.TeachersQuantity > 1)
             {
                 bool showed = false;
                 do
@@ -527,11 +532,11 @@ namespace Exercise_2
                 } while (!showed);
                 
             }
-            else if (handleDB.TeachersQuantity == 1)
+            else if (dbHandler.TeachersQuantity == 1)
             {
                 MessageBox.Show("There's only one teacher so it's data will be the one showed.");
-                MessageBox.Show("The data from " + handleDB.getTeacherFullNameFromPosition(handleDB.GetTeacherObject(0), 0) +
-                                " is: \n\n" + handleDB.getTeacherDataFromPosition(handleDB.GetTeacherObject(0), 0));
+                MessageBox.Show("The data from " + dbHandler.GetPersonFullNameFromPosition(dbHandler.GetSelectedTypeObject(0, "Teacher"), 0, "Teacher") +
+                                " is: \n\n" + dbHandler.GetObjectDataFromPosition(dbHandler.GetSelectedTypeObject(0, "Teacher"), 0, "Teacher"));
             }
             else
             {
@@ -567,12 +572,12 @@ namespace Exercise_2
 
         public void ButtonsCheck()
         {
-            bool recordsExist = (handleDB.TeachersQuantity > 0);
+            bool recordsExist = (dbHandler.TeachersQuantity > 0);
             bool noRecordSelected = (pos == -1);
 
             // ENABLE/DISABLE NAVIGATION BUTTONS
-            btnNext.Enabled = (recordsExist && pos < handleDB.TeachersQuantity - 1) && !noRecordSelected;
-            btnLast.Enabled = (recordsExist && pos < handleDB.TeachersQuantity - 1) && !noRecordSelected;
+            btnNext.Enabled = (recordsExist && pos < dbHandler.TeachersQuantity - 1) && !noRecordSelected;
+            btnLast.Enabled = (recordsExist && pos < dbHandler.TeachersQuantity - 1) && !noRecordSelected;
             btnPrevious.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
             btnFirst.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
 
@@ -601,27 +606,52 @@ namespace Exercise_2
         }
         private void txtbID_TextChanged(object sender, EventArgs e)
         {
-            UpdateChangeDetected(txtbID.Text, originalID);
+            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+            if (actualObject is Teacher actualTeacher)
+            {
+                string originalID = actualTeacher.ID;
+                UpdateChangeDetected(txtbID.Text, actualTeacher.ID);
+            }
         }
 
         private void txtbName_TextChanged(object sender, EventArgs e)
         {
-            UpdateChangeDetected(txtbName.Text, originalName);
+            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+            if (actualObject is Teacher actualTeacher)
+            {
+                string originalName = actualTeacher.Name;
+                UpdateChangeDetected(txtbName.Text, originalName);
+            }
         }
 
         private void txtbSurnames_TextChanged(object sender, EventArgs e)
         {
-            UpdateChangeDetected(txtbSurnames.Text, originalSurnames);
+            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+            if (actualObject is Teacher actualTeacher)
+            {
+                string originalSurnames = actualTeacher.Surnames;
+                UpdateChangeDetected(txtbSurnames.Text, originalSurnames);
+            }
         }
 
         private void txtbPhone_TextChanged(object sender, EventArgs e)
         {
-            UpdateChangeDetected(txtbPhone.Text, originalPhone);
+            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+            if (actualObject is Teacher actualTeacher)
+            {
+                string originalPhone = actualTeacher.Phone;
+                UpdateChangeDetected(txtbPhone.Text, originalPhone);
+            }
         }
 
         private void txtbEmail_TextChanged(object sender, EventArgs e)
         {
-            UpdateChangeDetected(txtbEmail.Text, originalEmail);
+            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+            if (actualObject is Teacher actualTeacher)
+            {
+                string originalEmail = actualTeacher.Email;
+                UpdateChangeDetected(txtbEmail.Text, originalEmail);
+            }
         }
 
             /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
