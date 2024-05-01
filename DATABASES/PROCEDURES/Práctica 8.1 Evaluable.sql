@@ -419,39 +419,39 @@ BEGIN
 				     FROM OFICINAS
 				    WHERE codOficina = @officeCod)
 		BEGIN
-			 PRINT 'The selected office already exists.';
+			PRINT 'The selected office already exists.';
 			RETURN -1
 		END
 
 		IF (@officeCod IS NULL OR @officeCod = '' OR LEN(@officeCod) <> 6 OR SUBSTRING(@officeCod, 4, 1) <> '-')
         BEGIN
-             PRINT 'Office code must have 6 characters and be in the format "AAA-AA". Example: ELX-ES';
+            PRINT 'Office code must have 6 characters and be in the format "AAA-AA". Example: ELX-ES';
             RETURN -1
         END
 
         IF (@officeCity IS NULL OR @officeCity = '' OR @officeCity LIKE '%[0-9]%')
         BEGIN
-             PRINT 'Office city must contain only alphabetical characters. Example: London';
+            PRINT 'Office city must contain only alphabetical characters. Example: London';
             RETURN -1
         END
 
         IF (@officeCountry IS NULL OR @officeCountry = '' OR @officeCountry LIKE '%[0-9]%')
         BEGIN
-             PRINT 'Office country must contain only alphabetical characters. Example: Spain';
+            PRINT 'Office country must contain only alphabetical characters. Example: Spain';
             RETURN -1
         END
 
         IF (@officePostalCode IS NULL OR @officePostalCode = '' OR LEN(@officePostalCode) <> 5
 		    OR @officePostalCode NOT LIKE '[0-9][0-9][0-9][0-9][0-9]')
         BEGIN
-             PRINT 'Office postal code must contain exactly 5 numerical characters. Example: 03007';
+            PRINT 'Office postal code must contain exactly 5 numerical characters. Example: 03007';
             RETURN -1
         END
 
         IF (@officePhone IS NULL OR @officePhone = '' OR LEN(@officePhone) <> 9 
 		   OR @officePhone NOT LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
         BEGIN
-             PRINT 'Office phone must contain exactly 9 numerical characters. Example: 612345678';
+            PRINT 'Office phone must contain exactly 9 numerical characters. Example: 612345678';
             RETURN -1
         END
 
@@ -704,19 +704,10 @@ BEGIN
 	 RETURN @return
 END
 
- 	-- WAY 1
-
 GO
 SELECT DISTINCT codOficina, 
 	   dbo.getEmployeeCountFromOffice(codOficina) AS totalEmployees
-  FROM EMPLEADOS
- WHERE codOficina = 'BCN-ES'
-
- 	-- WAY 2
-
-GO
-DECLARE @officeCode CHAR(6) = 'BCN-ES'
- SELECT DISTINCT @officeCode AS officeCode, dbo.getEmployeeCountFromOffice(@officeCode) AS totalEmployees
+  FROM OFICINAS
 
 ---------------------------------------------
 --                                         --
@@ -759,7 +750,7 @@ END
 
 GO
 SELECT codCliente, dbo.clientHasOrders_YN(codCliente) AS clientHasOrders
- FROM CLIENTES;
+  FROM CLIENTES;
 
 ------------------------------------------------------------
 --                                                        --

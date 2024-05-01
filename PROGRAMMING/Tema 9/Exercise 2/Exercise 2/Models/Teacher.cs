@@ -25,7 +25,7 @@ namespace Exercise_2
         // CLASS PRE-CONSTRUCTOR
         private Teacher(string tID, string tName, string tSurnames, string tPhone, string tEmail) : base(tID, tName, tSurnames, tPhone)
         {
-            tEmail = this.tEmail;
+            Email = tEmail;
         }
 
         // CLASS CONSTRUCTOR
