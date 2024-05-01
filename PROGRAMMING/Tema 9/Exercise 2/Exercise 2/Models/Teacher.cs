@@ -13,7 +13,7 @@ namespace Exercise_2
 {
     public class Teacher : Person
     {
-        private string tID, tName, tSurnames, tPhone, tEmail;
+        private string tEmail;
 
         // PROPERTIES
         public string Email

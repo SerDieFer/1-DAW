@@ -407,8 +407,9 @@ namespace Exercise_2
                 dUpdateRecord[3] = teacherToUpdate.Phone;
                 dUpdateRecord[4] = teacherToUpdate.Email;
 
-                if (!CheckAllPosibleDuplicatedData(teacherToUpdate.ID, teacherToUpdate.Phone, teacherToUpdate.Email, selectedTable))
+                if (!CheckAllPosibleDuplicatedData(dUpdateRecord[0].ToString(), dUpdateRecord[3].ToString(), dUpdateRecord[4].ToString(), selectedTable))
                 {
+
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
                     ReconnectionToDB(selectedTable);
                 }

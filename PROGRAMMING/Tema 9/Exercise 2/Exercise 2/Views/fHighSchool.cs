@@ -13,6 +13,7 @@ using Microsoft.VisualBasic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Xml.Linq;
+using System.Net;
 
 namespace Exercise_2
 {
@@ -431,44 +432,64 @@ namespace Exercise_2
         {
             if (pos != -1 && changeDetected)
             {
-                object selectedTeacherToUpdate = dbHandler.GetSelectedTypeObject(pos, "Profesores");
-                if (!dbHandler.DuplicatedIDDataFromSelectedTable(txtbID.Text, "Profesores"))
+                // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW TEACHER
+                string ID = txtbID.Text;
+                string name = txtbName.Text;
+                string surnames = txtbSurnames.Text;
+                string phone = txtbPhone.Text;
+                string email = txtbEmail.Text;
+
+                // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
+                object selectedObjectToUpdate = Teacher.TeacherCreation(ID, name, surnames, phone, email);
+
+                // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
+                object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Profesores");
+
+                // CHECKS IF THE SELECTED OBJECT IS A TEACHER AND CONVERTS THAT OBJECT INTO A TEACHER TYPE TO ACCES TO ITS PROPERTIES
+                if (oldObjectData is Teacher oldTeacheData)
                 {
-                    if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(txtbPhone.Text, "Profesores"))
+
+                    // MAKES SURE THAT THE FOLLOWING ID-PHONE-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
+                    if (!dbHandler.DuplicatedIDDataFromSelectedTable(ID, "Profesores") || ID == oldTeacheData.ID)
                     {
-                        if (!dbHandler.DuplicatedEmailDataFromSelectedTable(txtbEmail.Text, "Profesores"))
+                        if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(phone, "Profesores") || phone == oldTeacheData.Phone)
                         {
-                            dbHandler.UpdateSelectedObjectFromPosition(selectedTeacherToUpdate, pos, "Profesores");
+                            if (!dbHandler.DuplicatedEmailDataFromSelectedTable(email, "Profesores") || email == oldTeacheData.Email)
+                            {
+                                dbHandler.UpdateSelectedObjectFromPosition(selectedObjectToUpdate, pos, "Profesores");
 
-                            ShowTeacherRecords(pos);
-                            RecordPositionLabel(pos);
+                                ShowTeacherRecords(pos);
+                                RecordPositionLabel(pos);
 
-                            changeDetected = false;
+                                changeDetected = false;
 
-                            ButtonsCheck();
+                                ButtonsCheck();
+
+                            }
+                            else
+                            {
+                                MessageBox.Show("This email is already used, try another one");
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("This email is already used, try another one");
+                            MessageBox.Show("This phone is already used, try another one");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("This phone is already used, try another one");
+                        MessageBox.Show("This ID is already used, try another one");
                     }
+                    
+                }
+                else if (dbHandler.TeachersQuantity == 0)
+                {
+                    MessageBox.Show("Updating without having atleast one teacher in the DB is meaningless, try again after adding a teacher to the DB.");
                 }
                 else
                 {
-                    MessageBox.Show("This ID is already used, try another one");
+                    MessageBox.Show(returnErrorInput());
                 }
-            }
-            else if (dbHandler.TeachersQuantity == 0)
-            {
-                MessageBox.Show("Updating without having atleast one teacher in the DB is meaningless, try again after adding a teacher to the DB.");
-            }
-            else
-            {
-                MessageBox.Show(returnErrorInput());
             }
         }
 
