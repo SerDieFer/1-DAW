@@ -17,7 +17,6 @@ using System.Net;
 
 namespace Exercise_2
 {
-    // ERROR AL BORRAR TODOS
     public partial class fHighSchool : Form
     {
         public fHighSchool()
@@ -120,7 +119,7 @@ namespace Exercise_2
                 else if (dbHandler.TeachersQuantity == 1)
                 {
                     object singleTeacher = dbHandler.GetSelectedTypeObject(0, "Profesores");
-                    teacherListTxt = "Teacher Data: \n\n" + dbHandler.GetObjectDataFromPosition(singleTeacher, 0, "Profesores");
+                    teacherListTxt = dbHandler.GetObjectDataFromPosition(singleTeacher, 0, "Profesores");
                     result = teacherListTxt;
                 }
             }
@@ -404,7 +403,9 @@ namespace Exercise_2
                             // AFTER THAT UPDATES THE POSITION AND THE COUNT OF TEACHER'S RECORDS
                             dbHandler.AddNewObject(savedTeacher, "Profesores");
                             pos = dbHandler.TeachersQuantity - 1;
-                            RecordPositionLabel(pos);      
+                            RecordPositionLabel(pos);
+                            btnCancelAddRegistry.PerformClick();
+                            ButtonsCheck();
                         }
                         else
                         {
@@ -427,7 +428,6 @@ namespace Exercise_2
             }
         }
 
-        //tofix
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (pos != -1 && changeDetected)
@@ -439,16 +439,12 @@ namespace Exercise_2
                 string phone = txtbPhone.Text;
                 string email = txtbEmail.Text;
 
-                // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
-                object selectedObjectToUpdate = Teacher.TeacherCreation(ID, name, surnames, phone, email);
-
                 // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
                 object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Profesores");
 
                 // CHECKS IF THE SELECTED OBJECT IS A TEACHER AND CONVERTS THAT OBJECT INTO A TEACHER TYPE TO ACCES TO ITS PROPERTIES
                 if (oldObjectData is Teacher oldTeacheData)
                 {
-
                     // MAKES SURE THAT THE FOLLOWING ID-PHONE-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
                     if (!dbHandler.DuplicatedIDDataFromSelectedTable(ID, "Profesores") || ID == oldTeacheData.ID)
                     {
@@ -456,14 +452,20 @@ namespace Exercise_2
                         {
                             if (!dbHandler.DuplicatedEmailDataFromSelectedTable(email, "Profesores") || email == oldTeacheData.Email)
                             {
-                                dbHandler.UpdateSelectedObjectFromPosition(selectedObjectToUpdate, pos, "Profesores");
-
-                                ShowTeacherRecords(pos);
-                                RecordPositionLabel(pos);
-
-                                changeDetected = false;
-
-                                ButtonsCheck();
+                                // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
+                                object selectedObjectToUpdate = Teacher.TeacherCreation(ID, name, surnames, phone, email);
+                                if (selectedObjectToUpdate != null)
+                                {
+                                    dbHandler.UpdateSelectedObjectFromPosition(selectedObjectToUpdate, pos, "Profesores");
+                                    ShowTeacherRecords(pos);
+                                    RecordPositionLabel(pos);
+                                    changeDetected = false;
+                                    ButtonsCheck();
+                                }
+                                else
+                                {
+                                    MessageBox.Show(returnErrorInput());
+                                }
 
                             }
                             else
@@ -509,7 +511,8 @@ namespace Exercise_2
                         // RESETS POSITION
                         pos = 0;
                         RecordPositionLabel(pos); // RELOADS THE POSITION LABEL
-                        ShowTeacherRecords(pos); 
+                        ShowTeacherRecords(pos);
+                        ButtonsCheck();
                     }
                 }
                 else
@@ -555,9 +558,9 @@ namespace Exercise_2
             }
             else if (dbHandler.TeachersQuantity == 1)
             {
+                object uniqueTeacher = dbHandler.GetSelectedTypeObject(0, "Profesores");
                 MessageBox.Show("There's only one teacher so it's data will be the one showed.");
-                MessageBox.Show("The data from " + dbHandler.GetPersonFullNameFromPosition(dbHandler.GetSelectedTypeObject(0, "Teacher"), 0, "Teacher") +
-                                " is: \n\n" + dbHandler.GetObjectDataFromPosition(dbHandler.GetSelectedTypeObject(0, "Teacher"), 0, "Teacher"));
+                MessageBox.Show(dbHandler.GetObjectDataFromPosition(uniqueTeacher, 0, "Profesores"));
             }
             else
             {
@@ -606,7 +609,7 @@ namespace Exercise_2
             btnSave.Enabled = noRecordSelected;
 
             // ENABLE/DISABLE CANCEL ADD REGISTRY BUTTON IF NO RECORD IS SELECTED
-            btnCancelAddRegistry.Enabled = noRecordSelected;
+            btnCancelAddRegistry.Enabled = noRecordSelected && recordsExist;
 
             // ENABLE/DISABLE DELETE AND UPDATE BUTTONS IF A RECORD IS SELECTED
             btnDelete.Enabled = recordsExist && !noRecordSelected;
@@ -674,7 +677,6 @@ namespace Exercise_2
                 UpdateChangeDetected(txtbEmail.Text, originalEmail);
             }
         }
-
             /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
     }
 }

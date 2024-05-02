@@ -8,45 +8,36 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using Microsoft.VisualBasic.ApplicationServices;
-using Microsoft.VisualBasic.Devices;
 
-namespace Exercise_2
+namespace Exercise_3
 {
-    public class SqlDBHandler
+    public class SqlDBHandler : TableRegistry
     {
         // DATA SET AND DATA ADAPTER MEMBERS
         DataSet dataSet;
         SqlDataAdapter dataAdapter;
 
         // TEACHERS TOTAL COUNT MEMBER
-        private int _selectedTeachersQuantity;
-        private int _selectedCoursesQuantity;
-        private int _selectedAlumnsQuantity;
+        private int _selectedUsersQuantity;
+        private int _selectedCharactersQuantity;
 
-        // PROPERTIE OF TEACHERS TOTAL COUNT
-        public int TeachersQuantity
+        // PROPERTIE OF USERS TOTAL COUNT
+        public int UsersQuantity
         {
-            get => _selectedTeachersQuantity;
+            get => _selectedUsersQuantity;
         }
 
-        // PROPERTIE OF COURSES TOTAL COUNT
-        public int CoursesQuantity
+        // PROPERTIE OF CHARACTERS TOTAL COUNT
+        public int CharactersQuantity
         {
-            get => _selectedCoursesQuantity;
-        }
-
-        // PROPERTIE OF ALUMNS TOTAL COUNT
-        public int AlumnsQuantity
-        {
-            get => _selectedAlumnsQuantity;
+            get => _selectedCharactersQuantity;
         }
 
         // SQLDBHANDLER CONSTRUCTOR WHICH HANDLES THE CONNECTION AND CREATION OF DATA SET AND DATA ADAPTER
         public SqlDBHandler(string selectedTable)
         {
             // DB CONNECTION
-            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\Highschool.mdf;";
+            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
 
             SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
             "AttachDbFilename=" + path + "Integrated Security=True");
@@ -61,24 +52,35 @@ namespace Exercise_2
 
             dataAdapter.Fill(dataSet, selectedTable);
 
-            if (selectedTable == "Profesores")
+            if (selectedTable == ((TablesEnum)0).ToString())
+            {
+                // COUNT TOTAL TEACHERS
+                _selectedUsersQuantity = dataSet.Tables[selectedTable].Rows.Count;
+            }
+            else if(selectedTable == TablesEnum.Characters)
+            {
+                // COUNT TOTAL ALUMNS
+                _selectedCharactersQuantity = dataSet.Tables[selectedTable].Rows.Count;
+            }
+
+            // CLOSES CONNECTION
+            con.Close();
+        }
+
+        public void TableSelection()
+        {
+            if (selectedTable = Tables.Characters)
             {
                 // COUNT TOTAL TEACHERS
                 _selectedTeachersQuantity = dataSet.Tables[selectedTable].Rows.Count;
             }
-            else if(selectedTable == "Alumnos")
+            else if (selectedTable == "Characters")
             {
                 // COUNT TOTAL ALUMNS
                 _selectedAlumnsQuantity = dataSet.Tables[selectedTable].Rows.Count;
             }
-            else if(selectedTable == "Courses")
-            {
-                // COUNT TOTAL COURSES
-                _selectedCoursesQuantity = dataSet.Tables[selectedTable].Rows.Count;
-            }
-            // CLOSES CONNECTION
-            con.Close();
         }
+
 
         public DataTable ImportSelectedDataTable(string selectedTable)
         {

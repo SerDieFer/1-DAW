@@ -54,7 +54,7 @@ namespace Exercise_2
             var className = GetType().Name;
             string pInfoTxt = "";
             pInfoTxt = className
-                       + " data: \n"
+                       + " data: \n\n"
                        + "Name: " + Name + "\n" 
                        + "Surnames: " + Surnames + "\n"
                        + "ID: " + ID + "\n"
@@ -67,7 +67,7 @@ namespace Exercise_2
             var className = GetType().Name;
             string pInfoTxt = "";
             pInfoTxt = className
-                       + " data: \n"
+                       + " data: \n\n"
                        + "Name: " + Name + "\n"
                        + "Surnames: " + Surnames + "\n"
                        + "ID: " + ID + "\n";
