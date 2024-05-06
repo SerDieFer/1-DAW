@@ -10,7 +10,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Exercise_3
 {
-    public class User : TableRegistry
+    public class User
     {
         private string uName, uEmail, uPassword;
 
@@ -19,6 +19,7 @@ namespace Exercise_3
             get;
             private set;
         }
+
         public string Name
         {
             get => uName;
@@ -36,7 +37,7 @@ namespace Exercise_3
             get => uEmail;
             set => uEmail = value;
         }
-        private User(string uName, string uPassword, string uEmail) : base(0)
+        private User(string uName, string uPassword, string uEmail)
         {
             Name = uName;
             Password = uPassword;
@@ -55,7 +56,7 @@ namespace Exercise_3
             }
             else
             {
-                return new User(uName,uPassword, uEmail);
+                return new User(uName, uPassword, uEmail);
             }
         }
 

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Exercise_3
 {
-    public class Character : TableRegistry
+    public class Character
     {
         private string cName, cImgRoute, cImgIconRoute;
 
@@ -38,7 +38,7 @@ namespace Exercise_3
         }
 
         // CLASS CONSTRUCTOR
-        public Character(string cName, string cImgRoute, string cImgIconRoute) : base(1)
+        public Character(string cName, string cImgRoute, string cImgIconRoute)
         {
             Name = cName;
             ImgRoute = cImgRoute;
