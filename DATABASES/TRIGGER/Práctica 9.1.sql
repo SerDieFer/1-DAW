@@ -1,4 +1,10 @@
--- CREACIÓN DE LA BASE DE DATOS DE LA LIBERÍA Y POSTERIOR USO DE ESTA
+------------------
+--- EXERCISE 1 ---
+------------------
+
+----------------------------------------------------------------------
+
+-- CREACIÓN DE LA BASE DE DATOS DE LA LIBRERÍA Y POSTERIOR USO DE ESTA
 GO
 CREATE DATABASE LIBRARY
 GO
@@ -26,21 +32,19 @@ CREATE TABLE LOANS (
     loanID INT NOT NULL,
     loanData SMALLDATETIME NOT NULL,
     loanReturn SMALLDATETIME,
-    ISBN CHAR(13) NOT NULL,
-    ID CHAR(10) NOT NULL
+    bookISBN CHAR(13) NOT NULL,
+    memberID CHAR(10) NOT NULL
 
     CONSTRAINT PK_LOANS PRIMARY KEY (loanID),
-    CONSTRAINT FK_BOOKSLOANS FOREIGN KEY (ISBN) REFERENCES BOOKS(ISBN),
-    CONSTRAINT FK_MEMBERSLOANS FOREIGN KEY (ID) REFERENCES MEMBERS(ID)
+    CONSTRAINT FK_BOOKSLOANS FOREIGN KEY (bookISBN) REFERENCES BOOKS(ISBN),
+    CONSTRAINT FK_MEMBERSLOANS FOREIGN KEY (memberID) REFERENCES MEMBERS(ID)
 )
 GO
 CREATE TABLE LOST_BOOKS (
     ISBN CHAR(13) NOT NULL,
     ID CHAR(10) NOT NULL,
     memberName VARCHAR(50) NOT NULL,
-    lostDate SMALLDATETIME NOT NULL,
-
-    CONSTRAINT PK_LOST_BOOKS PRIMARY KEY (ISBN)
+    lostDate SMALLDATETIME NOT NULL
 )   
 
 -- INSERTO REGISTROS PARA COMPROBAR EN LAS TABLAS
@@ -51,14 +55,14 @@ VALUES ('9780141182605', '1984', 15.99),
        ('9780743273565', 'The Great Gatsby', 10.75)
 GO
 INSERT INTO MEMBERS (ID, memberName, memberCity) 
-VALUES ('M0001', 'John Smith', 'New York'),
-       ('M0002', 'Maria Garcia', 'Madrid'),
-       ('M0003', 'Emily Johnson', 'London')
+VALUES ('12345678A', 'John Smith', 'New York'),
+       ('23456789B', 'Maria Garcia', 'Madrid'),
+       ('34567890C', 'Emily Johnson', 'London')
 GO
-INSERT INTO LOANS (loanID, loanData, loanReturn, ISBN, ID) 
-VALUES (1, '2024-04-25', NULL, '9780141182605', 'M0001'),
-       (2, '2024-04-26', '2024-04-29', '9780061120084', 'M0002'),
-       (3, '2024-04-27', NULL, '9780743273565', 'M0003')
+INSERT INTO LOANS (loanID, loanData, loanReturn, bookISBN, memberID) 
+VALUES (1, '2024-04-25', NULL, '9780141182605', '12345678A'),
+       (2, '2024-04-26', '2024-04-29', '9780061120084', '23456789B'),
+       (3, '2024-04-27', NULL, '9780743273565', '34567890C')
 
 -- CREACION DE BACKUP DE MIEMBROS HISTORICOS
 GO
@@ -69,14 +73,21 @@ SELECT *
  ALTER TABLE MEMBERS_HISTORIC
    ADD changeDate SMALLDATETIME
 
+   --DROP TABLE MEMBERS_HISTORIC
+
 -- CREACION DEL TRIGGER CUANDO UN MIEMBRO ES BORRADO
 GO
 CREATE OR ALTER TRIGGER TX_MEMBER_LEAVE ON MEMBERS INSTEAD OF DELETE
 AS
 BEGIN
     BEGIN TRY
+        DECLARE @hasTransaction BIT = 1
+
         -- SI NO EXISTEN TRANSACCIONES ABIERTAS SE INICIA UNA TRANSACCION
-        --IF @@TRANCOUNT = 0
+        IF @@TRANCOUNT = 0 
+            SET @hasTransaction = 0
+        
+        IF @hasTransaction = 0
         BEGIN TRAN
     
             -- COPIA DEL HISTORICO DE MIEMBROS DE LA LIBRERIA
@@ -87,19 +98,19 @@ BEGIN
 
             -- ACTUALIZACIÓN DE LOS DATOS BORRADOS A LA TABLA DE LIBROS PERDIDOS
             INSERT INTO LOST_BOOKS
-            SELECT LOANS.ISBN, 
+            SELECT LOANS.bookISBN, 
                    DELETED.ID, 
                    MEMBERS.memberName, 
                    GETDATE()
               FROM LOANS, 
                    MEMBERS,
                    DELETED
-             WHERE LOANS.ID = DELETED.ID
+             WHERE LOANS.memberID = DELETED.ID
                AND LOANS.loanReturn IS NULL
 
             -- BORRADO EN CASCADA DE LOS DATOS DEL MIEMBRO A BORRAR
             DELETE FROM LOANS
-             WHERE ID IN (SELECT ID
+             WHERE memberID IN (SELECT ID
                             FROM DELETED)
 
             DELETE FROM MEMBERS
@@ -107,7 +118,7 @@ BEGIN
                             FROM DELETED)
 
         -- SI SOLO EXISTE LA TRANSACCION PREVIA SE HACE COMMIT
-        --IF @@TRANCOUNT = 1
+        IF @hasTransaction = 0
         COMMIT
     END TRY
     BEGIN CATCH
@@ -116,11 +127,153 @@ BEGIN
                       'LINE: ', ERROR_LINE(), CHAR(10),
                       'PROCEDURE: ', ERROR_PROCEDURE())
         -- SI SOLO EXISTE LA TRANSACCION PREVIA SE HACE COMMIT
-        --IF @@TRANCOUNT = 1
+        IF @hasTransaction = 0
         ROLLBACK
     END CATCH
 END
 
+------------------
+--- EXERCISE 2 ---
+------------------
+
+----------------------------------------------------------------------------
+
+-- CREACIÓN DE LA BASE DE DATOS DEL SERVICIO TÉCNICO Y POSTERIOR USO DE ESTA
+GO
+CREATE DATABASE TECHNICAL_SERVICE
+GO
+USE TECHNICAL_SERVICE
+
+-- CREACIÓN DE LAS TABLAS DEL SERVICIO TÉCNICO
+GO
+CREATE TABLE TECHNICIANS(
+    ID CHAR(10) NOT NULL,
+    technicianName VARCHAR(50) NOT NULL,
+    technicianCity VARCHAR(50) NOT NULL,
+    technicianSalary DECIMAL(7,2) NOT NULL
+
+    CONSTRAINT PK_TECHNICIANS PRIMARY KEY (ID)
+)
+GO
+CREATE TABLE REPAIRMENTS(
+    repairmentID INT NOT NULL,
+    repairmentOrderDate SMALLDATETIME NOT NULL,
+    repairConcept VARCHAR(50) NOT NULL,
+    repairCost DECIMAL(8,2) NOT NULL,
+    technicianID CHAR(10) NOT NULL
+
+    CONSTRAINT PK_REPAIRMENTS PRIMARY KEY (repairmentID),
+    CONSTRAINT FK_TECHNICIANS_REPAIRMENTS FOREIGN KEY (technicianID) REFERENCES TECHNICIANS(ID),
+)
+
+-- INSERTO REGISTROS PARA COMPROBAR EN LAS TABLAS
+GO
+INSERT INTO TECHNICIANS (ID, technicianName, technicianCity, technicianSalary) 
+VALUES ('12345678A', 'Juan Pérez', 'Madrid', 2500.00),
+       ('23456789B', 'María López', 'Barcelona', 2700.00),
+       ('34567890C', 'David García', 'Valencia', 2600.00);
+
+INSERT INTO REPAIRMENTS (repairmentID, repairmentOrderDate, repairConcept, repairCost, technicianID) 
+VALUES (1, '2024-05-01', 'Reparación de impresora', 1500.00, '12345678A'),
+       (2, '2024-05-02', 'Reparación de ordenador', 2550.00, '23456789B'),
+       (3, '2024-05-03', 'Reparación de móvil', 10000.00, '34567890C');
+
+-- CREACION DE BACKUP DE TECNICOS y REPARACIONES
+GO
+SELECT *
+  INTO TECHNICIANS_BACKUP
+  FROM TECHNICIANS
+ WHERE 1 = 0
+ ALTER TABLE TECHNICIANS_BACKUP
+   ADD jobLeaveDate SMALLDATETIME
+GO
+SELECT *
+  INTO REPAIRMENTS_BACKUP
+  FROM REPAIRMENTS
+ WHERE 1 = 0
+
+-- CREACION DEL TRIGGER CUANDO UN TÉCNICO CON MÁS DE 2500 EUROS EN REPARACIONES HECHAS ES BORRADO
+GO
+CREATE OR ALTER TRIGGER TX_2500PLUS_TECHNICIAN_LEAVE ON TECHNICIANS INSTEAD OF DELETE
+AS
+BEGIN
+    BEGIN TRY
+        DECLARE @hasTransaction BIT = 1
+
+        -- SI NO EXISTEN TRANSACCIONES ABIERTAS SE INICIA UNA TRANSACCION
+        IF @@TRANCOUNT = 0 
+            SET @hasTransaction = 0
+        
+        IF @hasTransaction = 0
+        BEGIN TRAN
+    
+            -- ACTUALIZACIÓN DE LOS DATOS BORRADOS A LA TABLA DE RESERVA DE TECNICOS (BACKUP)
+            INSERT INTO TECHNICIANS_BACKUP
+            SELECT DELETED.*,
+                   GETDATE()
+              FROM DELETED
+             WHERE ID IN (SELECT technicianID
+                            FROM REPAIRMENTS
+                           GROUP BY technicianID
+                          HAVING SUM(repairCost) > 2500)
+
+            -- COPIA DEL BACKUP DE REPARACIONES
+            INSERT INTO REPAIRMENTS_BACKUP
+            SELECT *
+              FROM REPAIRMENTS
+             WHERE technicianID IN (SELECT ID
+                                      FROM DELETED)
+
+            -- BORRADO EN CASCADA DE LOS DATOS DEL TECNICO A BORRAR
+            DELETE FROM REPAIRMENTS
+             WHERE technicianID IN (SELECT ID
+                                      FROM DELETED)
+
+            DELETE FROM TECHNICIANS
+             WHERE ID IN (SELECT ID
+                            FROM DELETED)
+
+        -- SI SOLO EXISTE LA TRANSACCION PREVIA SE HACE COMMIT
+        IF @hasTransaction = 0
+        COMMIT
+    END TRY
+    BEGIN CATCH
+        PRINT CONCAT ('CODERROR: ', ERROR_NUMBER(), CHAR(10),
+                      'DESCRIPTION: ', ERROR_MESSAGE(), CHAR(10),
+                      'LINE: ', ERROR_LINE(), CHAR(10),
+                      'PROCEDURE: ', ERROR_PROCEDURE())
+        -- SI SOLO EXISTE LA TRANSACCION PREVIA SE HACE COMMIT
+        IF @hasTransaction = 0
+        ROLLBACK
+    END CATCH
+END
+
+/*
+BEGIN TRAN
+    BEGIN TRY
+        DELETE FROM TECHNICIANS
+        WHERE ID = '12345678A'
+           OR ID = '23456789B'
+        COMMIT
+    END TRY
+BEGIN CATCH
+    ROLLBACK
+END CATCH
+
+SELECT *
+FROM REPAIRMENTS_BACKUP
+
+SELECT *
+FROM REPAIRMENTS
+
+SELECT *
+FROM TECHNICIANS_BACKUP
+
+SELECT *
+FROM TECHNICIANS
+*/
+
+        
 
     
 
