@@ -1,13 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace Exercise_3
 {
@@ -21,7 +17,6 @@ namespace Exercise_3
         // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
         SqlDBHandler dbHandler;
 
-
         private void fUsersManagement_Load(object sender, EventArgs e)
         {
             dbHandler = new SqlDBHandler("Users");
@@ -31,10 +26,6 @@ namespace Exercise_3
             ShowUsersRecords(pos);
             ButtonsCheck();
         }
-
-        // THESE ARE FOR DETECTING STRING CHANGES IN THE TEXT BOXES SINCE AN ORIGINAL
-        // IS REQUIRED TO CHECK BETWEEN THAT ONE AND THE USER CHANGED INPUT
-        private bool changeDetected = false;
 
 
         /* ---------------- POSITION HANDLING START --------------------- */
@@ -57,6 +48,9 @@ namespace Exercise_3
 
         /* ---------------- POSITION HANDLING END --------------------- */
 
+        // THESE ARE FOR DETECTING STRING CHANGES IN THE TEXT BOXES SINCE AN ORIGINAL
+        // IS REQUIRED TO CHECK BETWEEN THAT ONE AND THE USER CHANGED INPUT
+        private bool changeDetected = false;
 
         // FUNCTION WHICH UPDATES THE VISUAL PART OF THE FORM
         private void ShowUsersRecords(int pos)
@@ -66,26 +60,26 @@ namespace Exercise_3
                 object selectedObjectRecords = dbHandler.GetSelectedTypeObject(pos, "Users");
                 if (selectedObjectRecords is User selectedUserRecords)
                 {
-
                     // TAKE VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE APPROPIATE TEXTBOX
-                    txtbID.Text = selectedUserRecords.ID.ToString();
-                    txtbName.Text = selectedUserRecords.Name;
+                    txtbName.Text = selectedUserRecords.Name;   
                     txtbEmail.Text = selectedUserRecords.Email;
                     txtbPassword.Text = selectedUserRecords.Password;
 
+                    int selectedUserID = dbHandler.GetIdentityID("Users", "Name = '" + selectedUserRecords.Name.ToString() + "'");
+                    txtbID.Text = selectedUserID.ToString();
 
                     // DETECTED CHANGES RESET AND CHECKS THE ACTUAL BUTTONS STATUS
                     changeDetected = false;
                     ButtonsCheck();
                 }
-            }
+            } 
             else if (dbHandler.UsersQuantity == 0)
             {
                 // CLEAR EVERY DATA FROM THE TEXT BOXES AND CHECKS THE ACTUAL BUTTONS STATUS
                 btnClear.PerformClick();
                 ButtonsCheck();
             }
-        }
+          }
 
         public string ShowsUsersList()
         {
@@ -123,7 +117,7 @@ namespace Exercise_3
             return result;
         }
 
-        public int SimilarUsersEmailCounter(string userEmail)
+        public int SimilarUsersNicknameCounter(string userNickname)
         {
             int counter = 0;
             if (dbHandler.UsersQuantity != 0)
@@ -131,8 +125,8 @@ namespace Exercise_3
                 for (int i = 0; i < dbHandler.UsersQuantity; i++)
                 {
                     DataRow userRow = dbHandler.ImportSelectedDataTable("Users").Rows[i];
-                    string stringToCheck = userRow[4].ToString().ToLower();
-                    if (stringToCheck.Contains(userEmail.ToLower()))
+                    string stringToCheck = userRow[1].ToString().ToLower();
+                    if (stringToCheck.Contains(userNickname.ToLower()))
                     {
                         counter++;
                     }
@@ -141,9 +135,9 @@ namespace Exercise_3
             return counter;
         }
 
-        public void SelectSimilarUsersEmailsToShow(string userEmail)
+        public void SelectSimilarUsersNicknameToShow(string userEmail)
         {
-            List<string> matchingUsersEmail = new List<string>();
+            List<string> matchingUsersNickname = new List<string>();
             List<string> extraUsersInfo = new List<string>();
             List<int> usersPositions = new List<int>();
 
@@ -152,11 +146,11 @@ namespace Exercise_3
                 for (int i = 0; i < dbHandler.UsersQuantity; i++)
                 {
                     DataRow userRow = dbHandler.ImportSelectedDataTable("Users").Rows[i];
-                    string stringToCheck = userRow[4].ToString().ToLower();
+                    string stringToCheck = userRow[1].ToString().ToLower();
                     if (stringToCheck.Contains(userEmail.ToLower()))
                     {
-                        string email = userRow["Email"].ToString();
-                        matchingUsersEmail.Add(email);
+                        string name = userRow["Name"].ToString();
+                        matchingUsersNickname.Add(name);
 
                         string usersInfo = "ID: " + userRow["ID"] + "\n" +
                                            "Name: " + userRow["Name"] + "\n" +
@@ -169,32 +163,32 @@ namespace Exercise_3
                 }
 
             }
-            if (matchingUsersEmail.Count == 1)
+            if (matchingUsersNickname.Count == 1)
             {
-                MessageBox.Show("The data from " + matchingUsersEmail[0] + " is: \n\n" + extraUsersInfo[0]);
+                MessageBox.Show("The data from " + matchingUsersNickname[0] + " is: \n\n" + extraUsersInfo[0]);
                 pos = usersPositions[0];
                 ShowUsersRecords(pos);
                 RecordPositionLabel(pos);
             }
-            else if (matchingUsersEmail.Count > 1)
+            else if (matchingUsersNickname.Count > 1)
             {
                 bool showed = false;
                 int selectedUserIndex = 0;
 
                 while (!showed)
                 {
-                    StringBuilder infoMessage = new StringBuilder("Users with similar email:\n\n");
+                    StringBuilder infoMessage = new StringBuilder("Users with similar nickname:\n\n");
 
-                    for (int i = 0; i < matchingUsersEmail.Count; i++)
+                    for (int i = 0; i < matchingUsersNickname.Count; i++)
                     {
-                        infoMessage.AppendLine((i + 1) + ") " + matchingUsersEmail[i] + "\n");
+                        infoMessage.AppendLine((i + 1) + ") " + matchingUsersNickname[i] + "\n");
                     }
 
                     infoMessage.AppendLine("Select the number of the user to view more data:");
 
                     string userInput = Interaction.InputBox(infoMessage.ToString());
 
-                    if (int.TryParse(userInput, out selectedUserIndex) && selectedUserIndex > 0 && selectedUserIndex <= matchingUsersEmail.Count)
+                    if (int.TryParse(userInput, out selectedUserIndex) && selectedUserIndex > 0 && selectedUserIndex <= matchingUsersNickname.Count)
                     {
                         string selectedUserInfo = extraUsersInfo[selectedUserIndex - 1];
                         int selectedUserPositionInDB = usersPositions[selectedUserIndex - 1];
@@ -221,7 +215,7 @@ namespace Exercise_3
             }
             else
             {
-                MessageBox.Show("No user found with the selected name.");
+                MessageBox.Show("No user found with the selected nickname.");
             }
         }
 
@@ -505,7 +499,7 @@ namespace Exercise_3
                 }
                 else
                 {
-                    MessageBox.Show("Delete is not possible when no teacher is selected.");
+                    MessageBox.Show("Delete is not possible when no user is selected.");
                 }
             }
             else if (dbHandler.UsersQuantity == 0)
@@ -521,24 +515,24 @@ namespace Exercise_3
                 bool showed = false;
                 do
                 {
-                    string userEmail = Interaction.InputBox("Introduce the user's email to show data: ");
+                    string name = Interaction.InputBox("Introduce the user's nickname to show data: ");
 
-                    if (CustomRegex.RegexEmail(userEmail))
+                    if (CustomRegex.RegexName(name))
                     {
-                        if (SimilarUsersEmailCounter(userEmail) > 0)
+                        if (SimilarUsersNicknameCounter(name) > 0)
                         {
-                            SelectSimilarUsersEmailsToShow(userEmail);
+                            SelectSimilarUsersNicknameToShow(name);
                             showed = true;
                         }
                         else
                         {
-                            MessageBox.Show("There isn't any user with the selected email, try again");
+                            MessageBox.Show("There isn't any user with the selected nickname, try again");
                             showed = true;
                         }
                     }
                     else
                     {
-                        MessageBox.Show("The email format is not correct, try again");
+                        MessageBox.Show("The nickname format is not correct, try again");
                     }
 
                 } while (!showed);
@@ -552,7 +546,7 @@ namespace Exercise_3
             }
             else
             {
-                MessageBox.Show("Error, the list has no added users, add a user before checking a user data from the teacher list");
+                MessageBox.Show("Error, the list has no added users, add a user before checking a user data from the users list");
             }
         }
 
@@ -614,15 +608,6 @@ namespace Exercise_3
             bool anyChangeDetected = (currentValue != originalValue);
             changeDetected = anyChangeDetected;
             ButtonsCheck();
-        }
-        private void txtbID_TextChanged(object sender, EventArgs e)
-        {
-            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Users");
-            if (actualObject is User actualUser)
-            {
-                int originalID = actualUser.ID;
-                UpdateChangeDetected(txtbID.Text, actualUser.ID.ToString());
-            }
         }
 
         private void txtbName_TextChanged(object sender, EventArgs e)

@@ -90,7 +90,7 @@
             this.btnSearchUser.Name = "btnSearchUser";
             this.btnSearchUser.Size = new System.Drawing.Size(120, 41);
             this.btnSearchUser.TabIndex = 1;
-            this.btnSearchUser.Text = "SEARCH BY EMAIL";
+            this.btnSearchUser.Text = "SEARCH BY NICKNAME";
             this.btnSearchUser.UseVisualStyleBackColor = true;
             this.btnSearchUser.Click += new System.EventHandler(this.btnSearchUser_Click);
             // 
@@ -115,6 +115,7 @@
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "DELETE";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnUpdate
             // 
@@ -125,6 +126,7 @@
             this.btnUpdate.TabIndex = 0;
             this.btnUpdate.Text = "UPDATE";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // gpNewRegistry
             // 
@@ -148,6 +150,7 @@
             this.btnCancelAddRegistry.TabIndex = 2;
             this.btnCancelAddRegistry.Text = "CANCEL REGISTRY ADDITION";
             this.btnCancelAddRegistry.UseVisualStyleBackColor = true;
+            this.btnCancelAddRegistry.Click += new System.EventHandler(this.btnCancelAddRegistry_Click);
             // 
             // btnClear
             // 
@@ -158,6 +161,7 @@
             this.btnClear.TabIndex = 0;
             this.btnClear.Text = "CLEAR DATA";
             this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnSave
             // 
@@ -168,6 +172,7 @@
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "SAVE AS NEW";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // gpNavigate
             // 
@@ -186,22 +191,24 @@
             // btnPrevious
             // 
             this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrevious.Location = new System.Drawing.Point(565, 37);
+            this.btnPrevious.Location = new System.Drawing.Point(385, 37);
             this.btnPrevious.Name = "btnPrevious";
             this.btnPrevious.Size = new System.Drawing.Size(152, 41);
             this.btnPrevious.TabIndex = 3;
             this.btnPrevious.Text = "PREVIOUS";
             this.btnPrevious.UseVisualStyleBackColor = true;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
             // btnNext
             // 
             this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Location = new System.Drawing.Point(384, 37);
+            this.btnNext.Location = new System.Drawing.Point(565, 37);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(152, 41);
             this.btnNext.TabIndex = 2;
             this.btnNext.Text = "NEXT";
             this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // btnLast
             // 
@@ -212,6 +219,7 @@
             this.btnLast.TabIndex = 1;
             this.btnLast.Text = "LAST";
             this.btnLast.UseVisualStyleBackColor = true;
+            this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
             // 
             // btnFirst
             // 
@@ -223,6 +231,7 @@
             this.btnFirst.TabIndex = 0;
             this.btnFirst.Text = "FIRST";
             this.btnFirst.UseVisualStyleBackColor = true;
+            this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
             // 
             // gbData
             // 
@@ -260,7 +269,7 @@
             this.txtbID.ReadOnly = true;
             this.txtbID.Size = new System.Drawing.Size(217, 22);
             this.txtbID.TabIndex = 9;
-            this.txtbID.TextChanged += new System.EventHandler(this.txtbID_TextChanged);
+            this.txtbID.TabStop = false;
             // 
             // txtbName
             // 

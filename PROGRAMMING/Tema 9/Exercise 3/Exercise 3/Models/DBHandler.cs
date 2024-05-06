@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Runtime.Remoting.Contexts;
+using System.IO;
 
 namespace Exercise_3
 {
@@ -172,8 +174,35 @@ namespace Exercise_3
             return usedMail;
         }
 
-        // METHOD WHICH RETURNS A OBJECT'S DATA FROM A SELECTED POSITION
-        public object GetSelectedTypeObject(int pos, string selectedTable)
+        // Method to retrieve the identity ID of a record based on a condition
+        public int GetIdentityID(string selectedTable, string condition)
+        {
+            int getId;
+
+            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
+
+            SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
+            "AttachDbFilename=" + path + "Integrated Security=True");
+
+            con.Open();
+
+            string query = "SELECT ID FROM " + selectedTable + " WHERE " + condition;
+            SqlCommand newQuery = new SqlCommand(query, con);
+            object lastIdentityIQ = newQuery.ExecuteScalar();
+
+            if (lastIdentityIQ != null && lastIdentityIQ != DBNull.Value)
+            {
+                getId = Convert.ToInt32(lastIdentityIQ);
+            }
+            else
+            {
+                getId = -1;
+            }
+            return getId;
+        }
+
+    // METHOD WHICH RETURNS A OBJECT'S DATA FROM A SELECTED POSITION
+    public object GetSelectedTypeObject(int pos, string selectedTable)
         {
             object selectedObject = null;
 
@@ -191,8 +220,9 @@ namespace Exercise_3
                     selectedObject = User.UserCreation(dRecord[1].ToString(),
                                                        dRecord[2].ToString(),
                                                        dRecord[3].ToString());
-            }
+
                 }
+            }
 
             else if (selectedTable == "Characters")
             {
@@ -204,12 +234,13 @@ namespace Exercise_3
                     selectedObject = new Character(dRecord[1].ToString(),
                                                    dRecord[2].ToString(),
                                                    dRecord[3].ToString());
+
                 }
-            } 
+            }
 
             return selectedObject;
         }
-
+        
         // METHOD TO GET ALL THE OBJECT DATA
         public string GetObjectDataFromPosition(object selectedObject, int pos, string selectedTable)
         {
@@ -238,9 +269,9 @@ namespace Exercise_3
                 DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
 
                 // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                dNewRecord[1] = userToAdd.Name;
-                dNewRecord[2] = userToAdd.Password;
-                dNewRecord[3] = userToAdd.Email;
+                dNewRecord["Name"] = userToAdd.Name;
+                dNewRecord["Email"] = userToAdd.Email;
+                dNewRecord["Password"] = userToAdd.Password;
 
                 if (!CheckAllUserPosibleDuplicatedData(userToAdd.Name, userToAdd.Email, selectedTable))
                 {
@@ -257,13 +288,13 @@ namespace Exercise_3
             
             else if (objectToAdd is Character characterToAdd)
             {
-                // CREATE A NEW REGISTRY
+                // CREATE A NEW REGISTRY    
                 DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
 
                 // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                dNewRecord[1] = characterToAdd.Name;
-                dNewRecord[2] = characterToAdd.ImgRoute;
-                dNewRecord[3] = characterToAdd.IconRoute;
+                dNewRecord["Name"] = characterToAdd.Name;
+                dNewRecord["ImgRoute"] = characterToAdd.ImgRoute;
+                dNewRecord["IconRoute"] = characterToAdd.IconRoute;
 
                 if (!DuplicatedNameDataFromSelectedTable(characterToAdd.Name, selectedTable))
                 {
@@ -291,9 +322,9 @@ namespace Exercise_3
             if (objectToUpdate is User userToUpdate)
             {
                 // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                dUpdateRecord[1] = userToUpdate.Name;
-                dUpdateRecord[2] = userToUpdate.Password;
-                dUpdateRecord[3] = userToUpdate.Email;
+                dUpdateRecord["Name"] = userToUpdate.Name;
+                dUpdateRecord["Email"] = userToUpdate.Email;
+                dUpdateRecord["Password"] = userToUpdate.Password;
 
                 if (!CheckAllUserPosibleDuplicatedData(dUpdateRecord[1].ToString(), dUpdateRecord[3].ToString(), selectedTable))
                 {
@@ -304,9 +335,9 @@ namespace Exercise_3
             else if (objectToUpdate is Character characterToUpdate)
             {
                 // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                dUpdateRecord[1] = characterToUpdate.Name;
-                dUpdateRecord[2] = characterToUpdate.ImgRoute;
-                dUpdateRecord[3] = characterToUpdate.IconRoute;
+                dUpdateRecord["Name"] = characterToUpdate.Name;
+                dUpdateRecord["ImgRoute"] = characterToUpdate.ImgRoute;
+                dUpdateRecord["IconRoute"] = characterToUpdate.IconRoute;
 
                 if (!DuplicatedNameDataFromSelectedTable(characterToUpdate.Name, selectedTable))
                 {

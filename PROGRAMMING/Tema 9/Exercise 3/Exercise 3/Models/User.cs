@@ -17,7 +17,7 @@ namespace Exercise_3
         public int ID
         {
             get;
-            private set;
+            set;
         }
 
         public string Name
@@ -26,37 +26,38 @@ namespace Exercise_3
             set => uName = value;
         }
 
+        public string Email
+        {
+            get => uEmail;
+            set => uEmail = value;
+        }
+
         public string Password
         {
             get => uPassword;
             set => uPassword = value;
         }
 
-        public string Email
-        {
-            get => uEmail;
-            set => uEmail = value;
-        }
-        private User(string uName, string uPassword, string uEmail)
+        private User(string uName, string uEmail, string uPassword)
         {
             Name = uName;
-            Password = uPassword;
             Email = uEmail;
+            Password = uPassword;
         }
 
-        public static User UserCreation(string uName, string uPassword, string uEmail)
+        public static User UserCreation(string uName, string uEmail, string uPassword)
         {
             // RECALL TO CUSTOM REGEX WHICH CHECKS ALL THE INPUTS BEFORE INSERTING THEM INTO
             // THE ORIGINAL CONSTRUCTOR WHICH CREATES THE ACTUAL TEACHER WITHOUT ANY ERROR
             if (!CustomRegex.RegexName(uName) ||
-                !CustomRegex.RegexPassword(uPassword) ||
-                !CustomRegex.RegexEmail(uEmail))
+                !CustomRegex.RegexEmail(uEmail) ||
+                !CustomRegex.RegexPassword(uPassword))   
             {
                 return null;
             }
             else
             {
-                return new User(uName, uPassword, uEmail);
+                return new User(uName, uEmail, uPassword);
             }
         }
 
