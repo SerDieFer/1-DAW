@@ -31,7 +31,7 @@
             this.gExtraOption = new System.Windows.Forms.GroupBox();
             this.btnListUsers = new System.Windows.Forms.Button();
             this.btnSearchUser = new System.Windows.Forms.Button();
-            this.gpUpdateDelete = new System.Windows.Forms.GroupBox();
+            this.gpUpdateDeleteBan = new System.Windows.Forms.GroupBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.gpNewRegistry = new System.Windows.Forms.GroupBox();
@@ -53,8 +53,13 @@
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.lblID = new System.Windows.Forms.Label();
+            this.btnBan = new System.Windows.Forms.Button();
+            this.txtbBanned = new System.Windows.Forms.TextBox();
+            this.lblBanned = new System.Windows.Forms.Label();
+            this.btnListBannedUsers = new System.Windows.Forms.Button();
+            this.btnUnban = new System.Windows.Forms.Button();
             this.gExtraOption.SuspendLayout();
-            this.gpUpdateDelete.SuspendLayout();
+            this.gpUpdateDeleteBan.SuspendLayout();
             this.gpNewRegistry.SuspendLayout();
             this.gpNavigate.SuspendLayout();
             this.gbData.SuspendLayout();
@@ -62,12 +67,13 @@
             // 
             // gExtraOption
             // 
+            this.gExtraOption.Controls.Add(this.btnListBannedUsers);
             this.gExtraOption.Controls.Add(this.btnListUsers);
             this.gExtraOption.Controls.Add(this.btnSearchUser);
             this.gExtraOption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gExtraOption.Location = new System.Drawing.Point(441, 27);
             this.gExtraOption.Name = "gExtraOption";
-            this.gExtraOption.Size = new System.Drawing.Size(316, 92);
+            this.gExtraOption.Size = new System.Drawing.Size(316, 179);
             this.gExtraOption.TabIndex = 17;
             this.gExtraOption.TabStop = false;
             this.gExtraOption.Text = "LIST AND SEARCH";
@@ -75,9 +81,9 @@
             // btnListUsers
             // 
             this.btnListUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnListUsers.Location = new System.Drawing.Point(168, 33);
+            this.btnListUsers.Location = new System.Drawing.Point(168, 36);
             this.btnListUsers.Name = "btnListUsers";
-            this.btnListUsers.Size = new System.Drawing.Size(120, 41);
+            this.btnListUsers.Size = new System.Drawing.Size(120, 46);
             this.btnListUsers.TabIndex = 0;
             this.btnListUsers.Text = "LIST OF USERS";
             this.btnListUsers.UseVisualStyleBackColor = true;
@@ -86,32 +92,34 @@
             // btnSearchUser
             // 
             this.btnSearchUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchUser.Location = new System.Drawing.Point(29, 33);
+            this.btnSearchUser.Location = new System.Drawing.Point(29, 36);
             this.btnSearchUser.Name = "btnSearchUser";
-            this.btnSearchUser.Size = new System.Drawing.Size(120, 41);
+            this.btnSearchUser.Size = new System.Drawing.Size(120, 46);
             this.btnSearchUser.TabIndex = 1;
             this.btnSearchUser.Text = "SEARCH BY NICKNAME";
             this.btnSearchUser.UseVisualStyleBackColor = true;
             this.btnSearchUser.Click += new System.EventHandler(this.btnSearchUser_Click);
             // 
-            // gpUpdateDelete
+            // gpUpdateDeleteBan
             // 
-            this.gpUpdateDelete.Controls.Add(this.btnDelete);
-            this.gpUpdateDelete.Controls.Add(this.btnUpdate);
-            this.gpUpdateDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpUpdateDelete.Location = new System.Drawing.Point(441, 148);
-            this.gpUpdateDelete.Name = "gpUpdateDelete";
-            this.gpUpdateDelete.Size = new System.Drawing.Size(316, 92);
-            this.gpUpdateDelete.TabIndex = 18;
-            this.gpUpdateDelete.TabStop = false;
-            this.gpUpdateDelete.Text = "UPDATE AND DELETE";
+            this.gpUpdateDeleteBan.Controls.Add(this.btnUnban);
+            this.gpUpdateDeleteBan.Controls.Add(this.btnBan);
+            this.gpUpdateDeleteBan.Controls.Add(this.btnDelete);
+            this.gpUpdateDeleteBan.Controls.Add(this.btnUpdate);
+            this.gpUpdateDeleteBan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gpUpdateDeleteBan.Location = new System.Drawing.Point(12, 299);
+            this.gpUpdateDeleteBan.Name = "gpUpdateDeleteBan";
+            this.gpUpdateDeleteBan.Size = new System.Drawing.Size(397, 107);
+            this.gpUpdateDeleteBan.TabIndex = 18;
+            this.gpUpdateDeleteBan.TabStop = false;
+            this.gpUpdateDeleteBan.Text = "UPDATE, DELETE, BAN AND UNBAN";
             // 
             // btnDelete
             // 
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Location = new System.Drawing.Point(168, 36);
+            this.btnDelete.Location = new System.Drawing.Point(112, 37);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(120, 41);
+            this.btnDelete.Size = new System.Drawing.Size(76, 41);
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "DELETE";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -120,9 +128,9 @@
             // btnUpdate
             // 
             this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdate.Location = new System.Drawing.Point(29, 36);
+            this.btnUpdate.Location = new System.Drawing.Point(21, 37);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(120, 41);
+            this.btnUpdate.Size = new System.Drawing.Size(76, 41);
             this.btnUpdate.TabIndex = 0;
             this.btnUpdate.Text = "UPDATE";
             this.btnUpdate.UseVisualStyleBackColor = true;
@@ -134,7 +142,7 @@
             this.gpNewRegistry.Controls.Add(this.btnClear);
             this.gpNewRegistry.Controls.Add(this.btnSave);
             this.gpNewRegistry.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpNewRegistry.Location = new System.Drawing.Point(12, 385);
+            this.gpNewRegistry.Location = new System.Drawing.Point(12, 421);
             this.gpNewRegistry.Name = "gpNewRegistry";
             this.gpNewRegistry.Size = new System.Drawing.Size(745, 92);
             this.gpNewRegistry.TabIndex = 16;
@@ -176,14 +184,14 @@
             // 
             // gpNavigate
             // 
-            this.gpNavigate.Controls.Add(this.btnPrevious);
             this.gpNavigate.Controls.Add(this.btnNext);
             this.gpNavigate.Controls.Add(this.btnLast);
+            this.gpNavigate.Controls.Add(this.btnPrevious);
             this.gpNavigate.Controls.Add(this.btnFirst);
             this.gpNavigate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpNavigate.Location = new System.Drawing.Point(12, 256);
+            this.gpNavigate.Location = new System.Drawing.Point(441, 236);
             this.gpNavigate.Name = "gpNavigate";
-            this.gpNavigate.Size = new System.Drawing.Size(745, 105);
+            this.gpNavigate.Size = new System.Drawing.Size(316, 170);
             this.gpNavigate.TabIndex = 15;
             this.gpNavigate.TabStop = false;
             this.gpNavigate.Text = "NAVIGATE TO";
@@ -191,9 +199,9 @@
             // btnPrevious
             // 
             this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrevious.Location = new System.Drawing.Point(385, 37);
+            this.btnPrevious.Location = new System.Drawing.Point(29, 37);
             this.btnPrevious.Name = "btnPrevious";
-            this.btnPrevious.Size = new System.Drawing.Size(152, 41);
+            this.btnPrevious.Size = new System.Drawing.Size(120, 41);
             this.btnPrevious.TabIndex = 3;
             this.btnPrevious.Text = "PREVIOUS";
             this.btnPrevious.UseVisualStyleBackColor = true;
@@ -202,9 +210,9 @@
             // btnNext
             // 
             this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Location = new System.Drawing.Point(565, 37);
+            this.btnNext.Location = new System.Drawing.Point(168, 37);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(152, 41);
+            this.btnNext.Size = new System.Drawing.Size(120, 41);
             this.btnNext.TabIndex = 2;
             this.btnNext.Text = "NEXT";
             this.btnNext.UseVisualStyleBackColor = true;
@@ -213,9 +221,9 @@
             // btnLast
             // 
             this.btnLast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLast.Location = new System.Drawing.Point(202, 37);
+            this.btnLast.Location = new System.Drawing.Point(29, 100);
             this.btnLast.Name = "btnLast";
-            this.btnLast.Size = new System.Drawing.Size(152, 41);
+            this.btnLast.Size = new System.Drawing.Size(120, 41);
             this.btnLast.TabIndex = 1;
             this.btnLast.Text = "LAST";
             this.btnLast.UseVisualStyleBackColor = true;
@@ -225,9 +233,9 @@
             // 
             this.btnFirst.Enabled = false;
             this.btnFirst.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFirst.Location = new System.Drawing.Point(21, 37);
+            this.btnFirst.Location = new System.Drawing.Point(168, 100);
             this.btnFirst.Name = "btnFirst";
-            this.btnFirst.Size = new System.Drawing.Size(152, 41);
+            this.btnFirst.Size = new System.Drawing.Size(120, 41);
             this.btnFirst.TabIndex = 0;
             this.btnFirst.Text = "FIRST";
             this.btnFirst.UseVisualStyleBackColor = true;
@@ -235,6 +243,8 @@
             // 
             // gbData
             // 
+            this.gbData.Controls.Add(this.txtbBanned);
+            this.gbData.Controls.Add(this.lblBanned);
             this.gbData.Controls.Add(this.lblRecord);
             this.gbData.Controls.Add(this.txtbID);
             this.gbData.Controls.Add(this.txtbName);
@@ -247,7 +257,7 @@
             this.gbData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbData.Location = new System.Drawing.Point(12, 12);
             this.gbData.Name = "gbData";
-            this.gbData.Size = new System.Drawing.Size(397, 228);
+            this.gbData.Size = new System.Drawing.Size(397, 269);
             this.gbData.TabIndex = 14;
             this.gbData.TabStop = false;
             this.gbData.Text = "USERS DATA";
@@ -342,13 +352,65 @@
             this.lblID.Text = "ID:";
             this.lblID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnBan
+            // 
+            this.btnBan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBan.Location = new System.Drawing.Point(203, 37);
+            this.btnBan.Name = "btnBan";
+            this.btnBan.Size = new System.Drawing.Size(76, 41);
+            this.btnBan.TabIndex = 2;
+            this.btnBan.Text = "BAN";
+            this.btnBan.UseVisualStyleBackColor = true;
+            this.btnBan.Click += new System.EventHandler(this.btnBan_Click);
+            // 
+            // txtbBanned
+            // 
+            this.txtbBanned.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbBanned.Location = new System.Drawing.Point(153, 214);
+            this.txtbBanned.Name = "txtbBanned";
+            this.txtbBanned.Size = new System.Drawing.Size(217, 22);
+            this.txtbBanned.TabIndex = 12;
+            this.txtbBanned.TextChanged += new System.EventHandler(this.txtbBanned_TextChanged);
+            // 
+            // lblBanned
+            // 
+            this.lblBanned.AutoSize = true;
+            this.lblBanned.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBanned.Location = new System.Drawing.Point(23, 217);
+            this.lblBanned.Name = "lblBanned";
+            this.lblBanned.Size = new System.Drawing.Size(67, 16);
+            this.lblBanned.TabIndex = 11;
+            this.lblBanned.Text = "BANNED:";
+            this.lblBanned.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnListBannedUsers
+            // 
+            this.btnListBannedUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnListBannedUsers.Location = new System.Drawing.Point(29, 106);
+            this.btnListBannedUsers.Name = "btnListBannedUsers";
+            this.btnListBannedUsers.Size = new System.Drawing.Size(259, 41);
+            this.btnListBannedUsers.TabIndex = 2;
+            this.btnListBannedUsers.Text = "LIST OF BANNED USERS";
+            this.btnListBannedUsers.UseVisualStyleBackColor = true;
+            // 
+            // btnUnban
+            // 
+            this.btnUnban.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUnban.Location = new System.Drawing.Point(294, 37);
+            this.btnUnban.Name = "btnUnban";
+            this.btnUnban.Size = new System.Drawing.Size(76, 41);
+            this.btnUnban.TabIndex = 3;
+            this.btnUnban.Text = "UNBAN";
+            this.btnUnban.UseVisualStyleBackColor = true;
+            this.btnUnban.Click += new System.EventHandler(this.btnUnban_Click);
+            // 
             // fUsersManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(781, 515);
+            this.ClientSize = new System.Drawing.Size(781, 537);
             this.Controls.Add(this.gExtraOption);
-            this.Controls.Add(this.gpUpdateDelete);
+            this.Controls.Add(this.gpUpdateDeleteBan);
             this.Controls.Add(this.gpNewRegistry);
             this.Controls.Add(this.gpNavigate);
             this.Controls.Add(this.gbData);
@@ -356,7 +418,7 @@
             this.Text = "Users Management";
             this.Load += new System.EventHandler(this.fUsersManagement_Load);
             this.gExtraOption.ResumeLayout(false);
-            this.gpUpdateDelete.ResumeLayout(false);
+            this.gpUpdateDeleteBan.ResumeLayout(false);
             this.gpNewRegistry.ResumeLayout(false);
             this.gpNavigate.ResumeLayout(false);
             this.gbData.ResumeLayout(false);
@@ -370,7 +432,7 @@
         private System.Windows.Forms.GroupBox gExtraOption;
         private System.Windows.Forms.Button btnListUsers;
         private System.Windows.Forms.Button btnSearchUser;
-        private System.Windows.Forms.GroupBox gpUpdateDelete;
+        private System.Windows.Forms.GroupBox gpUpdateDeleteBan;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.GroupBox gpNewRegistry;
@@ -392,6 +454,11 @@
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Label lblID;
+        private System.Windows.Forms.Button btnListBannedUsers;
+        private System.Windows.Forms.Button btnUnban;
+        private System.Windows.Forms.Button btnBan;
+        private System.Windows.Forms.TextBox txtbBanned;
+        private System.Windows.Forms.Label lblBanned;
     }
 }
 

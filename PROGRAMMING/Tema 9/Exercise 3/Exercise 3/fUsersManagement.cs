@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Xml.Linq;
 
 namespace Exercise_3
 {
@@ -65,6 +67,15 @@ namespace Exercise_3
                     txtbEmail.Text = selectedUserRecords.Email;
                     txtbPassword.Text = selectedUserRecords.Password;
 
+                    if (!selectedUserRecords.Banned)
+                    {
+                        txtbBanned.Text = "Not Banned";
+                    }
+                    else if (selectedUserRecords.Banned)
+                    {
+                        txtbBanned.Text = "Banned";
+                    }
+
                     int selectedUserID = dbHandler.GetIdentityID("Users", "Name = '" + selectedUserRecords.Name.ToString() + "'");
                     txtbID.Text = selectedUserID.ToString();
 
@@ -94,13 +105,26 @@ namespace Exercise_3
 
                     foreach (DataRow row in usersTable.Rows)
                     {
+                        string banInfo = "";
+
+                        if (!(bool)row["Banned"])
+                        {
+                            banInfo = "Ban Status: Not Banned\n";
+                        }
+                        else if ((bool)row["Banned"])
+                        {
+                            banInfo = "Ban Status: Banned\n";
+                        }
+
                         string userInfo = "ID: " + row["ID"] + "\n" +
                                           "Name: " + row["Name"] + "\n" +
                                           "Password: " + row["Password"] + "\n" +
-                                          "Email: " + row["Email"] + "\n";
+                                          "Email: " + row["Email"] + "\n" +
+                                          banInfo;
 
                         usersListTxt += userInfo + "\n";
                     }
+
                     result = usersListTxt;
                 }
                 else if (dbHandler.UsersQuantity == 1)
@@ -152,11 +176,23 @@ namespace Exercise_3
                         string name = userRow["Name"].ToString();
                         matchingUsersNickname.Add(name);
 
+                        string banInfo = "";
+
+                        if (!(bool)userRow["Banned"])
+                        {
+                            banInfo = "Ban Status: Not Banned\n";
+                        }
+                        else if ((bool)userRow["Banned"])
+                        {
+                            banInfo = "Ban Status: Banned\n";
+                        }
+
                         string usersInfo = "ID: " + userRow["ID"] + "\n" +
-                                           "Name: " + userRow["Name"] + "\n" +
-                                           "Email: " + userRow["Email"] + "\n" +
-                                           "Password: " + userRow["Password"];
-                           
+                                          "Name: " + userRow["Name"] + "\n" +
+                                          "Password: " + userRow["Password"] + "\n" +
+                                          "Email: " + userRow["Email"] + "\n" +
+                                          banInfo;
+
                         extraUsersInfo.Add(usersInfo);
                         usersPositions.Add(i);
                     }
@@ -223,7 +259,7 @@ namespace Exercise_3
 
         private bool CheckValuesChanged()
         {
-            return dbHandler.CheckUserChangesStoredAndActualValues(pos, txtbName.Text, txtbEmail.Text, txtbPassword.Text);
+            return dbHandler.CheckUserChangesStoredAndActualValues(pos, txtbName.Text, txtbEmail.Text, txtbPassword.Text, txtbBanned.Text);
         }
 
 
@@ -358,6 +394,7 @@ namespace Exercise_3
             txtbName.Clear();
             txtbEmail.Clear();
             txtbPassword.Clear();
+            txtbBanned.Clear();
             pos = -1;
             lblRecord.Text = "";
             ButtonsCheck();
@@ -365,49 +402,53 @@ namespace Exercise_3
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // CHECKS THAT THE ACTUAL TEXT BOX ID TEXT IS NOT USED ALREADY IN THE DB
-            if (!dbHandler.DuplicatedIDDataFromSelectedTable(txtbID.Text, "Users"))
+            // CHECKS THAT THE ACTUAL TEXT BOX NAME TEXT IS NOT USED ALREADY IN THE DB
+            if (!dbHandler.DuplicatedNameDataFromSelectedTable(txtbName.Text, "Users"))
             {
-                // CHECKS THAT THE ACTUAL TEXT BOX NAME TEXT IS NOT USED ALREADY IN THE DB
-                if (!dbHandler.DuplicatedNameDataFromSelectedTable(txtbName.Text, "Users"))
+                // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
+                if (!dbHandler.DuplicatedEmailDataFromUsers(txtbEmail.Text))
                 {
-                    // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
-                    if (!dbHandler.DuplicatedEmailDataFromUsers(txtbEmail.Text))
-                    {
-                        // CREATES THE TEACHER TO SAVE
-                        User savedUser = User.UserCreation(txtbName.Text,
-                                                           txtbEmail.Text,
-                                                           txtbPassword.Text);
+                    bool banStatus = false;
 
-                        // IF THIS OBJECT IS VALID IT WILL BE INSERTED INTO THE DB
-                        if (savedUser != null)
-                        {
-                            // FUNCTION WHICH CREATES A NEW USER INTO THE DB
-                            // AFTER THAT UPDATES THE POSITION AND THE COUNT OF USERS'S RECORDS
-                            dbHandler.AddNewObject(savedUser, "Users");
-                            pos = dbHandler.UsersQuantity - 1;
-                            RecordPositionLabel(pos);
-                            btnCancelAddRegistry.PerformClick();
-                            ButtonsCheck();
-                        }
-                        else
-                        {
-                            MessageBox.Show(returnErrorInput());
-                        }
+                    if (txtbBanned.Text == "Not Banned")
+                    {
+                        banStatus = false;
+                    }
+                    else if (txtbBanned.Text == "Banned")
+                    {
+                        banStatus = true;
+                    }
+
+                    // CREATES THE TEACHER TO SAVE
+                    User savedUser = User.UserCreation(txtbName.Text,
+                                                       txtbPassword.Text,
+                                                       txtbEmail.Text,
+                                                       banStatus);
+
+                    // IF THIS OBJECT IS VALID IT WILL BE INSERTED INTO THE DB
+                    if (savedUser != null)
+                    {
+                        // FUNCTION WHICH CREATES A NEW USER INTO THE DB
+                        // AFTER THAT UPDATES THE POSITION AND THE COUNT OF USERS'S RECORDS
+                        dbHandler.AddNewObject(savedUser, "Users");
+                        pos = dbHandler.UsersQuantity - 1;
+                        RecordPositionLabel(pos);
+                        btnCancelAddRegistry.PerformClick();
+                        ButtonsCheck();
                     }
                     else
                     {
-                        MessageBox.Show("This email is already used, try another one");
+                        MessageBox.Show(returnErrorInput());
                     }
                 }
                 else
                 {
-                    MessageBox.Show("This nickname is already used, try another one");
+                    MessageBox.Show("This email is already used, try another one");
                 }
             }
             else
             {
-                MessageBox.Show("This ID is already used, try another one");
+                MessageBox.Show("This nickname is already used, try another one");
             }
         }
 
@@ -415,56 +456,56 @@ namespace Exercise_3
         {
             if (pos != -1 && changeDetected)
             {
+                // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
+                object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Users");
                 // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW TEACHER
-                int ID = int.Parse(txtbID.Text);
                 string name = txtbName.Text;
                 string email = txtbEmail.Text;
                 string password = txtbPassword.Text;
 
-                // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
-                object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Users");
+                bool banStatus = false;
+
+                if (txtbBanned.Text == "Not Banned")
+                {
+                    banStatus = false;
+                }
+                else if (txtbBanned.Text == "Banned")
+                {
+                    banStatus = true;
+                }
 
                 // CHECKS IF THE SELECTED OBJECT IS A TEACHER AND CONVERTS THAT OBJECT INTO A TEACHER TYPE TO ACCES TO ITS PROPERTIES
                 if (oldObjectData is User oldUserData)
                 {
-                    // MAKES SURE THAT THE FOLLOWING ID-NICKNAME-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
-                    if (!dbHandler.DuplicatedIDDataFromSelectedTable(ID.ToString(), "Users") || ID == oldUserData.ID)
+                    // MAKES SURE THAT THE FOLLOWING NICKNAME-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
+                    if (!dbHandler.DuplicatedNameDataFromSelectedTable(name, "Users") || name == oldUserData.Name)
                     {
-                        if (!dbHandler.DuplicatedNameDataFromSelectedTable(name, "Users") || name == oldUserData.Name)
+                        if (!dbHandler.DuplicatedEmailDataFromUsers(email) || email == oldUserData.Email)
                         {
-                            if (!dbHandler.DuplicatedEmailDataFromUsers(email) || email == oldUserData.Email)
+                            if (banStatus == oldUserData.Banned)
                             {
                                 // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
-                                object selectedObjectToUpdate = User.UserCreation(name, password, email);
-                                if (selectedObjectToUpdate != null)
+                                DialogResult ban = MessageBox.Show("Do you want to ban this user (Y/N)?", "Ban User?", MessageBoxButtons.YesNo);
+
+                                if (ban == DialogResult.Yes)
                                 {
-                                    dbHandler.UpdateSelectedObjectFromPosition(selectedObjectToUpdate, pos, "Users");
-                                    ShowUsersRecords(pos);
-                                    RecordPositionLabel(pos);
-                                    changeDetected = false;
-                                    ButtonsCheck();
+                                    btnBan.PerformClick();
                                 }
                                 else
                                 {
-                                    MessageBox.Show(returnErrorInput());
+                                    btnUnban.PerformClick();
                                 }
-
-                            }
-                            else
-                            {
-                                MessageBox.Show("This email is already used, try another one");
                             }
                         }
                         else
                         {
-                            MessageBox.Show("This nickname is already used, try another one");
+                            MessageBox.Show("This email is already used, try another one");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("This ID is already used, try another one");
+                        MessageBox.Show("This nickname is already used, try another one");
                     }
-
                 }
                 else if (dbHandler.UsersQuantity == 0)
                 {
@@ -507,6 +548,47 @@ namespace Exercise_3
                 MessageBox.Show("Delete is not possible when no elements are in the database.");
             }
         }
+
+        private void btnBan_Click(object sender, EventArgs e)
+        {
+            if (pos != -1)
+            {
+                // GETS THE DATA FROM AN OBJECT IN THE ACTUAL POSITION 
+                object objectToBan = dbHandler.GetSelectedTypeObject(pos, "Users");
+
+                // CHECKS IF THE SELECTED OBJECT IS A USER AND CONVERTS THAT OBJECT INTO A USER TYPE TO ACCES TO ITS PROPERTIES
+                if (objectToBan is User userToBan)
+                {
+
+                    // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
+                    string name = txtbName.Text;
+                    string email = txtbEmail.Text;
+                    string password = txtbPassword.Text;
+
+                    // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
+                    object selectedUserToUpdate = User.UserCreation(name, password, email, true);
+                    if (selectedUserToUpdate != null)
+                    {
+                        dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, "Users");
+                        ShowUsersRecords(pos);
+                        RecordPositionLabel(pos);
+                        changeDetected = false;
+                        ButtonsCheck();
+                    }
+                    else
+                    {
+                        MessageBox.Show(returnErrorInput());
+                    }
+                    
+                }
+            }
+        }
+
+        private void btnUnban_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
         private void btnSearchUser_Click(object sender, EventArgs e)
         {
@@ -567,7 +649,8 @@ namespace Exercise_3
                                   "\nID: 1 / 2" +
                                   "\nNAME: Sergio" +
                                   "\nEMAIL: x@x.com" +
-                                  "\nPASSWORD: Contraseña_1 / CONTRASEÑa&2";
+                                  "\nPASSWORD: Contraseña_1 / CONTRASEÑa&2" +
+                                  "\nBANNED: Not Banned / Banned"; ;
             return errorMessage;
         }
 
@@ -639,6 +722,30 @@ namespace Exercise_3
                 UpdateChangeDetected(txtbPassword.Text, originalPassword);
             }
         }
+
+        private void txtbBanned_TextChanged(object sender, EventArgs e)
+        {
+            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Users");
+            if (actualObject is User actualUser)
+            {
+                bool banStatus = false;
+
+                if (txtbBanned.Text == "Not Banned")
+                {
+                    banStatus = false;
+                }
+                else if (txtbBanned.Text == "Banned")
+                {
+                    banStatus = true;
+                }
+
+                bool originalBan = actualUser.Banned;
+                UpdateChangeDetected(banStatus.ToString(), originalBan.ToString());
+            }
+        }
+
+
+
 
         /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
     }

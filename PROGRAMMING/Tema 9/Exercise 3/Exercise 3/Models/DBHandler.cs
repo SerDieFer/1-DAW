@@ -174,7 +174,7 @@ namespace Exercise_3
             return usedMail;
         }
 
-        // Method to retrieve the identity ID of a record based on a condition
+        // METHOD TO GET THE IDENTITY ID FROM A RECORD BASES IN A CONDITION
         public int GetIdentityID(string selectedTable, string condition)
         {
             int getId;
@@ -190,7 +190,7 @@ namespace Exercise_3
             SqlCommand newQuery = new SqlCommand(query, con);
             object lastIdentityIQ = newQuery.ExecuteScalar();
 
-            if (lastIdentityIQ != null && lastIdentityIQ != DBNull.Value)
+            if (lastIdentityIQ != null)
             {
                 getId = Convert.ToInt32(lastIdentityIQ);
             }
@@ -219,8 +219,8 @@ namespace Exercise_3
                     // TAKE VALUE FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW USER OBJECT
                     selectedObject = User.UserCreation(dRecord[1].ToString(),
                                                        dRecord[2].ToString(),
-                                                       dRecord[3].ToString());
-
+                                                       dRecord[3].ToString(),
+                                                       (bool)dRecord[4]);
                 }
             }
 
@@ -272,6 +272,7 @@ namespace Exercise_3
                 dNewRecord["Name"] = userToAdd.Name;
                 dNewRecord["Email"] = userToAdd.Email;
                 dNewRecord["Password"] = userToAdd.Password;
+                dNewRecord["Banned"] = userToAdd.Banned;
 
                 if (!CheckAllUserPosibleDuplicatedData(userToAdd.Name, userToAdd.Email, selectedTable))
                 {
@@ -313,6 +314,10 @@ namespace Exercise_3
         // METHOD TO UPDATE A OBJECT INTO THE DATABASE
         public void UpdateSelectedObjectFromPosition(object objectToUpdate, int pos, string selectedTable)
         {
+            // AUTOINCREMENTAL FIX 
+            dataSet.Clear();
+            dataAdapter.Fill(dataSet, selectedTable);
+
             // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
             DataRow dUpdateRecord;
 
@@ -325,6 +330,7 @@ namespace Exercise_3
                 dUpdateRecord["Name"] = userToUpdate.Name;
                 dUpdateRecord["Email"] = userToUpdate.Email;
                 dUpdateRecord["Password"] = userToUpdate.Password;
+                dUpdateRecord["Banned"] = userToUpdate.Banned;
 
                 if (!CheckAllUserPosibleDuplicatedData(dUpdateRecord[1].ToString(), dUpdateRecord[3].ToString(), selectedTable))
                 {
@@ -350,6 +356,10 @@ namespace Exercise_3
         // METHOD TO DELETE A SELECTED OBJECT FROM THE DB
         public void DeleteSelectedObjectFromPosition(int pos, string selectedTable)
         {
+            // AUTOINCREMENTAL FIX 
+            dataSet.Clear();
+            dataAdapter.Fill(dataSet, selectedTable);
+
             // DELETE THE RECORD FROM THE SELECTED POSITION
             ImportSelectedDataTable(selectedTable).Rows[pos].Delete();
 
@@ -365,22 +375,33 @@ namespace Exercise_3
                 _selectedCharactersQuantity--;
 
             }
-
             // UPDATES THE DB FROM SELECTED TABLE
             ReconnectionToDB(selectedTable);
         }
 
         // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB FOR CHARACTERS
-        public bool CheckUserChangesStoredAndActualValues(int pos, string name, string email, string password)
+        public bool CheckUserChangesStoredAndActualValues(int pos, string name, string email, string password, string banned)
         {
             bool same = true;
             object objectToUpdate = GetSelectedTypeObject(pos, "Users");
 
             if (objectToUpdate is User userToCompare)
             {
+                bool banStatus = false;
+
+                if (banned == "Not Banned")
+                {
+                    banStatus = false;
+                }
+                else if (banned == "Not Banned")
+                {
+                    banStatus = true;
+                }
+
                 if (userToCompare.Name != name ||
                     userToCompare.Password != password ||
-                    userToCompare.Email != email)
+                    userToCompare.Email != email ||
+                    userToCompare.Banned != banStatus)
                 {
                     same = false;
                 }

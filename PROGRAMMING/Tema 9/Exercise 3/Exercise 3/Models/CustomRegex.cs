@@ -37,9 +37,9 @@ namespace Exercise_3
                  * INCLUDES AT LEAST ONE LOWERCASE LETTER (a-z),
                  * INCLUDES AT LEAST ONE UPPERCASE LETTER (A-Z),
                  * INCLUDES AT LEAST ONE DIGIT (0-9),
-                 * INCLUDES AT LEAST ONE SPECIAL CHARACTER FROM THE SET @$!%*?&. */
+                 * INCLUDES AT LEAST ONE SPECIAL CHARACTER FROM THE SET $!%*?& */
 
-            string regexPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+            string regexPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$";
             return new Regex(regexPattern).IsMatch(x);
         }
     }

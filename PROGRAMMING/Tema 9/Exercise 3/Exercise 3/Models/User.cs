@@ -13,6 +13,7 @@ namespace Exercise_3
     public class User
     {
         private string uName, uEmail, uPassword;
+        private bool uBanned;
 
         public int ID
         {
@@ -38,26 +39,33 @@ namespace Exercise_3
             set => uPassword = value;
         }
 
-        private User(string uName, string uEmail, string uPassword)
+        public bool Banned
+        {
+            get => uBanned;
+            set => uBanned = value;
+        }
+
+        private User(string uName, string uPassword, string uEmail, bool uBanned)
         {
             Name = uName;
             Email = uEmail;
             Password = uPassword;
+            Banned = uBanned; ;
         }
 
-        public static User UserCreation(string uName, string uEmail, string uPassword)
+        public static User UserCreation(string uName, string uPassword, string uEmail, bool uBanned)
         {
             // RECALL TO CUSTOM REGEX WHICH CHECKS ALL THE INPUTS BEFORE INSERTING THEM INTO
             // THE ORIGINAL CONSTRUCTOR WHICH CREATES THE ACTUAL TEACHER WITHOUT ANY ERROR
             if (!CustomRegex.RegexName(uName) ||
-                !CustomRegex.RegexEmail(uEmail) ||
-                !CustomRegex.RegexPassword(uPassword))   
+                !CustomRegex.RegexPassword(uPassword) ||
+                !CustomRegex.RegexEmail(uEmail))
             {
                 return null;
             }
             else
             {
-                return new User(uName, uEmail, uPassword);
+                return new User(uName, uPassword, uEmail, uBanned);
             }
         }
 
