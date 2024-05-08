@@ -10,6 +10,7 @@ using Microsoft.VisualBasic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Runtime.Remoting.Contexts;
 using System.IO;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Exercise_3
 {
@@ -201,8 +202,33 @@ namespace Exercise_3
             return getId;
         }
 
-    // METHOD WHICH RETURNS A OBJECT'S DATA FROM A SELECTED POSITION
-    public object GetSelectedTypeObject(int pos, string selectedTable)
+        // METHOD TO CHANGE BAN STATUS FROM ID TO A RECORD BASED IN A CONDITION
+        public void UpdateBanStatus(int userId, bool banned)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
+            SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
+                                                  "AttachDbFilename=" + path + "Integrated Security=True");
+            int bannedValue;
+            if (banned)
+            {
+                bannedValue = 1;
+            }
+            else
+            {
+                bannedValue = 0;
+            }
+
+            string query = "UPDATE Users SET Banned = " + bannedValue.ToString() + " WHERE ID = " + userId.ToString();
+            SqlCommand newQuery = new SqlCommand(query, con);
+
+            con.Open();
+                newQuery.ExecuteNonQuery();
+            con.Close();
+        }
+
+
+        // METHOD WHICH RETURNS A OBJECT'S DATA FROM A SELECTED POSITION
+        public object GetSelectedTypeObject(int pos, string selectedTable)
         {
             object selectedObject = null;
 
@@ -311,47 +337,48 @@ namespace Exercise_3
             }
         }
 
-        // METHOD TO UPDATE A OBJECT INTO THE DATABASE
-        public void UpdateSelectedObjectFromPosition(object objectToUpdate, int pos, string selectedTable)
-        {
-            // AUTOINCREMENTAL FIX 
-            dataSet.Clear();
-            dataAdapter.Fill(dataSet, selectedTable);
-
-            // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
-            DataRow dUpdateRecord;
-
-            // TAKING THE RECORD OF "pos" POSITION IN SELECTED TABLE
-            dUpdateRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
-
-            if (objectToUpdate is User userToUpdate)
+            // METHOD TO UPDATE A OBJECT INTO THE DATABASE
+            public void UpdateSelectedObjectFromPosition(object objectToUpdate, int pos, string selectedTable)
             {
-                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                dUpdateRecord["Name"] = userToUpdate.Name;
-                dUpdateRecord["Email"] = userToUpdate.Email;
-                dUpdateRecord["Password"] = userToUpdate.Password;
-                dUpdateRecord["Banned"] = userToUpdate.Banned;
+                // AUTOINCREMENTAL FIX 
+                dataSet.Clear();
+                dataAdapter.Fill(dataSet, selectedTable);
 
-                if (!CheckAllUserPosibleDuplicatedData(dUpdateRecord[1].ToString(), dUpdateRecord[3].ToString(), selectedTable))
+                // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
+                DataRow dUpdateRecord;
+
+                // TAKING THE RECORD OF "pos" POSITION IN SELECTED TABLE
+                dUpdateRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+
+                if (objectToUpdate is User userToUpdate)
                 {
-                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                    ReconnectionToDB(selectedTable);
+                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                    dUpdateRecord["Name"] = userToUpdate.Name;
+                    dUpdateRecord["Email"] = userToUpdate.Email;
+                    dUpdateRecord["Password"] = userToUpdate.Password;
+                    dUpdateRecord["Banned"] = userToUpdate.Banned;
+
+                    if (!CheckAllUserPosibleDuplicatedData(dUpdateRecord[1].ToString(), dUpdateRecord[3].ToString(), selectedTable))
+                    {
+                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                        ReconnectionToDB(selectedTable);
+
+                    }
+                }
+                else if (objectToUpdate is Character characterToUpdate)
+                {
+                    // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                    dUpdateRecord["Name"] = characterToUpdate.Name;
+                    dUpdateRecord["ImgRoute"] = characterToUpdate.ImgRoute;
+                    dUpdateRecord["IconRoute"] = characterToUpdate.IconRoute;
+
+                    if (!DuplicatedNameDataFromSelectedTable(characterToUpdate.Name, selectedTable))
+                    {
+                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                        ReconnectionToDB(selectedTable);
+                    }
                 }
             }
-            else if (objectToUpdate is Character characterToUpdate)
-            {
-                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                dUpdateRecord["Name"] = characterToUpdate.Name;
-                dUpdateRecord["ImgRoute"] = characterToUpdate.ImgRoute;
-                dUpdateRecord["IconRoute"] = characterToUpdate.IconRoute;
-
-                if (!DuplicatedNameDataFromSelectedTable(characterToUpdate.Name, selectedTable))
-                {
-                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                    ReconnectionToDB(selectedTable);
-                }
-            }
-        }
 
         // METHOD TO DELETE A SELECTED OBJECT FROM THE DB
         public void DeleteSelectedObjectFromPosition(int pos, string selectedTable)
@@ -391,17 +418,17 @@ namespace Exercise_3
 
                 if (banned == "Not Banned")
                 {
-                    banStatus = false;
-                }
-                else if (banned == "Not Banned")
-                {
                     banStatus = true;
+                }
+                else if (banned == "Banned")
+                {
+                    banStatus = false;
                 }
 
                 if (userToCompare.Name != name ||
                     userToCompare.Password != password ||
                     userToCompare.Email != email ||
-                    userToCompare.Banned != banStatus)
+                    userToCompare.Banned == banStatus)
                 {
                     same = false;
                 }
