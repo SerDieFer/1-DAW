@@ -234,11 +234,9 @@ BEGIN
 			PRINT 'Category name must contain only alphabetical characters. Example: Food';
             RETURN -1
 		END
-
-		BEGIN TRAN
-			INSERT INTO CATEGORIA_PRODUCTOS (codCategoria, nombre, descripcion_texto, descripcion_html, imagen)
-			VALUES (@categoryCod, @categoryName, @txt_description, @html_description, @image)
-		COMMIT
+		
+		INSERT INTO CATEGORIA_PRODUCTOS (codCategoria, nombre, descripcion_texto, descripcion_html, imagen)
+		VALUES (@categoryCod, @categoryName, @txt_description, @html_description, @image)
 	END TRY
 	BEGIN CATCH
 		ROLLBACK
