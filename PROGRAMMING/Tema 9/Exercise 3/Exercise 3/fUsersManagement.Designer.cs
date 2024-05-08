@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             this.gExtraOption = new System.Windows.Forms.GroupBox();
+            this.btnListBannedUsers = new System.Windows.Forms.Button();
             this.btnListUsers = new System.Windows.Forms.Button();
             this.btnSearchUser = new System.Windows.Forms.Button();
             this.gpUpdateDeleteBan = new System.Windows.Forms.GroupBox();
+            this.btnUnban = new System.Windows.Forms.Button();
+            this.btnBan = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.gpNewRegistry = new System.Windows.Forms.GroupBox();
@@ -39,11 +42,13 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.gpNavigate = new System.Windows.Forms.GroupBox();
-            this.btnPrevious = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnLast = new System.Windows.Forms.Button();
+            this.btnPrevious = new System.Windows.Forms.Button();
             this.btnFirst = new System.Windows.Forms.Button();
             this.gbData = new System.Windows.Forms.GroupBox();
+            this.txtbBanned = new System.Windows.Forms.TextBox();
+            this.lblBanned = new System.Windows.Forms.Label();
             this.lblRecord = new System.Windows.Forms.Label();
             this.txtbID = new System.Windows.Forms.TextBox();
             this.txtbName = new System.Windows.Forms.TextBox();
@@ -53,11 +58,6 @@
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.lblID = new System.Windows.Forms.Label();
-            this.btnBan = new System.Windows.Forms.Button();
-            this.txtbBanned = new System.Windows.Forms.TextBox();
-            this.lblBanned = new System.Windows.Forms.Label();
-            this.btnListBannedUsers = new System.Windows.Forms.Button();
-            this.btnUnban = new System.Windows.Forms.Button();
             this.gExtraOption.SuspendLayout();
             this.gpUpdateDeleteBan.SuspendLayout();
             this.gpNewRegistry.SuspendLayout();
@@ -77,6 +77,17 @@
             this.gExtraOption.TabIndex = 17;
             this.gExtraOption.TabStop = false;
             this.gExtraOption.Text = "LIST AND SEARCH";
+            // 
+            // btnListBannedUsers
+            // 
+            this.btnListBannedUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnListBannedUsers.Location = new System.Drawing.Point(29, 106);
+            this.btnListBannedUsers.Name = "btnListBannedUsers";
+            this.btnListBannedUsers.Size = new System.Drawing.Size(259, 41);
+            this.btnListBannedUsers.TabIndex = 2;
+            this.btnListBannedUsers.Text = "LIST OF BANNED USERS";
+            this.btnListBannedUsers.UseVisualStyleBackColor = true;
+            this.btnListBannedUsers.Click += new System.EventHandler(this.btnListBannedUsers_Click);
             // 
             // btnListUsers
             // 
@@ -113,6 +124,28 @@
             this.gpUpdateDeleteBan.TabIndex = 18;
             this.gpUpdateDeleteBan.TabStop = false;
             this.gpUpdateDeleteBan.Text = "UPDATE, DELETE, BAN AND UNBAN";
+            // 
+            // btnUnban
+            // 
+            this.btnUnban.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUnban.Location = new System.Drawing.Point(294, 37);
+            this.btnUnban.Name = "btnUnban";
+            this.btnUnban.Size = new System.Drawing.Size(76, 41);
+            this.btnUnban.TabIndex = 3;
+            this.btnUnban.Text = "UNBAN";
+            this.btnUnban.UseVisualStyleBackColor = true;
+            this.btnUnban.Click += new System.EventHandler(this.btnUnban_Click);
+            // 
+            // btnBan
+            // 
+            this.btnBan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBan.Location = new System.Drawing.Point(203, 37);
+            this.btnBan.Name = "btnBan";
+            this.btnBan.Size = new System.Drawing.Size(76, 41);
+            this.btnBan.TabIndex = 2;
+            this.btnBan.Text = "BAN";
+            this.btnBan.UseVisualStyleBackColor = true;
+            this.btnBan.Click += new System.EventHandler(this.btnBan_Click);
             // 
             // btnDelete
             // 
@@ -196,17 +229,6 @@
             this.gpNavigate.TabStop = false;
             this.gpNavigate.Text = "NAVIGATE TO";
             // 
-            // btnPrevious
-            // 
-            this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrevious.Location = new System.Drawing.Point(29, 37);
-            this.btnPrevious.Name = "btnPrevious";
-            this.btnPrevious.Size = new System.Drawing.Size(120, 41);
-            this.btnPrevious.TabIndex = 3;
-            this.btnPrevious.Text = "PREVIOUS";
-            this.btnPrevious.UseVisualStyleBackColor = true;
-            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
-            // 
             // btnNext
             // 
             this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -228,6 +250,17 @@
             this.btnLast.Text = "LAST";
             this.btnLast.UseVisualStyleBackColor = true;
             this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
+            // 
+            // btnPrevious
+            // 
+            this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrevious.Location = new System.Drawing.Point(29, 37);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(120, 41);
+            this.btnPrevious.TabIndex = 3;
+            this.btnPrevious.Text = "PREVIOUS";
+            this.btnPrevious.UseVisualStyleBackColor = true;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
             // btnFirst
             // 
@@ -262,6 +295,29 @@
             this.gbData.TabStop = false;
             this.gbData.Text = "USERS DATA";
             // 
+            // txtbBanned
+            // 
+            this.txtbBanned.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbBanned.Location = new System.Drawing.Point(153, 214);
+            this.txtbBanned.Name = "txtbBanned";
+            this.txtbBanned.ReadOnly = true;
+            this.txtbBanned.ShortcutsEnabled = false;
+            this.txtbBanned.Size = new System.Drawing.Size(217, 22);
+            this.txtbBanned.TabIndex = 12;
+            this.txtbBanned.TabStop = false;
+            this.txtbBanned.TextChanged += new System.EventHandler(this.txtbBanned_TextChanged);
+            // 
+            // lblBanned
+            // 
+            this.lblBanned.AutoSize = true;
+            this.lblBanned.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBanned.Location = new System.Drawing.Point(23, 217);
+            this.lblBanned.Name = "lblBanned";
+            this.lblBanned.Size = new System.Drawing.Size(67, 16);
+            this.lblBanned.TabIndex = 11;
+            this.lblBanned.Text = "BANNED:";
+            this.lblBanned.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblRecord
             // 
             this.lblRecord.AutoSize = true;
@@ -277,6 +333,7 @@
             this.txtbID.Location = new System.Drawing.Point(153, 48);
             this.txtbID.Name = "txtbID";
             this.txtbID.ReadOnly = true;
+            this.txtbID.ShortcutsEnabled = false;
             this.txtbID.Size = new System.Drawing.Size(217, 22);
             this.txtbID.TabIndex = 9;
             this.txtbID.TabStop = false;
@@ -351,58 +408,6 @@
             this.lblID.TabIndex = 0;
             this.lblID.Text = "ID:";
             this.lblID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnBan
-            // 
-            this.btnBan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBan.Location = new System.Drawing.Point(203, 37);
-            this.btnBan.Name = "btnBan";
-            this.btnBan.Size = new System.Drawing.Size(76, 41);
-            this.btnBan.TabIndex = 2;
-            this.btnBan.Text = "BAN";
-            this.btnBan.UseVisualStyleBackColor = true;
-            this.btnBan.Click += new System.EventHandler(this.btnBan_Click);
-            // 
-            // txtbBanned
-            // 
-            this.txtbBanned.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbBanned.Location = new System.Drawing.Point(153, 214);
-            this.txtbBanned.Name = "txtbBanned";
-            this.txtbBanned.Size = new System.Drawing.Size(217, 22);
-            this.txtbBanned.TabIndex = 12;
-            this.txtbBanned.TextChanged += new System.EventHandler(this.txtbBanned_TextChanged);
-            // 
-            // lblBanned
-            // 
-            this.lblBanned.AutoSize = true;
-            this.lblBanned.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBanned.Location = new System.Drawing.Point(23, 217);
-            this.lblBanned.Name = "lblBanned";
-            this.lblBanned.Size = new System.Drawing.Size(67, 16);
-            this.lblBanned.TabIndex = 11;
-            this.lblBanned.Text = "BANNED:";
-            this.lblBanned.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnListBannedUsers
-            // 
-            this.btnListBannedUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnListBannedUsers.Location = new System.Drawing.Point(29, 106);
-            this.btnListBannedUsers.Name = "btnListBannedUsers";
-            this.btnListBannedUsers.Size = new System.Drawing.Size(259, 41);
-            this.btnListBannedUsers.TabIndex = 2;
-            this.btnListBannedUsers.Text = "LIST OF BANNED USERS";
-            this.btnListBannedUsers.UseVisualStyleBackColor = true;
-            // 
-            // btnUnban
-            // 
-            this.btnUnban.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUnban.Location = new System.Drawing.Point(294, 37);
-            this.btnUnban.Name = "btnUnban";
-            this.btnUnban.Size = new System.Drawing.Size(76, 41);
-            this.btnUnban.TabIndex = 3;
-            this.btnUnban.Text = "UNBAN";
-            this.btnUnban.UseVisualStyleBackColor = true;
-            this.btnUnban.Click += new System.EventHandler(this.btnUnban_Click);
             // 
             // fUsersManagement
             // 

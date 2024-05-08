@@ -6,6 +6,10 @@ using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Drawing;
+using System.Linq;
 
 namespace Exercise_3
 {
@@ -27,6 +31,10 @@ namespace Exercise_3
             RecordPositionLabel(pos);
             ShowUsersRecords(pos);
             ButtonsCheck();
+
+            // THIS SETS THIS BUTTONS UNCHANGEABLE
+            txtbBanned.ReadOnly = true;
+            txtbID.ReadOnly = true;
         }
 
 
@@ -132,6 +140,56 @@ namespace Exercise_3
                     object singleUser = dbHandler.GetSelectedTypeObject(0, "Users");
                     usersListTxt = dbHandler.GetObjectDataFromPosition(singleUser, 0, "User");
                     result = usersListTxt;
+                }
+            }
+            else
+            {
+                result = "No users added in the DB.";
+            }
+            return result;
+        }
+
+        public string ShowsBannedUsersList()
+        {
+            string result = "";
+            if (dbHandler.UsersQuantity != 0)
+            {
+                string bannedUsersListTxt = "List of users: \n\n";
+
+                if (dbHandler.UsersQuantity > 1)
+                {
+                    DataTable usersTable = dbHandler.ImportSelectedDataTable("Users");
+
+                    foreach (DataRow row in usersTable.Rows)
+                    {
+                        if ((bool)row["Banned"])
+                        {
+                            string bannedUserInfo = "ID: " + row["ID"] + "\n" +
+                                                    "Name: " + row["Name"] + "\n" +
+                                                    "Password: " + row["Password"] + "\n" +
+                                                    "Email: " + row["Email"] + "\n";
+
+                            bannedUsersListTxt += bannedUserInfo + "\n";
+                        }
+                    }
+
+                    result = bannedUsersListTxt;
+                }
+                else if (dbHandler.UsersQuantity == 1)
+                {
+                    object singleUser = dbHandler.GetSelectedTypeObject(0, "Users");
+                    if (singleUser is User singleBannedUser)
+                    {
+                        if (singleBannedUser.Banned)
+                        {
+                            bannedUsersListTxt = dbHandler.GetObjectDataFromPosition(singleUser, 0, "User");
+                            result = bannedUsersListTxt;
+                        }
+                        else
+                        {
+                            result = "No banned users added in the DB.";
+                        }
+                    }
                 }
             }
             else
@@ -276,6 +334,7 @@ namespace Exercise_3
             }
         }
 
+
         private void btnCancelAddRegistry_Click(object sender, EventArgs e)
         {
             pos = 0;
@@ -412,11 +471,11 @@ namespace Exercise_3
 
                     if (txtbBanned.Text == "Not Banned")
                     {
-                        banStatus = false;
+                        banStatus = true;
                     }
                     else if (txtbBanned.Text == "Banned")
                     {
-                        banStatus = true;
+                        banStatus = false;
                     }
 
                     // CREATES THE TEACHER TO SAVE
@@ -458,18 +517,12 @@ namespace Exercise_3
             {
                 // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
                 object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Users");
-                // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW TEACHER
+                // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
                 string name = txtbName.Text;
                 string email = txtbEmail.Text;
                 string password = txtbPassword.Text;
-
                 bool banStatus = false;
-
-                if (txtbBanned.Text == "Not Banned")
-                {
-                    banStatus = false;
-                }
-                else if (txtbBanned.Text == "Banned")
+                if (txtbBanned.Text == "Banned")
                 {
                     banStatus = true;
                 }
@@ -482,20 +535,21 @@ namespace Exercise_3
                     {
                         if (!dbHandler.DuplicatedEmailDataFromUsers(email) || email == oldUserData.Email)
                         {
-                            if (banStatus == oldUserData.Banned)
+                            // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
+                            object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
+                            if (selectedUserToUpdate != null)
                             {
-                                // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
-                                DialogResult ban = MessageBox.Show("Do you want to ban this user (Y/N)?", "Ban User?", MessageBoxButtons.YesNo);
-
-                                if (ban == DialogResult.Yes)
-                                {
-                                    btnBan.PerformClick();
-                                }
-                                else
-                                {
-                                    btnUnban.PerformClick();
-                                }
+                                dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, "Users");
+                                ShowUsersRecords(pos);
+                                RecordPositionLabel(pos);
+                                changeDetected = false;
+                                ButtonsCheck();
                             }
+                            else
+                            {
+                                MessageBox.Show(returnErrorInput());
+                            }
+                            
                         }
                         else
                         {
@@ -549,7 +603,7 @@ namespace Exercise_3
             }
         }
 
-        private void btnBan_Click(object sender, EventArgs e)
+        public void UnbannedUser (bool banned)
         {
             if (pos != -1)
             {
@@ -559,16 +613,17 @@ namespace Exercise_3
                 // CHECKS IF THE SELECTED OBJECT IS A USER AND CONVERTS THAT OBJECT INTO A USER TYPE TO ACCES TO ITS PROPERTIES
                 if (objectToBan is User userToBan)
                 {
-
                     // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
-                    string name = txtbName.Text;
-                    string email = txtbEmail.Text;
-                    string password = txtbPassword.Text;
+                    string name = userToBan.Name;
+                    string email = userToBan.Email;
+                    string password = userToBan.Password;
 
                     // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
-                    object selectedUserToUpdate = User.UserCreation(name, password, email, true);
+                    object selectedUserToUpdate = User.UserCreation(name, password, email, banned);
                     if (selectedUserToUpdate != null)
                     {
+
+                        dbHandler.UpdateBanStatus(dbHandler.GetIdentityID("Users", "Name = '" + userToBan.Name.ToString() + "'"), banned);
                         dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, "Users");
                         ShowUsersRecords(pos);
                         RecordPositionLabel(pos);
@@ -579,16 +634,52 @@ namespace Exercise_3
                     {
                         MessageBox.Show(returnErrorInput());
                     }
-                    
+
                 }
             }
         }
 
-        private void btnUnban_Click(object sender, EventArgs e)
+        private void ConfirmBanOrUnban(bool choice)
         {
+            string banStatus = "";
+
+            if (txtbBanned.Text == "Not Banned")
+            {
+                banStatus = "ban";
+
+            }
+            else if (txtbBanned.Text == "Banned")
+            {
+                banStatus = "unban";
+            }
+
+            DialogResult result = MessageBox.Show("Do you want to " + banStatus + " this user (Y/N)?", 
+                                                  char.ToUpper(banStatus.First()) + banStatus.Substring(1).ToLower() + 
+                                                  " User ? ", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                if (banStatus == "ban")
+                {
+                    UnbannedUser(true);
+                }
+                else
+                {
+                    UnbannedUser(false);
+                }
+            }
+        }
+
+        private void btnBan_Click(object sender, EventArgs e)
+        {
+            ConfirmBanOrUnban(true);
 
         }
 
+        private void btnUnban_Click(object sender, EventArgs e)
+        {
+            ConfirmBanOrUnban(false);
+        }
 
         private void btnSearchUser_Click(object sender, EventArgs e)
         {
@@ -637,6 +728,11 @@ namespace Exercise_3
             MessageBox.Show(ShowsUsersList());
         }
 
+        private void btnListBannedUsers_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(ShowsBannedUsersList());
+        }
+
         /* ---------------- BUTTONS HANDLING END --------------------- */
 
         /* ---------------- INPUT ERROR HANDLING START --------------------- */
@@ -683,6 +779,10 @@ namespace Exercise_3
             btnClear.Enabled = recordsExist && !noRecordSelected;
             btnListUsers.Enabled = recordsExist;
             btnSearchUser.Enabled = recordsExist;
+
+            // ENABLE/DISABLE BAN/UNBAN BUTTONS BASED ON ACTUAL STATUS
+            btnBan.Enabled = recordsExist && (txtbBanned.Text == "Not Banned");
+            btnUnban.Enabled = recordsExist && (txtbBanned.Text == "Banned");
         }
 
         // THIS FUNCTION AUTO CHECKS THE CHANGES DETECTED IN THE FOLLOWING TEXT BOXES BETWEEN THE ORIGINAL STRING AND THE NEW CHANGED
@@ -732,20 +832,17 @@ namespace Exercise_3
 
                 if (txtbBanned.Text == "Not Banned")
                 {
-                    banStatus = false;
+                    banStatus = true;
                 }
                 else if (txtbBanned.Text == "Banned")
                 {
-                    banStatus = true;
+                    banStatus = false;
                 }
 
                 bool originalBan = actualUser.Banned;
                 UpdateChangeDetected(banStatus.ToString(), originalBan.ToString());
             }
         }
-
-
-
 
         /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
     }
