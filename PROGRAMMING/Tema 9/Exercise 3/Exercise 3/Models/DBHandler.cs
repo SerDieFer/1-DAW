@@ -202,7 +202,7 @@ namespace Exercise_3
             return getId;
         }
 
-        // METHOD TO CHANGE BAN STATUS FROM ID TO A RECORD BASED IN A CONDITION
+        // METHOD TO CHANGE BAN STATUS FROM ID TO A RECORD BASED IN A CONDITION //NOT USED CHECK TO DELETE 
         public void UpdateBanStatus(int userId, bool banned)
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
@@ -338,12 +338,8 @@ namespace Exercise_3
         }
 
             // METHOD TO UPDATE A OBJECT INTO THE DATABASE
-            public void UpdateSelectedObjectFromPosition(object objectToUpdate, int pos, string selectedTable)
+            public void UpdateSelectedObjectFromPosition(object objectToUpdate, int pos, bool unBanned, string selectedTable)
             {
-                // AUTOINCREMENTAL FIX 
-                dataSet.Clear();
-                dataAdapter.Fill(dataSet, selectedTable);
-
                 // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
                 DataRow dUpdateRecord;
 
@@ -356,7 +352,15 @@ namespace Exercise_3
                     dUpdateRecord["Name"] = userToUpdate.Name;
                     dUpdateRecord["Email"] = userToUpdate.Email;
                     dUpdateRecord["Password"] = userToUpdate.Password;
-                    dUpdateRecord["Banned"] = userToUpdate.Banned;
+
+                    if (unBanned)
+                    {
+                        dUpdateRecord["Banned"] = 1;
+                    }
+                    else
+                    {
+                        dUpdateRecord["Banned"] = 0;
+                    }
 
                     if (!CheckAllUserPosibleDuplicatedData(dUpdateRecord[1].ToString(), dUpdateRecord[3].ToString(), selectedTable))
                     {
@@ -376,6 +380,10 @@ namespace Exercise_3
                     {
                         // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
                         ReconnectionToDB(selectedTable);
+
+                        // AUTOINCREMENTAL FIX 
+                        dataSet.Clear();
+                        dataAdapter.Fill(dataSet, selectedTable);
                     }
                 }
             }

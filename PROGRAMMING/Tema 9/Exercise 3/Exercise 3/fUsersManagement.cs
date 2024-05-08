@@ -518,6 +518,7 @@ namespace Exercise_3
                 // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
                 object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Users");
                 // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
+
                 string name = txtbName.Text;
                 string email = txtbEmail.Text;
                 string password = txtbPassword.Text;
@@ -539,7 +540,7 @@ namespace Exercise_3
                             object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
                             if (selectedUserToUpdate != null)
                             {
-                                dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, "Users");
+                                dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
                                 ShowUsersRecords(pos);
                                 RecordPositionLabel(pos);
                                 changeDetected = false;
@@ -603,7 +604,7 @@ namespace Exercise_3
             }
         }
 
-        public void UnbannedUser (bool banned)
+        public void UnbannedUser (bool banStatus)
         {
             if (pos != -1)
             {
@@ -619,12 +620,10 @@ namespace Exercise_3
                     string password = userToBan.Password;
 
                     // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
-                    object selectedUserToUpdate = User.UserCreation(name, password, email, banned);
+                    object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
                     if (selectedUserToUpdate != null)
                     {
-
-                        dbHandler.UpdateBanStatus(dbHandler.GetIdentityID("Users", "Name = '" + userToBan.Name.ToString() + "'"), banned);
-                        dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, "Users");
+                        dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
                         ShowUsersRecords(pos);
                         RecordPositionLabel(pos);
                         changeDetected = false;
@@ -634,12 +633,11 @@ namespace Exercise_3
                     {
                         MessageBox.Show(returnErrorInput());
                     }
-
                 }
             }
         }
 
-        private void ConfirmBanOrUnban(bool choice)
+        private void ConfirmBanOrUnban()
         {
             string banStatus = "";
 
@@ -672,13 +670,12 @@ namespace Exercise_3
 
         private void btnBan_Click(object sender, EventArgs e)
         {
-            ConfirmBanOrUnban(true);
-
+            ConfirmBanOrUnban();
         }
 
         private void btnUnban_Click(object sender, EventArgs e)
         {
-            ConfirmBanOrUnban(false);
+            ConfirmBanOrUnban();
         }
 
         private void btnSearchUser_Click(object sender, EventArgs e)
@@ -842,6 +839,11 @@ namespace Exercise_3
                 bool originalBan = actualUser.Banned;
                 UpdateChangeDetected(banStatus.ToString(), originalBan.ToString());
             }
+        }
+
+        private void txtbID_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
         /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
