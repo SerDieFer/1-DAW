@@ -50,7 +50,7 @@ namespace Exercise_3
             Name = uName;
             Email = uEmail;
             Password = uPassword;
-            Banned = uBanned; ;
+            Banned = uBanned;
         }
 
         public static User UserCreation(string uName, string uPassword, string uEmail, bool uBanned)

@@ -141,7 +141,7 @@ namespace Exercise_3
         /*---------------------------------- RECURRENT GET FUNCTIONS START -------------------------------------*/
 
         // METHOD TO GET THE IDENTITY ID FROM A CERTAIN TABLE RECORD BASED IN A CONDITION
-        public int GetIdentityID(string selectedTable, string condition)
+        public int GetIdentityID(string selectedTable, string query)
         {
             // DEFAULT ID IF NOT FOUND
             int getId = -1;
@@ -154,9 +154,6 @@ namespace Exercise_3
 
                 // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
                 ReconnectionToDB(selectedTable);
-
-                // ASIGNS A QUERY WHICH SELECTS THE ID FROM THE SELECTED TABLE WHERE SOME CONDITION IS SET
-                string query = "SELECT ID FROM " + selectedTable + " WHERE " + condition;
 
                 // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
                 SqlCommand command = new SqlCommand(query, con);
@@ -220,6 +217,7 @@ namespace Exercise_3
         // METHOD TO ADD A NEW OBJECT TO THE DATABASE (CREATE)
         public void AddNewObject(object objectToAdd, string selectedTable)
         {
+            ReconnectionToDB(selectedTable);
             // CHECK THE TYPE OF THE OBJECT
             if (objectToAdd is User userToAdd)
             {
@@ -227,6 +225,7 @@ namespace Exercise_3
                 DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
 
                 // ADD DATA FROM THE OBJECT INTO THE NEW RECORD
+                dNewRecord["ID"] = userToAdd.ID;
                 dNewRecord["Name"] = userToAdd.Name;
                 dNewRecord["Email"] = userToAdd.Email;
                 dNewRecord["Password"] = userToAdd.Password;
@@ -430,27 +429,27 @@ namespace Exercise_3
                     duplicatedData = true;
                 }
             }
-
             return duplicatedData;
         }
 
-        public bool DuplicatedIDData(string id, string selectedTable)
+        public string ReturnStringWhenDuplicatedData(string userName, string email, string selectedTable)
         {
-            bool usedID = false;
+            string result = "";
 
-            // GETS THE FULL TABLE DATA
-            DataTable tableToCheck = ImportSelectedDataTable(selectedTable);
-
-            // SEARCHS IN THE ROWS FROM THE TABLE
-            foreach (DataRow row in tableToCheck.Rows)
+            if (DuplicatedNameData(userName, selectedTable) && DuplicatedEmailDataFromUsers(email))
             {
-                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
-                if (row["ID"].ToString() == id)
-                {
-                    usedID = true;
-                }
+                result = "The selected user nickname and the email are already used, try other values";
             }
-            return usedID;
+            else if (DuplicatedNameData(userName, selectedTable))
+            {
+                result = "This nickname is already used, try another one";
+               
+            }
+            else if(DuplicatedEmailDataFromUsers(email))
+            {
+                result = "This email is already used, try another one";
+            }
+            return result;
         }
 
         public bool DuplicatedNameData(string name, string selectedTable)

@@ -10,6 +10,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Drawing;
 using System.Linq;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Security.Cryptography;
 
 namespace Exercise_3
 {
@@ -25,7 +27,9 @@ namespace Exercise_3
 
         private void fUsersManagement_Load(object sender, EventArgs e)
         {
+            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE USERS TABLE
             dbHandler = new SqlDBHandler("Users");
+
             // SETS FIRST POSITION, UPDATES THE VISUALS AND CHECKS THE ACTUAL BUTTONS STATUS WHEN FIRST LOADED
             pos = 0;
             RecordPositionLabel(pos);
@@ -37,44 +41,49 @@ namespace Exercise_3
             txtbID.ReadOnly = true;
         }
 
+        /*---------------------------------------------- POSITION HANDLING START ------------------------------------------------*/
 
-        /* ---------------- POSITION HANDLING START --------------------- */
-
-        // CREATION OF GLOBAL POSITION
+        // GLOBAL VARIABLE TO STORE THE CURRENT POSITION
         private int pos = -1;
 
-        // SETS THE POSITION OF THE ACTUAL RECORD INTO A TEXT LABEL
+        // FUNCTION TO DISPLAY THE CURRENT RECORD POSITION IN A TEXT LABEL
         private void RecordPositionLabel(int pos)
         {
             if (dbHandler.UsersQuantity > 0)
             {
+                // UPDATE THE LABEL TEXT WITH THE CURRENT RECORD POSITION
                 lblRecord.Text = "Record Nº" + (pos + 1) + " of " + dbHandler.UsersQuantity;
             }
             else if (dbHandler.UsersQuantity == 0)
             {
+                // CLEAR THE LABEL TEXT IF THERE ARE NO RECORDS
                 lblRecord.Text = "";
             }
         }
 
-        /* ---------------- POSITION HANDLING END --------------------- */
+        /*--------------------------------------------- POSITION HANDLING END ---------------------------------------------------*/
 
-        // THESE ARE FOR DETECTING STRING CHANGES IN THE TEXT BOXES SINCE AN ORIGINAL
-        // IS REQUIRED TO CHECK BETWEEN THAT ONE AND THE USER CHANGED INPUT
+        /*---------------------------------------- VISUAL HANDLING FUNCTIONS START ----------------------------------------------*/
+
+        // BOOL TO INDICATE IF CHANGES HAVE BEEN DETECTED IN THE TEXT BOXES
         private bool changeDetected = false;
 
-        // FUNCTION WHICH UPDATES THE VISUAL PART OF THE FORM
+        // FUNCTION TO UPDATE THE VISUAL PART OF THE FORM WITH USER RECORDS
         private void ShowUsersRecords(int pos)
         {
             if (dbHandler.UsersQuantity > 0)
             {
+                // GET THE SELECTED USER OBJECT FROM THE DATABASE
                 object selectedObjectRecords = dbHandler.GetSelectedTypeObject(pos, "Users");
+
                 if (selectedObjectRecords is User selectedUserRecords)
                 {
-                    // TAKE VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE APPROPIATE TEXTBOX
+                    // SET VALUES FROM THE SELECTED USER RECORD INTO THE TEXTBOXES
                     txtbName.Text = selectedUserRecords.Name;   
                     txtbEmail.Text = selectedUserRecords.Email;
                     txtbPassword.Text = selectedUserRecords.Password;
 
+                    // SET THE BANNED STATUS TEXT BASED ON THE USER RECORD
                     if (!selectedUserRecords.Banned)
                     {
                         txtbBanned.Text = "Not Banned";
@@ -84,37 +93,46 @@ namespace Exercise_3
                         txtbBanned.Text = "Banned";
                     }
 
-                    int selectedUserID = dbHandler.GetIdentityID("Users", "Name = '" + selectedUserRecords.Name.ToString() + "'");
+                    // GET THE IDENTITY ID OF THE SELECTED USER AND DISPLAY IT IN THE TEXT BOX BY SELECTION A TABLE AND A CERTAIN CONDITION
+                    string query = "SELECT ID FROM Users WHERE Name = '" + selectedUserRecords.Name.ToString() + "'";
+                    int selectedUserID = dbHandler.GetIdentityID("Users", query);
                     txtbID.Text = selectedUserID.ToString();
 
-                    // DETECTED CHANGES RESET AND CHECKS THE ACTUAL BUTTONS STATUS
+                    // RESET THE CHANGE DETECTED BOOL AND CHECK BUTTONS STATUS
                     changeDetected = false;
                     ButtonsCheck();
                 }
             } 
             else if (dbHandler.UsersQuantity == 0)
             {
-                // CLEAR EVERY DATA FROM THE TEXT BOXES AND CHECKS THE ACTUAL BUTTONS STATUS
+                // CLEAR ALL TEXT BOXES AND CHECK BUTTONS STATUS IF NO RECORDS ARE AVAILABLE
                 btnClear.PerformClick();
                 ButtonsCheck();
             }
-          }
+        }
 
+        /*--------------------------------------------- VISUAL HANDLING FUNCTIONS END --------------------------------------------*/
+
+        /*-------------------------------------- GET USER INFO RELATED FUNCTIONS START -------------------------------------------*/
+
+        // FUNCTION THAT RETURNS THE USER LIST
         public string ShowsUsersList()
         {
             string result = "";
             if (dbHandler.UsersQuantity != 0)
             {
                 string usersListTxt = "List of users: \n\n";
-
                 if (dbHandler.UsersQuantity > 1)
                 {
+                    // GET THE USERS TABLE FROM THE DATABASE
                     DataTable usersTable = dbHandler.ImportSelectedDataTable("Users");
 
+                    // CHECK USERS FROM TABLE
                     foreach (DataRow row in usersTable.Rows)
                     {
                         string banInfo = "";
 
+                        // DETERMINE THE BAN STATUS
                         if (!(bool)row["Banned"])
                         {
                             banInfo = "Ban Status: Not Banned\n";
@@ -124,6 +142,7 @@ namespace Exercise_3
                             banInfo = "Ban Status: Banned\n";
                         }
 
+                        // CONCATENATE USER INFORMATION
                         string userInfo = "ID: " + row["ID"] + "\n" +
                                           "Name: " + row["Name"] + "\n" +
                                           "Password: " + row["Password"] + "\n" +
@@ -132,12 +151,13 @@ namespace Exercise_3
 
                         usersListTxt += userInfo + "\n";
                     }
-
-                    result = usersListTxt;
+                result = usersListTxt;
                 }
                 else if (dbHandler.UsersQuantity == 1)
                 {
+                    // GET INFORMATION FOR A SINGLE USER
                     object singleUser = dbHandler.GetSelectedTypeObject(0, "Users");
+
                     usersListTxt = dbHandler.GetObjectDataFromPosition(singleUser, 0, "User");
                     result = usersListTxt;
                 }
@@ -149,65 +169,69 @@ namespace Exercise_3
             return result;
         }
 
+        // FUNCTION THAT RETURNS THE BANNED USER LIST
         public string ShowsBannedUsersList()
         {
             string result = "";
-            if (dbHandler.UsersQuantity != 0)
-            {
-                string bannedUsersListTxt = "List of users: \n\n";
-
-                if (dbHandler.UsersQuantity > 1)
-                {
-                    DataTable usersTable = dbHandler.ImportSelectedDataTable("Users");
-
-                    foreach (DataRow row in usersTable.Rows)
-                    {
-                        if ((bool)row["Banned"])
-                        {
-                            string bannedUserInfo = "ID: " + row["ID"] + "\n" +
-                                                    "Name: " + row["Name"] + "\n" +
-                                                    "Password: " + row["Password"] + "\n" +
-                                                    "Email: " + row["Email"] + "\n";
-
-                            bannedUsersListTxt += bannedUserInfo + "\n";
-                        }
-                    }
-
-                    result = bannedUsersListTxt;
-                }
-                else if (dbHandler.UsersQuantity == 1)
-                {
-                    object singleUser = dbHandler.GetSelectedTypeObject(0, "Users");
-                    if (singleUser is User singleBannedUser)
-                    {
-                        if (singleBannedUser.Banned)
-                        {
-                            bannedUsersListTxt = dbHandler.GetObjectDataFromPosition(singleUser, 0, "User");
-                            result = bannedUsersListTxt;
-                        }
-                        else
-                        {
-                            result = "No banned users added in the DB.";
-                        }
-                    }
-                }
-            }
-            else
+            if (dbHandler.UsersQuantity == 0)
             {
                 result = "No users added in the DB.";
+            }
+
+            string bannedUsersListTxt = "";
+            int bannedCount = 0;
+
+            // GET THE USERS TABLE FROM THE DATABASE
+            DataTable usersTable = dbHandler.ImportSelectedDataTable("Users");
+
+            // CHECK USERS FROM TABLE
+            foreach (DataRow row in usersTable.Rows)
+            {
+                // CHECK IF THE USER IS BANNED
+                if ((bool)row["Banned"])
+                {
+                    bannedCount++;
+
+                    // ADD BANNED USER INFORMATION
+                    string bannedUserInfo = "ID: " + row["ID"] + "\n" +
+                                            "Name: " + row["Name"] + "\n" +
+                                            "Password: " + row["Password"] + "\n" +
+                                            "Email: " + row["Email"] + "\n";
+
+                    bannedUsersListTxt += bannedUserInfo + "\n";
+                }
+            }
+
+            if (bannedCount == 0)
+            {
+                result = "No banned users added in the DB.";
+            }
+            else if (bannedCount == 1)
+            {
+                result = "Banned User: \n\n" + bannedUsersListTxt;
+            }
+            else if (bannedCount > 1)
+            {
+                result = "List of banned users: \n\n" + bannedUsersListTxt;
             }
             return result;
         }
 
-        public int SimilarUsersNicknameCounter(string userNickname)
+        // METHOD TO COUNT USERS WITH SIMILAR NICKNAMES
+        public int CountSimilarUsersNickname(string userNickname)
         {
             int counter = 0;
             if (dbHandler.UsersQuantity != 0)
             {
                 for (int i = 0; i < dbHandler.UsersQuantity; i++)
                 {
+                    // GET THE USER ROW FROM THE USERS TABLE
                     DataRow userRow = dbHandler.ImportSelectedDataTable("Users").Rows[i];
+
+                    // GET THE NICKNAME FROM THE CURRENT USER ROW AND CONVERT IT TO LOWERCASE
                     string stringToCheck = userRow[1].ToString().ToLower();
+
+                    // CHECK IF THE NICKNAME CONTAINS THE INPUT USER NICKNAME
                     if (stringToCheck.Contains(userNickname.ToLower()))
                     {
                         counter++;
@@ -217,8 +241,10 @@ namespace Exercise_3
             return counter;
         }
 
-        public void SelectSimilarUsersNicknameToShow(string userEmail)
+        // METHOD TO SELECT AND SHOW USERS WITH SIMILAR NICKNAMES
+        public void ShowSimilarUsersNickname(string userNickname)
         {
+            // LISTS TO STORE MATCHING USERS' NICKNAMES, EXTRA INFO, AND THEIR POSITIONS
             List<string> matchingUsersNickname = new List<string>();
             List<string> extraUsersInfo = new List<string>();
             List<int> usersPositions = new List<int>();
@@ -227,15 +253,21 @@ namespace Exercise_3
             {
                 for (int i = 0; i < dbHandler.UsersQuantity; i++)
                 {
+                    // GET THE USER ROW FROM THE USERS TABLE
                     DataRow userRow = dbHandler.ImportSelectedDataTable("Users").Rows[i];
+
+                    // GET THE NICKNAME FROM THE CURRENT USER ROW AND CONVERT IT TO LOWERCASE
                     string stringToCheck = userRow[1].ToString().ToLower();
-                    if (stringToCheck.Contains(userEmail.ToLower()))
+
+                    // CHECK IF THE NICKNAME CONTAINS THE INPUT USER EMAIL
+                    if (stringToCheck.Contains(userNickname.ToLower()))
                     {
+                        // ADD THE USER'S NICKNAME TO THE MATCHING USERS LIST
                         string name = userRow["Name"].ToString();
                         matchingUsersNickname.Add(name);
 
+                        // DETERMINE BAN STATUS
                         string banInfo = "";
-
                         if (!(bool)userRow["Banned"])
                         {
                             banInfo = "Ban Status: Not Banned\n";
@@ -245,20 +277,24 @@ namespace Exercise_3
                             banInfo = "Ban Status: Banned\n";
                         }
 
+                        // ADD USER INFO
                         string usersInfo = "ID: " + userRow["ID"] + "\n" +
                                           "Name: " + userRow["Name"] + "\n" +
                                           "Password: " + userRow["Password"] + "\n" +
                                           "Email: " + userRow["Email"] + "\n" +
                                           banInfo;
 
+                        // ADD USER INFO TO THE EXTRA INFO LIST
                         extraUsersInfo.Add(usersInfo);
+
+                        // ADD USER POSITION TO THE POSITIONS LIST
                         usersPositions.Add(i);
                     }
                 }
-
             }
             if (matchingUsersNickname.Count == 1)
             {
+                // SHOW USER INFO AND RECORD POSITION
                 MessageBox.Show("The data from " + matchingUsersNickname[0] + " is: \n\n" + extraUsersInfo[0]);
                 pos = usersPositions[0];
                 ShowUsersRecords(pos);
@@ -273,17 +309,21 @@ namespace Exercise_3
                 {
                     StringBuilder infoMessage = new StringBuilder("Users with similar nickname:\n\n");
 
+                    // DISPLAY USERS WITH SIMILAR NICKNAMES
                     for (int i = 0; i < matchingUsersNickname.Count; i++)
                     {
                         infoMessage.AppendLine((i + 1) + ") " + matchingUsersNickname[i] + "\n");
                     }
 
+                    // MAKES THE USER TO SELECT A USER
                     infoMessage.AppendLine("Select the number of the user to view more data:");
 
                     string userInput = Interaction.InputBox(infoMessage.ToString());
 
+                    // CHECK USER INPUT
                     if (int.TryParse(userInput, out selectedUserIndex) && selectedUserIndex > 0 && selectedUserIndex <= matchingUsersNickname.Count)
                     {
+                        // GET SELECTED USER INFO AND POSITION
                         string selectedUserInfo = extraUsersInfo[selectedUserIndex - 1];
                         int selectedUserPositionInDB = usersPositions[selectedUserIndex - 1];
 
@@ -313,14 +353,17 @@ namespace Exercise_3
             }
         }
 
-        /* ---------------- BUTTONS HANDLING START --------------------- */
+        /*---------------------------------------- GET USER INFO RELATED FUNCTIONS END --------------------------------------------------*/
 
+        /* ------------------------------------------- BUTTONS HANDLING START ---------------------------------------------------------- */
+
+        // FUNCTION TO CHECK IF VALUES FROM THE ACTUAL USER POSITION HAVE CHANGED IN THE TEXT BOXES
         private bool CheckValuesChanged()
         {
             return dbHandler.CheckUserChangesStoredAndActualValues(pos, txtbName.Text, txtbEmail.Text, txtbPassword.Text, txtbBanned.Text);
         }
 
-
+        // FUNCTION TO ASK USER TO UPDATE IF CHANGES WERE MADE 
         private void askToUpdateIfChangesWereMade(bool choice)
         {
             if (!choice)
@@ -334,6 +377,137 @@ namespace Exercise_3
             }
         }
 
+        /*--------------------------------- CRUD BUTTONS ACTIONS START -------------------------------*/
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            // CHECK IF THERE ARE NO DUPLICATED DATA FOR THE USER
+            if (!dbHandler.CheckAllUserDuplicatedData(txtbName.Text, txtbEmail.Text, "Users"))
+            {
+                // CREATES THE USER TO SAVE
+                User savedUser = User.UserCreation(txtbName.Text, txtbPassword.Text, txtbEmail.Text, false);
+
+                // IF THE USER OBJECT IS VALID, INSERT IT INTO THE DATABASE
+                if (savedUser != null)
+                {
+                    // ADD THE NEW USER TO THE DATABASE
+                    dbHandler.AddNewObject(savedUser, "Users");
+
+                    // UPDATE THE POSITION AND THE VISUALS
+                    pos = dbHandler.UsersQuantity - 1;
+                    RecordPositionLabel(pos);
+
+                    // CHECK BUTTONS STATUS
+                    ButtonsCheck();
+                }
+                else
+                {
+                    MessageBox.Show(returnErrorInput());
+                }
+            }
+            else
+            {
+                // CHECKS THAT THE ACTUAL TEXT BOX NAME TEXT AND EMAIL IS NOT USED ALREADY IN THE DB AND SHOWS THE RESULT IN A MESSAGE BOX
+                MessageBox.Show(dbHandler.ReturnStringWhenDuplicatedData(txtbName.Text, txtbEmail.Text, "Users"));
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (pos != -1 && changeDetected)
+            {
+                // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
+                object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Users");
+
+                // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
+                string name = txtbName.Text;
+                string email = txtbEmail.Text;
+                string password = txtbPassword.Text;
+
+                bool banStatus = false;
+                if (txtbBanned.Text == "Banned")
+                {
+                    banStatus = true;
+                }
+
+                // CHECKS IF THE SELECTED OBJECT IS A TEACHER AND CONVERTS THAT OBJECT INTO A TEACHER TYPE TO ACCES TO ITS PROPERTIES
+                if (oldObjectData is User oldUserData)
+                {
+                    // MAKES SURE THAT THE FOLLOWING NICKNAME-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
+                    if (!dbHandler.DuplicatedNameData(name, "Users") || name == oldUserData.Name)
+                    {
+                        if (!dbHandler.DuplicatedEmailDataFromUsers(email) || email == oldUserData.Email)
+                        {
+                            // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
+                            object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
+                            if (selectedUserToUpdate != null)
+                            {
+                                dbHandler.UpdateObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
+                                ShowUsersRecords(pos);
+                                RecordPositionLabel(pos);
+                                changeDetected = false;
+                                ButtonsCheck();
+                            }
+                            else
+                            {
+                                MessageBox.Show(returnErrorInput());
+                            }
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("This email is already used, try another one");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("This nickname is already used, try another one");
+                    }
+                }
+                else if (dbHandler.UsersQuantity == 0)
+                {
+                    MessageBox.Show("Updating without having atleast one user in the DB is meaningless, try again after adding a user to the DB.");
+                }
+                else
+                {
+                    MessageBox.Show(returnErrorInput());
+                }
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dbHandler.UsersQuantity > 0)
+            {
+                if (pos != -1)
+                {
+                    DialogResult delete;
+                    delete = MessageBox.Show("Do you want to delete this record (Y/N)?", "Delete Record?", MessageBoxButtons.YesNo);
+
+                    if (delete == DialogResult.Yes)
+                    {
+                        dbHandler.DeleteObjectFromPosition(pos, "Users");
+
+                        // RESETS POSITION
+                        pos = 0;
+                        RecordPositionLabel(pos); // RELOADS THE POSITION LABEL
+                        ShowUsersRecords(pos);
+                        ButtonsCheck();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Delete is not possible when no user is selected.");
+                }
+            }
+            else if (dbHandler.UsersQuantity == 0)
+            {
+                MessageBox.Show("Delete is not possible when no elements are in the database.");
+            }
+        }
+
+
+        /*--------------------------------- CRUD BUTTONS ACTIONS END -------------------------------*/
 
         private void btnCancelAddRegistry_Click(object sender, EventArgs e)
         {
@@ -449,160 +623,17 @@ namespace Exercise_3
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            txtbID.Clear();
+            string query = "SELECT IDENT_CURRENT('Users')";
+            txtbID.Text = ((dbHandler.GetIdentityID("Users", query) + 1).ToString());
             txtbName.Clear();
             txtbEmail.Clear();
             txtbPassword.Clear();
-            txtbBanned.Clear();
+            txtbBanned.Text = "Not Banned";
             pos = -1;
             lblRecord.Text = "";
             ButtonsCheck();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            // CHECKS THAT THE ACTUAL TEXT BOX NAME TEXT IS NOT USED ALREADY IN THE DB
-            if (!dbHandler.DuplicatedNameData(txtbName.Text, "Users"))
-            {
-                // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
-                if (!dbHandler.DuplicatedEmailDataFromUsers(txtbEmail.Text))
-                {
-                    bool banStatus = false;
-
-                    if (txtbBanned.Text == "Not Banned")
-                    {
-                        banStatus = true;
-                    }
-                    else if (txtbBanned.Text == "Banned")
-                    {
-                        banStatus = false;
-                    }
-
-                    // CREATES THE TEACHER TO SAVE
-                    User savedUser = User.UserCreation(txtbName.Text,
-                                                       txtbPassword.Text,
-                                                       txtbEmail.Text,
-                                                       banStatus);
-
-                    // IF THIS OBJECT IS VALID IT WILL BE INSERTED INTO THE DB
-                    if (savedUser != null)
-                    {
-                        // FUNCTION WHICH CREATES A NEW USER INTO THE DB
-                        // AFTER THAT UPDATES THE POSITION AND THE COUNT OF USERS'S RECORDS
-                        dbHandler.AddNewObject(savedUser, "Users");
-                        pos = dbHandler.UsersQuantity - 1;
-                        RecordPositionLabel(pos);
-                        btnCancelAddRegistry.PerformClick();
-                        ButtonsCheck();
-                    }
-                    else
-                    {
-                        MessageBox.Show(returnErrorInput());
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("This email is already used, try another one");
-                }
-            }
-            else
-            {
-                MessageBox.Show("This nickname is already used, try another one");
-            }
-        }
-
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-            if (pos != -1 && changeDetected)
-            {
-                // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
-                object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Users");
-                // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
-
-                string name = txtbName.Text;
-                string email = txtbEmail.Text;
-                string password = txtbPassword.Text;
-                bool banStatus = false;
-                if (txtbBanned.Text == "Banned")
-                {
-                    banStatus = true;
-                }
-
-                // CHECKS IF THE SELECTED OBJECT IS A TEACHER AND CONVERTS THAT OBJECT INTO A TEACHER TYPE TO ACCES TO ITS PROPERTIES
-                if (oldObjectData is User oldUserData)
-                {
-                    // MAKES SURE THAT THE FOLLOWING NICKNAME-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
-                    if (!dbHandler.DuplicatedNameData(name, "Users") || name == oldUserData.Name)
-                    {
-                        if (!dbHandler.DuplicatedEmailDataFromUsers(email) || email == oldUserData.Email)
-                        {
-                            // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
-                            object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
-                            if (selectedUserToUpdate != null)
-                            {
-                                dbHandler.UpdateObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
-                                ShowUsersRecords(pos);
-                                RecordPositionLabel(pos);
-                                changeDetected = false;
-                                ButtonsCheck();
-                            }
-                            else
-                            {
-                                MessageBox.Show(returnErrorInput());
-                            }
-                            
-                        }
-                        else
-                        {
-                            MessageBox.Show("This email is already used, try another one");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("This nickname is already used, try another one");
-                    }
-                }
-                else if (dbHandler.UsersQuantity == 0)
-                {
-                    MessageBox.Show("Updating without having atleast one user in the DB is meaningless, try again after adding a user to the DB.");
-                }
-                else
-                {
-                    MessageBox.Show(returnErrorInput());
-                }
-            }
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (dbHandler.UsersQuantity > 0)
-            {
-                if (pos != -1)
-                {
-                    DialogResult delete;
-                    delete = MessageBox.Show("Do you want to delete this record (Y/N)?", "Delete Record?", MessageBoxButtons.YesNo);
-
-                    if (delete == DialogResult.Yes)
-                    {
-                        dbHandler.DeleteObjectFromPosition(pos, "Users");
-
-                        // RESETS POSITION
-                        pos = 0;
-                        RecordPositionLabel(pos); // RELOADS THE POSITION LABEL
-                        ShowUsersRecords(pos);
-                        ButtonsCheck();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Delete is not possible when no user is selected.");
-                }
-            }
-            else if (dbHandler.UsersQuantity == 0)
-            {
-                MessageBox.Show("Delete is not possible when no elements are in the database.");
-            }
-        }
 
         public void UnbannedUser (bool banStatus)
         {
@@ -689,9 +720,9 @@ namespace Exercise_3
 
                     if (CustomRegex.RegexName(name))
                     {
-                        if (SimilarUsersNicknameCounter(name) > 0)
+                        if (CountSimilarUsersNickname(name) > 0)
                         {
-                            SelectSimilarUsersNicknameToShow(name);
+                            ShowSimilarUsersNickname(name);
                             showed = true;
                         }
                         else
@@ -730,9 +761,9 @@ namespace Exercise_3
             MessageBox.Show(ShowsBannedUsersList());
         }
 
-        /* ---------------- BUTTONS HANDLING END --------------------- */
+        /* -------------------------------------------------- BUTTONS HANDLING END ------------------------------------------------------ */
 
-        /* --------------------- INPUT ERROR HANDLING START ------------------------- */
+        /* ----------------------------------------------- INPUT ERROR HANDLING START --------------------------------------------------- */
 
         // ERROR STRING IF INPUT IS INVALID
         private string returnErrorInput()
@@ -743,11 +774,11 @@ namespace Exercise_3
                                   "\nNAME: Sergio" +
                                   "\nEMAIL: x@x.com" +
                                   "\nPASSWORD: Contraseña_1 / CONTRASEÑa&2" +
-                                  "\nBANNED: Not Banned / Banned"; ;
+                                  "\nBANNED: Not Banned / Banned";
             return errorMessage;
         }
 
-        /* ---------------------- INPUT ERROR HANDLING END -------------------------- */
+        /* --------------------------------------------- INPUT ERROR HANDLING END ------------------------------------------------------ */
 
         /* ----------------------------- HANDLING FUNCTIONS FOR BUTTONS STATUS AND TEXT BOX CHANGES START ------------------------------ */
 
