@@ -36,55 +36,56 @@ namespace Exercise_3
             get => _selectedCharactersQuantity;
         }
 
+        /*----------------------------------- BASIC DB HANDLING FUNCTIONS START ------------------------------------*/
+
+        // METHOD WHICH CREATES A SQL CONNETION TO THE DB
+        private SqlConnection CreateSqlConnectionToDB()
+        {
+            // SETS THE PATH TO THE SELECTED DB
+            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename="
+                                       + path + "Integrated Security=True";
+
+            // CREATES THE NEW CONNEXION
+            SqlConnection con = new SqlConnection(connectionString);
+
+            return con;
+        }
+
         // SQLDBHANDLER CONSTRUCTOR WHICH HANDLES THE CONNECTION AND CREATION OF DATA SET AND DATA ADAPTER
         public SqlDBHandler(string selectedTable)
         {
-            // DB CONNECTION
-            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
-
-            SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
-            "AttachDbFilename=" + path + "Integrated Security=True");
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
 
             // OPENS CONNECTION
             con.Open();
 
-            dataSet = new DataSet();            
-            string stringSQL = "SELECT * FROM " + selectedTable;
+                // CREATES A NEW DATA SET
+                dataSet = new DataSet();   
+            
+                // STRING WHICH CONTAINS A SELECT ORDER FOR A SELECTED TABLE WITH ALL ITS INFO
+                string stringSQL = "SELECT * FROM " + selectedTable;
 
-            dataAdapter = new SqlDataAdapter(stringSQL, con);
+                // CREATES A NEW DATA ADAPTER AND CONNECTS IT TO THE ACTUAL DB TO EXTRACT THE DATA BASED IN THE PREVIOUS ORDER
+                dataAdapter = new SqlDataAdapter(stringSQL, con);
 
-            dataAdapter.Fill(dataSet, selectedTable);
+                // RETRIEVES DATA FROM THE DATABASE USING A DATA ADAPTER AND FILLS A TABLE IN A DATASET WITH THAT DATA
+                dataAdapter.Fill(dataSet, selectedTable);
 
-            if (selectedTable == "Users")
-            {
-                // COUNT TOTAL TEACHERS
-                _selectedUsersQuantity = dataSet.Tables[selectedTable].Rows.Count;
-            }
-            else if(selectedTable == "Characters")
-            {
-                // COUNT TOTAL ALUMNS
-                _selectedCharactersQuantity = dataSet.Tables[selectedTable].Rows.Count;
-            }
+                if (selectedTable == "Users")
+                {
+                    // COUNT TOTAL USERS
+                    _selectedUsersQuantity = dataSet.Tables[selectedTable].Rows.Count;
+                }
+                else if(selectedTable == "Characters")
+                {
+                    // COUNT TOTAL CHARACTERS
+                    _selectedCharactersQuantity = dataSet.Tables[selectedTable].Rows.Count;
+                }
 
             // CLOSES CONNECTION
             con.Close();
-        }
-
-        public DataTable ImportSelectedDataTable(string selectedTable)
-        {
-            DataTable toImport = new DataTable();
-
-            if (selectedTable == "Users")
-            {
-                toImport = dataSet.Tables["Users"];
-            }
-            else if (selectedTable == "Characters")
-            {
-                toImport = dataSet.Tables["Characters"];
-            }
-
-            // RETURNS THE DATA TABLE WHICH CONTAINS SELECTED TABLE DATA
-            return toImport;
         }
 
         // METHOD WHICH RECONNECTS TO THE DATABASE AND UPDATES IT
@@ -95,324 +96,276 @@ namespace Exercise_3
 
             if (selectedTable == "Users")
             {
+                // UPDATES THE DATABASE WITH CHANGES MADE IN THE USERS TABLE
                 dataAdapter.Update(dataSet, "Users");
+
+                // AUTOINCREMENT FIX: CLEARS THE DATASET AND FILLS IT AGAIN
+                dataSet.Clear();
+                dataAdapter.Fill(dataSet, selectedTable);
             }
             else if (selectedTable == "Characters")
             {
+                // UPDATES THE DATABASE WITH CHANGES MADE IN THE CHARACTERS TABLE
                 dataAdapter.Update(dataSet, "Characters");
+
+                // AUTOINCREMENT FIX: CLEARS THE DATASET AND FILLS IT AGAIN
+                dataSet.Clear();
+                dataAdapter.Fill(dataSet, selectedTable);
             }
         }
 
-        public bool CheckAllUserPosibleDuplicatedData(string userName, string email, string selectedTable)
+        // THIS METHOD SELECTS A SPECIFIC TABLE FROM A DATASET AND RETURNS IT AS A DATATABLE
+        public DataTable ImportSelectedDataTable(string selectedTable)
         {
-            bool duplicatedData = false;
+
+            // CREATE AN EMPTY DATATABLE TO STORE THE SELECTED TABLE DATA
+            DataTable toImport = new DataTable();
+
             if (selectedTable == "Users")
             {
-                if (DuplicatedNameDataFromSelectedTable(userName, selectedTable) || 
-                    DuplicatedEmailDataFromUsers(email))
-                {
-                    duplicatedData = true;
-                }
+                // ASSIGN THE USERS TABLE FROM THE ACTUAL DATASET
+                toImport = dataSet.Tables["Users"];
             }
-
-            return duplicatedData;
-        }
-
-        public bool DuplicatedIDDataFromSelectedTable(string id, string selectedTable)
-        {
-            bool usedID = false;
-
-            // GETS THE FULL TABLE DATA
-            DataTable tableToCheck = ImportSelectedDataTable(selectedTable);
-
-            // SEARCHS IN THE ROWS FROM THE TABLE
-            foreach (DataRow row in tableToCheck.Rows)
+            else if (selectedTable == "Characters")
             {
-                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
-                if (row["ID"].ToString() == id)
-                {
-                    usedID = true;
-                }
+                // ASSIGN THE CHARACTERS TABLE FROM THE ACTUAL DATASET
+                toImport = dataSet.Tables["Characters"];
             }
-            return usedID;
+
+            // RETURNS THE DATA TABLE WHICH CONTAINS ALL THE SELECTED TABLE DATA
+            return toImport;
         }
 
-        public bool DuplicatedNameDataFromSelectedTable(string name, string selectedTable)
-        {
-            bool usedName = false;
+        /*--------------------------------- BASIC DB HANDLING FUNCTIONS END ------------------------------------*/
 
-            // GETS THE FULL TABLE DATA
-            DataTable tableToCheck = ImportSelectedDataTable(selectedTable);
+        /*---------------------------------- RECURRENT GET FUNCTIONS START -------------------------------------*/
 
-            // SEARCHS IN THE ROWS FROM THE TABLE
-            foreach (DataRow rows in tableToCheck.Rows)
-            {
-                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
-                if (rows["Name"].ToString() == name)
-                {
-                    usedName = true;
-                }
-            }
-            return usedName;
-        }
-
-        public bool DuplicatedEmailDataFromUsers(string email)
-        {
-            bool usedMail = false;
-
-            // GETS THE FULL TABLE DATA
-            DataTable tableToCheck = ImportSelectedDataTable("Users");
-
-            // SEARCHS IN THE ROWS FROM THE TABLE
-            foreach (DataRow row in tableToCheck.Rows)
-            {
-                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
-                if (row["Email"].ToString() == email)
-                {
-                    usedMail = true;
-                }
-            }
-            return usedMail;
-        }
-
-        // METHOD TO GET THE IDENTITY ID FROM A RECORD BASES IN A CONDITION
+        // METHOD TO GET THE IDENTITY ID FROM A CERTAIN TABLE RECORD BASED IN A CONDITION
         public int GetIdentityID(string selectedTable, string condition)
         {
-            int getId;
+            // DEFAULT ID IF NOT FOUND
+            int getId = -1;
 
-            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
 
-            SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
-            "AttachDbFilename=" + path + "Integrated Security=True");
-
+            // OPENS THE CONNEXION
             con.Open();
 
-            string query = "SELECT ID FROM " + selectedTable + " WHERE " + condition;
-            SqlCommand newQuery = new SqlCommand(query, con);
-            object lastIdentityIQ = newQuery.ExecuteScalar();
+                // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
+                ReconnectionToDB(selectedTable);
 
-            if (lastIdentityIQ != null)
-            {
-                getId = Convert.ToInt32(lastIdentityIQ);
-            }
-            else
-            {
-                getId = -1;
-            }
+                // ASIGNS A QUERY WHICH SELECTS THE ID FROM THE SELECTED TABLE WHERE SOME CONDITION IS SET
+                string query = "SELECT ID FROM " + selectedTable + " WHERE " + condition;
+
+                // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
+                SqlCommand command = new SqlCommand(query, con);
+
+                // GETS AN OBJECT FROM THE COMMAND AND GETS THE FIRST COLUMN VALUE FROM THE FIRST FILE FOUND IN THAT COMMAND (SELECT)
+                object result = command.ExecuteScalar();
+
+                if (result != null)
+                {
+                    getId = int.Parse(result.ToString());
+                }
+
+            // CLOSES THE CONNEXION
+            con.Close();
+
             return getId;
         }
-
-        // METHOD TO CHANGE BAN STATUS FROM ID TO A RECORD BASED IN A CONDITION //NOT USED CHECK TO DELETE 
-        public void UpdateBanStatus(int userId, bool banned)
-        {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
-            SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
-                                                  "AttachDbFilename=" + path + "Integrated Security=True");
-            int bannedValue;
-            if (banned)
-            {
-                bannedValue = 1;
-            }
-            else
-            {
-                bannedValue = 0;
-            }
-
-            string query = "UPDATE Users SET Banned = " + bannedValue.ToString() + " WHERE ID = " + userId.ToString();
-            SqlCommand newQuery = new SqlCommand(query, con);
-
-            con.Open();
-                newQuery.ExecuteNonQuery();
-            con.Close();
-        }
-
 
         // METHOD WHICH RETURNS A OBJECT'S DATA FROM A SELECTED POSITION
         public object GetSelectedTypeObject(int pos, string selectedTable)
         {
             object selectedObject = null;
 
-            // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
+            // OBJECT TO RETRIEVE RECORDS FROM A TABLE
             DataRow dRecord;
 
             if (selectedTable == "Users")
             {
                 if (pos >= 0 && pos < UsersQuantity)
                 {
-                    // TAKING THE RECORD OF "pos" POSITION IN TEACHERS TABLE
+                    // TAKING THE RECORD OF POS POSITION IN USERS TABLE
                     dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
 
-                    // TAKE VALUE FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW USER OBJECT
+                    // EXTRACT VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW USER OBJECT
                     selectedObject = User.UserCreation(dRecord[1].ToString(),
                                                        dRecord[2].ToString(),
                                                        dRecord[3].ToString(),
                                                        (bool)dRecord[4]);
                 }
             }
-
             else if (selectedTable == "Characters")
             {
                 if (pos >= 0 && pos < CharactersQuantity)
                 {
+                    // TAKING THE RECORD OF POS POSITION IN CHARACTERS TABLE
                     dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
 
-                    // TAKE VALUE FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW CHARACTER OBJECT
+                    // EXTRACT VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW CHARACTER OBJECT
                     selectedObject = new Character(dRecord[1].ToString(),
                                                    dRecord[2].ToString(),
                                                    dRecord[3].ToString());
-
                 }
             }
-
             return selectedObject;
         }
-        
-        // METHOD TO GET ALL THE OBJECT DATA
-        public string GetObjectDataFromPosition(object selectedObject, int pos, string selectedTable)
-        {
-            selectedObject = GetSelectedTypeObject(pos, selectedTable);
-            string objectData = "";
 
-            // THE IS COMPARATOR IS TO COMPARE THE TYPE OF THE OBJECT
-            if (selectedObject is User userToGetData)
-            {
-                objectData = userToGetData.ShowsUserData();
-            }
-            else if (selectedObject is Character characterToGetData)
-            {
-                objectData = characterToGetData.ShowCharacterData();
-            } 
-            return objectData;
-        }
+        /*----------------------------------- RECURRENT GET FUNCTIONS END --------------------------------------*/
 
-        // METHOD TO ADD A NEW OBJECT TO THE DATABASE
+        /*----------------------------------- CRUD METHOD FUNCTIONS START ------------------------------------*/
+
+        // METHOD TO ADD A NEW OBJECT TO THE DATABASE (CREATE)
         public void AddNewObject(object objectToAdd, string selectedTable)
         {
-            // THE IS COMPARATOR IS TO COMPARE THE TYPE OF THE OBJECT
+            // CHECK THE TYPE OF THE OBJECT
             if (objectToAdd is User userToAdd)
             {
-                // CREATE A NEW REGISTRY
+                // CREATE A NEW RECORD
                 DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
 
-                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                // ADD DATA FROM THE OBJECT INTO THE NEW RECORD
                 dNewRecord["Name"] = userToAdd.Name;
                 dNewRecord["Email"] = userToAdd.Email;
                 dNewRecord["Password"] = userToAdd.Password;
                 dNewRecord["Banned"] = userToAdd.Banned;
 
-                if (!CheckAllUserPosibleDuplicatedData(userToAdd.Name, userToAdd.Email, selectedTable))
+                if (!CheckAllUserDuplicatedData(userToAdd.Name, userToAdd.Email, selectedTable))
                 {
-                    // ADDS THE REGISTRY TO THE DATA SET
+                    // ADD THE RECORD TO THE DATASET
                     ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
 
-                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    // RECONNECT AND UPDATE THE DATABASE
                     ReconnectionToDB(selectedTable);
 
-                    // UPDATES THE POSITION AND THE COUNT OF RECORDS
+                    // UPDATE THE COUNT OF RECORDS
                     _selectedUsersQuantity++;
                 }
             }
-            
             else if (objectToAdd is Character characterToAdd)
             {
-                // CREATE A NEW REGISTRY    
+                // CREATE A NEW RECORD   
                 DataRow dNewRecord = ImportSelectedDataTable(selectedTable).NewRow();
 
-                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
+                // ADD DATA FROM THE OBJECT INTO THE NEW RECORD
                 dNewRecord["Name"] = characterToAdd.Name;
                 dNewRecord["ImgRoute"] = characterToAdd.ImgRoute;
                 dNewRecord["IconRoute"] = characterToAdd.IconRoute;
 
-                if (!DuplicatedNameDataFromSelectedTable(characterToAdd.Name, selectedTable))
+                if (!DuplicatedNameData(characterToAdd.Name, selectedTable))
                 {
-                    // ADDS THE REGISTRY TO THE DATA SET
+                    // ADD THE RECORD TO THE DATASET
                     ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
 
-                    // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
+                    // RECONNECT AND UPDATE THE DATABASE
                     ReconnectionToDB(selectedTable);
 
-                    // UPDATES THE POSITION AND THE COUNT OF RECORDS
+                    // UPDATE THE COUNT OF RECORDS
                     _selectedCharactersQuantity++;
                 }
             }
         }
 
-            // METHOD TO UPDATE A OBJECT INTO THE DATABASE
-            public void UpdateSelectedObjectFromPosition(object objectToUpdate, int pos, bool unBanned, string selectedTable)
+        // METHOD TO GET ALL THE OBJECT DATA (READ)
+        public string GetObjectDataFromPosition(object selectedObject, int pos, string selectedTable)
+        {
+            // RETRIEVE THE SELECTED OBJECT'S DATA
+            selectedObject = GetSelectedTypeObject(pos, selectedTable);
+            string objectData = "";
+
+            // CHECK THE TYPE OF THE SELECTED OBJECT AND GET ITS DATA
+            if (selectedObject is User userToGetData)
             {
-                // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
-                DataRow dUpdateRecord;
+                // GETS USER DATA
+                objectData = userToGetData.ShowsUserData();
+            }
+            else if (selectedObject is Character characterToGetData)
+            {
+                // GETS CHARACTER DATA
+                objectData = characterToGetData.ShowCharacterData();
+            }
+            return objectData;
+        }
 
-                // TAKING THE RECORD OF "pos" POSITION IN SELECTED TABLE
-                dUpdateRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+        // METHOD TO UPDATE A OBJECT INTO THE DATABASE (UPDATE)
+        public void UpdateObjectFromPosition(object objectToUpdate, int pos, bool unBanned, string selectedTable)
+        {
+            // OBJECT TO RETRIEVE RECORDS FROM A TABLE
+            DataRow dUpdateRecord;
 
-                if (objectToUpdate is User userToUpdate)
+            // GET THE RECORD AT POSITION POS FROM THE SELECTED TABLE
+            dUpdateRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+
+            if (objectToUpdate is User userToUpdate)
+            {
+                // UPDATE THE RECORD WITH USER DATA
+                dUpdateRecord["ID"] = userToUpdate.ID;
+                dUpdateRecord["Name"] = userToUpdate.Name;
+                dUpdateRecord["Email"] = userToUpdate.Email;
+                dUpdateRecord["Password"] = userToUpdate.Password;
+
+                // UPDATE THE BANNED COLUMN BASED ON THE VALUE OF UNBANNED
+                if (unBanned)
                 {
-                // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                    dUpdateRecord["Name"] = userToUpdate.Name;
-                    dUpdateRecord["Email"] = userToUpdate.Email;
-                    dUpdateRecord["Password"] = userToUpdate.Password;
-
-                    if (unBanned)
-                    {
-                        dUpdateRecord["Banned"] = 1;
-                    }
-                    else
-                    {
-                        dUpdateRecord["Banned"] = 0;
-                    }
-
-                    if (!CheckAllUserPosibleDuplicatedData(dUpdateRecord[1].ToString(), dUpdateRecord[3].ToString(), selectedTable))
-                    {
-                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                        ReconnectionToDB(selectedTable);
-
-                    }
+                    dUpdateRecord["Banned"] = 1;
                 }
-                else if (objectToUpdate is Character characterToUpdate)
+                else
                 {
-                    // ADD THE DATA FROM THE SELECTED ELEMENTS INTO THE NEW RECORD
-                    dUpdateRecord["Name"] = characterToUpdate.Name;
-                    dUpdateRecord["ImgRoute"] = characterToUpdate.ImgRoute;
-                    dUpdateRecord["IconRoute"] = characterToUpdate.IconRoute;
+                    dUpdateRecord["Banned"] = 0;
+                }
 
-                    if (!DuplicatedNameDataFromSelectedTable(characterToUpdate.Name, selectedTable))
-                    {
-                        // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
-                        ReconnectionToDB(selectedTable);
-
-                        // AUTOINCREMENTAL FIX 
-                        dataSet.Clear();
-                        dataAdapter.Fill(dataSet, selectedTable);
-                    }
+                // CHECK FOR DUPLICATED DATA BEFORE UPDATING THE RECORD
+                if (!CheckAllUserDuplicatedData(dUpdateRecord[1].ToString(), dUpdateRecord[3].ToString(), selectedTable))
+                {
+                    // RECONNECT AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
                 }
             }
+            else if (objectToUpdate is Character characterToUpdate)
+            {
+                // UPDATE THE RECORD WITH CHARACTER DATA
+                dUpdateRecord["Name"] = characterToUpdate.Name;
+                dUpdateRecord["ImgRoute"] = characterToUpdate.ImgRoute;
+                dUpdateRecord["IconRoute"] = characterToUpdate.IconRoute;
 
-        // METHOD TO DELETE A SELECTED OBJECT FROM THE DB
-        public void DeleteSelectedObjectFromPosition(int pos, string selectedTable)
+                // CHECK FOR DUPLICATED NAME DATA BEFORE UPDATING THE RECORD
+                if (!DuplicatedNameData(characterToUpdate.Name, selectedTable))
+                {
+                    // RECONNECT AND UPDATE THE DATABASE
+                    ReconnectionToDB(selectedTable);
+                }
+            }
+        }
+
+        // METHOD TO DELETE A SELECTED OBJECT FROM THE DB (DELETE)
+        public void DeleteObjectFromPosition(int pos, string selectedTable)
         {
-            // AUTOINCREMENTAL FIX 
-            dataSet.Clear();
-            dataAdapter.Fill(dataSet, selectedTable);
-
             // DELETE THE RECORD FROM THE SELECTED POSITION
             ImportSelectedDataTable(selectedTable).Rows[pos].Delete();
 
+            // UPDATE THE COUNT OF RECORDS FOR THE SELECTED TABLE
             if (selectedTable == "Users")
             {
-                // UPDATES COUNT FROM TEACHERS
+                // UPDATES COUNT FROM USERS
                 _selectedUsersQuantity--;
 
             }
             else if (selectedTable == "Characters")
             {
-                // UPDATES COUNT FROM ALUMNS
+                // UPDATES COUNT FROM CHARACTERS
                 _selectedCharactersQuantity--;
 
             }
-            // UPDATES THE DB FROM SELECTED TABLE
+
+            // RECONNECT AND UPDATE THE DATABASE
             ReconnectionToDB(selectedTable);
         }
+
+        /*------------------------------------------- CRUD METHOD FUNCTIONS END ----------------------------------------------*/
+
+        /*------------------------ FUNCTIONS TO CHECK TEXT BOXES FROM SELECTED TABLE DATA START ------------------------------*/
 
         // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB FOR CHARACTERS
         public bool CheckUserChangesStoredAndActualValues(int pos, string name, string email, string password, string banned)
@@ -461,6 +414,85 @@ namespace Exercise_3
             }
             return same;
         }
+
+        /*------------------------ FUNCTIONS TO CHECK TEXT BOXES FROM SELECTED TABLE DATA START -------------------------------*/
+
+        /*--------------------------------- FUNCTIONS TO CHECK USERS DATA INPUT START -----------------------------------------*/
+
+        public bool CheckAllUserDuplicatedData(string userName, string email, string selectedTable)
+        {
+            bool duplicatedData = false;
+            if (selectedTable == "Users")
+            {
+                if (DuplicatedNameData(userName, selectedTable) ||
+                    DuplicatedEmailDataFromUsers(email))
+                {
+                    duplicatedData = true;
+                }
+            }
+
+            return duplicatedData;
+        }
+
+        public bool DuplicatedIDData(string id, string selectedTable)
+        {
+            bool usedID = false;
+
+            // GETS THE FULL TABLE DATA
+            DataTable tableToCheck = ImportSelectedDataTable(selectedTable);
+
+            // SEARCHS IN THE ROWS FROM THE TABLE
+            foreach (DataRow row in tableToCheck.Rows)
+            {
+                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                if (row["ID"].ToString() == id)
+                {
+                    usedID = true;
+                }
+            }
+            return usedID;
+        }
+
+        public bool DuplicatedNameData(string name, string selectedTable)
+        {
+            bool usedName = false;
+
+            // GETS THE FULL TABLE DATA
+            DataTable tableToCheck = ImportSelectedDataTable(selectedTable);
+
+            // SEARCHS IN THE ROWS FROM THE TABLE
+            foreach (DataRow rows in tableToCheck.Rows)
+            {
+                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                if (rows["Name"].ToString() == name)
+                {
+                    usedName = true;
+                }
+            }
+            return usedName;
+        }
+
+        public bool DuplicatedEmailDataFromUsers(string email)
+        {
+            bool usedMail = false;
+
+            // GETS THE FULL TABLE DATA
+            DataTable tableToCheck = ImportSelectedDataTable("Users");
+
+            // SEARCHS IN THE ROWS FROM THE TABLE
+            foreach (DataRow row in tableToCheck.Rows)
+            {
+                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                if (row["Email"].ToString() == email)
+                {
+                    usedMail = true;
+                }
+            }
+            return usedMail;
+        }
+
+        /*----------------------------------- FUNCTIONS TO CHECK USERS DATA INPUT END -----------------------------------------*/
+
     }
 }
 

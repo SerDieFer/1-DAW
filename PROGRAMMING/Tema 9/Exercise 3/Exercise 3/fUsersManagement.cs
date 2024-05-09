@@ -462,7 +462,7 @@ namespace Exercise_3
         private void btnSave_Click(object sender, EventArgs e)
         {
             // CHECKS THAT THE ACTUAL TEXT BOX NAME TEXT IS NOT USED ALREADY IN THE DB
-            if (!dbHandler.DuplicatedNameDataFromSelectedTable(txtbName.Text, "Users"))
+            if (!dbHandler.DuplicatedNameData(txtbName.Text, "Users"))
             {
                 // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
                 if (!dbHandler.DuplicatedEmailDataFromUsers(txtbEmail.Text))
@@ -532,7 +532,7 @@ namespace Exercise_3
                 if (oldObjectData is User oldUserData)
                 {
                     // MAKES SURE THAT THE FOLLOWING NICKNAME-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
-                    if (!dbHandler.DuplicatedNameDataFromSelectedTable(name, "Users") || name == oldUserData.Name)
+                    if (!dbHandler.DuplicatedNameData(name, "Users") || name == oldUserData.Name)
                     {
                         if (!dbHandler.DuplicatedEmailDataFromUsers(email) || email == oldUserData.Email)
                         {
@@ -540,7 +540,7 @@ namespace Exercise_3
                             object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
                             if (selectedUserToUpdate != null)
                             {
-                                dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
+                                dbHandler.UpdateObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
                                 ShowUsersRecords(pos);
                                 RecordPositionLabel(pos);
                                 changeDetected = false;
@@ -584,7 +584,7 @@ namespace Exercise_3
 
                     if (delete == DialogResult.Yes)
                     {
-                        dbHandler.DeleteSelectedObjectFromPosition(pos, "Users");
+                        dbHandler.DeleteObjectFromPosition(pos, "Users");
 
                         // RESETS POSITION
                         pos = 0;
@@ -623,7 +623,7 @@ namespace Exercise_3
                     object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
                     if (selectedUserToUpdate != null)
                     {
-                        dbHandler.UpdateSelectedObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
+                        dbHandler.UpdateObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
                         ShowUsersRecords(pos);
                         RecordPositionLabel(pos);
                         changeDetected = false;
@@ -732,7 +732,7 @@ namespace Exercise_3
 
         /* ---------------- BUTTONS HANDLING END --------------------- */
 
-        /* ---------------- INPUT ERROR HANDLING START --------------------- */
+        /* --------------------- INPUT ERROR HANDLING START ------------------------- */
 
         // ERROR STRING IF INPUT IS INVALID
         private string returnErrorInput()
@@ -747,9 +747,9 @@ namespace Exercise_3
             return errorMessage;
         }
 
-        /* ---------------- INPUT ERROR HANDLING END --------------------- */
+        /* ---------------------- INPUT ERROR HANDLING END -------------------------- */
 
-        /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS START --------------------- */
+        /* ----------------------------- HANDLING FUNCTIONS FOR BUTTONS STATUS AND TEXT BOX CHANGES START ------------------------------ */
 
         public void ButtonsCheck()
         {
@@ -790,6 +790,7 @@ namespace Exercise_3
             ButtonsCheck();
         }
 
+        // EVENT HANDLER FOR TEXT BOX NAME TEXT CHANGED
         private void txtbName_TextChanged(object sender, EventArgs e)
         {
             object actualObject = dbHandler.GetSelectedTypeObject(pos, "Users");
@@ -800,6 +801,7 @@ namespace Exercise_3
             }
         }
 
+        // EVENT HANDLER FOR TEXT BOX EMAIL TEXT CHANGED
         private void txtbEmail_TextChanged(object sender, EventArgs e)
         {
             object actualObject = dbHandler.GetSelectedTypeObject(pos, "Users");
@@ -810,6 +812,7 @@ namespace Exercise_3
             }
         }
 
+        // EVENT HANDLER FOR TEXT BOX PASSWORD TEXT CHANGED
         private void txtbPassword_TextChanged(object sender, EventArgs e)
         {
             object actualObject = dbHandler.GetSelectedTypeObject(pos, "Users");
@@ -820,6 +823,7 @@ namespace Exercise_3
             }
         }
 
+        // EVENT HANDLER FOR TEXT BOX BANNED TEXT CHANGED
         private void txtbBanned_TextChanged(object sender, EventArgs e)
         {
             object actualObject = dbHandler.GetSelectedTypeObject(pos, "Users");
@@ -841,11 +845,6 @@ namespace Exercise_3
             }
         }
 
-        private void txtbID_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
+        /* ------------------------------- HANDLING FUNCTIONS FOR BUTTONS STATUS AND TEXT BOX CHANGES END ------------------------------ */
     }
 }
