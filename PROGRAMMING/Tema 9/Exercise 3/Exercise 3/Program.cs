@@ -16,7 +16,7 @@ namespace Exercise_3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fUsersManagement());
+            Application.Run(new fLogin());
         }
     }
 }

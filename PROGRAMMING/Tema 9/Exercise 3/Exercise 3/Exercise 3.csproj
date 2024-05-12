@@ -62,11 +62,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="fUsersManagement.cs">
+    <Compile Include="Forms\Admin\fAdmin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fUsersManagement.Designer.cs">
-      <DependentUpon>fUsersManagement.cs</DependentUpon>
+    <Compile Include="Forms\Admin\fAdmin.Designer.cs">
+      <DependentUpon>fAdmin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Admin\fAdminCharactersManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Admin\fAdminCharactersManagement.Designer.cs">
+      <DependentUpon>fAdminCharactersManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\fLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fLogin.Designer.cs">
+      <DependentUpon>fLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Admin\fAdminUsersManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Admin\fAdminUsersManagement.Designer.cs">
+      <DependentUpon>fAdminUsersManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\User\fUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\User\fUser.Designer.cs">
+      <DependentUpon>fUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\User\fUserCharacterSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\User\fUserCharacterSelection.Designer.cs">
+      <DependentUpon>fUserCharacterSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\User\fUserOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\User\fUserOptions.Designer.cs">
+      <DependentUpon>fUserOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\CustomRegex.cs" />
     <Compile Include="Models\DBHandler.cs" />
@@ -74,22 +110,41 @@
     <Compile Include="Models\Character.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="fUsersManagement.resx">
-      <DependentUpon>fUsersManagement.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Admin\fAdmin.resx">
+      <DependentUpon>fAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Admin\fAdminCharactersManagement.resx">
+      <DependentUpon>fAdminCharactersManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fLogin.resx">
+      <DependentUpon>fLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Admin\fAdminUsersManagement.resx">
+      <DependentUpon>fAdminUsersManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\User\fUser.resx">
+      <DependentUpon>fUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\User\fUserCharacterSelection.resx">
+      <DependentUpon>fUserCharacterSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\User\fUserOptions.resx">
+      <DependentUpon>fUserOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>

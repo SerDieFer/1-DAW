@@ -39,7 +39,7 @@ namespace Exercise_3
         /*----------------------------------- BASIC DB HANDLING FUNCTIONS START ------------------------------------*/
 
         // METHOD WHICH CREATES A SQL CONNETION TO THE DB
-        private SqlConnection CreateSqlConnectionToDB()
+        public SqlConnection CreateSqlConnectionToDB()
         {
             // SETS THE PATH TO THE SELECTED DB
             string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\SmashBros.mdf;";
@@ -172,6 +172,134 @@ namespace Exercise_3
             return getId;
         }
 
+        // METHOD TO GET THE EMAIL FROM A CERTAIN TABLE RECORD BASED IN A CONDITION
+        public string GetEmail(string selectedTable, string query)
+        {
+            // DEFAULT EMAIL IF NOT FOUND
+            string email = "";
+
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS THE CONNEXION
+            con.Open();
+
+            // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
+            ReconnectionToDB(selectedTable);
+
+            // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
+            SqlCommand command = new SqlCommand(query, con);
+
+            // GETS AN OBJECT FROM THE COMMAND AND GETS THE FIRST COLUMN VALUE FROM THE FIRST FILE FOUND IN THAT COMMAND (SELECT)
+            object result = command.ExecuteScalar();
+
+            if (result != null)
+            {
+                email = result.ToString();
+            }
+
+            // CLOSES THE CONNEXION
+            con.Close();
+
+            return email;
+        }
+
+        // METHOD TO GET THE PASSWORD FROM A CERTAIN TABLE RECORD BASED IN A CONDITION
+        public string GetPasswordFromUserName(string selectedTable, string query)
+        {
+            // DEFAULT ID IF NOT FOUND
+            string getpassword = "";
+
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS THE CONNEXION
+            con.Open();
+
+            // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
+            ReconnectionToDB(selectedTable);
+
+            // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
+            SqlCommand command = new SqlCommand(query, con);
+
+            // GETS AN OBJECT FROM THE COMMAND AND GETS THE FIRST COLUMN VALUE FROM THE FIRST FILE FOUND IN THAT COMMAND (SELECT)
+            object result = command.ExecuteScalar();
+
+            if (result != null)
+            {
+                getpassword = result.ToString();
+            }
+
+            // CLOSES THE CONNEXION
+            con.Close();
+
+            return getpassword;
+        }
+
+        // METHOD TO GET THE BANSTATUS FROM A CERTAIN TABLE RECORD BASED IN A CONDITION
+        public bool GetBanStatusFromUserName(string selectedTable, string query)
+        {
+            // DEFAULT BAN STATUS IF NOT FOUND
+            bool getBanStatus = false;
+
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS THE CONNEXION
+            con.Open();
+
+            // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
+            ReconnectionToDB(selectedTable);
+
+            // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
+            SqlCommand command = new SqlCommand(query, con);
+
+            // GETS AN OBJECT FROM THE COMMAND AND GETS THE FIRST COLUMN VALUE FROM THE FIRST FILE FOUND IN THAT COMMAND (SELECT)
+            object result = command.ExecuteScalar();
+
+            if (result != null)
+            {
+                getBanStatus = (bool)result;
+            }
+
+            // CLOSES THE CONNEXION
+            con.Close();
+
+            return getBanStatus;
+        }
+
+        // METHOD TO GET THE IMAGE URL FROM A CERTAIN TABLE RECORD BASED IN A CONDITION
+        public string GetImgUrl(string selectedTable, string query)
+        {
+            // DEFAULT IMAGE URL IF NOT FOUND
+            string getImageUrl = "";
+
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS THE CONNEXION
+            con.Open();
+
+            // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
+            ReconnectionToDB(selectedTable);
+
+            // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
+            SqlCommand command = new SqlCommand(query, con);
+
+            // GETS AN OBJECT FROM THE COMMAND AND GETS THE FIRST COLUMN VALUE FROM THE FIRST FILE FOUND IN THAT COMMAND (SELECT)
+            object result = command.ExecuteScalar();
+
+            if (result != null)
+            {
+                getImageUrl = result.ToString();
+            }
+
+            // CLOSES THE CONNEXION
+            con.Close();
+
+            return getImageUrl;
+        }
+
         // METHOD WHICH RETURNS A OBJECT'S DATA FROM A SELECTED POSITION
         public object GetSelectedTypeObject(int pos, string selectedTable)
         {
@@ -202,9 +330,8 @@ namespace Exercise_3
                     dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
 
                     // EXTRACT VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW CHARACTER OBJECT
-                    selectedObject = new Character(dRecord[1].ToString(),
-                                                   dRecord[2].ToString(),
-                                                   dRecord[3].ToString());
+                    selectedObject = Character.CharacterCreation(dRecord[1].ToString(),
+                                                                 dRecord[2].ToString());
                 }
             }
             return selectedObject;
@@ -218,6 +345,7 @@ namespace Exercise_3
         public void AddNewObject(object objectToAdd, string selectedTable)
         {
             ReconnectionToDB(selectedTable);
+
             // CHECK THE TYPE OF THE OBJECT
             if (objectToAdd is User userToAdd)
             {
@@ -251,7 +379,6 @@ namespace Exercise_3
                 // ADD DATA FROM THE OBJECT INTO THE NEW RECORD
                 dNewRecord["Name"] = characterToAdd.Name;
                 dNewRecord["ImgRoute"] = characterToAdd.ImgRoute;
-                dNewRecord["IconRoute"] = characterToAdd.IconRoute;
 
                 if (!DuplicatedNameData(characterToAdd.Name, selectedTable))
                 {
@@ -291,6 +418,7 @@ namespace Exercise_3
         // METHOD TO UPDATE A OBJECT INTO THE DATABASE (UPDATE)
         public void UpdateObjectFromPosition(object objectToUpdate, int pos, bool unBanned, string selectedTable)
         {
+
             // OBJECT TO RETRIEVE RECORDS FROM A TABLE
             DataRow dUpdateRecord;
 
@@ -327,7 +455,6 @@ namespace Exercise_3
                 // UPDATE THE RECORD WITH CHARACTER DATA
                 dUpdateRecord["Name"] = characterToUpdate.Name;
                 dUpdateRecord["ImgRoute"] = characterToUpdate.ImgRoute;
-                dUpdateRecord["IconRoute"] = characterToUpdate.IconRoute;
 
                 // CHECK FOR DUPLICATED NAME DATA BEFORE UPDATING THE RECORD
                 if (!DuplicatedNameData(characterToUpdate.Name, selectedTable))
@@ -396,8 +523,8 @@ namespace Exercise_3
             return same;
         }
 
-        // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB FOR USERS
-        public bool CheckCharactersChangesStoredAndActualValues(int pos, string name, string imgRoute, string iconRoute)
+        // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB FOR CHARACTERS --check
+        public bool CheckCharactersChangesStoredAndActualValues(int pos, string name, string imgRoute)
         {
             bool same = true;
             object objectToUpdate = GetSelectedTypeObject(pos, "Characters");
@@ -405,8 +532,7 @@ namespace Exercise_3
             if (objectToUpdate is Character characterToCompare)
             {
                 if (characterToCompare.Name != name ||
-                    characterToCompare.ImgRoute != imgRoute ||
-                    characterToCompare.IconRoute != iconRoute)
+                    characterToCompare.ImgRoute != imgRoute)
                 {
                     same = false;
                 }

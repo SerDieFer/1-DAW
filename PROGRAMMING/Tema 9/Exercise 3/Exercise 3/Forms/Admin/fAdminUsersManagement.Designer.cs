@@ -1,6 +1,6 @@
 ﻿namespace Exercise_3
 {
-    partial class fUsersManagement
+    partial class fAdminUsersManagement
     {
         /// <summary>
         /// Variable del diseñador necesaria.

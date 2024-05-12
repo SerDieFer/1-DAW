@@ -15,9 +15,9 @@ using System.Security.Cryptography;
 
 namespace Exercise_3
 {
-    public partial class fUsersManagement : Form
+    public partial class fAdminUsersManagement : Form
     {
-        public fUsersManagement()
+        public fAdminUsersManagement()
         {
             InitializeComponent();
         }
@@ -111,9 +111,9 @@ namespace Exercise_3
             }
         }
 
-        /*--------------------------------------------- VISUAL HANDLING FUNCTIONS END --------------------------------------------*/
+        /*----------------------------------------------- VISUAL HANDLING FUNCTIONS END -------------------------------------------------*/
 
-        /*-------------------------------------- GET USER INFO RELATED FUNCTIONS START -------------------------------------------*/
+        /*------------------------------------------ GET USER INFO RELATED FUNCTIONS START ----------------------------------------------*/
 
         // FUNCTION THAT RETURNS THE USER LIST
         public string ShowsUsersList()
@@ -158,7 +158,7 @@ namespace Exercise_3
                     // GET INFORMATION FOR A SINGLE USER
                     object singleUser = dbHandler.GetSelectedTypeObject(0, "Users");
 
-                    usersListTxt = dbHandler.GetObjectDataFromPosition(singleUser, 0, "User");
+                    usersListTxt = dbHandler.GetObjectDataFromPosition(singleUser, 0, "Users");
                     result = usersListTxt;
                 }
             }
@@ -259,7 +259,7 @@ namespace Exercise_3
                     // GET THE NICKNAME FROM THE CURRENT USER ROW AND CONVERT IT TO LOWERCASE
                     string stringToCheck = userRow[1].ToString().ToLower();
 
-                    // CHECK IF THE NICKNAME CONTAINS THE INPUT USER EMAIL
+                    // CHECK IF THE NICKNAME CONTAINS THE INPUT USER NICKNAME
                     if (stringToCheck.Contains(userNickname.ToLower()))
                     {
                         // ADD THE USER'S NICKNAME TO THE MATCHING USERS LIST
@@ -279,10 +279,10 @@ namespace Exercise_3
 
                         // ADD USER INFO
                         string usersInfo = "ID: " + userRow["ID"] + "\n" +
-                                          "Name: " + userRow["Name"] + "\n" +
-                                          "Password: " + userRow["Password"] + "\n" +
-                                          "Email: " + userRow["Email"] + "\n" +
-                                          banInfo;
+                                           "Name: " + userRow["Name"] + "\n" +
+                                           "Password: " + userRow["Password"] + "\n" +
+                                           "Email: " + userRow["Email"] + "\n" +
+                                           banInfo;
 
                         // ADD USER INFO TO THE EXTRA INFO LIST
                         extraUsersInfo.Add(usersInfo);
@@ -353,32 +353,13 @@ namespace Exercise_3
             }
         }
 
-        /*---------------------------------------- GET USER INFO RELATED FUNCTIONS END --------------------------------------------------*/
+        /*------------------------------------------ GET USER INFO RELATED FUNCTIONS END --------------------------------------------------------*/
 
-        /* ------------------------------------------- BUTTONS HANDLING START ---------------------------------------------------------- */
-
-        // FUNCTION TO CHECK IF VALUES FROM THE ACTUAL USER POSITION HAVE CHANGED IN THE TEXT BOXES
-        private bool CheckValuesChanged()
-        {
-            return dbHandler.CheckUserChangesStoredAndActualValues(pos, txtbName.Text, txtbEmail.Text, txtbPassword.Text, txtbBanned.Text);
-        }
-
-        // FUNCTION TO ASK USER TO UPDATE IF CHANGES WERE MADE 
-        private void askToUpdateIfChangesWereMade(bool choice)
-        {
-            if (!choice)
-            {
-                DialogResult update = MessageBox.Show("Do you want to keep changes of this record (Y/N)?", "Keep Changes?", MessageBoxButtons.YesNo);
-
-                if (update == DialogResult.Yes)
-                {
-                    btnUpdate.PerformClick();
-                }
-            }
-        }
+        /* ----------------------------------------------- BUTTONS HANDLING START -------------------------------------------------------------- */
 
         /*--------------------------------- CRUD BUTTONS ACTIONS START -------------------------------*/
 
+        // SAVES AN USER (CREATE)
         private void btnSave_Click(object sender, EventArgs e)
         {
             // CHECK IF THERE ARE NO DUPLICATED DATA FOR THE USER
@@ -412,34 +393,85 @@ namespace Exercise_3
             }
         }
 
+        // SEARCHS USER DATA (READ)
+        private void btnSearchUser_Click(object sender, EventArgs e)
+        {
+            if (dbHandler.UsersQuantity > 1)
+            {
+                bool showed = false;
+                do
+                {
+                    string name = Interaction.InputBox("Introduce the user's nickname to show data: ");
+
+                    // CHECK IF THE ENTERED NICKNAME HAS A VALID FORMAT
+                    if (CustomRegex.RegexName(name))
+                    {
+                        // CHECK IF THERE ARE USERS WITH SIMILAR NICKNAMES
+                        if (CountSimilarUsersNickname(name) > 0)
+                        {
+                            // SHOW DATA OF SIMILAR USERS
+                            ShowSimilarUsersNickname(name);
+                            showed = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("There isn't any user with the selected nickname, try again");
+                            showed = true;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("The nickname format is not correct, try again");
+                    }
+
+                } while (!showed);
+
+            }
+            else if (dbHandler.UsersQuantity == 1)
+            {
+                // IF THERE IS ONLY ONE USER, DISPLAY ITS DATA
+                object uniqueUser = dbHandler.GetSelectedTypeObject(0, "Users");
+                MessageBox.Show("There's only one user so it's data will be the one showed.");
+                MessageBox.Show(dbHandler.GetObjectDataFromPosition(uniqueUser, 0, "Users"));
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has no added users, add a user before checking a user data from the users list");
+            }
+        }
+
+        // UPDATE USER (UPDATE)
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (pos != -1 && changeDetected)
             {
-                // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
+                // GET THE OLD OBJECT DATA FROM THE DATABASE 
                 object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Users");
 
-                // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
+                // SET VARIABLES TO CREATE A NEW USER
                 string name = txtbName.Text;
                 string email = txtbEmail.Text;
-                string password = txtbPassword.Text;
-
+                string password = txtbPassword.Text;        
                 bool banStatus = false;
+
                 if (txtbBanned.Text == "Banned")
                 {
                     banStatus = true;
                 }
 
-                // CHECKS IF THE SELECTED OBJECT IS A TEACHER AND CONVERTS THAT OBJECT INTO A TEACHER TYPE TO ACCES TO ITS PROPERTIES
+                // CHECK IF THE SELECTED OBJECT IS A USER AND CONVERT IT INTO A USER TYPE TO ACCESS ITS PROPERTIES
                 if (oldObjectData is User oldUserData)
                 {
-                    // MAKES SURE THAT THE FOLLOWING NICKNAME-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
+                    // CHECK IF THE NEW NAME IS NOT DUPLICATED OR IF IT'S THE SAME AS THE OLD ONE
                     if (!dbHandler.DuplicatedNameData(name, "Users") || name == oldUserData.Name)
                     {
+                        // CHECK IF THE NEW EMAIL IS NOT DUPLICATED OR IF IT'S THE SAME AS THE OLD ONE
                         if (!dbHandler.DuplicatedEmailDataFromUsers(email) || email == oldUserData.Email)
                         {
-                            // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
+                            // CREATE A NEW USER OBJECT
                             object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
+
+                            // IF THE NEW USER OBJECT IS VALID, UPDATE THE OBJECT IN THE DATABASE
                             if (selectedUserToUpdate != null)
                             {
                                 dbHandler.UpdateObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
@@ -475,6 +507,7 @@ namespace Exercise_3
             }
         }
 
+        // DELETES USER (DELETE)
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dbHandler.UsersQuantity > 0)
@@ -486,11 +519,9 @@ namespace Exercise_3
 
                     if (delete == DialogResult.Yes)
                     {
-                        dbHandler.DeleteObjectFromPosition(pos, "Users");
-
-                        // RESETS POSITION
+                        dbHandler.DeleteObjectFromPosition(pos, "Users");                 
                         pos = 0;
-                        RecordPositionLabel(pos); // RELOADS THE POSITION LABEL
+                        RecordPositionLabel(pos);
                         ShowUsersRecords(pos);
                         ButtonsCheck();
                     }
@@ -507,15 +538,35 @@ namespace Exercise_3
         }
 
 
-        /*--------------------------------- CRUD BUTTONS ACTIONS END -------------------------------*/
+        /*------------------------------- CRUD BUTTONS ACTIONS END -------------------------------*/
 
-        private void btnCancelAddRegistry_Click(object sender, EventArgs e)
+        /*------------------------ GENERAL BUTTONS SUPPORT FUNCTIONS START -----------------------*/
+
+        // FUNCTION TO CHECK IF VALUES FROM THE ACTUAL USER POSITION HAVE CHANGED IN THE TEXT BOXES
+        private bool CheckValuesChanged()
         {
-            pos = 0;
-            ShowUsersRecords(pos);
-            RecordPositionLabel(pos);
+            return dbHandler.CheckUserChangesStoredAndActualValues(pos, txtbName.Text, txtbEmail.Text, txtbPassword.Text, txtbBanned.Text);
         }
 
+        // FUNCTION TO ASK USER TO UPDATE IF CHANGES WERE MADE 
+        private void AskToUpdateIfChangesWereMade(bool choice)
+        {
+            if (!choice)
+            {
+                DialogResult update = MessageBox.Show("Do you want to keep changes of this record (Y/N)?", "Keep Changes?", MessageBoxButtons.YesNo);
+
+                if (update == DialogResult.Yes)
+                {
+                    btnUpdate.PerformClick();
+                }
+            }
+        }
+
+        /*------------------------- GENERAL BUTTONS SUPPORT FUNCTIONS END ------------------------*/
+
+        /*---------------------------- NAVIGATION BUTTONS ACTIONS START --------------------------*/
+
+        // FIRST USER ADDED
         private void btnFirst_Click(object sender, EventArgs e)
         {
             if (pos == -1)
@@ -526,6 +577,7 @@ namespace Exercise_3
             }
             else
             {
+                // CHECK IF THERE ARE POSSIBLY CHANGED VALUES AND IF THE POSITION IS NOT -1
                 bool possiblyChangedValues = CheckValuesChanged();
 
                 if (possiblyChangedValues && (pos == -1))
@@ -536,7 +588,8 @@ namespace Exercise_3
                 }
                 else
                 {
-                    askToUpdateIfChangesWereMade(possiblyChangedValues);
+                    // ASK TO UPDATE IF CHANGES WERE MADE
+                    AskToUpdateIfChangesWereMade(possiblyChangedValues);
                     pos = 0;
                     RecordPositionLabel(pos);
                     ShowUsersRecords(pos);
@@ -544,6 +597,7 @@ namespace Exercise_3
             }
         }
 
+        // LAST USER ADDED
         private void btnLast_Click(object sender, EventArgs e)
         {
             if (pos == -1)
@@ -554,6 +608,7 @@ namespace Exercise_3
             }
             else
             {
+                // CHECK IF THERE ARE POSSIBLY CHANGED VALUES AND IF THE POSITION IS NOT -1
                 bool possiblyChangedValues = CheckValuesChanged();
                 if (possiblyChangedValues && (pos == -1))
                 {
@@ -563,7 +618,8 @@ namespace Exercise_3
                 }
                 else
                 {
-                    askToUpdateIfChangesWereMade(possiblyChangedValues);
+                    // ASK TO UPDATE IF CHANGES WERE MADE
+                    AskToUpdateIfChangesWereMade(possiblyChangedValues);
                     pos = dbHandler.UsersQuantity - 1;
                     RecordPositionLabel(pos);
                     ShowUsersRecords(pos);
@@ -571,6 +627,7 @@ namespace Exercise_3
             }
         }
 
+        // NEXT USER
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (pos == -1)
@@ -579,6 +636,7 @@ namespace Exercise_3
             }
             else if (pos < (dbHandler.UsersQuantity - 1))
             {
+                // CHECK IF THERE ARE POSSIBLY CHANGED VALUES AND IF THE POSITION IS NOT -1
                 bool possiblyChangedValues = CheckValuesChanged();
                 if (possiblyChangedValues && (pos == -1))
                 {
@@ -588,7 +646,8 @@ namespace Exercise_3
                 }
                 else
                 {
-                    askToUpdateIfChangesWereMade(possiblyChangedValues);
+                    // ASK TO UPDATE IF CHANGES WERE MADE
+                    AskToUpdateIfChangesWereMade(possiblyChangedValues);
                     pos++;
                     RecordPositionLabel(pos);
                     ShowUsersRecords(pos);
@@ -596,6 +655,7 @@ namespace Exercise_3
             }
         }
 
+        // PREVIOUS USER
         private void btnPrevious_Click(object sender, EventArgs e)
         {
             if (pos == -1)
@@ -604,6 +664,7 @@ namespace Exercise_3
             }
             else if (pos > 0)
             {
+                // CHECK IF THERE ARE POSSIBLY CHANGED VALUES AND IF THE POSITION IS NOT -1
                 bool possiblyChangedValues = CheckValuesChanged();
                 if (possiblyChangedValues && (pos == -1))
                 {
@@ -613,7 +674,8 @@ namespace Exercise_3
                 }
                 else
                 {
-                    askToUpdateIfChangesWereMade(possiblyChangedValues);
+                    // ASK TO UPDATE IF CHANGES WERE MADE
+                    AskToUpdateIfChangesWereMade(possiblyChangedValues);
                     pos--;
                     RecordPositionLabel(pos);
                     ShowUsersRecords(pos);
@@ -621,39 +683,68 @@ namespace Exercise_3
             }
         }
 
+        /*---------------------------- NAVIGATION BUTTONS ACTIONS END ----------------------------*/
+
+        /*------------------ CLEARING AND RESETING BUTTONS ACTIONS START -------------------------*/
+
+        // CLEARS ALL THE DATA FROM THE TEXT BOXES AND UPDATES THE ID AND THE BAN STATUS TO THE NEXT ID AVALIABLE AND THE BAN STATUS TO DEFAULT
         private void btnClear_Click(object sender, EventArgs e)
         {
+            // QUERY TO GET THE CURRENT IDENTITY ID
             string query = "SELECT IDENT_CURRENT('Users')";
+
+            // SETS THE ID TEXT BOX TO THE NEXT AVAILABLE ID
             txtbID.Text = ((dbHandler.GetIdentityID("Users", query) + 1).ToString());
+
+            // CLEARS THE TEXT BOXES
             txtbName.Clear();
             txtbEmail.Clear();
             txtbPassword.Clear();
+
+            // SETS THE BAN STATUS TEXT BOX TO DEFAULT
             txtbBanned.Text = "Not Banned";
+
+            // RESETS THE POSITION TO -1 AND CLEARS THE POSITION LABEL
             pos = -1;
             lblRecord.Text = "";
+
+            // UPDATES BUTTON STATUS
             ButtonsCheck();
         }
 
+            // CANCELS THE ACTUAL ACTION AND RESETS THE VISUAL PART
+            private void btnCancelAddRegistry_Click(object sender, EventArgs e)
+            {
+                pos = 0;
+                ShowUsersRecords(pos);
+                RecordPositionLabel(pos);
+            }
 
+        /*------------------ CLEARING AND RESETING BUTTONS ACTIONS END ---------------------------*/
+
+        /*-------------------------- BANNING BUTTONS ACTIONS AND FUNCTIONS START --------------------------*/
+
+        // METHOD WHICH UPDATES THE BAN STATUS OF THE USER BASES ON THE SELECTED ACTION
         public void UnbannedUser (bool banStatus)
         {
             if (pos != -1)
             {
-                // GETS THE DATA FROM AN OBJECT IN THE ACTUAL POSITION 
+                // GET THE DATA FROM AN OBJECT AT THE CURRENT POSITION
                 object objectToBan = dbHandler.GetSelectedTypeObject(pos, "Users");
 
-                // CHECKS IF THE SELECTED OBJECT IS A USER AND CONVERTS THAT OBJECT INTO A USER TYPE TO ACCES TO ITS PROPERTIES
+                // CHECK IF THE SELECTED OBJECT IS A USER AND CONVERT IT INTO A USER TYPE TO ACCESS ITS PROPERTIES
                 if (objectToBan is User userToBan)
                 {
-                    // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW USER
+                    // GET THE USER'S INFORMATION
                     string name = userToBan.Name;
                     string email = userToBan.Email;
                     string password = userToBan.Password;
 
-                    // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
+                    // CREATE A NEW USER OBJECT WITH THE UPDATED BAN STATUS
                     object selectedUserToUpdate = User.UserCreation(name, password, email, banStatus);
                     if (selectedUserToUpdate != null)
                     {
+                        // UPDATE THE USER'S BAN STATUS
                         dbHandler.UpdateObjectFromPosition(selectedUserToUpdate, pos, banStatus, "Users");
                         ShowUsersRecords(pos);
                         RecordPositionLabel(pos);
@@ -668,6 +759,7 @@ namespace Exercise_3
             }
         }
 
+        // FUNCTION WHICH ASKS THE USER WHICH ACTION IS DESIRED DEPENDING ON THE TEXT BOX BANNED ACTUAL TEXT
         private void ConfirmBanOrUnban()
         {
             string banStatus = "";
@@ -682,84 +774,54 @@ namespace Exercise_3
                 banStatus = "unban";
             }
 
+            // ASK THE USER IF THEY WANT TO BAN OR UNBAN AN USER - CAPITALIZES THE BANSTATUS FIRST LETTER DEPENDING THE ACTION
             DialogResult result = MessageBox.Show("Do you want to " + banStatus + " this user (Y/N)?", 
                                                   char.ToUpper(banStatus.First()) + banStatus.Substring(1).ToLower() + 
                                                   " User ? ", MessageBoxButtons.YesNo);
 
+            // IF THE USER CONFIRMS, CALL THE APPROPRIATE METHOD TO BAN OR UNBAN THE USER
             if (result == DialogResult.Yes)
             {
                 if (banStatus == "ban")
                 {
                     UnbannedUser(true);
                 }
-                else
+                else if (banStatus == "unban")
                 {
                     UnbannedUser(false);
                 }
             }
         }
 
+        // BANS THE USER
         private void btnBan_Click(object sender, EventArgs e)
         {
             ConfirmBanOrUnban();
         }
 
+        // UNBANS THE USER
         private void btnUnban_Click(object sender, EventArgs e)
         {
             ConfirmBanOrUnban();
         }
 
-        private void btnSearchUser_Click(object sender, EventArgs e)
-        {
-            if (dbHandler.UsersQuantity > 1)
-            {
-                bool showed = false;
-                do
-                {
-                    string name = Interaction.InputBox("Introduce the user's nickname to show data: ");
+        /*-------------------------- BANNING BUTTONS ACTIONS AND FUNCTIONS END ----------------------------*/
 
-                    if (CustomRegex.RegexName(name))
-                    {
-                        if (CountSimilarUsersNickname(name) > 0)
-                        {
-                            ShowSimilarUsersNickname(name);
-                            showed = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("There isn't any user with the selected nickname, try again");
-                            showed = true;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("The nickname format is not correct, try again");
-                    }
+        /*-------------------------- LIST BUTTONS ACTIONS START ----------------------------*/
 
-                } while (!showed);
-
-            }
-            else if (dbHandler.UsersQuantity == 1)
-            {
-                object uniqueUser = dbHandler.GetSelectedTypeObject(0, "Users");
-                MessageBox.Show("There's only one user so it's data will be the one showed.");
-                MessageBox.Show(dbHandler.GetObjectDataFromPosition(uniqueUser, 0, "Users"));
-            }
-            else
-            {
-                MessageBox.Show("Error, the list has no added users, add a user before checking a user data from the users list");
-            }
-        }
-
+        // SHOWS A LIST OF ALL USERS ADDED
         private void btnListUsers_Click(object sender, EventArgs e)
         {
             MessageBox.Show(ShowsUsersList());
         }
 
+        // SHOWS A LIST OF ALL BANNED USERS
         private void btnListBannedUsers_Click(object sender, EventArgs e)
         {
             MessageBox.Show(ShowsBannedUsersList());
         }
+
+        /*-------------------------- LIST BUTTONS ACTIONS END ----------------------------*/
 
         /* -------------------------------------------------- BUTTONS HANDLING END ------------------------------------------------------ */
 
@@ -770,11 +832,9 @@ namespace Exercise_3
         {
             string errorMessage = "Error, not valid data, try again. " +
                                   "\n\nEXAMPLE:" +
-                                  "\nID: 1 / 2" +
                                   "\nNAME: Sergio" +
                                   "\nEMAIL: x@x.com" +
-                                  "\nPASSWORD: Contraseña_1 / CONTRASEÑa&2" +
-                                  "\nBANNED: Not Banned / Banned";
+                                  "\nPASSWORD: Contraseña_1 / CONTRASEÑa&2";
             return errorMessage;
         }
 
@@ -782,6 +842,7 @@ namespace Exercise_3
 
         /* ----------------------------- HANDLING FUNCTIONS FOR BUTTONS STATUS AND TEXT BOX CHANGES START ------------------------------ */
 
+        // CHECKS THE ACTUAL STATUS OF EVERY BUTTON
         public void ButtonsCheck()
         {
             bool recordsExist = (dbHandler.UsersQuantity > 0);

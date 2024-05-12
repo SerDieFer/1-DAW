@@ -15,6 +15,7 @@ namespace Exercise_3
         private string uName, uEmail, uPassword;
         private bool uBanned;
 
+        // USER PROPERTIES
         public int ID
         {
             get;
@@ -45,6 +46,7 @@ namespace Exercise_3
             set => uBanned = value;
         }
 
+        // PRIVATE CLASS CONSTRUCTOR
         private User(string uName, string uPassword, string uEmail, bool uBanned)
         {
             Name = uName;
@@ -53,10 +55,11 @@ namespace Exercise_3
             Banned = uBanned;
         }
 
+        // CLASS CONSTRUCTOR IN A STATIC WAY WHICH FIRST CHECKS ALL REGEX ARE PERFECT BEFORE CREATING THE USER
         public static User UserCreation(string uName, string uPassword, string uEmail, bool uBanned)
         {
             // RECALL TO CUSTOM REGEX WHICH CHECKS ALL THE INPUTS BEFORE INSERTING THEM INTO
-            // THE ORIGINAL CONSTRUCTOR WHICH CREATES THE ACTUAL TEACHER WITHOUT ANY ERROR
+            // THE ORIGINAL CONSTRUCTOR WHICH CREATES THE ACTUAL USER WITHOUT ANY ERROR
             if (!CustomRegex.RegexName(uName) ||
                 !CustomRegex.RegexPassword(uPassword) ||
                 !CustomRegex.RegexEmail(uEmail))

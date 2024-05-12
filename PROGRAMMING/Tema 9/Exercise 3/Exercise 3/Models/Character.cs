@@ -13,7 +13,7 @@ namespace Exercise_3
 {
     public class Character
     {
-        private string cName, cImgRoute, cImgIconRoute;
+        private string cName, cImgRoute;
 
         // PROPERTIES
         public int ID
@@ -31,18 +31,27 @@ namespace Exercise_3
             get => cImgRoute;
             set => cImgRoute = value;
         }
-        public string IconRoute
-        {
-            get => cImgIconRoute;
-            set => cImgIconRoute = value;
-        }
 
         // CLASS CONSTRUCTOR
-        public Character(string cName, string cImgRoute, string cImgIconRoute)
+        private Character(string cName, string cImgRoute)
         {
             Name = cName;
             ImgRoute = cImgRoute;
-            IconRoute = cImgIconRoute;
+        }
+
+        // CLASS CONSTRUCTOR IN A STATIC WAY WHICH FIRST CHECKS THE NAME REGEX IS PERFECT BEFORE CREATING THE CHARACTER
+        public static Character CharacterCreation(string cName, string cImgRoute)
+        {
+            // RECALL TO CUSTOM REGEX WHICH CHECKS ALL THE INPUTS BEFORE INSERTING THEM INTO
+            // THE ORIGINAL CONSTRUCTOR WHICH CREATES THE ACTUAL CHARACTER WITHOUT ANY ERROR
+            if (!CustomRegex.RegexName(cName))
+            {
+                return null;
+            }
+            else
+            {
+                return new Character(cName, cImgRoute);
+            }
         }
 
         public string ShowCharacterData()
