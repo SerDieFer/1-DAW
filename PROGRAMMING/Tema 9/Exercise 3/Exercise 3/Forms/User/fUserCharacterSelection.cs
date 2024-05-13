@@ -167,7 +167,7 @@ namespace Exercise_3.Forms.User
             countdownTimer = new Timer();
 
             // SELECT 3 SECONDS OF DURATION
-            countdownTimer.Interval = 4000;
+            countdownTimer.Interval = 1000;
 
             // WHEN TIMER REACHS ITS MAX SET INTERVAL ACTIVATES EVENT EXIT TIMER
             countdownTimer.Tick += CountdownTimer_Tick;

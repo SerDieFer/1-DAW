@@ -117,7 +117,7 @@ namespace Exercise_3
                 {
                     if (CustomRegex.RegexPassword(passwordToRegister))
                     {         
-                        if (!dbHandler.CheckAllUserDuplicatedData(nameToRegister, passwordToRegister, "Users"))
+                        if (!dbHandler.CheckAllUserDuplicatedData(nameToRegister, emailToRegister, "Users"))
                         {
                             do
                             {
