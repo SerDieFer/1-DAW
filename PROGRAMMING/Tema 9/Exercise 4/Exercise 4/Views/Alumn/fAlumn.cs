@@ -1,4 +1,5 @@
-﻿using Exercise_3.Forms.User;
+﻿using Exercise_4;
+using Exercise_4.Views.Admin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,22 +11,39 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace Exercise_3
+namespace Exercise_4
 {
     public partial class fAlumn : Form
     {
-        public fAlumn(string userName)
+        public fAlumn(string alumnID)
         {
             InitializeComponent();
-            this.Text = userName;
-            MessageBox.Show("Welcome, " + userName + "!");
+            this.Text = alumnID;
+            MessageBox.Show("Welcome, " + alumnID + "!");
+        }
 
+        private void fAlumn_Load(object sender, EventArgs e)
+        {
+        }
+
+        // LOADS COURSE DATA WHERE ALUMN IS INSCRIBED
+        private void btnAlumnCourses_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // LOADS ALUMNS OPTIONS
+        private void btnAlumnOptions_Click(object sender, EventArgs e)
+        {
+            string alumnID = this.Text;
+            fAlumnOptions alumnOptions = new fAlumnOptions(alumnID);
+            alumnOptions.ShowDialog();
         }
 
         // EVENT HANDLER TO CLOSE THE ACTUAL LOGIN INSTEAD A BUTTON
         // I HAD TO CREATE AN EVENT FOR HANDLING WHEN THIS FORM ITS CLOSED AND ADD ITS ACTIVATION INTO THE DESIGNER OF THIS CLASS
         // this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fUser_FormClosing);
-        private void fUser_FormClosing(object sender, FormClosingEventArgs closeEvent)
+        private void fAlumn_FormClosing(object sender, FormClosingEventArgs closeEvent)
         {
             // VERIFY IF THE CLOSURE WAS INITIATED BY THE USER
             if (closeEvent.CloseReason == CloseReason.UserClosing)
@@ -44,24 +62,6 @@ namespace Exercise_3
                     closeEvent.Cancel = true;
                 }
             }
-        }
-
-        private void fUser_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnPlay_Click(object sender, EventArgs e)
-        {
-            fUserCharacterSelection userPlay = new fUserCharacterSelection();
-            userPlay.ShowDialog();
-        }
-
-        private void btnOptions_Click(object sender, EventArgs e)
-        {
-            string username = this.Text;
-            fTeacherOptions userOptions = new fAlumnOptions(username);
-            userOptions.ShowDialog();
         }
     }
 }

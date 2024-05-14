@@ -43,42 +43,67 @@ namespace Exercise_4
             get => _selectedAlumnsQuantity;
         }
 
+        /*----------------------------------- BASIC DB HANDLING FUNCTIONS START ------------------------------------*/
+
+        // METHOD WHICH CREATES A SQL CONNETION TO THE DB
+        public SqlConnection CreateSqlConnectionToDB()
+        {
+            // SETS THE PATH TO THE SELECTED DB
+            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\Highschool.mdf;";
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename="
+                                       + path + "Integrated Security=True";
+
+            // CREATES THE NEW CONNEXION
+            SqlConnection con = new SqlConnection(connectionString);
+
+            return con;
+        }
+
         // SQLDBHANDLER CONSTRUCTOR WHICH HANDLES THE CONNECTION AND CREATION OF DATA SET AND DATA ADAPTER
         public SqlDBHandler(string selectedTable)
         {
-            // DB CONNECTION
-            string path = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\Highschool.mdf;";
-
-            SqlConnection con = new SqlConnection("Data Source = (LocalDB)\\MSSQLLocalDB; " +
-            "AttachDbFilename=" + path + "Integrated Security=True");
-
-            // OPENS CONNECTION
-            con.Open();
-
-            dataSet = new DataSet();            
-            string stringSQL = "SELECT * FROM " + selectedTable;
-
-            dataAdapter = new SqlDataAdapter(stringSQL, con);
-
-            dataAdapter.Fill(dataSet, selectedTable);
-
-            if (selectedTable == "Profesores")
+            try
             {
-                // COUNT TOTAL TEACHERS
-                _selectedTeachersQuantity = dataSet.Tables[selectedTable].Rows.Count;
+                // CREATES A CONNEXION WITH THE DB
+                SqlConnection con = CreateSqlConnectionToDB();
+
+                // OPENS CONNECTION
+                con.Open();
+
+                // CREATES A NEW DATA SET
+                dataSet = new DataSet();
+
+                // STRING WHICH CONTAINS A SELECT ORDER FOR A SELECTED TABLE WITH ALL ITS INFO
+                string stringSQL = "SELECT * FROM " + selectedTable;
+
+                // CREATES A NEW DATA ADAPTER AND CONNECTS IT TO THE ACTUAL DB TO EXTRACT THE DATA BASED IN THE PREVIOUS ORDER
+                dataAdapter = new SqlDataAdapter(stringSQL, con);
+
+                // RETRIEVES DATA FROM THE DATABASE USING A DATA ADAPTER AND FILLS A TABLE IN A DATASET WITH THAT DATA
+                dataAdapter.Fill(dataSet, selectedTable);
+
+                if (selectedTable == "Profesores")
+                {
+                    // COUNT TOTAL TEACHERS
+                    _selectedTeachersQuantity = dataSet.Tables[selectedTable].Rows.Count;
+                }
+                else if (selectedTable == "Alumnos")
+                {
+                    // COUNT TOTAL ALUMNS
+                    _selectedAlumnsQuantity = dataSet.Tables[selectedTable].Rows.Count;
+                }
+                else if (selectedTable == "Cursos")
+                {
+                    // COUNT TOTAL COURSES
+                    _selectedCoursesQuantity = dataSet.Tables[selectedTable].Rows.Count;
+                }
+                // CLOSES CONNECTION
+                con.Close();
             }
-            else if(selectedTable == "Alumnos")
+            catch
             {
-                // COUNT TOTAL ALUMNS
-                _selectedAlumnsQuantity = dataSet.Tables[selectedTable].Rows.Count;
+                Console.WriteLine("Error al conectar a la base de datos: ");
             }
-            else if(selectedTable == "Cursos")
-            {
-                // COUNT TOTAL COURSES
-                _selectedCoursesQuantity = dataSet.Tables[selectedTable].Rows.Count;
-            }
-            // CLOSES CONNECTION
-            con.Close();
         }
 
         public DataTable ImportSelectedDataTable(string selectedTable)
@@ -90,7 +115,7 @@ namespace Exercise_4
                 toImport = dataSet.Tables["Profesores"];
             }
             else if (selectedTable == "Alumnos")
-            {
+            { 
                 toImport = dataSet.Tables["Alumnos"];
             }
             else if (selectedTable == "Cursos")
@@ -111,32 +136,75 @@ namespace Exercise_4
             if (selectedTable == "Profesores")
             {
                 dataAdapter.Update(dataSet, "Profesores");
+                dataSet.Clear();
+                dataAdapter.Fill(dataSet, selectedTable);
             }
             else if (selectedTable == "Alumnos")
             {
                 dataAdapter.Update(dataSet, "Alumnos");
+                dataSet.Clear();
+                dataAdapter.Fill(dataSet, selectedTable);
             }
-            else if (selectedTable == "Courses")
+            else if (selectedTable == "Cursos")
             {
-                dataAdapter.Update(dataSet, "Courses");
+                dataAdapter.Update(dataSet, "Cursos");
+                dataSet.Clear();
+                dataAdapter.Fill(dataSet, selectedTable);
             }
         }
 
-        public bool CheckAllPosibleDuplicatedData(string id, string phone, string email, string selectedTable)
+        /*--------------------------------- BASIC DB HANDLING FUNCTIONS END ------------------------------------*/
+
+        /*---------------------------------- RECURRENT GET FUNCTIONS START -------------------------------------*/
+
+        // METHOD TO GET THE SELECTED STRING DATA FROM A CERTAIN TABLE RECORD BASED IN A CONDITION
+        public string GetStringDataFromTable(string selectedTable, string query)
+        {
+            // DEFAULT DATA IF NOT FOUND
+            string data = "";
+
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS THE CONNEXION
+            con.Open();
+
+            // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
+            ReconnectionToDB(selectedTable);
+
+            // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
+            SqlCommand command = new SqlCommand(query, con);
+
+            // GETS AN OBJECT FROM THE COMMAND AND GETS THE FIRST COLUMN VALUE FROM THE FIRST FILE FOUND IN THAT COMMAND (SELECT)
+            object result = command.ExecuteScalar();
+
+            if (result != null)
+            {
+                data = result.ToString();
+            }
+
+            // CLOSES THE CONNEXION
+            con.Close();
+
+            return data;
+        }
+
+
+        public bool CheckAllDuplicatedData(string id, string phone, string email, string selectedTable)
         {
             bool duplicatedData = false;
             if (selectedTable == "Profesores" || selectedTable == "Alumnos")
             {
-                if (DuplicatedIDDataFromSelectedTable(id, selectedTable) || 
-                    DuplicatedPhoneDataFromSelectedTable(phone, selectedTable) || 
-                    DuplicatedEmailDataFromSelectedTable(email, selectedTable))
+                if (DuplicatedID(id, selectedTable) || 
+                    DuplicatedPhone(phone, selectedTable) || 
+                    DuplicatedEmail(email, selectedTable))
                 {
                     duplicatedData = true;
                 }
             }
             else if (selectedTable == "Cursos")
             {
-                if (DuplicatedIDDataFromSelectedTable(id, selectedTable))
+                if (DuplicatedID(id, selectedTable))
                 {
                     duplicatedData = true;
                 }
@@ -144,7 +212,7 @@ namespace Exercise_4
             return duplicatedData;
         }
 
-        public bool DuplicatedIDDataFromSelectedTable(string id, string selectedTable)
+        public bool DuplicatedID(string id, string selectedTable)
         {
             bool usedID = false;
 
@@ -163,7 +231,7 @@ namespace Exercise_4
             return usedID;
         }
 
-        public bool DuplicatedPhoneDataFromSelectedTable(string phone, string selectedTable)
+        public bool DuplicatedPhone(string phone, string selectedTable)
         {
             bool usedPhone = false;
 
@@ -182,7 +250,7 @@ namespace Exercise_4
             return usedPhone;
         }
 
-        public bool DuplicatedEmailDataFromSelectedTable(string email, string selectedTable)
+        public bool DuplicatedEmail(string email, string selectedTable)
         {
             bool usedMail = false;
 
@@ -201,7 +269,7 @@ namespace Exercise_4
             return usedMail;
         }
 
-        public bool DuplicatedAdressDataFromSelectedTable(string adress, string selectedTable)
+        public bool DuplicatedAdress(string adress, string selectedTable)
         {
             bool usedAdress = false;
 
@@ -240,7 +308,9 @@ namespace Exercise_4
                                                                dRecord[1].ToString(),
                                                                dRecord[2].ToString(),
                                                                dRecord[3].ToString(),
-                                                               dRecord[4].ToString());
+                                                               dRecord[4].ToString(),
+                                                               dRecord[5].ToString(),
+                                                               dRecord[6].ToString());
                 }
             }  
             else if (selectedTable == "Alumnos")
@@ -255,7 +325,9 @@ namespace Exercise_4
                                                            dRecord[1].ToString(),
                                                            dRecord[2].ToString(),
                                                            dRecord[3].ToString(),
-                                                           dRecord[4].ToString());
+                                                           dRecord[4].ToString(),
+                                                           dRecord[5].ToString(),
+                                                           dRecord[6].ToString());
                 }
             } 
             else if (selectedTable == "Courses")
@@ -268,7 +340,7 @@ namespace Exercise_4
                     selectedIdentity = Course.CourseCreation(dRecord[0].ToString(),
                                                              dRecord[1].ToString());
                 }
-            } */
+            }
 
             return selectedIdentity;
         }
@@ -322,6 +394,8 @@ namespace Exercise_4
             return selectedIdentityDenomination;
         }
 
+        /*---------------------------------- RECURRENT GET FUNCTIONS END ----------------------------------------*/
+
         // METHOD TO ADD A NEW OBJECT TO THE DATABASE
         public void AddNewObject(Identity identityToAdd, string selectedTable)
         {
@@ -337,8 +411,10 @@ namespace Exercise_4
                 dNewRecord[2] = teacherToAdd.Surnames;
                 dNewRecord[3] = teacherToAdd.Phone;
                 dNewRecord[4] = teacherToAdd.Email;
+                dNewRecord[5] = teacherToAdd.Password;
+                dNewRecord[6] = teacherToAdd.CourseCod;
 
-                if (!CheckAllPosibleDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email, selectedTable))
+                if (!CheckAllDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email, selectedTable))
                 {
                     // ADDS THE REGISTRY TO THE DATA SET
                     ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
@@ -361,8 +437,10 @@ namespace Exercise_4
                 dNewRecord[2] = alumnToAdd.Surnames;
                 dNewRecord[3] = alumnToAdd.Phone;
                 dNewRecord[4] = alumnToAdd.Adress;
+                dNewRecord[5] = alumnToAdd.Password;
+                dNewRecord[6] = alumnToAdd.CourseCod;
 
-                if (!CheckAllPosibleDuplicatedData(alumnToAdd.ID, alumnToAdd.Phone, alumnToAdd.Adress, selectedTable))
+                if (!CheckAllDuplicatedData(alumnToAdd.ID, alumnToAdd.Phone, alumnToAdd.Adress, selectedTable))
                 {
                     // ADDS THE REGISTRY TO THE DATA SET
                     ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
@@ -383,7 +461,7 @@ namespace Exercise_4
                 dNewRecord[0] = courseToAdd.ID;
                 dNewRecord[1] = courseToAdd.Name;
 
-                if (!DuplicatedIDDataFromSelectedTable(courseToAdd.ID, selectedTable))
+                if (!DuplicatedID(courseToAdd.ID, selectedTable))
                 {
                     // ADDS THE REGISTRY TO THE DATA SET
                     ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
@@ -414,8 +492,10 @@ namespace Exercise_4
                 dUpdateRecord[2] = teacherToUpdate.Surnames;
                 dUpdateRecord[3] = teacherToUpdate.Phone;
                 dUpdateRecord[4] = teacherToUpdate.Email;
+                dUpdateRecord[5] = teacherToUpdate.Password;
+                dUpdateRecord[6] = teacherToUpdate.CourseCod;
 
-                if (!CheckAllPosibleDuplicatedData(dUpdateRecord[0].ToString(), dUpdateRecord[3].ToString(), dUpdateRecord[4].ToString(), selectedTable))
+                if (!CheckAllDuplicatedData(dUpdateRecord[0].ToString(), dUpdateRecord[3].ToString(), dUpdateRecord[4].ToString(), selectedTable))
                 {
 
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
@@ -430,8 +510,10 @@ namespace Exercise_4
                 dUpdateRecord[2] = alumnToUpdate.Surnames;
                 dUpdateRecord[3] = alumnToUpdate.Phone;
                 dUpdateRecord[4] = alumnToUpdate.Adress;
+                dUpdateRecord[5] = alumnToUpdate.Password;
+                dUpdateRecord[6] = alumnToUpdate.CourseCod;
 
-                if (!CheckAllPosibleDuplicatedData(alumnToUpdate.ID, alumnToUpdate.Phone, alumnToUpdate.Adress, selectedTable))
+                if (!CheckAllDuplicatedData(alumnToUpdate.ID, alumnToUpdate.Phone, alumnToUpdate.Adress, selectedTable))
                 {
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
                     ReconnectionToDB(selectedTable);
@@ -443,7 +525,7 @@ namespace Exercise_4
                 dUpdateRecord[0] = courseToUpdate.ID;
                 dUpdateRecord[1] = courseToUpdate.Name;
 
-                if (!DuplicatedIDDataFromSelectedTable(courseToUpdate.ID, selectedTable))
+                if (!DuplicatedID(courseToUpdate.ID, selectedTable))
                 {
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
                     ReconnectionToDB(selectedTable);
@@ -482,7 +564,7 @@ namespace Exercise_4
         }
 
         // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB
-        public bool CheckChangesStoredAndActualValues(int pos, string ID, string name, string surnames, string phone, string adressOrEmail, string selectedTable)
+        public bool CheckChangesStoredAndActualValues(int pos, string ID, string name, string surnames, string phone, string adressOrEmail, string password, string course, string selectedTable)
         {
             bool same = true;
             Identity identityToUpdate = GetSelectedTypeObject(pos, selectedTable);

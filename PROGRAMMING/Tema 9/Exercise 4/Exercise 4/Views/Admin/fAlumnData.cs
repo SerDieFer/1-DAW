@@ -113,7 +113,7 @@ namespace Exercise_4.Views
                 }
                 else if (dbHandler.AlumnsQuantity == 1)
                 {
-                    object singleAlumn = dbHandler.GetSelectedTypeObject(0, "Alumnos");
+                    Identity singleAlumn = dbHandler.GetSelectedTypeObject(0, "Alumnos");
                     alumnListTxt = dbHandler.GetObjectDataFromPosition(singleAlumn, 0, "Alumnos");
                     result = alumnListTxt;
                 }
@@ -376,20 +376,21 @@ namespace Exercise_4.Views
         private void btnSave_Click(object sender, EventArgs e)
         {
             // CHECKS THAT THE ACTUAL TEXT BOX ID TEXT IS NOT USED ALREADY IN THE DB
-            if (!dbHandler.DuplicatedIDDataFromSelectedTable(txtbID.Text, "Alumnos"))
+            if (!dbHandler.DuplicatedID(txtbID.Text, "Alumnos"))
             {
                 // CHECKS THAT THE ACTUAL TEXT BOX PHONE TEXT IS NOT USED ALREADY IN THE DB
-                if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(txtbPhone.Text, "Alumnos"))
+                if (!dbHandler.DuplicatedPhone(txtbPhone.Text, "Alumnos"))
                 {
                     // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
-                    if (!dbHandler.DuplicatedAdressDataFromSelectedTable(txtbAdress.Text, "Alumnos"))
+                    if (!dbHandler.DuplicatedAdress(txtbAdress.Text, "Alumnos"))
                     {
                         // CREATES THE TEACHER TO SAVE
                         Alumn savedAlumn = Alumn.AlumnCreation(txtbID.Text,
                                                                txtbName.Text,
                                                                txtbSurnames.Text,
                                                                txtbPhone.Text,
-                                                               txtbAdress.Text);
+                                                               txtbAdress.Text,
+                                                               txtbPassword.Text);
 
                         // IF THIS OBJECT IS VALID IT WILL BE INSERTED INTO THE DB
                         if (savedAlumn != null)
@@ -433,22 +434,23 @@ namespace Exercise_4.Views
                 string surnames = txtbSurnames.Text;
                 string phone = txtbPhone.Text;
                 string adress = txtbAdress.Text;
+                string password = txtbPassword.Text;
 
                 // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
-                object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
+                Identity oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
 
                 // CHECKS IF THE SELECTED OBJECT IS AN ALUMN AND CONVERTS THAT OBJECT INTO AN ALUMN TYPE TO ACCES TO ITS PROPERTIES
                 if (oldObjectData is Alumn oldAlumnData)
                 {
                     // MAKES SURE THAT THE FOLLOWING ID-PHONE-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
-                    if (!dbHandler.DuplicatedIDDataFromSelectedTable(ID, "Alumnos") || ID == oldAlumnData.ID)
+                    if (!dbHandler.DuplicatedID(ID, "Alumnos") || ID == oldAlumnData.ID)
                     {
-                        if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(phone, "Alumnos") || phone == oldAlumnData.Phone)
+                        if (!dbHandler.DuplicatedPhone(phone, "Alumnos") || phone == oldAlumnData.Phone)
                         {
-                            if (!dbHandler.DuplicatedAdressDataFromSelectedTable(adress, "Alumnos") || adress == oldAlumnData.Adress)
+                            if (!dbHandler.DuplicatedAdress(adress, "Alumnos") || adress == oldAlumnData.Adress)
                             {
                                 // CREATES A NEW OBJECT AS AN ALUMN TYPE ONE
-                                object selectedObjectToUpdate = Alumn.AlumnCreation(ID, name, surnames, phone, adress);
+                                Identity selectedObjectToUpdate = Alumn.AlumnCreation(ID, name, surnames, phone, adress, password);
                                 if (selectedObjectToUpdate != null)
                                 {
                                     dbHandler.UpdateSelectedObjectFromPosition(selectedObjectToUpdate, pos, "Alumnos");
@@ -505,7 +507,7 @@ namespace Exercise_4.Views
 
                         // RESETS POSITION
                         pos = 0;
-                        RecordPositionLabel(pos); // RELOADS THE POSITION LABEL
+                        RecordPositionLabel(pos);
                         ShowAlumnsRecords(pos);
                         ButtonsCheck();
                     }
@@ -553,7 +555,7 @@ namespace Exercise_4.Views
             }
             else if (dbHandler.AlumnsQuantity == 1)
             {
-                object uniqueAlumn = dbHandler.GetSelectedTypeObject(0, "Alumnos");
+                Identity uniqueAlumn = dbHandler.GetSelectedTypeObject(0, "Alumnos");
                 MessageBox.Show("There's only one alumn so it's data will be the one showed.");
                 MessageBox.Show(dbHandler.GetObjectDataFromPosition(uniqueAlumn, 0, "Alumnos"));
             }

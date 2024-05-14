@@ -11,7 +11,7 @@ namespace Exercise_4
 {
     abstract public class Person : Identity
     {
-        private string pID, pName, pSurnames, pPhone;
+        private string pID, pName, pSurnames, pPhone, pPassword;
 
         public string ID
         {
@@ -23,7 +23,6 @@ namespace Exercise_4
             get => pName;
             set => pName = value;
         }
-
         public string Surnames
         {
             get => pSurnames;
@@ -35,12 +34,19 @@ namespace Exercise_4
             set => pPhone = value;
         }
 
-        public Person(string pID, string pName, string pSurnames, string pPhone) : base()
+        public string Password
+        {
+            get => pPassword;
+            set => pPassword = value;
+        }
+
+        public Person(string pID, string pName, string pSurnames, string pPhone, string pPassword) : base()
         {
             ID = pID;
             Name = pName;
             Surnames = pSurnames;
             Phone = pPhone;
+            Password = pPassword;
         }
 
         public string GetPersonType()

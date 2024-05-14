@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Alumn.cs" />
+    <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CustomRegex.cs" />
     <Compile Include="Models\Identity.cs" />
     <Compile Include="Models\Person.cs" />

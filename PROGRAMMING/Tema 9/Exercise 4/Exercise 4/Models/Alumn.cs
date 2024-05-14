@@ -8,7 +8,7 @@ namespace Exercise_4.Models
 {
     public class Alumn : Person
     {
-        private string aAdress;
+        private string aAdress, aCourseCod;
 
         // PROPERTIES
         public string Adress
@@ -16,28 +16,37 @@ namespace Exercise_4.Models
             get => aAdress;
             set => aAdress = value;
         }
+        public string CourseCod
+        {
+            get => aCourseCod;
+            set => aCourseCod = value;
+        }
+
 
         // CLASS PRE-CONSTRUCTOR
-        private Alumn(string aID, string aName, string aSurnames, string aPhone, string aAdress) : base(aID, aName, aSurnames, aPhone)
+        private Alumn(string aID, string aName, string aSurnames, string aPhone, string aAdress, string aPassword, string aCourseCod) : base(aID, aName, aSurnames, aPhone, aPassword)
         {
             Adress = aAdress;
+            CourseCod = aCourseCod;
         }
 
         // CLASS CONSTRUCTOR
-        public static Alumn AlumnCreation(string aID, string aName, string aSurnames, string aPhone, string aAdress)
+        public static Alumn AlumnCreation(string aID, string aName, string aSurnames, string aPhone, string aAdress, string aPassword, string aCourseCod)
         {
             // RECALL TO CUSTOM REGEX WHICH CHECKS ALL THE INPUTS BEFORE INSERTING THEM INTO
             // THE ORIGINAL CONSTRUCTOR WHICH CREATES THE ACTUAL TEACHER WITHOUT ANY ERROR
             if (!CustomRegex.RegexID(aID) ||
                 !CustomRegex.RegexName(aName) ||
                 !CustomRegex.RegexName(aSurnames) ||
-                !CustomRegex.RegexPhone(aPhone))
+                !CustomRegex.RegexPhone(aPhone) ||
+                !CustomRegex.RegexPassword(aPassword) ||
+                !CustomRegex.RegexCourseCod(aCourseCod))
             {
                 return null;
             }
             else
             {
-                return new Alumn(aID, aName, aSurnames, aPhone, aAdress);
+                return new Alumn(aID, aName, aSurnames, aPhone, aAdress, aPassword, aCourseCod);
             }
         }
 

@@ -118,7 +118,7 @@ namespace Exercise_4
                 }
                 else if (dbHandler.TeachersQuantity == 1)
                 {
-                    object singleTeacher = dbHandler.GetSelectedTypeObject(0, "Profesores");
+                    Identity singleTeacher = dbHandler.GetSelectedTypeObject(0, "Profesores");
                     teacherListTxt = dbHandler.GetObjectDataFromPosition(singleTeacher, 0, "Profesores");
                     result = teacherListTxt;
                 }
@@ -381,20 +381,21 @@ namespace Exercise_4
         private void btnSave_Click(object sender, EventArgs e)
         {
             // CHECKS THAT THE ACTUAL TEXT BOX ID TEXT IS NOT USED ALREADY IN THE DB
-            if (!dbHandler.DuplicatedIDDataFromSelectedTable(txtbID.Text, "Profesores"))
+            if (!dbHandler.DuplicatedID(txtbID.Text, "Profesores"))
             {
                 // CHECKS THAT THE ACTUAL TEXT BOX PHONE TEXT IS NOT USED ALREADY IN THE DB
-                if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(txtbPhone.Text, "Profesores"))
+                if (!dbHandler.DuplicatedPhone(txtbPhone.Text, "Profesores"))
                 {
                     // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
-                    if (!dbHandler.DuplicatedEmailDataFromSelectedTable(txtbEmail.Text, "Profesores"))
+                    if (!dbHandler.DuplicatedEmail(txtbEmail.Text, "Profesores"))
                     {
                         // CREATES THE TEACHER TO SAVE
                         Teacher savedTeacher = Teacher.TeacherCreation(txtbID.Text,
                                                                        txtbName.Text,
                                                                        txtbSurnames.Text,
                                                                        txtbPhone.Text,
-                                                                       txtbEmail.Text);
+                                                                       txtbEmail.Text,
+                                                                       txtbPassword.Text);
 
                         // IF THIS OBJECT IS VALID IT WILL BE INSERTED INTO THE DB
                         if (savedTeacher != null)
@@ -438,6 +439,7 @@ namespace Exercise_4
                 string surnames = txtbSurnames.Text;
                 string phone = txtbPhone.Text;
                 string email = txtbEmail.Text;
+                string password = txtbPassword.Text;
 
                 // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
                 object oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Profesores");
@@ -446,14 +448,14 @@ namespace Exercise_4
                 if (oldObjectData is Teacher oldTeacheData)
                 {
                     // MAKES SURE THAT THE FOLLOWING ID-PHONE-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
-                    if (!dbHandler.DuplicatedIDDataFromSelectedTable(ID, "Profesores") || ID == oldTeacheData.ID)
+                    if (!dbHandler.DuplicatedID(ID, "Profesores") || ID == oldTeacheData.ID)
                     {
-                        if (!dbHandler.DuplicatedPhoneDataFromSelectedTable(phone, "Profesores") || phone == oldTeacheData.Phone)
+                        if (!dbHandler.DuplicatedPhone(phone, "Profesores") || phone == oldTeacheData.Phone)
                         {
-                            if (!dbHandler.DuplicatedEmailDataFromSelectedTable(email, "Profesores") || email == oldTeacheData.Email)
+                            if (!dbHandler.DuplicatedEmail(email, "Profesores") || email == oldTeacheData.Email)
                             {
                                 // CREATES A NEW OBJECT AS A TEACHER TYPE ONE
-                                object selectedObjectToUpdate = Teacher.TeacherCreation(ID, name, surnames, phone, email);
+                                Identity selectedObjectToUpdate = Teacher.TeacherCreation(ID, name, surnames, phone, email, password);
                                 if (selectedObjectToUpdate != null)
                                 {
                                     dbHandler.UpdateSelectedObjectFromPosition(selectedObjectToUpdate, pos, "Profesores");
@@ -558,7 +560,7 @@ namespace Exercise_4
             }
             else if (dbHandler.TeachersQuantity == 1)
             {
-                object uniqueTeacher = dbHandler.GetSelectedTypeObject(0, "Profesores");
+                Identity uniqueTeacher = dbHandler.GetSelectedTypeObject(0, "Profesores");
                 MessageBox.Show("There's only one teacher so it's data will be the one showed.");
                 MessageBox.Show(dbHandler.GetObjectDataFromPosition(uniqueTeacher, 0, "Profesores"));
             }

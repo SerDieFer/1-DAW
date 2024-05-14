@@ -10,39 +10,43 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace Exercise_3
+namespace Exercise_4
 {
-    public partial class fTeacherOptions : Form
+    public partial class fAlumnOptions : Form
     {
-        public fTeacherOptions(string username)
+        public fAlumnOptions(string ID)
         {
             InitializeComponent();
-            this.Text = username;
+            this.Text = ID;
         }
 
         // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
-        SqlDBHandler dbHandler;
+        SqlDBHandler dbHandlerAlumns;
+        SqlDBHandler dbHandlerTeachers;
 
-        private void fUserOptions_Load(object sender, EventArgs e)
+        private void fAlumnOptions_Load(object sender, EventArgs e)
         {
-            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE USERS TABLE
-            dbHandler = new SqlDBHandler("Users");
-            ShowUserRecords(this.Text);
+            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE ALUMNS AND TEACHERS TABLE
+            dbHandlerAlumns = new SqlDBHandler("Alumnos");
+            dbHandlerTeachers = new SqlDBHandler("Profesores");
+            ShowAlumnRecords(this.Text);
         }
 
         /*---------------------------------------- VISUAL HANDLING FUNCTIONS START ----------------------------------------------*/
 
 
-        // FUNCTION TO UPDATE THE VISUAL PART OF THE FORM WITH USER RECORDS
-        private void ShowUserRecords(string username)
+        // FUNCTION TO UPDATE THE VISUAL PART OF THE FORM WITH ALUMN RECORDS
+        private void ShowAlumnRecords(string ID)
         {
-            string userPassword = GetPassword(username);
-            string userEmail = GetEmail(username);
+            string alumnPassword = GetPassword(ID);
+            string alumnAdress = GetAdress(ID);
+            string alumnPhone = GetPhone(ID);
 
-            // SET VALUES FROM THE SELECTED USER RECORD INTO THE TEXTBOXES
-            txtbUserEmail.Text = userEmail;
-            txtbUserPassword.Text = userPassword;
-            txtbUserPassword.UseSystemPasswordChar = true;
+            // SET VALUES FROM THE SELECTED ALUMN RECORD INTO THE TEXTBOXES
+            txtbAdress.Text = alumnAdress;
+            txtbPhone.Text = alumnPhone;
+            txtbAlumnPassword.Text = alumnPassword;
+            txtbAlumnPassword.UseSystemPasswordChar = true;
 
             ButtonsCheck();
         }
@@ -51,42 +55,50 @@ namespace Exercise_3
 
         /*------------------------ GENERAL BUTTONS SUPPORT FUNCTIONS START -----------------------*/
 
-        private string GetPassword(string username)
+        private string GetPassword(string ID)
         {
-            // QUERY THAT RETURNS THE PASSWORD FROM THAT USER
-            string queryPassword = "SELECT Password FROM Users WHERE Name = '" + username + "'";
-            string userPassword = dbHandler.GetPasswordFromUserName("Users", queryPassword);
-            return userPassword;
+            // QUERY THAT RETURNS THE PASSWORD FROM THAT ALUMN
+            string queryPassword = "SELECT Contraseña FROM Alumnos WHERE DNI = '" + ID + "'";
+            string alumnPassword = dbHandlerAlumns.GetStringDataFromTable("Alumnos", queryPassword);
+            return alumnPassword;
         }
 
-        private string GetEmail(string username)
+        private string GetAdress(string ID)
         {
-            // QUERY THAT RETURNS THE EMAIL FROM THAT USER
-            string queryEmail = "SELECT Email FROM Users WHERE Name = '" + username + "'";
-            string userEmail = dbHandler.GetEmail("Users", queryEmail);
-            return userEmail;
+            // QUERY THAT RETURNS THE EMAIL FROM THAT ALUMN
+            string queryAdress = "SELECT Direccion FROM Alumnos WHERE DNI = '" + ID + "'";
+            string alumnAdress = dbHandlerAlumns.GetStringDataFromTable("Alumnos", queryAdress);
+            return alumnAdress;
+        }
+
+        private string GetPhone(string ID)
+        {
+            // QUERY THAT RETURNS THE PHONE FROM THAT ALUMN
+            string queryPhone = "SELECT Tlf FROM Alumnos WHERE DNI = '" + ID + "'";
+            string alumnPhone = dbHandlerAlumns.GetStringDataFromTable("Alumnos", queryPhone);
+            return alumnPhone;
         }
 
         /*------------------------ GENERAL BUTTONS SUPPORT FUNCTIONS END -----------------------*/
 
         /* ------------------------------------------------ BUTTONS HANDLING START ------------------------------------------------------ */
 
-        // BUTTON WHICH UPDATES PASSWORD AND COMPARES IT BETWEEN THE OLD ONE IN TH DB AND THE NEW, IF THE NEW IS CORRECTLY IT CHANGES THE DB VALUE FOR THIS USER
+        // BUTTON WHICH UPDATES PASSWORD AND COMPARES IT BETWEEN THE OLD ONE IN TH DB AND THE NEW, IF THE NEW IS CORRECTLY IT CHANGES THE DB VALUE FOR THIS ALUMN
         private void btnUpdatePassword_Click(object sender, EventArgs e)
         {
             string oldPassword = GetPassword(this.Text);
-            string actualPassword = txtbUserPassword.Text;
+            string actualPassword = txtbAlumnPassword.Text;
             if (actualPassword != oldPassword)
             {
                 if(CustomRegex.RegexPassword(actualPassword))
                 {
-                    string username = this.Text;
+                    string alumnID = this.Text;
 
-                    SqlConnection con = dbHandler.CreateSqlConnectionToDB();
+                    SqlConnection con = dbHandlerAlumns.CreateSqlConnectionToDB();
 
                     con.Open();
 
-                    string queryUpdate = "UPDATE Users SET Password = '" + actualPassword + "' WHERE Name = '" + username + "'";
+                    string queryUpdate = "UPDATE Alumnos SET Contraseña = '" + actualPassword + "' WHERE DNI = '" + alumnID + "'";
 
                     SqlCommand command = new SqlCommand(queryUpdate, con);
 
@@ -95,14 +107,14 @@ namespace Exercise_3
                     con.Close();
 
                     ButtonsCheck();
-                    txtbUserPassword.UseSystemPasswordChar = true;
+                    txtbAlumnPassword.UseSystemPasswordChar = true;
                     chkbVisible.Enabled = false;
 
                     MessageBox.Show("Password changed!.");
                 }
                 else
                 {
-                    txtbUserPassword.Text = oldPassword;
+                    txtbAlumnPassword.Text = oldPassword;
                     ButtonsCheck();
 
 
@@ -115,48 +127,99 @@ namespace Exercise_3
             }
         }
 
-        // BUTTON WHICH UPDATES EMAIL AND COMPARES IT BETWEEN THE OLD ONE IN TH DB AND THE NEW, IF THE NEW IS CORRECTLY IT CHANGES THE DB VALUE FOR THIS USER
-        private void btnUpdateEmail_Click(object sender, EventArgs e)
+        // BUTTON WHICH UPDATES THE PHONE AND COMPARES IT BETWEEN THE OLD ONE IN TH DB AND THE NEW, IF THE NEW IS CORRECTLY IT CHANGES THE DB VALUE FOR THIS ALUMN
+        private void btnUpdatePhone_Click(object sender, EventArgs e)
         {
-            string oldEmail = GetEmail(this.Text);
-            string actualEmail = txtbUserEmail.Text;
+            string oldPhone = GetPhone(this.Text);
+            string actualPhone = txtbPhone.Text;
 
-            if (actualEmail != oldEmail)
+
+            if(!dbHandlerAlumns.DuplicatedPhone(actualPhone, "Alumnos"))
             {
-                if (CustomRegex.RegexEmail(actualEmail))
+                if (!dbHandlerTeachers.DuplicatedPhone(actualPhone, "Profesores"))
                 {
-                    string username = this.Text;
+                    if (actualPhone != oldPhone)
+                    {
+                        if (CustomRegex.RegexPhone(actualPhone))
+                        {
+                            string alumnId = this.Text;
 
-                    SqlConnection con = dbHandler.CreateSqlConnectionToDB();
+                            SqlConnection con = dbHandlerAlumns.CreateSqlConnectionToDB();
 
-                    con.Open();
+                            con.Open();
 
-                    string queryUpdate = "UPDATE Users SET Email = '" + actualEmail + "' WHERE Name = '" + username + "'";
+                            string queryUpdate = "UPDATE Alumnos SET Tlf = '" + actualPhone + "' WHERE DNI = '" + alumnId + "'";
 
-                    SqlCommand command = new SqlCommand(queryUpdate, con);
+                            SqlCommand command = new SqlCommand(queryUpdate, con);
 
-                    command.ExecuteNonQuery();
+                            command.ExecuteNonQuery();
 
-                    con.Close();
+                            con.Close();
 
-                    ButtonsCheck();
-                    txtbUserPassword.UseSystemPasswordChar = true;
-                    chkbVisible.Enabled = false;
+                            ButtonsCheck();
+                            txtbAlumnPassword.UseSystemPasswordChar = true;
+                            chkbVisible.Enabled = false;
 
-                    MessageBox.Show("Email changed!.");
+                            MessageBox.Show("Phone changed!.");
 
+                        }
+                        else
+                        {
+                            txtbPhone.Text = oldPhone;
+                            ButtonsCheck();
+
+                            MessageBox.Show("Please enter a valid phone." +
+                                            "EXAMPLE: 600000000 / 799999999");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("New phone cannot be the same as the old phone.");
+                    }
                 }
                 else
                 {
-                    txtbUserEmail.Text = oldEmail;
-                    ButtonsCheck();
-
-                    MessageBox.Show("Please enter a valid email.");
+                    MessageBox.Show("This phone is already used by a teacher.");
                 }
             }
             else
             {
-                MessageBox.Show("New email cannot be the same as the old email.");
+                MessageBox.Show("This phone is already used by an alumn.");
+            }
+
+        }
+
+        // BUTTON WHICH UPDATES THE ADRESS AND COMPARES IT BETWEEN THE OLD ONE IN TH DB AND THE NEW, IF THE NEW IS CORRECTLY IT CHANGES THE DB VALUE FOR THIS ALUMN
+        private void btnUpdateAdress_Click(object sender, EventArgs e)
+        {
+            string oldAdress = GetPhone(this.Text);
+            string actualAdress = txtbAdress.Text;
+
+            if (actualAdress != oldAdress)
+            {
+                string alumnId = this.Text;
+
+                SqlConnection con = dbHandlerAlumns.CreateSqlConnectionToDB();
+
+                con.Open();
+
+                string queryUpdate = "UPDATE Alumnos SET Direccion = '" + actualAdress + "' WHERE DNI = '" + alumnId + "'";
+
+                SqlCommand command = new SqlCommand(queryUpdate, con);
+
+                command.ExecuteNonQuery();
+
+                con.Close();
+
+                ButtonsCheck();
+                txtbAlumnPassword.UseSystemPasswordChar = true;
+                chkbVisible.Enabled = false;
+
+                MessageBox.Show("Adress changed!.");
+            }
+            else
+            {
+                MessageBox.Show("New adress cannot be the same as the old adress.");
             }
         }
 
@@ -172,11 +235,11 @@ namespace Exercise_3
         {
             if (chkbVisible.Checked)
             {
-                txtbUserPassword.UseSystemPasswordChar = false;
+                txtbAlumnPassword.UseSystemPasswordChar = false;
             }
             else
             {
-                txtbUserPassword.UseSystemPasswordChar = true;
+                txtbAlumnPassword.UseSystemPasswordChar = true;
             }
         }
 
@@ -184,13 +247,17 @@ namespace Exercise_3
         public void ButtonsCheck()
         {
             string oldPassword = GetPassword(this.Text);
-            string actualPassword = txtbUserPassword.Text;
+            string actualPassword = txtbAlumnPassword.Text;
 
-            string oldEmail = GetEmail(this.Text);
-            string actualEmail = txtbUserEmail.Text;
+            string oldPhone = GetPhone(this.Text);
+            string actualPhone = txtbPhone.Text;
 
-            btnUpdateEmail.Enabled = oldEmail != actualEmail;
+            string oldAdress = GetAdress(this.Text);
+            string actualAdress = txtbAdress.Text;
+
+            btnUpdateAdress.Enabled = oldAdress != actualAdress;
             btnUpdatePassword.Enabled = oldPassword != actualPassword;
+            btnUpdatePhone.Enabled = oldPhone != actualPhone && (actualPhone.Length == 9);
         }
 
         // THIS FUNCTION AUTO CHECKS THE CHANGES DETECTED IN THE FOLLOWING TEXT BOXES BETWEEN THE ORIGINAL STRING AND THE NEW CHANGED
@@ -202,10 +269,10 @@ namespace Exercise_3
         }
 
         // EVENT HANDLER FOR DIFFERENT USER PASSWORD
-        private void txtbUserPassword_TextChanged(object sender, EventArgs e)
+        private void txtbAlumnPassword_TextChanged(object sender, EventArgs e)
         {
             string oldPassword = GetPassword(this.Text);
-            string actualPassword = txtbUserPassword.Text;
+            string actualPassword = txtbAlumnPassword.Text;
 
             if (actualPassword.Length != oldPassword.Length || actualPassword != oldPassword)
             {
@@ -215,7 +282,7 @@ namespace Exercise_3
             else
             {
                 chkbVisible.Checked = false;
-                txtbUserPassword.UseSystemPasswordChar = true;
+                txtbAlumnPassword.UseSystemPasswordChar = true;
                 chkbVisible.Enabled = false;
             }
 
@@ -223,13 +290,22 @@ namespace Exercise_3
             UpdateChangeDetected(actualPassword, oldPassword);
         }
 
-        // EVENT HANDLER FOR DIFFERENT EMAIL TEXT
-        private void txtbUserEmail_TextChanged(object sender, EventArgs e)
+        // EVENT HANDLER FOR DIFFERENT PHONE TEXT
+        private void txtbPhone_TextChanged(object sender, EventArgs e)
         {
-            string oldEmail = GetEmail(this.Text);
-            string actualEmail = txtbUserEmail.Text;
+            string oldPhone = GetPhone(this.Text);
+            string actualPhone = txtbPhone.Text;
 
-            UpdateChangeDetected(actualEmail, oldEmail);
+            UpdateChangeDetected(actualPhone, oldPhone);
+        }
+
+        // EVENT HANDLER FOR DIFFERENT ADRESS TEXT
+        private void txtbAdress_TextChanged(object sender, EventArgs e)
+        {
+            string oldAdress = GetAdress(this.Text);
+            string actualAdress = txtbAdress.Text;
+
+            UpdateChangeDetected(actualAdress, oldAdress);
         }
 
         /* ------------------------------- HANDLING FUNCTIONS FOR BUTTONS STATUS AND TEXT BOX CHANGES END ------------------------------ */

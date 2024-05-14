@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualBasic;
+﻿using Exercise_4;
+using Exercise_4.Views.Admin;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Exercise_3
+namespace Exercise_4
 {
     public partial class fLogin : Form
     {
@@ -19,12 +21,16 @@ namespace Exercise_3
         }
 
         // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
-        SqlDBHandler dbHandler;
+        SqlDBHandler dbHandlerAlumns;
+        SqlDBHandler dbHandlerTeachers;
 
         private void fLogin_Load(object sender, EventArgs e)
         {
-            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE USERS TABLE
-            dbHandler = new SqlDBHandler("Users");
+            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE ALUMNS TABLE
+            dbHandlerAlumns = new SqlDBHandler("Alumnos");
+
+            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE TEACHERS TABLE
+            dbHandlerTeachers = new SqlDBHandler("Profesores");
 
             // SET INITIAL PASSWORD VISIBILITY STATE
             txtbPassword.UseSystemPasswordChar = true;
@@ -47,45 +53,32 @@ namespace Exercise_3
         private void btnLogin_Click(object sender, EventArgs e)
         {
             // SPECIAL LOGIN FOR ADMIN
-            if (txtbUserName.Text == "admin" && txtbPassword.Text == "admin")
+            if (txtbUserID.Text == "admin" && txtbPassword.Text == "admin")
             {
-                fTeacher adminLogin = new fTeacher();
+                fAdmin adminLogin = new fAdmin();
                 this.Hide();
                 adminLogin.ShowDialog();
 
                 txtbPassword.Clear();
-                txtbUserName.Clear();
+                txtbUserID.Clear();
 
             }
             else
             {
                 // NORMAL LOGIN IF USER EXISTS
-                if (dbHandler.DuplicatedNameData(txtbUserName.Text, "Users"))
+                if (dbHandlerAlumns.DuplicatedID(txtbUserID.Text, "Alumnos"))
                 {
+                    // QUERY THAT RETURNS THE PASSWORD FROM AN ALUMN
+                    string aQuery = "SELECT Contraseña FROM Alumnos WHERE DNI = '" + txtbUserID.Text + "'";
+                    string correctPasswordForAlumn = dbHandlerAlumns.GetStringDataFromTable("Alumnos", aQuery);
 
-                    // QUERY THAT RETURNS THE PASSWORD FROM THAT USER
-                    string query = "SELECT Password FROM Users WHERE Name = '" + txtbUserName.Text + "'";
-                    string correctPasswordForThatUser = dbHandler.GetPasswordFromUserName("Users", query);
-
-                    // QUERY THAT RETURNS THE BAN STATUS FROM THAT USER
-                    string banStatusQuery = "SELECT Banned FROM Users WHERE Name = '" + txtbUserName.Text + "'";
-                    bool statusBan = dbHandler.GetBanStatusFromUserName("Users", banStatusQuery);
-
-                    if (correctPasswordForThatUser == txtbPassword.Text)
+                    if (correctPasswordForAlumn == txtbPassword.Text)
                     {
-                        if (statusBan == false)
-                        {
-                            fAlumn userLogin = new fAlumn(txtbUserName.Text);
-                            this.Hide();
-                            userLogin.ShowDialog();
-
-                            txtbPassword.Clear();
-                            txtbUserName.Clear();
-                        }
-                        else
-                        {
-                            MessageBox.Show("This user is banned to enter");
-                        }
+                        fAlumn alumnLogin = new fAlumn(txtbUserID.Text);
+                        this.Hide();
+                        alumnLogin.ShowDialog();
+                        txtbPassword.Clear();
+                        txtbUserID.Clear();
                     }
                     else
                     {
@@ -93,14 +86,33 @@ namespace Exercise_3
                         MessageBox.Show("Incorrect password, try again");
                     }
                 }
-                else
+                else if (dbHandlerTeachers.DuplicatedID(txtbUserID.Text, "Profesores"))
                 {
-                    txtbUserName.Clear();
+                    // QUERY THAT RETURNS THE PASSWORD FROM A TEACHER
+                    string tQuery = "SELECT Contraseña FROM Profesores WHERE DNI = '" + txtbUserID.Text + "'";
+                    string correctPasswordForTeacher = dbHandlerTeachers.GetStringDataFromTable("Profesores", tQuery);
+
+                    if (correctPasswordForTeacher == txtbPassword.Text)
+                    {
+                        fTeacher teacherLogin = new fTeacher(txtbUserID.Text);
+                        this.Hide();
+                        teacherLogin.ShowDialog();
+                        txtbPassword.Clear();
+                        txtbUserID.Clear();
+                    }
+                    else
+                    {
+                        txtbPassword.Clear();
+                        MessageBox.Show("Incorrect password, try again");
+                    }
+                }
+                else if (!dbHandlerTeachers.DuplicatedID(txtbUserID.Text, "Profesores") && !dbHandlerAlumns.DuplicatedID(txtbUserID.Text, "Alumnos"))
+                {
+                    MessageBox.Show("This user doesn't exist, try another user ID");
+                    txtbUserID.Clear();
                     txtbPassword.Clear();
-                    MessageBox.Show("This user doesn't exist, try another nickname or create an account");
                 }
             }
-
         }
 
         // FORCES APP CLOSING

@@ -1,4 +1,4 @@
-﻿namespace Exercise_3
+﻿namespace Exercise_4
 {
     partial class fLogin
     {
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblUser = new System.Windows.Forms.Label();
-            this.txtbUserName = new System.Windows.Forms.TextBox();
+            this.lblUserID = new System.Windows.Forms.Label();
+            this.txtbUserID = new System.Windows.Forms.TextBox();
             this.txtbPassword = new System.Windows.Forms.TextBox();
             this.lblPassword = new System.Windows.Forms.Label();
             this.gpLogin = new System.Windows.Forms.GroupBox();
@@ -38,23 +38,23 @@
             this.gpLogin.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblUser
+            // lblUserID
             // 
-            this.lblUser.AutoSize = true;
-            this.lblUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUser.Location = new System.Drawing.Point(18, 34);
-            this.lblUser.Name = "lblUser";
-            this.lblUser.Size = new System.Drawing.Size(109, 20);
-            this.lblUser.TabIndex = 0;
-            this.lblUser.Text = "USERNAME";
+            this.lblUserID.AutoSize = true;
+            this.lblUserID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserID.Location = new System.Drawing.Point(18, 34);
+            this.lblUserID.Name = "lblUserID";
+            this.lblUserID.Size = new System.Drawing.Size(83, 20);
+            this.lblUserID.TabIndex = 0;
+            this.lblUserID.Text = "USER ID";
             // 
-            // txtbUserName
+            // txtbUserID
             // 
-            this.txtbUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbUserName.Location = new System.Drawing.Point(22, 57);
-            this.txtbUserName.Name = "txtbUserName";
-            this.txtbUserName.Size = new System.Drawing.Size(244, 26);
-            this.txtbUserName.TabIndex = 8;
+            this.txtbUserID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbUserID.Location = new System.Drawing.Point(22, 57);
+            this.txtbUserID.Name = "txtbUserID";
+            this.txtbUserID.Size = new System.Drawing.Size(244, 26);
+            this.txtbUserID.TabIndex = 8;
             // 
             // txtbPassword
             // 
@@ -79,9 +79,9 @@
             // 
             this.gpLogin.Controls.Add(this.chkbVisible);
             this.gpLogin.Controls.Add(this.btnLogin);
-            this.gpLogin.Controls.Add(this.lblUser);
+            this.gpLogin.Controls.Add(this.lblUserID);
             this.gpLogin.Controls.Add(this.txtbPassword);
-            this.gpLogin.Controls.Add(this.txtbUserName);
+            this.gpLogin.Controls.Add(this.txtbUserID);
             this.gpLogin.Controls.Add(this.lblPassword);
             this.gpLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gpLogin.Location = new System.Drawing.Point(12, 12);
@@ -131,8 +131,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblUser;
-        private System.Windows.Forms.TextBox txtbUserName;
+        private System.Windows.Forms.Label lblUserID;
+        private System.Windows.Forms.TextBox txtbUserID;
         private System.Windows.Forms.TextBox txtbPassword;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.GroupBox gpLogin;

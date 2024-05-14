@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.gbAdmin = new System.Windows.Forms.GroupBox();
+            this.btnCoursesData = new System.Windows.Forms.Button();
             this.btnTeacherData = new System.Windows.Forms.Button();
             this.btnAlumnData = new System.Windows.Forms.Button();
-            this.btnCourses = new System.Windows.Forms.Button();
             this.gbAdmin.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbAdmin
             // 
-            this.gbAdmin.Controls.Add(this.btnCourses);
+            this.gbAdmin.Controls.Add(this.btnCoursesData);
             this.gbAdmin.Controls.Add(this.btnTeacherData);
             this.gbAdmin.Controls.Add(this.btnAlumnData);
             this.gbAdmin.Location = new System.Drawing.Point(12, 12);
@@ -45,6 +45,16 @@
             this.gbAdmin.Size = new System.Drawing.Size(285, 197);
             this.gbAdmin.TabIndex = 3;
             this.gbAdmin.TabStop = false;
+            // 
+            // btnCoursesData
+            // 
+            this.btnCoursesData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCoursesData.Location = new System.Drawing.Point(19, 19);
+            this.btnCoursesData.Name = "btnCoursesData";
+            this.btnCoursesData.Size = new System.Drawing.Size(252, 41);
+            this.btnCoursesData.TabIndex = 2;
+            this.btnCoursesData.Text = "COURSES";
+            this.btnCoursesData.UseVisualStyleBackColor = true;
             // 
             // btnTeacherData
             // 
@@ -66,16 +76,6 @@
             this.btnAlumnData.Text = "ALUMNS";
             this.btnAlumnData.UseVisualStyleBackColor = true;
             // 
-            // btnCourses
-            // 
-            this.btnCourses.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCourses.Location = new System.Drawing.Point(19, 19);
-            this.btnCourses.Name = "btnCourses";
-            this.btnCourses.Size = new System.Drawing.Size(252, 41);
-            this.btnCourses.TabIndex = 2;
-            this.btnCourses.Text = "COURSES";
-            this.btnCourses.UseVisualStyleBackColor = true;
-            // 
             // fAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -92,7 +92,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox gbAdmin;
-        private System.Windows.Forms.Button btnCourses;
+        private System.Windows.Forms.Button btnCoursesData;
         private System.Windows.Forms.Button btnTeacherData;
         private System.Windows.Forms.Button btnAlumnData;
     }

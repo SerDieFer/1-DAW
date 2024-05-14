@@ -55,6 +55,8 @@
             this.btnListTeachers = new System.Windows.Forms.Button();
             this.btnSearchTeacher = new System.Windows.Forms.Button();
             this.gExtraOption = new System.Windows.Forms.GroupBox();
+            this.txtbPassword = new System.Windows.Forms.TextBox();
+            this.lblPassword = new System.Windows.Forms.Label();
             this.gbData.SuspendLayout();
             this.gpNavigate.SuspendLayout();
             this.gpNewRegistry.SuspendLayout();
@@ -66,7 +68,7 @@
             // 
             this.lblID.AutoSize = true;
             this.lblID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblID.Location = new System.Drawing.Point(23, 51);
+            this.lblID.Location = new System.Drawing.Point(26, 35);
             this.lblID.Name = "lblID";
             this.lblID.Size = new System.Drawing.Size(23, 16);
             this.lblID.TabIndex = 0;
@@ -77,7 +79,7 @@
             // 
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(23, 91);
+            this.lblName.Location = new System.Drawing.Point(26, 75);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(49, 16);
             this.lblName.TabIndex = 1;
@@ -88,7 +90,7 @@
             // 
             this.lblSurnames.AutoSize = true;
             this.lblSurnames.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSurnames.Location = new System.Drawing.Point(23, 133);
+            this.lblSurnames.Location = new System.Drawing.Point(26, 117);
             this.lblSurnames.Name = "lblSurnames";
             this.lblSurnames.Size = new System.Drawing.Size(87, 16);
             this.lblSurnames.TabIndex = 2;
@@ -99,7 +101,7 @@
             // 
             this.lblPhone.AutoSize = true;
             this.lblPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPhone.Location = new System.Drawing.Point(23, 175);
+            this.lblPhone.Location = new System.Drawing.Point(26, 159);
             this.lblPhone.Name = "lblPhone";
             this.lblPhone.Size = new System.Drawing.Size(58, 16);
             this.lblPhone.TabIndex = 3;
@@ -110,7 +112,7 @@
             // 
             this.lblEmail.AutoSize = true;
             this.lblEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmail.Location = new System.Drawing.Point(23, 217);
+            this.lblEmail.Location = new System.Drawing.Point(26, 201);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(49, 16);
             this.lblEmail.TabIndex = 4;
@@ -120,7 +122,7 @@
             // txtbSurnames
             // 
             this.txtbSurnames.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbSurnames.Location = new System.Drawing.Point(153, 130);
+            this.txtbSurnames.Location = new System.Drawing.Point(156, 114);
             this.txtbSurnames.Name = "txtbSurnames";
             this.txtbSurnames.Size = new System.Drawing.Size(217, 22);
             this.txtbSurnames.TabIndex = 5;
@@ -129,7 +131,7 @@
             // txtbPhone
             // 
             this.txtbPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbPhone.Location = new System.Drawing.Point(153, 172);
+            this.txtbPhone.Location = new System.Drawing.Point(156, 156);
             this.txtbPhone.Name = "txtbPhone";
             this.txtbPhone.Size = new System.Drawing.Size(217, 22);
             this.txtbPhone.TabIndex = 6;
@@ -138,7 +140,7 @@
             // txtbEmail
             // 
             this.txtbEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbEmail.Location = new System.Drawing.Point(153, 214);
+            this.txtbEmail.Location = new System.Drawing.Point(156, 198);
             this.txtbEmail.Name = "txtbEmail";
             this.txtbEmail.Size = new System.Drawing.Size(217, 22);
             this.txtbEmail.TabIndex = 7;
@@ -147,7 +149,7 @@
             // txtbName
             // 
             this.txtbName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbName.Location = new System.Drawing.Point(153, 88);
+            this.txtbName.Location = new System.Drawing.Point(156, 72);
             this.txtbName.Name = "txtbName";
             this.txtbName.Size = new System.Drawing.Size(217, 22);
             this.txtbName.TabIndex = 8;
@@ -156,7 +158,7 @@
             // txtbID
             // 
             this.txtbID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbID.Location = new System.Drawing.Point(153, 48);
+            this.txtbID.Location = new System.Drawing.Point(156, 32);
             this.txtbID.Name = "txtbID";
             this.txtbID.Size = new System.Drawing.Size(217, 22);
             this.txtbID.TabIndex = 9;
@@ -164,6 +166,8 @@
             // 
             // gbData
             // 
+            this.gbData.Controls.Add(this.txtbPassword);
+            this.gbData.Controls.Add(this.lblPassword);
             this.gbData.Controls.Add(this.lblRecord);
             this.gbData.Controls.Add(this.txtbID);
             this.gbData.Controls.Add(this.txtbName);
@@ -365,6 +369,25 @@
             this.gExtraOption.TabStop = false;
             this.gExtraOption.Text = "LIST AND SEARCH";
             // 
+            // txtbPassword
+            // 
+            this.txtbPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbPassword.Location = new System.Drawing.Point(156, 238);
+            this.txtbPassword.Name = "txtbPassword";
+            this.txtbPassword.Size = new System.Drawing.Size(217, 22);
+            this.txtbPassword.TabIndex = 12;
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPassword.Location = new System.Drawing.Point(26, 241);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(89, 16);
+            this.lblPassword.TabIndex = 11;
+            this.lblPassword.Text = "PASSWORD:";
+            this.lblPassword.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // fTeacherData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -417,6 +440,8 @@
         private System.Windows.Forms.Button btnSearchTeacher;
         private System.Windows.Forms.GroupBox gExtraOption;
         private System.Windows.Forms.Button btnCancelAddRegistry;
+        private System.Windows.Forms.TextBox txtbPassword;
+        private System.Windows.Forms.Label lblPassword;
     }
 }
 
