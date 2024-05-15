@@ -432,7 +432,7 @@ namespace Exercise_4
             {
                 btnAlumnFirst.PerformClick();
             }
-            else if (pos < (dbHandler.AlumnsQuantity - 1))
+            else if (pos <= (dbHandler.AlumnsQuantity - 1))
             {
                 bool possiblyChangedValues = CheckValuesChanged();
                 if (possiblyChangedValues && (pos == -1))
@@ -817,7 +817,7 @@ namespace Exercise_4
             Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
             if (actualIdentity is Alumn actualAlumn)
             {
-                string originalCourse = actualAlumn.Password;
+                string originalCourse = actualAlumn.CourseCod;
                 UpdateChangeDetected(txtbAlumnCourse.Text, originalCourse);
             }
         }
@@ -861,9 +861,6 @@ namespace Exercise_4
                 UpdateChangeDetected(txtbAlumnPhone.Text, originalPhone);
             }
         }
-
-
-
 
         /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */
     }

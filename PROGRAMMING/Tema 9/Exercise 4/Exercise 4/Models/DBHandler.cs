@@ -187,20 +187,11 @@ namespace Exercise_4
         public bool CheckAllDuplicatedData(string id, string phone, string emailOrString, string selectedTable)
         {
             bool duplicatedData = false;
-            string differentTable = "";
-            if(selectedTable == "Profesores")
-            {
-                differentTable = "Alumnos";
-            }
-            else if (selectedTable == "Alumnos")
-            {
-                differentTable = "Profesores";
-            }
 
             if (selectedTable == "Profesores")
             {
-                if (DuplicatedID(id, selectedTable) || DuplicatedID(id, differentTable) ||
-                    DuplicatedPhone(phone, selectedTable) || DuplicatedPhone(phone, differentTable) ||
+                if (DuplicatedID(id, selectedTable) || DuplicatedID(id, "Alumnos") ||
+                    DuplicatedPhone(phone, selectedTable) || DuplicatedPhone(phone, "Alumnos") ||
                     DuplicatedEmail(emailOrString, selectedTable))
                 {
                     duplicatedData = true;
@@ -208,8 +199,8 @@ namespace Exercise_4
             }
             else if(selectedTable == "Alumnos")
             {
-                if (DuplicatedID(id, selectedTable) || DuplicatedID(id, differentTable) ||
-                    DuplicatedPhone(phone, selectedTable) || DuplicatedPhone(phone, differentTable) ||
+                if (DuplicatedID(id, selectedTable) || DuplicatedID(id, "Profesores") ||
+                    DuplicatedPhone(phone, selectedTable) || DuplicatedPhone(phone, "Profesores") ||
                     DuplicatedAdress(emailOrString, selectedTable))
                 {
                     duplicatedData = true;
@@ -235,10 +226,21 @@ namespace Exercise_4
             // SEARCHS IN THE ROWS FROM THE TABLE
             foreach (DataRow row in tableToCheck.Rows)
             {
-                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
-                if (row["DNI"].ToString() == id)
+                if (selectedTable == "Cursos")
                 {
-                    usedID = true;
+                    // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                    if (row["Codigo"].ToString() == id)
+                    {
+                        usedID = true;
+                    }
+                }
+                else
+                {
+                    // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                    if (row["DNI"].ToString() == id)
+                    {
+                        usedID = true;
+                    }
                 }
             }
             return usedID;
@@ -344,7 +346,7 @@ namespace Exercise_4
                     // PHONE AND ADDRESES ARE SWAPPED IN THE DB
                 }
             } 
-            else if (selectedTable == "Courses")
+            else if (selectedTable == "Cursos")
             {
                 if (pos >= 0 && pos < CoursesQuantity)
                 {
@@ -387,30 +389,6 @@ namespace Exercise_4
             return identityData;
         }
 
-        // FUNCTION WHICH RETURNS THE FULL NAME OF A PERSON
-        public string GetIdentityFullName(Identity selectedIdentity, int pos, string selectedTable)
-        {
-            string selectedIdentityDenomination = "";
-            if (selectedIdentity is Teacher selectedTeacher)
-            {
-                selectedIdentity = GetIdentityType(pos, selectedTable);
-                selectedIdentity = selectedTeacher;
-                selectedIdentityDenomination = (selectedTeacher.Name.ToString() + " " + selectedTeacher.Surnames.ToString());
-            }
-            else if (selectedIdentity is Alumn selectedAlumn)
-            {
-                selectedIdentity = GetIdentityType(pos, selectedTable);
-                selectedIdentity = selectedAlumn;
-                selectedIdentityDenomination = (selectedAlumn.Name.ToString() + " " + selectedAlumn.Surnames.ToString());
-            }
-            else if (selectedIdentity is Course selectedCourse)
-            {
-                selectedIdentity = GetIdentityType(pos, selectedTable);
-                selectedIdentity = (Course)selectedCourse;
-                selectedIdentityDenomination = (selectedCourse.Name + "-" + selectedCourse.ID);
-            } 
-            return selectedIdentityDenomination;
-        }
 
         /*---------------------------------- RECURRENT GET FUNCTIONS END ----------------------------------------*/
 
@@ -570,7 +548,7 @@ namespace Exercise_4
                 _selectedAlumnsQuantity--;
 
             }
-            else if (selectedTable == "Courses")
+            else if (selectedTable == "Cursos")
             {
                 // UPDATES COUNT FROM COURSES
                 _selectedCoursesQuantity--;
@@ -613,7 +591,17 @@ namespace Exercise_4
                     same = false;
                 }
             }
-            else if (identityToUpdate is Course courseToCompare)
+            
+            return same;
+        }
+
+        // OVERLOAD FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB FOR COURSES
+        public bool CheckChangesStoredAndActualValues(int pos, string ID, string name, string selectedTable)
+        {
+            bool same = true;
+            Identity identityToUpdate = GetIdentityType(pos, selectedTable);
+
+            if (identityToUpdate is Course courseToCompare)
             {
                 if (courseToCompare.ID != ID ||
                     courseToCompare.Name != name)
@@ -621,7 +609,7 @@ namespace Exercise_4
                     same = false;
                 }
             }
-            
+
             return same;
         }
     }

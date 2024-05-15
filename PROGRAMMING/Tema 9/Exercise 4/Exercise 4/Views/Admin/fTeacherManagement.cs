@@ -214,7 +214,7 @@ namespace Exercise_4
 
                 while (!showed)
                 {
-                    StringBuilder infoMessage = new StringBuilder("Teachers with the same surname:\n\n");
+                    StringBuilder infoMessage = new StringBuilder("Teachers with similar surname:\n\n");
 
                     for (int i = 0; i < matchingTeachersSurname.Count; i++)
                     {

@@ -22,10 +22,10 @@ namespace Exercise_4
         public static bool RegexName(string x)
         {
             /* THIS METHOD VALIDATES WHETHER THE INPUT STRING CONTAINS ONLY LETTERS, DIACRITICAL MARKS, AND SPECIFIC SYMBOLS, ALLOWING FOR MULTIPLE WORDS SEPARATED BY A SINGLE SPACE.
-             * THE REGULAR EXPRESSION PATTERN "^[a-zA-Zá-ýÁ-Ý0-9?!$&-_]+$" ENSURES THAT THE STRING STARTS AND ENDS WITH AT LEAST ONE OCCURRENCE OF LETTERS, DIACRITICAL MARKS, OR SPECIFIC SYMBOLS, 
+             * THE REGULAR EXPRESSION PATTERN "^[a-zA-Zá-ýÁ-Ý0-9?]+(?: [a-zA-Zá-ýÁ-Ý0-9?]+)*$" ENSURES THAT THE STRING STARTS WITH AT LEAST ONE OCCURRENCE OF LETTERS, DIACRITICAL MARKS, OR SPECIFIC SYMBOLS,
              * AND CAN BE FOLLOWED BY ZERO OR MORE OCCURRENCES OF A SPACE AND ANOTHER WORD. */
 
-            string regexPattern = "^[a-zA-Zá-ýÁ-Ý0-9?!$&-_]+$";
+            string regexPattern = @"^[a-zA-Zá-ýÁ-Ý0-9?]+(?: [a-zA-Zá-ýÁ-Ý0-9?]+)*$";
             return new Regex(regexPattern).IsMatch(x);
         }
 
