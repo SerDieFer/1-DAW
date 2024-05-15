@@ -9,9 +9,9 @@ USE TIENDA
 
 EXEC SP_HELP PRODUCTO
 
-/* DECLARE @shopRegistriesCounter INT, 
+DECLARE @shopRegistriesCounter INT, 
         @maxRegistryCount INT, 
-        @productName VARCHAR(100) */
+        @productName VARCHAR(100) 
 
 SELECT @shopRegistriesCounter = MIN(codigo)
   FROM PRODUCTO
@@ -21,7 +21,6 @@ SELECT @maxRegistryCount = MAX(codigo)
 
 WHILE (@shopRegistriesCounter <= @maxRegistryCount)
 BEGIN
-
     SELECT @productName = nombre
       FROM PRODUCTO
      WHERE codigo = @shopRegistriesCounter
@@ -117,8 +116,8 @@ DECLARE @manufacturesName VARCHAR(100)
                                     WHERE nombre = @manufacturesName)
 
       -- DECLARAR VARIABLES QUE OPERAN SEGUNDO CURSOR
-      DECLARE @totalCost NUMERIC(12,2), 
-              @accumulated NUMERIC(15,2)
+      DECLARE @totalCost DECIMAL(12,2), 
+              @accumulated DECIMAL(15,2)
           SET @accumulated = 0;
 
       -- ABRIR EL SEGUNDO CURSOR
@@ -201,10 +200,74 @@ DECLARE Cur_EmployeesData CURSOR FOR
   CLOSE Cur_EmployeesData
   DEALLOCATE Cur_EmployeesData
 
-  ----------------------------------------------------------------------
+----------------------------------------------------------------------
 
 ------------------
 --- EXERCISE 5 ---
 ------------------
 
 ----------------------------------------------------------------------
+
+GO
+USE JARDINERIA
+
+EXEC SP_HELP PEDIDOS
+EXEC SP_HELP DETALLE_PEDIDOS
+
+-- DECLARAR CURSOR PRIMERO
+DECLARE Cur_Orders CURSOR FOR
+ SELECT codPedido
+   FROM PEDIDOS
+
+-- DECLARAR VARIABLE QUE OPERA PRIMER CURSOR
+DECLARE @orderCod INT
+
+   -- ABRE EL CURSOR
+   OPEN Cur_Orders
+
+   -- METE EL REGISTRO DEL CURSOR EN LA VARIABLE
+   FETCH NEXT FROM Cur_Orders INTO @orderCod
+
+  -- MIENTRAS LA LECTURA SEA CORRECTA
+  WHILE @@FETCH_STATUS = 0
+  BEGIN
+      -- DECLARAR SEGUNDO CURSOR DENTRO DEL PRIMER CURSOR
+      DECLARE Cur_OrderTotalCost CURSOR FOR
+       SELECT cantidad, precio_unidad
+         FROM DETALLE_PEDIDOS
+        WHERE codPedido = @orderCod
+
+      -- DECLARAR VARIABLES QUE OPERAN SEGUNDO CURSOR
+      DECLARE @productQuantity INT,
+              @productPrice DECIMAL(9,2),
+              @accumulatedTotal DECIMAL(15,2)
+          SET @accumulatedTotal = 0;
+
+      -- ABRIR EL SEGUNDO CURSOR
+      OPEN Cur_OrderTotalCost
+      FETCH NEXT FROM Cur_OrderTotalCost INTO @productQuantity, @productPrice
+            
+      -- CREAR OTRO BUCLE QUE GESTIONARÁ LA ACUMULACIÓN DEL COSTE 
+      -- TOTAL POR PRODUCTO DE ESE MISMO PEDIDO
+      WHILE @@FETCH_STATUS = 0
+      BEGIN
+          SET @accumulatedTotal = @accumulatedTotal + (@productQuantity * @productPrice)
+          FETCH NEXT FROM Cur_OrderTotalCost INTO @productQuantity, @productPrice
+      END
+
+      -- CERRAR SEGUNDO CURSOR Y LIBERAR MEMORIA
+      CLOSE Cur_OrderTotalCost
+      DEALLOCATE Cur_OrderTotalCost
+
+      -- IMPRIMIR DATOS FABRICANTE
+      PRINT CONCAT('Order Nº: ', @orderCod, 
+                   ' has a total cost of ', @accumulatedTotal, ' €')
+
+      -- IR SIGUIENTE REGISTRO DE PRIMER CURSOR
+      FETCH NEXT FROM Cur_Orders INTO @orderCod     
+  END
+
+  -- CERRAR PRIMER CURSOR Y LIBERAR MEMORIA
+  CLOSE Cur_Orders
+  DEALLOCATE Cur_Orders
+  
