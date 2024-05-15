@@ -75,11 +75,11 @@
     <Compile Include="Views\Admin\fAdmin.Designer.cs">
       <DependentUpon>fAdmin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Admin\fCourseData.cs">
+    <Compile Include="Views\Admin\fCourseManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Admin\fCourseData.Designer.cs">
-      <DependentUpon>fCourseData.cs</DependentUpon>
+    <Compile Include="Views\Admin\fCourseManagement.Designer.cs">
+      <DependentUpon>fCourseManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Teacher\fTeacher.cs">
       <SubType>Form</SubType>
@@ -87,11 +87,11 @@
     <Compile Include="Views\Teacher\fTeacher.Designer.cs">
       <DependentUpon>fTeacher.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Admin\fAlumnData.cs">
+    <Compile Include="Views\Admin\fAlumnManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Admin\fAlumnData.Designer.cs">
-      <DependentUpon>fAlumnData.cs</DependentUpon>
+    <Compile Include="Views\Admin\fAlumnManagement.Designer.cs">
+      <DependentUpon>fAlumnManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\fLogin.cs">
       <SubType>Form</SubType>
@@ -99,11 +99,11 @@
     <Compile Include="Views\fLogin.designer.cs">
       <DependentUpon>fLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Admin\fTeacherData.cs">
+    <Compile Include="Views\Admin\fTeacherManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Admin\fTeacherData.Designer.cs">
-      <DependentUpon>fTeacherData.cs</DependentUpon>
+    <Compile Include="Views\Admin\fTeacherManagement.Designer.cs">
+      <DependentUpon>fTeacherManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,20 +128,20 @@
     <EmbeddedResource Include="Views\Admin\fAdmin.resx">
       <DependentUpon>fAdmin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Admin\fCourseData.resx">
-      <DependentUpon>fCourseData.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Admin\fCourseManagement.resx">
+      <DependentUpon>fCourseManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Teacher\fTeacher.resx">
       <DependentUpon>fTeacher.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Admin\fAlumnData.resx">
-      <DependentUpon>fAlumnData.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Admin\fAlumnManagement.resx">
+      <DependentUpon>fAlumnManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\fLogin.resx">
       <DependentUpon>fLogin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Admin\fTeacherData.resx">
-      <DependentUpon>fTeacherData.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Admin\fTeacherManagement.resx">
+      <DependentUpon>fTeacherManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

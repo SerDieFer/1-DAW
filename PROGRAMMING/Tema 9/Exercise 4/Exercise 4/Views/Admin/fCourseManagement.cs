@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Exercise_4.Views.Admin
 {
-    public partial class fCourseData : Form
+    public partial class fCourseManagement : Form
     {
-        public fCourseData()
+        public fCourseManagement()
         {
             InitializeComponent();
         }

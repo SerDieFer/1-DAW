@@ -88,7 +88,7 @@
             this.btnUpdatePassword.Text = "UPDATE PASSWORD";
             this.btnUpdatePassword.UseVisualStyleBackColor = true;
             // 
-            // gbData
+            // gbTeacherData
             // 
             this.gbData.Controls.Add(this.txtbPhone);
             this.gbData.Controls.Add(this.lblPhone);
@@ -99,7 +99,7 @@
             this.gbData.Controls.Add(this.lblPassword);
             this.gbData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbData.Location = new System.Drawing.Point(12, 12);
-            this.gbData.Name = "gbData";
+            this.gbData.Name = "gbTeacherData";
             this.gbData.Size = new System.Drawing.Size(473, 171);
             this.gbData.TabIndex = 21;
             this.gbData.TabStop = false;

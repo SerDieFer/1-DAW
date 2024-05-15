@@ -136,20 +136,14 @@ namespace Exercise_4
             if (selectedTable == "Profesores")
             {
                 dataAdapter.Update(dataSet, "Profesores");
-                dataSet.Clear();
-                dataAdapter.Fill(dataSet, selectedTable);
             }
             else if (selectedTable == "Alumnos")
             {
                 dataAdapter.Update(dataSet, "Alumnos");
-                dataSet.Clear();
-                dataAdapter.Fill(dataSet, selectedTable);
             }
             else if (selectedTable == "Cursos")
             {
                 dataAdapter.Update(dataSet, "Cursos");
-                dataSet.Clear();
-                dataAdapter.Fill(dataSet, selectedTable);
             }
         }
 
@@ -190,14 +184,33 @@ namespace Exercise_4
         }
 
 
-        public bool CheckAllDuplicatedData(string id, string phone, string email, string selectedTable)
+        public bool CheckAllDuplicatedData(string id, string phone, string emailOrString, string selectedTable)
         {
             bool duplicatedData = false;
-            if (selectedTable == "Profesores" || selectedTable == "Alumnos")
+            string differentTable = "";
+            if(selectedTable == "Profesores")
             {
-                if (DuplicatedID(id, selectedTable) || 
-                    DuplicatedPhone(phone, selectedTable) || 
-                    DuplicatedEmail(email, selectedTable))
+                differentTable = "Alumnos";
+            }
+            else if (selectedTable == "Alumnos")
+            {
+                differentTable = "Profesores";
+            }
+
+            if (selectedTable == "Profesores")
+            {
+                if (DuplicatedID(id, selectedTable) || DuplicatedID(id, differentTable) ||
+                    DuplicatedPhone(phone, selectedTable) || DuplicatedPhone(phone, differentTable) ||
+                    DuplicatedEmail(emailOrString, selectedTable))
+                {
+                    duplicatedData = true;
+                }
+            }
+            else if(selectedTable == "Alumnos")
+            {
+                if (DuplicatedID(id, selectedTable) || DuplicatedID(id, differentTable) ||
+                    DuplicatedPhone(phone, selectedTable) || DuplicatedPhone(phone, differentTable) ||
+                    DuplicatedAdress(emailOrString, selectedTable))
                 {
                     duplicatedData = true;
                 }
@@ -289,7 +302,7 @@ namespace Exercise_4
         }
 
         // METHOD WHICH RETURNS A OBJECT'S DATA FROM A SELECTED POSITION
-        public Identity GetSelectedTypeObject(int pos, string selectedTable)
+        public Identity GetIdentityType(int pos, string selectedTable)
         {
             Identity selectedIdentity = null;
 
@@ -324,10 +337,11 @@ namespace Exercise_4
                     selectedIdentity = Alumn.AlumnCreation(dRecord[0].ToString(),
                                                            dRecord[1].ToString(),
                                                            dRecord[2].ToString(),
-                                                           dRecord[3].ToString(),
                                                            dRecord[4].ToString(),
+                                                           dRecord[3].ToString(),
                                                            dRecord[5].ToString(),
                                                            dRecord[6].ToString());
+                    // PHONE AND ADDRESES ARE SWAPPED IN THE DB
                 }
             } 
             else if (selectedTable == "Courses")
@@ -346,9 +360,9 @@ namespace Exercise_4
         }
 
         // METHOD TO GET ALL THE OBJECT DATA
-        public string GetObjectDataFromPosition(Identity selectedIdentity, int pos, string selectedTable)
+        public string GetIdentityData(Identity selectedIdentity, int pos, string selectedTable)
         {
-            selectedIdentity = GetSelectedTypeObject(pos, selectedTable);
+            selectedIdentity = GetIdentityType(pos, selectedTable);
             string identityData = "";
 
             // THE IS COMPARATOR IS TO COMPARE THE TYPE OF THE OBJECT
@@ -374,30 +388,34 @@ namespace Exercise_4
         }
 
         // FUNCTION WHICH RETURNS THE FULL NAME OF A PERSON
-        public string GetPersonFullNameFromPosition(Identity selectedIdentity, int pos, string selectedTable)
+        public string GetIdentityFullName(Identity selectedIdentity, int pos, string selectedTable)
         {
             string selectedIdentityDenomination = "";
             if (selectedIdentity is Teacher selectedTeacher)
             {
-                // FIX THIS TO DEPENDACY OF TEACHER OR ALUMN
-                selectedIdentity = GetSelectedTypeObject(pos, selectedTable);
+                selectedIdentity = GetIdentityType(pos, selectedTable);
                 selectedIdentity = selectedTeacher;
                 selectedIdentityDenomination = (selectedTeacher.Name.ToString() + " " + selectedTeacher.Surnames.ToString());
             }
+            else if (selectedIdentity is Alumn selectedAlumn)
+            {
+                selectedIdentity = GetIdentityType(pos, selectedTable);
+                selectedIdentity = selectedAlumn;
+                selectedIdentityDenomination = (selectedAlumn.Name.ToString() + " " + selectedAlumn.Surnames.ToString());
+            }
             else if (selectedIdentity is Course selectedCourse)
             {
-                selectedIdentity = GetSelectedTypeObject(pos, selectedTable);
+                selectedIdentity = GetIdentityType(pos, selectedTable);
                 selectedIdentity = (Course)selectedCourse;
                 selectedIdentityDenomination = (selectedCourse.Name + "-" + selectedCourse.ID);
             } 
-
             return selectedIdentityDenomination;
         }
 
         /*---------------------------------- RECURRENT GET FUNCTIONS END ----------------------------------------*/
 
         // METHOD TO ADD A NEW OBJECT TO THE DATABASE
-        public void AddNewObject(Identity identityToAdd, string selectedTable)
+        public void AddNewIdentity(Identity identityToAdd, string selectedTable)
         {
             // THE IS COMPARATOR IS TO COMPARE THE TYPE OF THE OBJECT
             if (identityToAdd is Teacher teacherToAdd)
@@ -435,8 +453,8 @@ namespace Exercise_4
                 dNewRecord[0] = alumnToAdd.ID;
                 dNewRecord[1] = alumnToAdd.Name;
                 dNewRecord[2] = alumnToAdd.Surnames;
-                dNewRecord[3] = alumnToAdd.Phone;
-                dNewRecord[4] = alumnToAdd.Adress;
+                dNewRecord[4] = alumnToAdd.Phone;
+                dNewRecord[3] = alumnToAdd.Adress;
                 dNewRecord[5] = alumnToAdd.Password;
                 dNewRecord[6] = alumnToAdd.CourseCod;
 
@@ -476,7 +494,7 @@ namespace Exercise_4
         }
 
         // METHOD TO UPDATE A OBJECT INTO THE DATABASE
-        public void UpdateSelectedObjectFromPosition(Identity identityToUpdate, int pos, string selectedTable)
+        public void UpdateIdentity(Identity identityToUpdate, int pos, string selectedTable)
         {
             // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
             DataRow dUpdateRecord;
@@ -495,7 +513,7 @@ namespace Exercise_4
                 dUpdateRecord[5] = teacherToUpdate.Password;
                 dUpdateRecord[6] = teacherToUpdate.CourseCod;
 
-                if (!CheckAllDuplicatedData(dUpdateRecord[0].ToString(), dUpdateRecord[3].ToString(), dUpdateRecord[4].ToString(), selectedTable))
+                if (!CheckAllDuplicatedData(teacherToUpdate.ID, dUpdateRecord[3].ToString(), dUpdateRecord[4].ToString(), selectedTable))
                 {
 
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
@@ -508,8 +526,8 @@ namespace Exercise_4
                 dUpdateRecord[0] = alumnToUpdate.ID;
                 dUpdateRecord[1] = alumnToUpdate.Name;
                 dUpdateRecord[2] = alumnToUpdate.Surnames;
-                dUpdateRecord[3] = alumnToUpdate.Phone;
-                dUpdateRecord[4] = alumnToUpdate.Adress;
+                dUpdateRecord[4] = alumnToUpdate.Phone;
+                dUpdateRecord[3] = alumnToUpdate.Adress;
                 dUpdateRecord[5] = alumnToUpdate.Password;
                 dUpdateRecord[6] = alumnToUpdate.CourseCod;
 
@@ -535,7 +553,7 @@ namespace Exercise_4
         }
 
         // METHOD TO DELETE A SELECTED OBJECT FROM THE DB
-        public void DeleteSelectedObjectFromPosition(int pos, string selectedTable)
+        public void DeleteIdentity(int pos, string selectedTable)
         {
             // DELETE THE RECORD FROM THE SELECTED POSITION
             ImportSelectedDataTable(selectedTable).Rows[pos].Delete();
@@ -567,7 +585,7 @@ namespace Exercise_4
         public bool CheckChangesStoredAndActualValues(int pos, string ID, string name, string surnames, string phone, string adressOrEmail, string password, string course, string selectedTable)
         {
             bool same = true;
-            Identity identityToUpdate = GetSelectedTypeObject(pos, selectedTable);
+            Identity identityToUpdate = GetIdentityType(pos, selectedTable);
 
             if (identityToUpdate is Teacher teacherToCompare)
             {
@@ -575,7 +593,9 @@ namespace Exercise_4
                     teacherToCompare.Name != name ||
                     teacherToCompare.Surnames != surnames ||
                     teacherToCompare.Phone != phone ||
-                    teacherToCompare.Email != adressOrEmail)
+                    teacherToCompare.Email != adressOrEmail ||
+                    teacherToCompare.Password != password ||
+                    teacherToCompare.CourseCod != course)
                 {
                     same = false;
                 }
@@ -585,8 +605,10 @@ namespace Exercise_4
                 if (alumnToCompare.ID != ID ||
                     alumnToCompare.Name != name ||
                     alumnToCompare.Surnames != surnames ||
+                    alumnToCompare.Adress != adressOrEmail ||
                     alumnToCompare.Phone != phone ||
-                    alumnToCompare.Adress != adressOrEmail)
+                    alumnToCompare.Password != password ||
+                    alumnToCompare.CourseCod != course)
                 {
                     same = false;
                 }

@@ -34,7 +34,7 @@ namespace Exercise_4
         {
             // RECALL TO CUSTOM REGEX WHICH CHECKS ALL THE INPUTS BEFORE INSERTING THEM INTO
             // THE ORIGINAL CONSTRUCTOR WHICH CREATES THE ACTUAL TEACHER WITHOUT ANY ERROR
-            if (!CustomRegex.RegexCourseID(cID) ||
+            if (!CustomRegex.RegexCourseCod(cID) ||
                 !CustomRegex.RegexName(cName))
             {
                 return null;

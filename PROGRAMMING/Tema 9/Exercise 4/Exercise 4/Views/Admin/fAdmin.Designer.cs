@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.gbAdmin = new System.Windows.Forms.GroupBox();
-            this.btnCoursesData = new System.Windows.Forms.Button();
+            this.btnCourseData = new System.Windows.Forms.Button();
             this.btnTeacherData = new System.Windows.Forms.Button();
             this.btnAlumnData = new System.Windows.Forms.Button();
             this.gbAdmin.SuspendLayout();
@@ -37,7 +37,7 @@
             // 
             // gbAdmin
             // 
-            this.gbAdmin.Controls.Add(this.btnCoursesData);
+            this.gbAdmin.Controls.Add(this.btnCourseData);
             this.gbAdmin.Controls.Add(this.btnTeacherData);
             this.gbAdmin.Controls.Add(this.btnAlumnData);
             this.gbAdmin.Location = new System.Drawing.Point(12, 12);
@@ -46,15 +46,16 @@
             this.gbAdmin.TabIndex = 3;
             this.gbAdmin.TabStop = false;
             // 
-            // btnCoursesData
+            // btnCourseData
             // 
-            this.btnCoursesData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCoursesData.Location = new System.Drawing.Point(19, 19);
-            this.btnCoursesData.Name = "btnCoursesData";
-            this.btnCoursesData.Size = new System.Drawing.Size(252, 41);
-            this.btnCoursesData.TabIndex = 2;
-            this.btnCoursesData.Text = "COURSES";
-            this.btnCoursesData.UseVisualStyleBackColor = true;
+            this.btnCourseData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCourseData.Location = new System.Drawing.Point(19, 19);
+            this.btnCourseData.Name = "btnCourseData";
+            this.btnCourseData.Size = new System.Drawing.Size(252, 41);
+            this.btnCourseData.TabIndex = 2;
+            this.btnCourseData.Text = "COURSES MANAGEMENT";
+            this.btnCourseData.UseVisualStyleBackColor = true;
+            this.btnCourseData.Click += new System.EventHandler(this.btnCoursesManagement_Click);
             // 
             // btnTeacherData
             // 
@@ -63,18 +64,20 @@
             this.btnTeacherData.Name = "btnTeacherData";
             this.btnTeacherData.Size = new System.Drawing.Size(252, 41);
             this.btnTeacherData.TabIndex = 1;
-            this.btnTeacherData.Text = "TEACHERS";
+            this.btnTeacherData.Text = "TEACHERS MANAGEMENT";
             this.btnTeacherData.UseVisualStyleBackColor = true;
+            this.btnTeacherData.Click += new System.EventHandler(this.btnTeacherManagement_Click);
             // 
             // btnAlumnData
             // 
             this.btnAlumnData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAlumnData.Location = new System.Drawing.Point(19, 133);
+            this.btnAlumnData.Location = new System.Drawing.Point(19, 135);
             this.btnAlumnData.Name = "btnAlumnData";
             this.btnAlumnData.Size = new System.Drawing.Size(252, 41);
             this.btnAlumnData.TabIndex = 0;
-            this.btnAlumnData.Text = "ALUMNS";
+            this.btnAlumnData.Text = "ALUMNS MANAGEMENT";
             this.btnAlumnData.UseVisualStyleBackColor = true;
+            this.btnAlumnData.Click += new System.EventHandler(this.btnAlumnManagement_Click);
             // 
             // fAdmin
             // 
@@ -84,6 +87,7 @@
             this.Controls.Add(this.gbAdmin);
             this.Name = "fAdmin";
             this.Text = "Admin";
+            this.Load += new System.EventHandler(this.fAdmin_Load);
             this.gbAdmin.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -92,7 +96,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox gbAdmin;
-        private System.Windows.Forms.Button btnCoursesData;
+        private System.Windows.Forms.Button btnCourseData;
         private System.Windows.Forms.Button btnTeacherData;
         private System.Windows.Forms.Button btnAlumnData;
     }

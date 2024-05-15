@@ -1,6 +1,4 @@
-﻿using Exercise_4.Models;
-using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,12 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
+using Microsoft.Win32;
+using Microsoft.VisualBasic;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Xml.Linq;
+using System.Net;
+using Exercise_4.Models;
 
-namespace Exercise_4.Views
+
+namespace Exercise_4
 {
-    public partial class fAlumnData : Form
+    public partial class fAlumnManagement : Form
     {
-        public fAlumnData()
+        public fAlumnManagement()
         {
             InitializeComponent();
         }
@@ -23,7 +30,7 @@ namespace Exercise_4.Views
         SqlDBHandler dbHandler;
 
         // FORM LOADING HANDLING
-        private void fAlumnData_Load(object sender, EventArgs e)
+        private void fAlumnManagement_Load(object sender, EventArgs e)
         {
             dbHandler = new SqlDBHandler("Alumnos");
             // SETS FIRST POSITION, UPDATES THE VISUALS AND CHECKS THE ACTUAL BUTTONS STATUS WHEN FIRST LOADED
@@ -64,16 +71,17 @@ namespace Exercise_4.Views
         {
             if (dbHandler.AlumnsQuantity > 0)
             {
-                object selectedObjectRecords = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
-                if (selectedObjectRecords is Alumn selectedAlumnRecords)
+                Identity selectedIdentityRecords = dbHandler.GetIdentityType(pos, "Alumnos");
+                if (selectedIdentityRecords is Alumn selectedAlumnRecords)
                 {
-
                     // TAKE VALUES FROM EACH RECORD'S COLUMNS TO SET THEM IN THE APPROPIATE TEXTBOX
-                    txtbID.Text = selectedAlumnRecords.ID;
-                    txtbName.Text = selectedAlumnRecords.Name;
-                    txtbSurnames.Text = selectedAlumnRecords.Surnames;
-                    txtbPhone.Text = selectedAlumnRecords.Phone;
-                    txtbAdress.Text = selectedAlumnRecords.Adress;
+                    txtbAlumnID.Text = selectedAlumnRecords.ID;
+                    txtbAlumnName.Text = selectedAlumnRecords.Name;
+                    txtbAlumnSurnames.Text = selectedAlumnRecords.Surnames;
+                    txtbAlumnPhone.Text = selectedAlumnRecords.Phone;
+                    txtbAlumnAdress.Text = selectedAlumnRecords.Adress;
+                    txtbAlumnPassword.Text = selectedAlumnRecords.Password;
+                    txtbAlumnCourse.Text = selectedAlumnRecords.CourseCod;
 
                     // DETECTED CHANGES RESET AND CHECKS THE ACTUAL BUTTONS STATUS
                     changeDetected = false;
@@ -83,7 +91,7 @@ namespace Exercise_4.Views
             else if (dbHandler.AlumnsQuantity == 0)
             {
                 // CLEAR EVERY DATA FROM THE TEXT BOXES AND CHECKS THE ACTUAL BUTTONS STATUS
-                btnClear.PerformClick();
+                btnAlumnClear.PerformClick();
                 ButtonsCheck();
             }
         }
@@ -105,7 +113,8 @@ namespace Exercise_4.Views
                                            "Name: " + row["Nombre"] + "\n" +
                                            "Surnames: " + row["Apellido"] + "\n" +
                                            "Phone: " + row["Tlf"] + "\n" +
-                                           "Adress: " + row["Direccion"] + "\n";
+                                           "Adress: " + row["Direccion"] + "\n" +
+                                           "Course: " + row["Cursos"] + "\n";
 
                         alumnListTxt += alumnInfo + "\n";
                     }
@@ -113,8 +122,8 @@ namespace Exercise_4.Views
                 }
                 else if (dbHandler.AlumnsQuantity == 1)
                 {
-                    Identity singleAlumn = dbHandler.GetSelectedTypeObject(0, "Alumnos");
-                    alumnListTxt = dbHandler.GetObjectDataFromPosition(singleAlumn, 0, "Alumnos");
+                    Identity singleAlumn = dbHandler.GetIdentityType(0, "Alumnos");
+                    alumnListTxt = dbHandler.GetIdentityData(singleAlumn, 0, "Alumnos");
                     result = alumnListTxt;
                 }
             }
@@ -143,6 +152,24 @@ namespace Exercise_4.Views
             return counter;
         }
 
+        public int SimilarAlumnCourseCounter(string alumnCourse)
+        {
+            int counter = 0;
+            if (dbHandler.AlumnsQuantity != 0)
+            {
+                for (int i = 0; i < dbHandler.AlumnsQuantity; i++)
+                {
+                    DataRow alumnRow = dbHandler.ImportSelectedDataTable("Alumnos").Rows[i];
+                    string stringToCheck = alumnRow[6].ToString().ToLower();
+                    if (stringToCheck.Contains(alumnCourse.ToLower()))
+                    {
+                        counter++;
+                    }
+                }
+            }
+            return counter;
+        }
+
         public void SelectSimilarNameAlumnsToShow(string alumnSurname)
         {
             List<string> matchingAlumnsSurname = new List<string>();
@@ -161,10 +188,11 @@ namespace Exercise_4.Views
                         matchingAlumnsSurname.Add(fullName);
 
                         string extraAlumnInfo = "ID: " + alumnRow["DNI"] + "\n" +
-                                                  "Name: " + alumnRow["Nombre"] + "\n" +
-                                                  "Surnames: " + alumnRow["Apellido"] + "\n" +
-                                                  "Phone: " + alumnRow["Tlf"] + "\n" +
-                                                  "Adress: " + alumnRow["Direccion"] + "\n";
+                                                "Name: " + alumnRow["Nombre"] + "\n" +
+                                                "Surnames: " + alumnRow["Apellido"] + "\n" +
+                                                "Phone: " + alumnRow["Tlf"] + "\n" +
+                                                "Adress: " + alumnRow["Direccion"] + "\n" +
+                                                "Course: " + alumnRow["Cursos"] + "\n";
 
                         extraAlumnsInfo.Add(extraAlumnInfo);
                         alumnsPositions.Add(i);
@@ -228,13 +256,100 @@ namespace Exercise_4.Views
             }
         }
 
+        public void SelectSimilarCourseAlumnsToShow(string alumnCourse)
+        {
+            List<string> matchingAlumnsCourse = new List<string>();
+            List<string> extraAlumnsInfo = new List<string>();
+            List<int> alumnsPositions = new List<int>();
+
+            if (dbHandler.AlumnsQuantity != 0)
+            {
+                for (int i = 0; i < dbHandler.AlumnsQuantity; i++)
+                {
+                    DataRow alumnRow = dbHandler.ImportSelectedDataTable("Alumnos").Rows[i];
+                    string stringToCheck = alumnRow[6].ToString().ToLower();
+                    if (stringToCheck.Contains(alumnCourse.ToLower()))
+                    {
+                        string fullName = (alumnRow["Nombre"] + " " + alumnRow["Apellido"]).ToString();
+                        matchingAlumnsCourse.Add(fullName);
+
+                        string extraAlumnInfo = "ID: " + alumnRow["DNI"] + "\n" +
+                                                "Name: " + alumnRow["Nombre"] + "\n" +
+                                                "Surnames: " + alumnRow["Apellido"] + "\n" +
+                                                "Phone: " + alumnRow["Tlf"] + "\n" +
+                                                "Adress: " + alumnRow["Direccion"] + "\n" +
+                                                "Course: " + alumnRow["Cursos"] + "\n";
+
+                        extraAlumnsInfo.Add(extraAlumnInfo);
+                        alumnsPositions.Add(i);
+                    }
+                }
+
+            }
+            if (matchingAlumnsCourse.Count == 1)
+            {
+                MessageBox.Show("The data from " + matchingAlumnsCourse[0] + " is: \n\n" + extraAlumnsInfo[0]);
+                pos = alumnsPositions[0];
+                ShowAlumnsRecords(pos);
+                RecordPositionLabel(pos);
+            }
+            else if (matchingAlumnsCourse.Count > 1)
+            {
+                bool showed = false;
+                int selectedAlumnIndex = 0;
+
+                while (!showed)
+                {
+                    StringBuilder infoMessage = new StringBuilder("Alumns with the same course:\n\n");
+
+                    for (int i = 0; i < matchingAlumnsCourse.Count; i++)
+                    {
+                        infoMessage.AppendLine((i + 1) + ") " + matchingAlumnsCourse[i] + "\n");
+                    }
+
+                    infoMessage.AppendLine("Select the number of the alumn to view more data:");
+
+                    string userInput = Interaction.InputBox(infoMessage.ToString());
+
+                    if (int.TryParse(userInput, out selectedAlumnIndex) && selectedAlumnIndex > 0 && selectedAlumnIndex <= matchingAlumnsCourse.Count)
+                    {
+                        string selectedAlumnInfo = extraAlumnsInfo[selectedAlumnIndex - 1];
+                        int selectedAlumnPositionInDB = alumnsPositions[selectedAlumnIndex - 1];
+
+                        DialogResult result = MessageBox.Show(selectedAlumnInfo + "\n\nIs this the alumn you want to check info?", "Check Alumn Info", MessageBoxButtons.YesNo);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            pos = selectedAlumnPositionInDB;
+                            ShowAlumnsRecords(pos);
+                            RecordPositionLabel(pos);
+                            showed = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please select a different alumn.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid input. Please enter a valid number corresponding to an alumn.");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No alumns found with the selected course.");
+            }
+        }
+
         /* ---------------- BUTTONS HANDLING START --------------------- */
 
         private bool CheckValuesChanged()
         {
-            return dbHandler.CheckChangesStoredAndActualValues(pos, txtbID.Text, txtbName.Text, txtbSurnames.Text, txtbPhone.Text, txtbAdress.Text, "Alumnos");
+            return dbHandler.CheckChangesStoredAndActualValues(pos, txtbAlumnID.Text, txtbAlumnName.Text, txtbAlumnSurnames.Text, 
+                                                               txtbAlumnPhone.Text, txtbAlumnAdress.Text, txtbAlumnPassword.Text, 
+                                                               txtbAlumnCourse.Text, "Alumnos");
         }
-
 
         private void askToUpdateIfChangesWereMade(bool choice)
         {
@@ -244,19 +359,19 @@ namespace Exercise_4.Views
 
                 if (update == DialogResult.Yes)
                 {
-                    btnUpdate.PerformClick();
+                    btnAlumnUpdate.PerformClick();
                 }
             }
         }
 
-        private void btnCancelAddRegistry_Click(object sender, EventArgs e)
+        private void btnAlumnCancelAddRegistry_Click(object sender, EventArgs e)
         {
             pos = 0;
             ShowAlumnsRecords(pos);
             RecordPositionLabel(pos);
         }
 
-        private void btnFirst_Click(object sender, EventArgs e)
+        private void btnAlumnFirst_Click(object sender, EventArgs e)
         {
             if (pos == -1)
             {
@@ -284,7 +399,7 @@ namespace Exercise_4.Views
             }
         }
 
-        private void btnLast_Click(object sender, EventArgs e)
+        private void btnAlumnLast_Click(object sender, EventArgs e)
         {
             if (pos == -1)
             {
@@ -311,11 +426,11 @@ namespace Exercise_4.Views
             }
         }
 
-        private void btnNext_Click(object sender, EventArgs e)
+        private void btnAlumnNext_Click(object sender, EventArgs e)
         {
             if (pos == -1)
             {
-                btnFirst.PerformClick();
+                btnAlumnFirst.PerformClick();
             }
             else if (pos < (dbHandler.AlumnsQuantity - 1))
             {
@@ -336,11 +451,11 @@ namespace Exercise_4.Views
             }
         }
 
-        private void btnPrevious_Click(object sender, EventArgs e)
+        private void btnAlumnPrevious_Click(object sender, EventArgs e)
         {
             if (pos == -1)
             {
-                btnFirst.PerformClick();
+                btnAlumnFirst.PerformClick();
             }
             else if (pos > 0)
             {
@@ -361,46 +476,49 @@ namespace Exercise_4.Views
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
+        private void btnAlumnClear_Click(object sender, EventArgs e)
         {
-            txtbID.Clear();
-            txtbName.Clear();
-            txtbSurnames.Clear();
-            txtbPhone.Clear();
-            txtbAdress.Clear();
+            txtbAlumnID.Clear();
+            txtbAlumnName.Clear();
+            txtbAlumnSurnames.Clear();
+            txtbAlumnPhone.Clear();
+            txtbAlumnAdress.Clear();
+            txtbAlumnPassword.Clear();
+            txtbAlumnCourse.Clear();
             pos = -1;
             lblRecord.Text = "";
             ButtonsCheck();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnAlumnSave_Click(object sender, EventArgs e)
         {
             // CHECKS THAT THE ACTUAL TEXT BOX ID TEXT IS NOT USED ALREADY IN THE DB
-            if (!dbHandler.DuplicatedID(txtbID.Text, "Alumnos"))
+            if (!dbHandler.DuplicatedID(txtbAlumnID.Text, "Alumnos"))
             {
                 // CHECKS THAT THE ACTUAL TEXT BOX PHONE TEXT IS NOT USED ALREADY IN THE DB
-                if (!dbHandler.DuplicatedPhone(txtbPhone.Text, "Alumnos"))
+                if (!dbHandler.DuplicatedPhone(txtbAlumnPhone.Text, "Alumnos"))
                 {
                     // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
-                    if (!dbHandler.DuplicatedAdress(txtbAdress.Text, "Alumnos"))
+                    if (!dbHandler.DuplicatedAdress(txtbAlumnAdress.Text, "Alumnos"))
                     {
-                        // CREATES THE TEACHER TO SAVE
-                        Alumn savedAlumn = Alumn.AlumnCreation(txtbID.Text,
-                                                               txtbName.Text,
-                                                               txtbSurnames.Text,
-                                                               txtbPhone.Text,
-                                                               txtbAdress.Text,
-                                                               txtbPassword.Text);
+                        // CREATES THE ALUMN TO SAVE
+                        Alumn savedAlumn = Alumn.AlumnCreation(txtbAlumnID.Text,
+                                                               txtbAlumnName.Text,
+                                                               txtbAlumnSurnames.Text,
+                                                               txtbAlumnPhone.Text,
+                                                               txtbAlumnAdress.Text,
+                                                               txtbAlumnPassword.Text,
+                                                               txtbAlumnCourse.Text);
 
-                        // IF THIS OBJECT IS VALID IT WILL BE INSERTED INTO THE DB
+                        // IF THIS ALUMN IS VALID IT WILL BE INSERTED INTO THE DB
                         if (savedAlumn != null)
                         {
                             // FUNCTION WHICH CREATES A NEW ALUMN INTO THE DB
                             // AFTER THAT UPDATES THE POSITION AND THE COUNT OF ALUMN'S RECORDS
-                            dbHandler.AddNewObject(savedAlumn, "Alumnos");
+                            dbHandler.AddNewIdentity(savedAlumn, "Alumnos");
                             pos = dbHandler.AlumnsQuantity - 1;
                             RecordPositionLabel(pos);
-                            btnCancelAddRegistry.PerformClick();
+                            btnAlumnCancelAddRegistry.PerformClick();
                             ButtonsCheck();
                         }
                         else
@@ -410,7 +528,7 @@ namespace Exercise_4.Views
                     }
                     else
                     {
-                        MessageBox.Show("This email is already used, try another one");
+                        MessageBox.Show("This adress is already used, try another one");
                     }
                 }
                 else
@@ -424,23 +542,24 @@ namespace Exercise_4.Views
             }
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void btnAlumnUpdate_Click(object sender, EventArgs e)
         {
             if (pos != -1 && changeDetected)
             {
                 // SETS VARIABLES DATA TO CREATE A TEMPORAL NEW ALUMN
-                string ID = txtbID.Text;
-                string name = txtbName.Text;
-                string surnames = txtbSurnames.Text;
-                string phone = txtbPhone.Text;
-                string adress = txtbAdress.Text;
-                string password = txtbPassword.Text;
+                string ID = txtbAlumnID.Text;
+                string name = txtbAlumnName.Text;
+                string surnames = txtbAlumnSurnames.Text;
+                string phone = txtbAlumnPhone.Text;
+                string adress = txtbAlumnAdress.Text;
+                string password = txtbAlumnPassword.Text;
+                string course = txtbAlumnCourse.Text;
 
-                // GETS THE SUPOSED DATA FROM AN OBJECT IN THE ACTUAL POSITION 
-                Identity oldObjectData = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
+                // GETS THE SUPOSED DATA FROM AN ALUMN IN THE ACTUAL POSITION 
+                Identity oldIdentityData = dbHandler.GetIdentityType(pos, "Alumnos");
 
-                // CHECKS IF THE SELECTED OBJECT IS AN ALUMN AND CONVERTS THAT OBJECT INTO AN ALUMN TYPE TO ACCES TO ITS PROPERTIES
-                if (oldObjectData is Alumn oldAlumnData)
+                // CHECKS IF THE SELECTED ALUMN IS AN ALUMN AND CONVERTS THAT ALUMN INTO AN ALUMN TYPE TO ACCES TO ITS PROPERTIES
+                if (oldIdentityData is Alumn oldAlumnData)
                 {
                     // MAKES SURE THAT THE FOLLOWING ID-PHONE-MAIL IS NOT USED OR IF IT'S EXACTLY THE SAME BEFORE ANY CHANGE 
                     if (!dbHandler.DuplicatedID(ID, "Alumnos") || ID == oldAlumnData.ID)
@@ -449,11 +568,11 @@ namespace Exercise_4.Views
                         {
                             if (!dbHandler.DuplicatedAdress(adress, "Alumnos") || adress == oldAlumnData.Adress)
                             {
-                                // CREATES A NEW OBJECT AS AN ALUMN TYPE ONE
-                                Identity selectedObjectToUpdate = Alumn.AlumnCreation(ID, name, surnames, phone, adress, password);
-                                if (selectedObjectToUpdate != null)
+                                // CREATES A NEW ALUMN AS AN ALUMN TYPE ONE
+                                Identity selectedIdentityToUpdate = Alumn.AlumnCreation(ID, name, surnames, phone, adress, password, course);
+                                if (selectedIdentityToUpdate != null)
                                 {
-                                    dbHandler.UpdateSelectedObjectFromPosition(selectedObjectToUpdate, pos, "Alumnos");
+                                    dbHandler.UpdateIdentity(selectedIdentityToUpdate, pos, "Alumnos");
                                     ShowAlumnsRecords(pos);
                                     RecordPositionLabel(pos);
                                     changeDetected = false;
@@ -492,7 +611,7 @@ namespace Exercise_4.Views
             }
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void btnAlumnDelete_Click(object sender, EventArgs e)
         {
             if (dbHandler.AlumnsQuantity > 0)
             {
@@ -503,7 +622,7 @@ namespace Exercise_4.Views
 
                     if (delete == DialogResult.Yes)
                     {
-                        dbHandler.DeleteSelectedObjectFromPosition(pos, "Alumnos");
+                        dbHandler.DeleteIdentity(pos, "Alumnos");
 
                         // RESETS POSITION
                         pos = 0;
@@ -517,13 +636,14 @@ namespace Exercise_4.Views
                     MessageBox.Show("Delete is not possible when no alumn is selected.");
                 }
             }
-            else if (dbHandler.TeachersQuantity == 0)
+            else if (dbHandler.AlumnsQuantity == 0)
             {
                 MessageBox.Show("Delete is not possible when no elements are in the database.");
             }
+
         }
 
-        private void btnSearchTeacher_Click(object sender, EventArgs e)
+        private void btnSearchAlumn_Click(object sender, EventArgs e)
         {
             if (dbHandler.AlumnsQuantity > 1)
             {
@@ -555,15 +675,58 @@ namespace Exercise_4.Views
             }
             else if (dbHandler.AlumnsQuantity == 1)
             {
-                Identity uniqueAlumn = dbHandler.GetSelectedTypeObject(0, "Alumnos");
+                Identity uniqueAlumn = dbHandler.GetIdentityType(0, "Alumnos");
                 MessageBox.Show("There's only one alumn so it's data will be the one showed.");
-                MessageBox.Show(dbHandler.GetObjectDataFromPosition(uniqueAlumn, 0, "Alumnos"));
+                MessageBox.Show(dbHandler.GetIdentityData(uniqueAlumn, 0, "Alumnos"));
             }
             else
             {
                 MessageBox.Show("Error, the list has no added alumns, add an alumn before checking an alumn data from the alumns list");
             }
         }
+
+        private void btnAlumnSearchCourse_Click(object sender, EventArgs e)
+        {
+            if (dbHandler.AlumnsQuantity > 1)
+            {
+                bool showed = false;
+                do
+                {
+                    string alumnCourse = Interaction.InputBox("Introduce the alumn's course to show data (EXAMPLE: 1-DAW-N): ");
+
+                    if (CustomRegex.RegexCourseCod(alumnCourse))
+                    {
+                        if (SimilarAlumnCourseCounter(alumnCourse) > 0)
+                        {
+                            SelectSimilarCourseAlumnsToShow(alumnCourse);
+                            showed = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("There isn't any alumn in the selected course, try again");
+                            showed = true;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("The course format is not correct, try again");
+                    }
+
+                } while (!showed);
+
+            }
+            else if (dbHandler.AlumnsQuantity == 1)
+            {
+                Identity uniqueAlumn = dbHandler.GetIdentityType(0, "Alumnos");
+                MessageBox.Show("There's only one alumn so it's data will be the one showed.");
+                MessageBox.Show(dbHandler.GetIdentityData(uniqueAlumn, 0, "Alumnos"));
+            }
+            else
+            {
+                MessageBox.Show("Error, the list has no added alumns, add an alumn before checking an alumn data from the alumns list");
+            }
+        }
+
         private void btnListAlumns_Click(object sender, EventArgs e)
         {
             MessageBox.Show(ShowsAlumnsList());
@@ -582,7 +745,9 @@ namespace Exercise_4.Views
                                   "\nNAME: Sergio" +
                                   "\nSURNAMES: Diez Fernández" +
                                   "\nPHONE: 600000000 / 799999999" +
-                                  "\nADRESS: San Gabriel's Street";
+                                  "\nADRESS: San Gabriel's Street" +
+                                  "\nPASSWORD: Sergio_Diez1" +
+                                  "\nCOURSE: 2-DAW-N";
             return errorMessage;
         }
 
@@ -592,29 +757,30 @@ namespace Exercise_4.Views
 
         public void ButtonsCheck()
         {
-            bool recordsExist = (dbHandler.TeachersQuantity > 0);
+            bool recordsExist = (dbHandler.AlumnsQuantity > 0);
             bool noRecordSelected = (pos == -1);
 
             // ENABLE/DISABLE NAVIGATION BUTTONS
-            btnNext.Enabled = (recordsExist && pos < dbHandler.TeachersQuantity - 1) && !noRecordSelected;
-            btnLast.Enabled = (recordsExist && pos < dbHandler.TeachersQuantity - 1) && !noRecordSelected;
-            btnPrevious.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
-            btnFirst.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
+            btnAlumnNext.Enabled = (recordsExist && pos < dbHandler.AlumnsQuantity - 1) && !noRecordSelected;
+            btnAlumnPrevious.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
+            btnAlumnLast.Enabled = (recordsExist && pos < dbHandler.AlumnsQuantity - 1) && !noRecordSelected;
+            btnAlumnFirst.Enabled = (recordsExist && pos > 0) && !noRecordSelected;
 
             // ENABLE/DISABLE SAVE BUTTON IF NO RECORD IS SELECTED
-            btnSave.Enabled = noRecordSelected;
+            btnAlumnSave.Enabled = noRecordSelected;
 
             // ENABLE/DISABLE CANCEL ADD REGISTRY BUTTON IF NO RECORD IS SELECTED
-            btnCancelAddRegistry.Enabled = noRecordSelected && recordsExist;
+            btnAlumnCancelAddRegistry.Enabled = noRecordSelected && recordsExist;
 
             // ENABLE/DISABLE DELETE AND UPDATE BUTTONS IF A RECORD IS SELECTED
-            btnDelete.Enabled = recordsExist && !noRecordSelected;
-            btnUpdate.Enabled = recordsExist && !noRecordSelected && changeDetected;
+            btnAlumnDelete.Enabled = recordsExist && !noRecordSelected;
+            btnAlumnUpdate.Enabled = recordsExist && !noRecordSelected && changeDetected;
 
             // ENABLE/DISABLE OTHER BUTTONS BASED ON RECORD EXISTENCE
-            btnClear.Enabled = recordsExist && !noRecordSelected;
+            btnAlumnClear.Enabled = recordsExist && !noRecordSelected;
             btnListAlumns.Enabled = recordsExist;
-            btnSearchTeacher.Enabled = recordsExist;
+            btnSearchAlumn.Enabled = recordsExist;
+            btnAlumnSearchCourse.Enabled = recordsExist;
         }
 
         // THIS FUNCTION AUTO CHECKS THE CHANGES DETECTED IN THE FOLLOWING TEXT BOXES BETWEEN THE ORIGINAL STRING AND THE NEW CHANGED
@@ -624,55 +790,79 @@ namespace Exercise_4.Views
             changeDetected = anyChangeDetected;
             ButtonsCheck();
         }
-        private void txtbID_TextChanged(object sender, EventArgs e)
-        {
-            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
-            if (actualObject is Alumn actualAlumn)
-            {
-                string originalID = actualAlumn.ID;
-                UpdateChangeDetected(txtbID.Text, actualAlumn.ID);
-            }
-        }
 
-        private void txtbName_TextChanged(object sender, EventArgs e)
-        {
-            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
-            if (actualObject is Alumn actualAlumn)
-            {
-                string originalName = actualAlumn.Name;
-                UpdateChangeDetected(txtbName.Text, originalName);
-            }
-        }
-
-        private void txtbSurnames_TextChanged(object sender, EventArgs e)
-        {
-            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
-            if (actualObject is Alumn actualAlumn)
-            {
-                string originalSurnames = actualAlumn.Surnames;
-                UpdateChangeDetected(txtbSurnames.Text, originalSurnames);
-            }
-        }
-
-        private void txtbPhone_TextChanged(object sender, EventArgs e)
-        {
-            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
-            if (actualObject is Alumn actualAlumn)
-            {
-                string originalPhone = actualAlumn.Phone;
-                UpdateChangeDetected(txtbPhone.Text, originalPhone);
-            }
-        }
 
         private void txtbAdress_TextChanged(object sender, EventArgs e)
         {
-            object actualObject = dbHandler.GetSelectedTypeObject(pos, "Alumnos");
-            if (actualObject is Alumn actualAlumn)
+            Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
+            if (actualIdentity is Alumn actualAlumn)
             {
                 string originalAdress = actualAlumn.Adress;
-                UpdateChangeDetected(txtbAdress.Text, originalAdress);
+                UpdateChangeDetected(txtbAlumnAdress.Text, originalAdress);
             }
         }
+
+        private void txtbPassword_TextChanged(object sender, EventArgs e)
+        {
+            Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
+            if (actualIdentity is Alumn actualAlumn)
+            {
+                string originalPassword = actualAlumn.Password;
+                UpdateChangeDetected(txtbAlumnPassword.Text, originalPassword);
+            }
+        }
+
+        private void txtbCourse_TextChanged(object sender, EventArgs e)
+        {
+            Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
+            if (actualIdentity is Alumn actualAlumn)
+            {
+                string originalCourse = actualAlumn.Password;
+                UpdateChangeDetected(txtbAlumnCourse.Text, originalCourse);
+            }
+        }
+
+        private void txtbAlumnID_TextChanged(object sender, EventArgs e)
+        {
+            Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
+            if (actualIdentity is Alumn actualAlumn)
+            {
+                string originalID = actualAlumn.ID;
+                UpdateChangeDetected(txtbAlumnID.Text, originalID);
+            }
+        }
+
+        private void txtbAlumnName_TextChanged(object sender, EventArgs e)
+        {
+            Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
+            if (actualIdentity is Alumn actualAlumn)
+            {
+                string originalName = actualAlumn.Name;
+                UpdateChangeDetected(txtbAlumnName.Text, originalName);
+            }
+        }
+
+        private void txtbAlumnSurnames_TextChanged(object sender, EventArgs e)
+        {
+            Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
+            if (actualIdentity is Alumn actualAlumn)
+            {
+                string originalSurnames = actualAlumn.Surnames;
+                UpdateChangeDetected(txtbAlumnSurnames.Text, originalSurnames);
+            }
+        }
+
+        private void txtbAlumnPhone_TextChanged(object sender, EventArgs e)
+        {
+            Identity actualIdentity = dbHandler.GetIdentityType(pos, "Alumnos");
+            if (actualIdentity is Alumn actualAlumn)
+            {
+                string originalPhone = actualAlumn.Phone;
+                UpdateChangeDetected(txtbAlumnPhone.Text, originalPhone);
+            }
+        }
+
+
 
 
         /* ---------------- TEXTBOX CHANGE HANDLING FUNCTIONS END --------------------- */

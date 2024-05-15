@@ -18,15 +18,7 @@ namespace Exercise_4
             string regexPattern = "^[A-Z]{1}[0-9]{7}[A-Z]{1}$|^[0-9]{8}[A-Z]{1}$";
             return new Regex(regexPattern).IsMatch(x);
         }
-        public static bool RegexCourseID(string x)
-        {
-            /* THIS METHOD VALIDATES WHETHER THE INPUT STRING FOLLOWS THE PATTERN OF A VALID ID.
-             * THE REGULAR EXPRESSION PATTERN "^[1-9]{1}[0-9]*$" CHECKS FOR ONE POSSIBLE FORMAT:
-             * ONE NUMBER STARTING FROM 1 UNTIL INFINITY. */
 
-            string regexPattern = "^[1-9]{1}[0-9]*$";
-            return new Regex(regexPattern).IsMatch(x);
-        }
         public static bool RegexName(string x)
         {
             /* THIS METHOD VALIDATES WHETHER THE INPUT STRING CONTAINS ONLY LETTERS, DIACRITICAL MARKS, AND SPECIFIC SYMBOLS, ALLOWING FOR MULTIPLE WORDS SEPARATED BY A SINGLE SPACE.

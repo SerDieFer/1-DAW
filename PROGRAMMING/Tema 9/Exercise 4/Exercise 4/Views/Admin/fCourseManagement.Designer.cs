@@ -1,6 +1,6 @@
 ﻿namespace Exercise_4.Views.Admin
 {
-    partial class fCourseData
+    partial class fCourseManagement
     {
         /// <summary>
         /// Required designer variable.
