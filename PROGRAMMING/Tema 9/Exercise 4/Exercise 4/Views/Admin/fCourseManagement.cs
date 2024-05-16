@@ -25,7 +25,7 @@ namespace Exercise_4.Views.Admin
         // FORM LOADING HANDLING
         private void fCourseManagement_Load(object sender, EventArgs e)
         {
-            dbHandler = new SqlDBHandler("Cursos");
+            dbHandler = new SqlDBHandler();
             // SETS FIRST POSITION, UPDATES THE VISUALS AND CHECKS THE ACTUAL BUTTONS STATUS WHEN FIRST LOADED
             pos = 0;
             RecordPositionLabel(pos);
@@ -75,7 +75,7 @@ namespace Exercise_4.Views.Admin
                     ButtonsCheck();
                 }
             }
-            else if (dbHandler.AlumnsQuantity == 0)
+            else if (dbHandler.CoursesQuantity == 0)
             {
                 // CLEAR EVERY DATA FROM THE TEXT BOXES AND CHECKS THE ACTUAL BUTTONS STATUS
                 btnCourseClear.PerformClick();
@@ -149,7 +149,7 @@ namespace Exercise_4.Views.Admin
                     string stringToCheck = courseRow[0].ToString().ToLower();
                     if (stringToCheck.Contains(courseID.ToLower()))
                     {
-                        string fullName = (courseRow["Codigo"] + " named " + courseRow["Nombre"]).ToString();
+                        string fullName = (courseRow["Nombre"]).ToString();
                         matchingCoursesID.Add(fullName);
 
                         string extraCourseInfo = "ID: " + courseRow["Codigo"] + "\n" +
@@ -163,7 +163,7 @@ namespace Exercise_4.Views.Admin
             }
             if (matchingCoursesID.Count == 1)
             {
-                MessageBox.Show("The data from " + matchingCoursesID[0] + " is: \n\n" + extraCoursesInfo[0]);
+                MessageBox.Show("The only course data is: " + extraCoursesInfo[0] + "\n\n");
                 pos = coursesPositions[0];
                 ShowCoursesRecords(pos);
                 RecordPositionLabel(pos);
@@ -477,26 +477,18 @@ namespace Exercise_4.Views.Admin
                 bool showed = false;
                 do
                 {
-                    string courseID = Interaction.InputBox("Introduce the course's ID to show data (EXAMPLE: 1-DAW-N): ");
+                string courseID = Interaction.InputBox("Introduce the course's ID to show data (EXAMPLE: 1-DAW-N): ");
 
-                    if (CustomRegex.RegexCourseCod(courseID))
+                    if (SimilarCourseIDCounter(courseID) > 0)
                     {
-                        if (SimilarCourseIDCounter(courseID) > 0)
-                        {
-                            SelectSimilarIDCourseToShow(courseID);
-                            showed = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("There isn't any course with the selected ID, try again");
-                            showed = true;
-                        }
+                        SelectSimilarIDCourseToShow(courseID);
+                        showed = true;
                     }
                     else
                     {
-                        MessageBox.Show("The ID format is not correct, try again");
+                        MessageBox.Show("There isn't any course with the selected ID, try again");
+                        showed = true;
                     }
-
                 } while (!showed);
 
             }

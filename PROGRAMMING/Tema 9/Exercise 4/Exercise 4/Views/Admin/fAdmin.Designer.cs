@@ -87,6 +87,7 @@
             this.Controls.Add(this.gbAdmin);
             this.Name = "fAdmin";
             this.Text = "Admin";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fAdmin_FormClosing);
             this.Load += new System.EventHandler(this.fAdmin_Load);
             this.gbAdmin.ResumeLayout(false);
             this.ResumeLayout(false);

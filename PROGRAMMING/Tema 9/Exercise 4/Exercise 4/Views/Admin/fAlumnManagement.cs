@@ -114,7 +114,7 @@ namespace Exercise_4
                                            "Surnames: " + row["Apellido"] + "\n" +
                                            "Phone: " + row["Tlf"] + "\n" +
                                            "Adress: " + row["Direccion"] + "\n" +
-                                           "Course: " + row["Cursos"] + "\n";
+                                           "Course: " + row["Codigo"] + "\n";
 
                         alumnListTxt += alumnInfo + "\n";
                     }
@@ -192,7 +192,7 @@ namespace Exercise_4
                                                 "Surnames: " + alumnRow["Apellido"] + "\n" +
                                                 "Phone: " + alumnRow["Tlf"] + "\n" +
                                                 "Adress: " + alumnRow["Direccion"] + "\n" +
-                                                "Course: " + alumnRow["Cursos"] + "\n";
+                                                "Course: " + alumnRow["Codigo"] + "\n";
 
                         extraAlumnsInfo.Add(extraAlumnInfo);
                         alumnsPositions.Add(i);
@@ -252,7 +252,7 @@ namespace Exercise_4
             }
             else
             {
-                MessageBox.Show("No alumns found with the selected name.");
+                MessageBox.Show("No alumns found with the selected surname.");
             }
         }
 
@@ -270,7 +270,7 @@ namespace Exercise_4
                     string stringToCheck = alumnRow[6].ToString().ToLower();
                     if (stringToCheck.Contains(alumnCourse.ToLower()))
                     {
-                        string fullName = (alumnRow["Nombre"] + " " + alumnRow["Apellido"]).ToString();
+                        string fullName = (alumnRow["Nombre"] + " " + alumnRow["Apellido"] + " course is " + alumnRow["Codigo"]).ToString();
                         matchingAlumnsCourse.Add(fullName);
 
                         string extraAlumnInfo = "ID: " + alumnRow["DNI"] + "\n" +
@@ -278,7 +278,7 @@ namespace Exercise_4
                                                 "Surnames: " + alumnRow["Apellido"] + "\n" +
                                                 "Phone: " + alumnRow["Tlf"] + "\n" +
                                                 "Adress: " + alumnRow["Direccion"] + "\n" +
-                                                "Course: " + alumnRow["Cursos"] + "\n";
+                                                "Course: " + alumnRow["Codigo"] + "\n";
 
                         extraAlumnsInfo.Add(extraAlumnInfo);
                         alumnsPositions.Add(i);
@@ -693,25 +693,16 @@ namespace Exercise_4
                 do
                 {
                     string alumnCourse = Interaction.InputBox("Introduce the alumn's course to show data (EXAMPLE: 1-DAW-N): ");
-
-                    if (CustomRegex.RegexCourseCod(alumnCourse))
+                    if (SimilarAlumnCourseCounter(alumnCourse) > 0)
                     {
-                        if (SimilarAlumnCourseCounter(alumnCourse) > 0)
-                        {
-                            SelectSimilarCourseAlumnsToShow(alumnCourse);
-                            showed = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("There isn't any alumn in the selected course, try again");
-                            showed = true;
-                        }
+                        SelectSimilarCourseAlumnsToShow(alumnCourse);
+                        showed = true;
                     }
                     else
                     {
-                        MessageBox.Show("The course format is not correct, try again");
+                        MessageBox.Show("There isn't any alumn in the selected course, try again");
+                        showed = true;
                     }
-
                 } while (!showed);
 
             }

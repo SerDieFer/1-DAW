@@ -114,7 +114,7 @@ namespace Exercise_4
                                              "Surnames: " + row["Apellido"] + "\n" +
                                              "Phone: " + row["Tlf"] + "\n" +
                                              "Email: " + row["Email"] + "\n" +
-                                             "Course: " + row["Cursos"] + "\n";
+                                             "Course: " + row["Codigo"] + "\n";
 
                         teacherListTxt += teacherInfo + "\n";
                     }
@@ -192,7 +192,7 @@ namespace Exercise_4
                                                   "Surnames: " + teacherRow["Apellido"] + "\n" +
                                                   "Phone: " + teacherRow["Tlf"] + "\n" +
                                                   "Email: " + teacherRow["Email"] + "\n" +
-                                                  "Course: " + teacherRow["Cursos"] + "\n";
+                                                  "Course: " + teacherRow["Codigo"] + "\n";
 
                         extraTeachersInfo.Add(extraTeacherInfo);
                         teachersPositions.Add(i);
@@ -270,7 +270,7 @@ namespace Exercise_4
                     string stringToCheck = teacherRow[6].ToString().ToLower();
                     if (stringToCheck.Contains(teacherSurname.ToLower()))
                     {
-                        string fullName = (teacherRow["Nombre"] + " " + teacherRow["Apellido"]).ToString();
+                        string fullName = (teacherRow["Nombre"] + " " + teacherRow["Apellido"] + " course is " + teacherRow["Codigo"]).ToString();
                         matchingTeachersCourse.Add(fullName);
 
                         string extraTeacherInfo = "ID: " + teacherRow["DNI"] + "\n" +
@@ -278,7 +278,7 @@ namespace Exercise_4
                                                   "Surnames: " + teacherRow["Apellido"] + "\n" +
                                                   "Phone: " + teacherRow["Tlf"] + "\n" +
                                                   "Email: " + teacherRow["Email"] + "\n" +
-                                                  "Course: " + teacherRow["Cursos"] + "\n";
+                                                  "Course: " + teacherRow["Codigo"] + "\n";
 
                         extraTeachersInfo.Add(extraTeacherInfo);
                         teachersPositions.Add(i);
@@ -692,27 +692,17 @@ namespace Exercise_4
                 do
                 {
                     string teacherCourse = Interaction.InputBox("Introduce the teacher's course to show data (EXAMPLE: 1-DAW-N): ");
-
-                    if (CustomRegex.RegexCourseCod(teacherCourse))
+                    if (SimilarTeacherCourseCounter(teacherCourse) > 0)
                     {
-                        if (SimilarTeacherCourseCounter(teacherCourse) > 0)
-                        {
-                            SelectSimilarCourseTeachersToShow(teacherCourse);
-                            showed = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("There isn't any teacher with the selected course, try again");
-                            showed = true;
-                        }
+                        SelectSimilarCourseTeachersToShow(teacherCourse);
+                        showed = true;
                     }
                     else
                     {
-                        MessageBox.Show("The course format is not correct, try again");
-                    }
-
+                        MessageBox.Show("There isn't any teacher with the selected course, try again");
+                        showed = true;
+                    }   
                 } while (!showed);
-
             }
             else if (dbHandler.TeachersQuantity == 1)
             {

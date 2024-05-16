@@ -62,48 +62,74 @@ namespace Exercise_4
         // SQLDBHANDLER CONSTRUCTOR WHICH HANDLES THE CONNECTION AND CREATION OF DATA SET AND DATA ADAPTER
         public SqlDBHandler(string selectedTable)
         {
-            try
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS CONNECTION
+            con.Open();
+
+            // CREATES A NEW DATA SET
+            dataSet = new DataSet();
+
+            // STRING WHICH CONTAINS A SELECT ORDER FOR A SELECTED TABLE WITH ALL ITS INFO
+            string stringSQL = "SELECT * FROM " + selectedTable;
+
+            // CREATES A NEW DATA ADAPTER AND CONNECTS IT TO THE ACTUAL DB TO EXTRACT THE DATA BASED IN THE PREVIOUS ORDER
+            dataAdapter = new SqlDataAdapter(stringSQL, con);
+
+            // RETRIEVES DATA FROM THE DATABASE USING A DATA ADAPTER AND FILLS A TABLE IN A DATASET WITH THAT DATA
+            dataAdapter.Fill(dataSet, selectedTable);
+
+            if (selectedTable == "Profesores")
             {
-                // CREATES A CONNEXION WITH THE DB
-                SqlConnection con = CreateSqlConnectionToDB();
-
-                // OPENS CONNECTION
-                con.Open();
-
-                // CREATES A NEW DATA SET
-                dataSet = new DataSet();
-
-                // STRING WHICH CONTAINS A SELECT ORDER FOR A SELECTED TABLE WITH ALL ITS INFO
-                string stringSQL = "SELECT * FROM " + selectedTable;
-
-                // CREATES A NEW DATA ADAPTER AND CONNECTS IT TO THE ACTUAL DB TO EXTRACT THE DATA BASED IN THE PREVIOUS ORDER
-                dataAdapter = new SqlDataAdapter(stringSQL, con);
-
-                // RETRIEVES DATA FROM THE DATABASE USING A DATA ADAPTER AND FILLS A TABLE IN A DATASET WITH THAT DATA
-                dataAdapter.Fill(dataSet, selectedTable);
-
-                if (selectedTable == "Profesores")
-                {
-                    // COUNT TOTAL TEACHERS
-                    _selectedTeachersQuantity = dataSet.Tables[selectedTable].Rows.Count;
-                }
-                else if (selectedTable == "Alumnos")
-                {
-                    // COUNT TOTAL ALUMNS
-                    _selectedAlumnsQuantity = dataSet.Tables[selectedTable].Rows.Count;
-                }
-                else if (selectedTable == "Cursos")
-                {
-                    // COUNT TOTAL COURSES
-                    _selectedCoursesQuantity = dataSet.Tables[selectedTable].Rows.Count;
-                }
-                // CLOSES CONNECTION
-                con.Close();
+                // COUNT TOTAL TEACHERS
+                _selectedTeachersQuantity = dataSet.Tables[selectedTable].Rows.Count;
             }
-            catch
+            else if (selectedTable == "Alumnos")
             {
-                Console.WriteLine("Error al conectar a la base de datos: ");
+                // COUNT TOTAL ALUMNS
+                _selectedAlumnsQuantity = dataSet.Tables[selectedTable].Rows.Count;
             }
+            else if (selectedTable == "Cursos")
+            {
+                // COUNT TOTAL COURSES
+                _selectedCoursesQuantity = dataSet.Tables[selectedTable].Rows.Count;
+            }
+            // CLOSES CONNECTION
+            con.Close();
+        }
+
+        // SQLDBHANDLER CONSTRUCTOR WHICH HANDLES THE CONNECTION AND CREATION OF DATA SET AND DATA ADAPTER FOR ADMIN USER
+        public SqlDBHandler()
+        {
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS CONNECTION
+            con.Open();
+
+            // CREATES A NEW DATA SET
+            dataSet = new DataSet();
+
+            // CREATES A NEW DATA ADAPTER AND CONNECTS IT TO THE ACTUAL DB TO EXTRACT THE DATA FROM ALL TABLES
+            dataAdapter = new SqlDataAdapter("SELECT * FROM Cursos; SELECT * FROM Alumnos; SELECT * FROM Profesores", con);
+
+            // RENAME THE AUTOMATIC TABLE NAMES TO THEIR ORIGINAL ONES
+            dataAdapter.TableMappings.Add("Table", "Cursos");
+            dataAdapter.TableMappings.Add("Table1", "Alumnos");
+            dataAdapter.TableMappings.Add("Table2", "Profesores");
+
+            // RETRIEVES DATA FROM THE DATABASE USING A DATA ADAPTER AND FILLS A TABLE IN A DATASET WITH THAT DATA
+            dataAdapter.Fill(dataSet);
+
+            _selectedCoursesQuantity = dataSet.Tables["Cursos"].Rows.Count;
+            _selectedAlumnsQuantity = dataSet.Tables["Alumnos"].Rows.Count;
+            _selectedTeachersQuantity = dataSet.Tables["Profesores"].Rows.Count;
+    
+            // CLOSES CONNECTION
+            con.Close();
+
+            ReconnectionToDB("All");
         }
 
         public DataTable ImportSelectedDataTable(string selectedTable)
@@ -144,6 +170,12 @@ namespace Exercise_4
             else if (selectedTable == "Cursos")
             {
                 dataAdapter.Update(dataSet, "Cursos");
+            }
+            else if (selectedTable == "All")
+            {
+                dataAdapter.Update(dataSet, "Cursos");
+                dataAdapter.Update(dataSet, "Alumnos");
+                dataAdapter.Update(dataSet, "Profesores");
             }
         }
 
@@ -309,23 +341,23 @@ namespace Exercise_4
             Identity selectedIdentity = null;
 
             // OBJECT WHICH ALLOWS US TO COLLECT RECORDS FROM A TABLE
-            DataRow dRecord;
+            DataRow dataRecord;
 
             if (selectedTable == "Profesores")
             {
                 if (pos >= 0 && pos < TeachersQuantity)
                 {
                     // TAKING THE RECORD OF "pos" POSITION IN TEACHERS TABLE
-                    dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+                    dataRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
 
                     // TAKE VALUE FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW TEACHER OBJECT
-                    selectedIdentity = Teacher.TeacherCreation(dRecord[0].ToString(),
-                                                               dRecord[1].ToString(),
-                                                               dRecord[2].ToString(),
-                                                               dRecord[3].ToString(),
-                                                               dRecord[4].ToString(),
-                                                               dRecord[5].ToString(),
-                                                               dRecord[6].ToString());
+                    selectedIdentity = Teacher.TeacherCreation(dataRecord["DNI"].ToString(),
+                                                               dataRecord["Nombre"].ToString(),
+                                                               dataRecord["Apellido"].ToString(),
+                                                               dataRecord["Tlf"].ToString(),
+                                                               dataRecord["Email"].ToString(),
+                                                               dataRecord["Contraseña"].ToString(),
+                                                               dataRecord["Codigo"].ToString());
                 }
             }  
             else if (selectedTable == "Alumnos")
@@ -333,16 +365,16 @@ namespace Exercise_4
 
                 if (pos >= 0 && pos < AlumnsQuantity)
                 {
-                    dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+                    dataRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
 
                     // TAKE VALUE FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW ALUMNS OBJECT
-                    selectedIdentity = Alumn.AlumnCreation(dRecord[0].ToString(),
-                                                           dRecord[1].ToString(),
-                                                           dRecord[2].ToString(),
-                                                           dRecord[4].ToString(),
-                                                           dRecord[3].ToString(),
-                                                           dRecord[5].ToString(),
-                                                           dRecord[6].ToString());
+                    selectedIdentity = Alumn.AlumnCreation(dataRecord["DNI"].ToString(),
+                                                           dataRecord["Nombre"].ToString(),
+                                                           dataRecord["Apellido"].ToString(),
+                                                           dataRecord["Tlf"].ToString(),
+                                                           dataRecord["Direccion"].ToString(),
+                                                           dataRecord["Contraseña"].ToString(),
+                                                           dataRecord["Codigo"].ToString());
                     // PHONE AND ADDRESES ARE SWAPPED IN THE DB
                 }
             } 
@@ -350,11 +382,11 @@ namespace Exercise_4
             {
                 if (pos >= 0 && pos < CoursesQuantity)
                 {
-                    dRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
+                    dataRecord = ImportSelectedDataTable(selectedTable).Rows[pos];
 
                     // TAKE VALUE FROM EACH RECORD'S COLUMNS TO SET THEM IN THE NEW COURSES OBJECT
-                    selectedIdentity = Course.CourseCreation(dRecord[0].ToString(),
-                                                             dRecord[1].ToString());
+                    selectedIdentity = Course.CourseCreation(dataRecord["Codigo"].ToString(),
+                                                             dataRecord["Nombre"].ToString());
                 }
             }
 
@@ -533,30 +565,54 @@ namespace Exercise_4
         // METHOD TO DELETE A SELECTED OBJECT FROM THE DB
         public void DeleteIdentity(int pos, string selectedTable)
         {
-            // DELETE THE RECORD FROM THE SELECTED POSITION
-            ImportSelectedDataTable(selectedTable).Rows[pos].Delete();
+            // Obtener la fila correspondiente al objeto seleccionado
+            DataRow selectedRow = ImportSelectedDataTable(selectedTable).Rows[pos];
 
-            if (selectedTable == "Profesores")
+            // Verificar si se trata de una tabla de cursos
+            if (selectedTable == "Cursos")
             {
-                // UPDATES COUNT FROM TEACHERS
-                _selectedTeachersQuantity--;
+                // Obtener el código del curso que se va a borrar
+                string courseCode = selectedRow["Codigo"].ToString();
 
+                // Crear la conexión a la base de datos
+                using (SqlConnection con = CreateSqlConnectionToDB())
+                {
+                    con.Open();
+
+                    // Actualizar la tabla de profesores
+                    string updateProfessorsQuery = "UPDATE Profesores SET Codigo = NULL WHERE Codigo = @CourseCode";
+                    SqlCommand updateProfessorsCommand = new SqlCommand(updateProfessorsQuery, con);
+                    updateProfessorsCommand.Parameters.AddWithValue("@CourseCode", courseCode);
+                    updateProfessorsCommand.ExecuteNonQuery();
+
+                    // Actualizar la tabla de alumnos
+                    string updateAlumnosQuery = "UPDATE Alumnos SET Codigo = NULL WHERE Codigo = @CourseCode";
+                    SqlCommand updateAlumnosCommand = new SqlCommand(updateAlumnosQuery, con);
+                    updateAlumnosCommand.Parameters.AddWithValue("@CourseCode", courseCode);
+                    updateAlumnosCommand.ExecuteNonQuery();
+
+                    selectedRow.Delete();
+
+                    _selectedCoursesQuantity--;
+
+                    con.Close();
+                }
+                ReconnectionToDB("All");
             }
-            else if (selectedTable == "Alumnos")
+            else
             {
-                // UPDATES COUNT FROM ALUMNS
-                _selectedAlumnsQuantity--;
+                selectedRow.Delete();
+                if (selectedTable == "Profesores")
+                {
+                    _selectedTeachersQuantity--;
+                }
+                else if (selectedTable == "Alumnos")
+                {
+                    _selectedAlumnsQuantity--;
+                }
 
+                ReconnectionToDB(selectedTable);
             }
-            else if (selectedTable == "Cursos")
-            {
-                // UPDATES COUNT FROM COURSES
-                _selectedCoursesQuantity--;
-
-            }
-
-            // UPDATES THE DB FROM SELECTED TABLE
-            ReconnectionToDB(selectedTable);
         }
 
         // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB

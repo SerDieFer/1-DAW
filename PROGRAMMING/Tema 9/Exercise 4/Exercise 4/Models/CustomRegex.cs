@@ -65,14 +65,14 @@ namespace Exercise_4
         public static bool RegexCourseCod(string x)
         {
             /* THIS METHOD VALIDATES WHETHER THE INPUT STRING REPRESENTS A VALID COURSE CODE.
-             * THE REGULAR EXPRESSION PATTERN "^[1-9]{1}-[A-Z]{3}-[A-Z]{1}$" CHECKS IF THE STRING CONSISTS OF:
+             * THE REGULAR EXPRESSION PATTERN "^(?:[1-9]{1}-[A-Z]{3,4}-[A-Z]{1}|)$" CHECKS IF THE STRING CONSISTS OF:
              * - A SINGLE NON-ZERO DIGIT (FROM 1 TO 9), FOLLOWED BY
              * - A HYPHEN, THEN
-             * - THREE UPPERCASE LETTERS, THEN
+             * - THREE OR FOUR UPPERCASE LETTERS, THEN
              * - ANOTHER HYPHEN, AND FINALLY
-             * - A SINGLE UPPERCASE LETTER. */
+             * - A SINGLE UPPERCASE LETTER. OR NULL). */
 
-            string regexPattern = "^[1-9]{1}-[A-Z]{3}-[A-Z]{1}$";
+            string regexPattern = "^(?:[1-9]{1}-[A-Z]{3,4}-[A-Z]{1}|)$";
             return new Regex(regexPattern).IsMatch(x);
         }
     }

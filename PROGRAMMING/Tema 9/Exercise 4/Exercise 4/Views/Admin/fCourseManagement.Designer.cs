@@ -63,7 +63,7 @@
             this.gpCourseExtraOption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gpCourseExtraOption.Location = new System.Drawing.Point(12, 309);
             this.gpCourseExtraOption.Name = "gpCourseExtraOption";
-            this.gpCourseExtraOption.Size = new System.Drawing.Size(645, 99);
+            this.gpCourseExtraOption.Size = new System.Drawing.Size(699, 99);
             this.gpCourseExtraOption.TabIndex = 22;
             this.gpCourseExtraOption.TabStop = false;
             this.gpCourseExtraOption.Text = "LIST AND SEARCH";
@@ -71,9 +71,9 @@
             // btnListCourses
             // 
             this.btnListCourses.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnListCourses.Location = new System.Drawing.Point(331, 34);
+            this.btnListCourses.Location = new System.Drawing.Point(373, 34);
             this.btnListCourses.Name = "btnListCourses";
-            this.btnListCourses.Size = new System.Drawing.Size(290, 41);
+            this.btnListCourses.Size = new System.Drawing.Size(302, 41);
             this.btnListCourses.TabIndex = 0;
             this.btnListCourses.Text = "LIST OF COURSES";
             this.btnListCourses.UseVisualStyleBackColor = true;
@@ -84,7 +84,7 @@
             this.btnSearchCourse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchCourse.Location = new System.Drawing.Point(21, 34);
             this.btnSearchCourse.Name = "btnSearchCourse";
-            this.btnSearchCourse.Size = new System.Drawing.Size(288, 41);
+            this.btnSearchCourse.Size = new System.Drawing.Size(301, 41);
             this.btnSearchCourse.TabIndex = 1;
             this.btnSearchCourse.Text = "SEARCH BY ID";
             this.btnSearchCourse.UseVisualStyleBackColor = true;
@@ -95,7 +95,7 @@
             this.gpCourseUpdateDelete.Controls.Add(this.btnCourseDelete);
             this.gpCourseUpdateDelete.Controls.Add(this.btnCourseUpdate);
             this.gpCourseUpdateDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpCourseUpdateDelete.Location = new System.Drawing.Point(415, 12);
+            this.gpCourseUpdateDelete.Location = new System.Drawing.Point(469, 12);
             this.gpCourseUpdateDelete.Name = "gpCourseUpdateDelete";
             this.gpCourseUpdateDelete.Size = new System.Drawing.Size(242, 159);
             this.gpCourseUpdateDelete.TabIndex = 23;
@@ -132,7 +132,7 @@
             this.gpCourseNewRegistry.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gpCourseNewRegistry.Location = new System.Drawing.Point(12, 424);
             this.gpCourseNewRegistry.Name = "gpCourseNewRegistry";
-            this.gpCourseNewRegistry.Size = new System.Drawing.Size(645, 92);
+            this.gpCourseNewRegistry.Size = new System.Drawing.Size(699, 92);
             this.gpCourseNewRegistry.TabIndex = 21;
             this.gpCourseNewRegistry.TabStop = false;
             this.gpCourseNewRegistry.Text = "NEW REGISTRY";
@@ -140,7 +140,7 @@
             // btnCourseCancelAddRegistry
             // 
             this.btnCourseCancelAddRegistry.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCourseCancelAddRegistry.Location = new System.Drawing.Point(222, 32);
+            this.btnCourseCancelAddRegistry.Location = new System.Drawing.Point(248, 32);
             this.btnCourseCancelAddRegistry.Name = "btnCourseCancelAddRegistry";
             this.btnCourseCancelAddRegistry.Size = new System.Drawing.Size(200, 41);
             this.btnCourseCancelAddRegistry.TabIndex = 2;
@@ -162,7 +162,7 @@
             // btnCourseSave
             // 
             this.btnCourseSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCourseSave.Location = new System.Drawing.Point(440, 32);
+            this.btnCourseSave.Location = new System.Drawing.Point(489, 32);
             this.btnCourseSave.Name = "btnCourseSave";
             this.btnCourseSave.Size = new System.Drawing.Size(186, 41);
             this.btnCourseSave.TabIndex = 1;
@@ -179,7 +179,7 @@
             this.gpCourseNavigate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gpCourseNavigate.Location = new System.Drawing.Point(12, 190);
             this.gpCourseNavigate.Name = "gpCourseNavigate";
-            this.gpCourseNavigate.Size = new System.Drawing.Size(645, 104);
+            this.gpCourseNavigate.Size = new System.Drawing.Size(699, 104);
             this.gpCourseNavigate.TabIndex = 20;
             this.gpCourseNavigate.TabStop = false;
             this.gpCourseNavigate.Text = "NAVIGATE TO";
@@ -187,9 +187,9 @@
             // btnCoursePrevious
             // 
             this.btnCoursePrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCoursePrevious.Location = new System.Drawing.Point(487, 43);
+            this.btnCoursePrevious.Location = new System.Drawing.Point(524, 43);
             this.btnCoursePrevious.Name = "btnCoursePrevious";
-            this.btnCoursePrevious.Size = new System.Drawing.Size(134, 41);
+            this.btnCoursePrevious.Size = new System.Drawing.Size(151, 41);
             this.btnCoursePrevious.TabIndex = 3;
             this.btnCoursePrevious.Text = "PREVIOUS";
             this.btnCoursePrevious.UseVisualStyleBackColor = true;
@@ -198,9 +198,9 @@
             // btnCourseNext
             // 
             this.btnCourseNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCourseNext.Location = new System.Drawing.Point(331, 43);
+            this.btnCourseNext.Location = new System.Drawing.Point(354, 43);
             this.btnCourseNext.Name = "btnCourseNext";
-            this.btnCourseNext.Size = new System.Drawing.Size(134, 41);
+            this.btnCourseNext.Size = new System.Drawing.Size(151, 41);
             this.btnCourseNext.TabIndex = 2;
             this.btnCourseNext.Text = "NEXT";
             this.btnCourseNext.UseVisualStyleBackColor = true;
@@ -209,9 +209,9 @@
             // btnCourseLast
             // 
             this.btnCourseLast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCourseLast.Location = new System.Drawing.Point(175, 43);
+            this.btnCourseLast.Location = new System.Drawing.Point(188, 43);
             this.btnCourseLast.Name = "btnCourseLast";
-            this.btnCourseLast.Size = new System.Drawing.Size(134, 41);
+            this.btnCourseLast.Size = new System.Drawing.Size(151, 41);
             this.btnCourseLast.TabIndex = 1;
             this.btnCourseLast.Text = "LAST";
             this.btnCourseLast.UseVisualStyleBackColor = true;
@@ -223,7 +223,7 @@
             this.btnCourseFirst.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCourseFirst.Location = new System.Drawing.Point(21, 43);
             this.btnCourseFirst.Name = "btnCourseFirst";
-            this.btnCourseFirst.Size = new System.Drawing.Size(134, 41);
+            this.btnCourseFirst.Size = new System.Drawing.Size(151, 41);
             this.btnCourseFirst.TabIndex = 0;
             this.btnCourseFirst.Text = "FIRST";
             this.btnCourseFirst.UseVisualStyleBackColor = true;
@@ -239,7 +239,7 @@
             this.gbCourseData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbCourseData.Location = new System.Drawing.Point(12, 12);
             this.gbCourseData.Name = "gbCourseData";
-            this.gbCourseData.Size = new System.Drawing.Size(397, 159);
+            this.gbCourseData.Size = new System.Drawing.Size(442, 159);
             this.gbCourseData.TabIndex = 19;
             this.gbCourseData.TabStop = false;
             this.gbCourseData.Text = "COURSE DATA";
@@ -256,18 +256,18 @@
             // txtbCourseID
             // 
             this.txtbCourseID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbCourseID.Location = new System.Drawing.Point(153, 48);
+            this.txtbCourseID.Location = new System.Drawing.Point(86, 48);
             this.txtbCourseID.Name = "txtbCourseID";
-            this.txtbCourseID.Size = new System.Drawing.Size(217, 22);
+            this.txtbCourseID.Size = new System.Drawing.Size(337, 22);
             this.txtbCourseID.TabIndex = 9;
             this.txtbCourseID.TextChanged += new System.EventHandler(this.txtbCourseID_TextChanged);
             // 
             // txtbCourseName
             // 
             this.txtbCourseName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbCourseName.Location = new System.Drawing.Point(153, 88);
+            this.txtbCourseName.Location = new System.Drawing.Point(86, 88);
             this.txtbCourseName.Name = "txtbCourseName";
-            this.txtbCourseName.Size = new System.Drawing.Size(217, 22);
+            this.txtbCourseName.Size = new System.Drawing.Size(337, 22);
             this.txtbCourseName.TabIndex = 8;
             this.txtbCourseName.TextChanged += new System.EventHandler(this.txtbCourseName_TextChanged);
             // 
@@ -297,7 +297,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(672, 532);
+            this.ClientSize = new System.Drawing.Size(723, 532);
             this.Controls.Add(this.gpCourseExtraOption);
             this.Controls.Add(this.gpCourseUpdateDelete);
             this.Controls.Add(this.gpCourseNewRegistry);
