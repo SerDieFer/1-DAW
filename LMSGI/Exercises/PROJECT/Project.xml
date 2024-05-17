@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="Project.xsl"?>
+<!DOCTYPE warhammer40k SYSTEM "Project.dtd">
+<warhammer40k>
+    <!-- Humanidad -->
+    <faccion nombre="Imperio del Hombre">
+        <descripcion>La Humanidad lucha por su supervivencia en el despiadado universo del 41º milenio, protegiéndose de los horrores de la galaxia y expandiendo su dominio a través del Imperio del Hombre.</descripcion>
+        <foto>https://example.com/humanidad.jpg</foto>
+        <subfaccion nombre="Space Marines">
+            <descripcion>Los Space Marines son la élite guerrera del Imperio del Hombre, genéticamente mejorados y entrenados para la guerra sin fin.</descripcion>
+            <foto>https://example.com/spacemarines.jpg</foto>
+            <capitulo nombre="Ultramarines">
+                <descripcion>Los Ultramarines son conocidos por su disciplina, habilidad táctica y adherencia al Codex Astartes.</descripcion>
+                <foto>https://example.com/ultramarines.jpg</foto>
+                <lider>
+                    <nombre>Roboute Guilliman</nombre>
+                    <titulo>Primarch</titulo>
+                    <habilidades>Fuerza mejorada, genio estratégico y habilidades regenerativas.</habilidades>
+                    <foto>https://example.com/guilliman.jpg</foto>
+                </lider>
+                <unidadDestacada>
+                    <nombre>Tactical Squad</nombre>
+                    <tipo>Infantry</tipo>
+                    <descripcion>Unidad de infantería versátil, equipada para diversas situaciones de combate.</descripcion>
+                    <foto>https://example.com/tacticalsquad.jpg</foto>
+                </unidadDestacada>
+            </capitulo>
+            <capitulo nombre="Blood Angels">
+                <descripcion>Los Blood Angels son famosos por su brutalidad en combate y su trágica maldición genética.</descripcion>
+                <foto>https://example.com/bloodangels.jpg</foto>
+                <lider>
+                    <nombre>Dante</nombre>
+                    <titulo>capitulo Master</titulo>
+                    <habilidades>Inmortalidad, habilidades inigualables en combate cuerpo a cuerpo y liderazgo.</habilidades>
+                    <foto>https://example.com/dante.jpg</foto>
+                </lider>
+                <unidadDestacada>
+                    <nombre>Sanguinary Guard</nombre>
+                    <tipo>Infantry</tipo>
+                    <descripcion>Guerreros de élite con poderosas armas de combate cuerpo a cuerpo y mochilas de salto.</descripcion>
+                    <foto>https://example.com/sanguinaryguard.jpg</foto>
+                </unidadDestacada>
+            </capitulo>
+        </subfaccion>
+        <subfaccion nombre="Adeptus Mechanicus">
+            <descripcion>El Adeptus Mechanicus es la facción tecno-religiosa del Imperio, dedicada al redescubrimiento y preservación de tecnologías antiguas.</descripcion>
+            <foto>https://example.com/adeptusmechanicus.jpg</foto>
+            <lider>
+                <nombre>Belisarius Cawl</nombre>
+                <titulo>Archmagos Dominus</titulo>
+                <habilidades>Tecnomanipulación, regeneración y acceso a tecnologías antiguas.</habilidades>
+                <foto>https://example.com/cawl.jpg</foto>
+            </lider>
+            <unidadDestacada>
+                <nombre>Skitarii Rangers</nombre>
+                <tipo>Infantry</tipo>
+                <descripcion>Soldados cibernéticos con armamento de largo alcance.</descripcion>
+                <foto>https://example.com/skitarii.jpg</foto>
+            </unidadDestacada>
+        </subfaccion>
+        <subfaccion nombre="Adepta Sororitas">
+            <descripcion>Las Adepta Sororitas, también conocidas como Hermanas de Batalla, son una organización militar religiosa dedicada a la defensa de la fe Imperial.</descripcion>
+            <foto>https://example.com/adeptasororitas.jpg</foto>
+            <lider>
+                <nombre>Saint Celestine</nombre>
+                <titulo>Living Saint</titulo>
+                <habilidades>Intervención divina, resurrección y habilidades de combate mejoradas.</habilidades>
+                <foto>https://example.com/celestine.jpg</foto>
+            </lider>
+            <unidadDestacada>
+                <nombre>Battle Sisters</nombre>
+                <tipo>Infantry</tipo>
+                <descripcion>Guerreras fieles equipadas con bolters y armaduras de poder.</descripcion>
+                <foto>https://example.com/battlesisters.jpg</foto>
+            </unidadDestacada>
+        </subfaccion>
+    </faccion>
+
+    <!-- Necrones -->
+    <faccion nombre="Necrones">
+        <descripcion>Los Necrones son una antigua raza de guerreros robóticos que buscan recuperar su dominio sobre la galaxia tras milenios de letargo.</descripcion>
+        <foto>https://example.com/necrones.jpg</foto>
+        <lider>
+            <nombre>Imotekh the Stormlord</nombre>
+            <titulo>Overlord</titulo>
+            <habilidades>Control de tormentas, acumen táctico mejorado y resistencia.</habilidades>
+            <foto>https://example.com/imotekh.jpg</foto>
+        </lider>
+        <unidadDestacada>
+            <nombre>Necron Warriors</nombre>
+            <tipo>Infantry</tipo>
+            <descripcion>Soldados robóticos implacables, armados con Gauss Flayers.</descripcion>
+            <foto>https://example.com/necronwarriors.jpg</foto>
+        </unidadDestacada>
+    </faccion>
+
+    <!-- Orkos -->
+    <faccion nombre="Orkos">
+        <descripcion>Los Orkos son una raza belicosa y salvaje que vive para la guerra y el saqueo, extendiendo el caos allá donde van.</descripcion>
+        <foto>https://example.com/orkos.jpg</foto>
+        <lider>
+            <nombre>Ghazghkull Thraka</nombre>
+            <titulo>Warboss</titulo>
+            <habilidades>Fuerza incomparable, genio táctico y profecía.</habilidades>
+            <foto>https://example.com/ghazghkull.jpg</foto>
+        </lider>
+        <unidadDestacada>
+            <nombre>Boyz</nombre>
+            <tipo>Infantry</tipo>
+            <descripcion>Tropas Orkas básicas, conocidas por su ferocidad y número.</descripcion>
+            <foto>https://example.com/boyz.jpg</foto>
+        </unidadDestacada>
+    </faccion>
+
+    <!-- Tiránidos -->
+    <faccion nombre="Tiránidos">
+        <descripcion>Los Tiránidos son una raza de criaturas alienígenas hambrientas de biomasa, que invaden mundos para consumir toda la vida en ellos.</descripcion>
+        <foto>https://example.com/tiranidos.jpg</foto>
+        <lider>
+            <nombre>Hive Tyrant</nombre>
+            <titulo>lider</titulo>
+            <habilidades>Telepatía, habilidades de combate mejoradas y control de la colmena.</habilidades>
+            <foto>https://example.com/hivetyrant.jpg</foto>
+        </lider>
+        <unidadDestacada>
+            <nombre>Termagants</nombre>
+            <tipo>Infantry</tipo>
+            <descripcion>Infantería de enjambre con bio-armas para combate a distancia.</descripcion>
+            <foto>https://example.com/termagants.jpg</foto>
+        </unidadDestacada>
+    </faccion>
+
+    <!-- T'au -->
+    <faccion nombre="T'au">
+        <descripcion>La T'au es una raza joven y avanzada que lucha por la expansión de su imperio y el "Bien Mayor", utilizando tecnología superior y tácticas coordinadas.</descripcion>
+        <foto>https://example.com/tau.jpg</foto>
+        <lider>
+            <nombre>Commander Shadowsun</nombre>
+            <titulo>Commander</titulo>
+            <habilidades>Invisibilidad, traje de combate avanzado y experiencia táctica.</habilidades>
+            <foto>https://example.com/shadowsun.jpg</foto>
+        </lider>
+        <unidadDestacada>
+            <nombre>Fire Warriors</nombre>
+            <tipo>Infantry</tipo>
+            <descripcion>Soldados altamente entrenados con rifles de pulso avanzados.</descripcion>
+            <foto>https://example.com/firewarriors.jpg</foto>
+        </unidadDestacada>
+    </faccion>
+
+    <!-- Caos -->
+    <faccion nombre="Caos">
+        <descripcion>El Caos es una fuerza malévola que corrompe y destruye, formada por demonios y traidores que sirven a los poderes ruinosos.</descripcion>
+        <foto>https://example.com/caos.jpg</foto>
+        <subfaccion nombre="Khorne">
+            <descripcion>Khorne es el dios del Caos que representa la violencia, la guerra y la sangre.</descripcion>
+            <foto>https://example.com/khorne.jpg</foto>
+            <lider>
+                <nombre>Skulltaker</nombre>
+                <titulo>Herald of Khorne</titulo>
+                <habilidades>Habilidades de combate cuerpo a cuerpo inigualables, fuerza demoníaca y sed de sangre.</habilidades>
+                <foto>https://example.com/skulltaker.jpg</foto>
+            </lider>
+            <unidadDestacada>
+                <nombre>Bloodletters</nombre>
+                <tipo>Infantry</tipo>
+                <descripcion>Soldados demoníacos de Khorne, expertos en combate cuerpo a cuerpo.</descripcion>
+                <foto>https://example.com/bloodletters.jpg</foto>
+            </unidadDestacada>
+        </subfaccion>
+        <subfaccion nombre="Tzeentch">
+            <descripcion>Tzeentch es el dios del Caos que representa la magia, el cambio y la manipulación.</descripcion>
+            <foto>https://example.com/tzeentch.jpg</foto>
+            <lider>
+                <nombre>Lord of Change</nombre>
+                <titulo>Greater Daemon</titulo>
+                <habilidades>Poderes mágicos inmensos, habilidad de cambiar la realidad y manipulación.</habilidades>
+                <foto>https://example.com/lordofchange.jpg</foto>
+            </lider>
+            <unidadDestacada>
+                <nombre>Horrors of Tzeentch</nombre>
+                <tipo>Infantry</tipo>
+                <descripcion>Demonios mágicos capaces de lanzar hechizos devastadores.</descripcion>
+                <foto>https://example.com/horrors.jpg</foto>
+            </unidadDestacada>
+        </subfaccion>
+        <subfaccion nombre="Nurgle">
+            <descripcion>Nurgle es el dios del Caos que representa la enfermedad, la decadencia y la resistencia.</descripcion>
+            <foto>https://example.com/nurgle.jpg</foto>
+            <lider>
+                <nombre>Ku'gath Plaguefather</nombre>
+                <titulo>Great Unclean One</titulo>
+                <habilidades>Resistencia extrema, control de plagas y habilidades regenerativas.</habilidades>
+                <foto>https://example.com/kugath.jpg</foto>
+            </lider>
+            <unidadDestacada>
+                <nombre>Plaguebearers</nombre>
+                <tipo>Infantry</tipo>
+                <descripcion>Demonios portadores de enfermedades y resistencia elevada.</descripcion>
+                <foto>https://example.com/plaguebearers.jpg</foto>
+            </unidadDestacada>
+        </subfaccion>
+        <subfaccion nombre="Slaanesh">
+            <descripcion>Slaanesh es el dios del Caos que representa el exceso, la decadencia y la hedonía.</descripcion>
+            <foto>https://example.com/slaanesh.jpg</foto>
+            <lider>
+                <nombre>Keeper of Secrets</nombre>
+                <titulo>Greater Daemon</titulo>
+                <habilidades>Velocidad y habilidades sensoriales mejoradas, destreza en combate cuerpo a cuerpo.</habilidades>
+                <foto>https://example.com/keeperofsecrets.jpg</foto>
+            </lider>
+            <unidadDestacada>
+                <nombre>Daemonettes</nombre>
+                <tipo>Infantry</tipo>
+                <descripcion>Guerreras rápidas y letales dedicadas a Slaanesh.</descripcion>
+                <foto>https://example.com/daemonettes.jpg</foto>
+            </unidadDestacada>
+        </subfaccion>
+    </faccion>
+
+    <!-- Drukhari -->
+    <faccion nombre="Drukhari">
+        <descripcion>Los Drukhari, o Eldars Oscuros, son una raza sádica y cruel que se deleita en el dolor y la tortura, llevando a cabo incursiones rápidas y letales.</descripcion>
+        <foto>https://example.com/drukhari.jpg</foto>
+        <lider>
+            <nombre>Asdrubael Vect</nombre>
+            <titulo>Supreme Overlord</titulo>
+            <habilidades>Maestro de la estrategia, crueldad y habilidades de combate excepcionales.</habilidades>
+            <foto>https://example.com/vect.jpg</foto>
+        </lider>
+        <unidadDestacada>
+            <nombre>Kabalite Warriors</nombre>
+            <tipo>Infantry</tipo>
+            <descripcion>Soldados básicos de los Drukhari, expertos en combate rápido y letal.</descripcion>
+            <foto>https://example.com/kabalitewarriors.jpg</foto>
+        </unidadDestacada>
+    </faccion>
+
+    <!-- Eldars -->
+    <faccion nombre="Eldars">
+        <descripcion>Los Eldars son una raza antigua y avanzada, maestros de la guerra y la tecnología, que luchan por la supervivencia de su especie contra las amenazas de la galaxia.</descripcion>
+        <foto>https://example.com/eldars.jpg</foto>
+        <lider>
+            <nombre>Eldrad Ulthran</nombre>
+            <titulo>Farseer</titulo>
+            <habilidades>Previsión psíquica, habilidades mágicas y liderazgo.</habilidades>
+            <foto>https://example.com/elrad.jpg</foto>
+        </lider>
+        <unidadDestacada>
+            <nombre>Dire Avengers</nombre>
+            <tipo>Infantry</tipo>
+            <descripcion>Elite Aspect Warriors specializing in ranged combat.</descripcion>
+            <foto>https://example.com/direavengers.jpg</foto>
+        </unidadDestacada>
+    </faccion>
+</warhammer40k>

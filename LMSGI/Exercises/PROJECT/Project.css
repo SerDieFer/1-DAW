@@ -1,0 +1,62 @@
+
+/* FACCION  */
+
+.Faccion {  display: grid;
+   grid-template-columns: 0fr 0.5fr 0.8fr 0.4fr 0.4fr 0.4fr 0fr;
+   grid-template-rows: 0fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0fr;
+   gap: 3% 3%;
+   grid-auto-flow: row;
+   grid-template-areas:
+     ". . . . . . ."
+     ". NombreFaccion NombreFaccion Imagen-Faccion Imagen-Faccion Imagen-Faccion ."
+     ". Descripcion-Faccion Descripcion-Faccion Imagen-Faccion Imagen-Faccion Imagen-Faccion ."
+     ". Lider Lider Lider Lider Lider ."
+     ". Lider Lider Lider Lider Lider ."
+     ". UnidadDestacada UnidadDestacada UnidadDestacada UnidadDestacada UnidadDestacada ."
+     ". UnidadDestacada UnidadDestacada UnidadDestacada UnidadDestacada UnidadDestacada ."
+     ". Subfacciones Subfacciones Subfacciones Subfacciones Subfacciones ."
+     ". Subfacciones Subfacciones Subfacciones Subfacciones Subfacciones ."
+     ". . . . . . .";
+ }
+ 
+ .NombreFaccion { grid-area: NombreFaccion; }
+ 
+ .Descripcion-Faccion { grid-area: Descripcion-Faccion; }
+ 
+ .Imagen-Faccion { grid-area: Imagen-Faccion; }
+ 
+ .Lider { grid-area: Lider; }
+ 
+ .UnidadDestacada { grid-area: UnidadDestacada; }
+ 
+ .Subfacciones { grid-area: Subfacciones; }
+
+/* LIDER */
+
+.Lider {  display: grid;
+   grid-template-columns: 0fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0fr;
+   grid-template-rows: 0fr 1fr 1fr 1fr 1fr 1fr 0fr;
+   gap: 3% 3%;
+   grid-auto-flow: row;
+   grid-template-areas:
+     ". . . . . . . . ."
+     ". Nombre-Lider Nombre-Lider Titulo-Lider Titulo-Lider Imagen-Lider Imagen-Lider Imagen-Lider ."
+     ". Descripcion-Poderes-Lider Descripcion-Poderes-Lider Descripcion-Poderes-Lider Descripcion-Poderes-Lider Imagen-Lider Imagen-Lider Imagen-Lider ."
+     ". Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada ."
+     ". Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada ."
+     ". Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada Unidad-Destacada ."
+     ". . . . . . . . .";
+ }
+ 
+ .Nombre-Lider { grid-area: Nombre-Lider; }
+ 
+ .Titulo-Lider { grid-area: Titulo-Lider; }
+ 
+ .Imagen-Lider { grid-area: Imagen-Lider; }
+ 
+ .Descripcion-Poderes-Lider { grid-area: Descripcion-Poderes-Lider; }
+ 
+ .Unidad-Destacada { grid-area: Unidad-Destacada; }
+ 
+
+ 
