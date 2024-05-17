@@ -9,27 +9,35 @@ USE TIENDA
 
 EXEC SP_HELP PRODUCTO
 
+-- DECLARAR VARIABLES A USAR
 DECLARE @shopRegistriesCounter INT, 
         @maxRegistryCount INT, 
         @productName VARCHAR(100) 
 
+-- OBTENER NUMERO DE REGISTROS MINIMOS/MAXIMOS DE PRODUCTOS EN SU TABLA
 SELECT @shopRegistriesCounter = MIN(codigo)
   FROM PRODUCTO
 
 SELECT @maxRegistryCount = MAX(codigo)
   FROM PRODUCTO
 
+-- MIENTRAS QUE EL NUMERO DE REGISTROS MINIMOS SEA MENOR O IGUAL AL MAXIMO
 WHILE (@shopRegistriesCounter <= @maxRegistryCount)
 BEGIN
+    -- SELECCIONAR EL NOMBRE DEL PRODUCTO CUANDO ESTE COINCIDA CON EL CODIGO DE LA POSICION ACTUAL DEL BUCLE
     SELECT @productName = nombre
       FROM PRODUCTO
      WHERE codigo = @shopRegistriesCounter
 
+    -- SI ESTE NO ES NULO IMPRIMIR
      IF @productName IS NOT NULL
         PRINT CONCAT('ID: ', @shopRegistriesCounter, CHAR(10), 
                      'Product Name: ', @productName, CHAR(10))
 
+    -- RESET DEL NOMBRE DEL PRODUCTO
     SET @productName = NULL
+
+    -- AÑADIMOS UN VALOR AL CONTADOR PARA QUE EL SIGUIENTE CICLO DEL BUCLE SEA DISTINTO AL ANTERIOR
     SET @shopRegistriesCounter += 1
 END
 
@@ -46,33 +54,41 @@ USE TIENDA
 
 EXEC SP_HELP PRODUCTO
 
+-- DECLARAR VARIABLES A USAR
 DECLARE @shopRegistriesCounter INT, 
         @maxRegistryCount INT, 
         @productName VARCHAR(100),
         @productCost DECIMAL(9,2)
 
+-- OBTENER NUMERO DE REGISTROS MINIMOS/MAXIMOS DE PRODUCTOS EN SU TABLA
 SELECT @shopRegistriesCounter = MIN(codigo)
   FROM PRODUCTO
 
 SELECT @maxRegistryCount = MAX(codigo)
   FROM PRODUCTO
 
+-- MIENTRAS QUE EL NUMERO DE REGISTROS MINIMOS SEA MENOR O IGUAL AL MAXIMO
 WHILE (@shopRegistriesCounter <= @maxRegistryCount)
 BEGIN
-
+    -- SELECCIONAR EL NOMBRE DEL PRODUCTO CUANDO ESTE COINCIDA CON EL CODIGO DE LA POSICION ACTUAL DEL BUCLE
     SELECT @productName = nombre
       FROM PRODUCTO
      WHERE codigo = @shopRegistriesCounter
 
+    -- SELECCIONAR EL PRECIO DEL PRODUCTO CUANDO ESTE COINCIDA CON EL CODIGO DE LA POSICION ACTUAL DEL BUCLE
     SELECT @productCost = precio
       FROM PRODUCTO
      WHERE codigo = @shopRegistriesCounter
 
+    -- SI ESTE NO ES NULO IMPRIMIR
      IF @productName IS NOT NULL
         PRINT CONCAT('Product Name: ', @productName, CHAR(10), 
                      'Product Cost: ', @productCost, ' €', CHAR(10))
 
+    -- RESET DEL NOMBRE DEL PRODUCTO
     SET @productName = NULL
+
+    -- AÑADIMOS UN VALOR AL CONTADOR PARA QUE EL SIGUIENTE CICLO DEL BUCLE SEA DISTINTO AL ANTERIOR
     SET @shopRegistriesCounter += 1
 END
 
@@ -138,7 +154,7 @@ DECLARE @manufacturesName VARCHAR(100)
 
       -- IMPRIMIR DATOS FABRICANTE
       PRINT CONCAT('Manufacturer Name: ', @manufacturesName, 
-                   ' has a total of ', @accumulated, ' € in products')
+                   ' has a total of ', @accumulated, ' € in products', CHAR(10))
 
       -- IR SIGUIENTE REGISTRO DE PRIMER CURSOR
       FETCH NEXT FROM Cur_Manufacturer INTO @manufacturesName     
