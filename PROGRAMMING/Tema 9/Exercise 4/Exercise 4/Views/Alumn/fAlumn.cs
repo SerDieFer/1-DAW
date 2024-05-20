@@ -1,5 +1,6 @@
 ﻿using Exercise_4;
 using Exercise_4.Views.Admin;
+using Exercise_4.Views.Alumn;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +30,9 @@ namespace Exercise_4
         // LOADS COURSE DATA WHERE ALUMN IS INSCRIBED
         private void btnAlumnCourses_Click(object sender, EventArgs e)
         {
-
+            string alumnID = this.Text;
+            fAlumnCheckCourse alumnOptions = new fAlumnCheckCourse(alumnID);
+            alumnOptions.ShowDialog();
         }
 
         // LOADS ALUMNS OPTIONS

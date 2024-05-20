@@ -215,6 +215,40 @@ namespace Exercise_4
             return data;
         }
 
+        // METHOD TO GET MULTIPLE DATA FROM A CERTAIN TABLE ROW BASED IN A CONDITION
+        public string GetStringDataFromRowFromTable(string selectedTable, string query)
+        {
+            // DEFAULT DATA IF NOT FOUND
+            string allData = "";
+
+            // CREATES A CONNEXION WITH THE DB
+            SqlConnection con = CreateSqlConnectionToDB();
+
+            // OPENS THE CONNEXION
+            con.Open();
+
+            // MUST UPDATE THE DB BEFORE DOING A SELECT FROM A CERTAIN QUERY
+            ReconnectionToDB(selectedTable);
+
+            // EXECUTES A COMMAND IN THAT CONNEXION WITH THE SELECTED QUERY
+            SqlCommand command = new SqlCommand(query, con);
+
+            // EXECUTES THE COMMAND AND RETRIEVES THE DATA USING A DATA READER
+            SqlDataReader reader = command.ExecuteReader();
+
+            // LOOPS THROUGH THE RESULT SET AND BUILDS THE RESULT STRING AS SELECTED IN THIS CASE IS ONLY FOR NAME AND SURNAME
+            while (reader.Read())
+            {
+                 allData += reader["Nombre"].ToString() + " " + reader["Apellido"].ToString() + System.Environment.NewLine;
+            }
+
+            // CLOSES THE CONNEXION
+            con.Close();
+
+            return allData;
+        }
+
+
 
         public bool CheckAllDuplicatedData(string id, string phone, string emailOrString, string selectedTable)
         {
@@ -523,7 +557,7 @@ namespace Exercise_4
                 dUpdateRecord[5] = teacherToUpdate.Password;
                 dUpdateRecord[6] = teacherToUpdate.CourseCod;
 
-                if (!CheckAllDuplicatedData(teacherToUpdate.ID, dUpdateRecord[3].ToString(), dUpdateRecord[4].ToString(), selectedTable))
+                if (!CheckAllDuplicatedData(teacherToUpdate.ID, teacherToUpdate.Phone.ToString(), teacherToUpdate.Email.ToString(), selectedTable))
                 {
 
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
@@ -565,38 +599,35 @@ namespace Exercise_4
         // METHOD TO DELETE A SELECTED OBJECT FROM THE DB
         public void DeleteIdentity(int pos, string selectedTable)
         {
-            // Obtener la fila correspondiente al objeto seleccionado
+            // GET THE ROW CORRESPONDING TO THE SELECTED OBJECT
             DataRow selectedRow = ImportSelectedDataTable(selectedTable).Rows[pos];
 
-            // Verificar si se trata de una tabla de cursos
+            // VERIFY IF IT IS A COURSES TABLE
             if (selectedTable == "Cursos")
             {
-                // Obtener el código del curso que se va a borrar
                 string courseCode = selectedRow["Codigo"].ToString();
 
-                // Crear la conexión a la base de datos
-                using (SqlConnection con = CreateSqlConnectionToDB())
-                {
-                    con.Open();
+                SqlConnection con = CreateSqlConnectionToDB();
+                con.Open();
 
-                    // Actualizar la tabla de profesores
-                    string updateProfessorsQuery = "UPDATE Profesores SET Codigo = NULL WHERE Codigo = @CourseCode";
-                    SqlCommand updateProfessorsCommand = new SqlCommand(updateProfessorsQuery, con);
-                    updateProfessorsCommand.Parameters.AddWithValue("@CourseCode", courseCode);
-                    updateProfessorsCommand.ExecuteNonQuery();
+                // UPDATE THE PROFESSORS TABLE
+                string updateProfessorsQuery = "UPDATE Profesores SET Codigo = NULL WHERE Codigo = @CourseCode";
+                SqlCommand updateProfessorsCommand = new SqlCommand(updateProfessorsQuery, con);
+                updateProfessorsCommand.Parameters.AddWithValue("@CourseCode", courseCode);
+                updateProfessorsCommand.ExecuteNonQuery();
 
-                    // Actualizar la tabla de alumnos
-                    string updateAlumnosQuery = "UPDATE Alumnos SET Codigo = NULL WHERE Codigo = @CourseCode";
-                    SqlCommand updateAlumnosCommand = new SqlCommand(updateAlumnosQuery, con);
-                    updateAlumnosCommand.Parameters.AddWithValue("@CourseCode", courseCode);
-                    updateAlumnosCommand.ExecuteNonQuery();
+                // UPDATE THE STUDENTS TABLE
+                string updateAlumnosQuery = "UPDATE Alumnos SET Codigo = NULL WHERE Codigo = @CourseCode";
+                SqlCommand updateAlumnosCommand = new SqlCommand(updateAlumnosQuery, con);
+                updateAlumnosCommand.Parameters.AddWithValue("@CourseCode", courseCode);
+                updateAlumnosCommand.ExecuteNonQuery();
 
-                    selectedRow.Delete();
+                selectedRow.Delete();
 
-                    _selectedCoursesQuantity--;
+                _selectedCoursesQuantity--;
 
-                    con.Close();
-                }
+                con.Close();
+          
                 ReconnectionToDB("All");
             }
             else

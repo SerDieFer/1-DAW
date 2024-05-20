@@ -28,7 +28,9 @@ namespace Exercise_4
         // LOADS ALUMNS MENU IN THE TEACHER COURSE
         private void btnCourseManaging_Click(object sender, EventArgs e)
         {
-
+            string teacherID = this.Text;
+            fTeacherCheckCourse teacherCheckCourse = new fTeacherCheckCourse(teacherID);
+            teacherCheckCourse.ShowDialog();
         }
 
         // LOADS TEACHER OPTIONS MENU
