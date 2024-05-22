@@ -143,11 +143,6 @@ SELECT DISTINCT codProducto, dbo.importeTotalVendidoProducto(codProducto) AS imp
   FROM DETALLE_PEDIDOS
  WHERE codProducto = 87
 
- 
-
-
-
-
 
 /* C) Crea un cursor que itere por la tabla EMPLEADOS, muestre su código, nombre y el 
 	número de clientes que tienen a su cargo (con doble cursor o con SELECT).
@@ -155,18 +150,87 @@ SELECT DISTINCT codProducto, dbo.importeTotalVendidoProducto(codProducto) AS imp
    Crea un cursor que itere por la tabla PRODUCTOS e indique la siguiente información:
 	El producto XXX con referencia YYY aparece ZZZ veces en la tabla DETALLE_PEDIDOS. */
 
+USE JARDINERIA
+GO
+EXEC SP_HELP EMPLEADOS
+EXEC SP_HELP CLIENTES
+
+GO
+DECLARE Cur_DatosEmpleado CURSOR FOR
+ SELECT codEmpleado,
+        CONCAT(nombre,' ', apellido1, ' ', apellido2) AS nombreCompleto
+   FROM EMPLEADOS
+
+DECLARE @codEmpleado INT
+DECLARE @nombreCompleto VARCHAR(150)
+
+OPEN Cur_DatosEmpleado
+FETCH NEXT FROM Cur_DatosEmpleado INTO @codEmpleado, @nombreCompleto
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+   DECLARE Cur_ClientesEmpleado CURSOR FOR
+    SELECT COUNT(*)
+      FROM CLIENTES
+     WHERE codEmpl_ventas = @codEmpleado
+
+   DECLARE @numClientesEmpleado INT
+    
+      OPEN Cur_ClientesEmpleado
+     FETCH NEXT FROM Cur_ClientesEmpleado INTO @numClientesEmpleado
+
+     CLOSE Cur_ClientesEmpleado
+DEALLOCATE Cur_ClientesEmpleado
+
+     PRINT CONCAT('Nº Empleado: ', @codEmpleado, CHAR(10),
+                  'Nombre: ', @nombreCompleto, CHAR(10),
+                  'Nº Clientes: ', @numClientesEmpleado, CHAR(10))
+
+     FETCH NEXT FROM Cur_DatosEmpleado INTO @codEmpleado, @nombreCompleto 
+END
+
+     CLOSE Cur_DatosEmpleado
+DEALLOCATE Cur_DatosEmpleado
 
 
+EXEC SP_HELP PRODUCTOS
 
+GO
+ DECLARE Cur_DatosProducto CURSOR FOR
+  SELECT codProducto,
+         refInterna
+    FROM PRODUCTOS
 
+ DECLARE @codProducto INT
+ DECLARE @refProducto VARCHAR(15)
 
+    OPEN Cur_DatosProducto
+   FETCH NEXT FROM Cur_DatosProducto INTO @codProducto, @refProducto
 
+   WHILE @@FETCH_STATUS = 0
+   BEGIN
+      DECLARE Cur_CantidadPedidaProducto CURSOR FOR
+       SELECT COUNT(*)
+         FROM DETALLE_PEDIDOS
+        WHERE codProducto = @codProducto
 
+        DECLARE @cantidadPedidaProducto INT
 
+           OPEN Cur_CantidadPedidaProducto
+          FETCH NEXT FROM Cur_CantidadPedidaProducto INTO @cantidadPedidaProducto
 
+          CLOSE Cur_CantidadPedidaProducto
+     DEALLOCATE Cur_CantidadPedidaProducto
 
+       PRINT CONCAT('Nº Producto: ', @codProducto, CHAR(10),
+                    'Referencia: ', @refProducto, CHAR(10),
+                    'Nº Veces Pedido: ', @cantidadPedidaProducto, CHAR(10))
 
+       FETCH NEXT FROM Cur_DatosProducto INTO @codProducto, @refProducto   
+     END
 
+     CLOSE Cur_DatosProducto
+DEALLOCATE Cur_DatosProducto
 
 /*
 D) Crea un trigger que se active cuando se inserte un nuevo cliente y que en caso 

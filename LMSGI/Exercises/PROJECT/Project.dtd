@@ -1,6 +1,6 @@
 <!ELEMENT warhammer40k (faccion+)>
 <!ELEMENT faccion (descripcion, foto, subfaccion*, lider?, unidadDestacada?)>
-<!ATTLIST faccion nombre CDATA #REQUIRED>
+<!ATTLIST faccion nombre ID #REQUIRED>
 <!ELEMENT subfaccion (descripcion, foto, capitulo*, lider?, unidadDestacada?)>
 <!ATTLIST subfaccion nombre CDATA #REQUIRED>
 <!ELEMENT capitulo (descripcion, foto, lider, unidadDestacada)>

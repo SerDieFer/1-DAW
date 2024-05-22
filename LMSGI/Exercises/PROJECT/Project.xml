@@ -4,7 +4,7 @@
 <warhammer40k>
 
 <!-- Humanidad -->
-<faccion nombre="Imperio del Hombre">
+<faccion nombre="Humanidad">
     <descripcion>El Imperio del Hombre lucha incansablemente por su supervivencia en el despiadado universo del 41º milenio. Enfrentándose a los horrores de la galaxia, sus defensores protegen a la humanidad y expanden su dominio a través de vastas extensiones estelares. La inquebrantable determinación del Emperador y la lealtad de sus guerreros son la última esperanza contra las tinieblas que amenazan con consumirlo todo.</descripcion>
     <foto>Imperio del Hombre.jpg</foto>
     <lider>
@@ -75,8 +75,8 @@
     </unidadDestacada>
 </faccion>
 
-<faccion nombre="T'au">
-    <descripcion>Los T'au, una civilización tecnológicamente avanzada, luchan por la expansión de su imperio y el bienestar de su pueblo. Guiados por la filosofía del "Bien Mayor", emplean tácticas innovadoras y tecnología de vanguardia para alcanzar sus objetivos en un universo hostil.</descripcion>
+<faccion nombre="Tau">
+    <descripcion>Los Tau, una civilización tecnológicamente avanzada, luchan por la expansión de su imperio y el bienestar de su pueblo. Guiados por la filosofía del "Bien Mayor", emplean tácticas innovadoras y tecnología de vanguardia para alcanzar sus objetivos en un universo hostil.</descripcion>
     <foto>T'au.jpg</foto>
     <lider>
         <nombre>Comandante O'Shaserra</nombre>
