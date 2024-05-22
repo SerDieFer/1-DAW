@@ -26,7 +26,7 @@ namespace Exercise_4.Views.Alumn
         private void fAlumnCheckCourse_Load(object sender, EventArgs e)
         {
             // CONSTRUCTION OF THE DATABASE HANDLER FOR THE ALUMNS AND TEACHERS TABLE
-            dbHandlerAlumns = new SqlDBHandler("Alumnos");
+            dbHandlerAlumns = new SqlDBHandler();
             dbHandlerTeachers = new SqlDBHandler("Profesores");
             txtbCourse.ReadOnly = true;
             txtbTeachers.ReadOnly = true;

@@ -11,6 +11,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.VisualBasic.Devices;
 using Exercise_4.Models;
+using System.Drawing;
 
 namespace Exercise_4
 {
@@ -102,34 +103,34 @@ namespace Exercise_4
         // SQLDBHANDLER CONSTRUCTOR WHICH HANDLES THE CONNECTION AND CREATION OF DATA SET AND DATA ADAPTER FOR ADMIN USER
         public SqlDBHandler()
         {
-            // CREATES A CONNEXION WITH THE DB
-            SqlConnection con = CreateSqlConnectionToDB();
+            using (SqlConnection con = CreateSqlConnectionToDB())
+            {
+                // OPENS CONNECTION
+                con.Open();
 
-            // OPENS CONNECTION
-            con.Open();
+                // CREATES A NEW DATA SET
+                dataSet = new DataSet();
 
-            // CREATES A NEW DATA SET
-            dataSet = new DataSet();
+                // CREATES A NEW DATA ADAPTER AND CONNECTS IT TO THE ACTUAL DB TO EXTRACT THE DATA FROM ALL TABLES
+                dataAdapter = new SqlDataAdapter("SELECT * FROM Cursos; SELECT * FROM Alumnos; SELECT * FROM Profesores", con);
 
-            // CREATES A NEW DATA ADAPTER AND CONNECTS IT TO THE ACTUAL DB TO EXTRACT THE DATA FROM ALL TABLES
-            dataAdapter = new SqlDataAdapter("SELECT * FROM Cursos; SELECT * FROM Alumnos; SELECT * FROM Profesores", con);
+                // RENAME THE AUTOMATIC TABLE NAMES TO THEIR ORIGINAL ONES
+                dataAdapter.TableMappings.Add("Table", "Cursos");
+                dataAdapter.TableMappings.Add("Table1", "Alumnos");
+                dataAdapter.TableMappings.Add("Table2", "Profesores");
 
-            // RENAME THE AUTOMATIC TABLE NAMES TO THEIR ORIGINAL ONES
-            dataAdapter.TableMappings.Add("Table", "Cursos");
-            dataAdapter.TableMappings.Add("Table1", "Alumnos");
-            dataAdapter.TableMappings.Add("Table2", "Profesores");
+                // RETRIEVES DATA FROM THE DATABASE USING A DATA ADAPTER AND FILLS A TABLE IN A DATASET WITH THAT DATA
+                dataAdapter.Fill(dataSet);
 
-            // RETRIEVES DATA FROM THE DATABASE USING A DATA ADAPTER AND FILLS A TABLE IN A DATASET WITH THAT DATA
-            dataAdapter.Fill(dataSet);
+                _selectedCoursesQuantity = dataSet.Tables["Cursos"].Rows.Count;
+                _selectedAlumnsQuantity = dataSet.Tables["Alumnos"].Rows.Count;
+                _selectedTeachersQuantity = dataSet.Tables["Profesores"].Rows.Count;
 
-            _selectedCoursesQuantity = dataSet.Tables["Cursos"].Rows.Count;
-            _selectedAlumnsQuantity = dataSet.Tables["Alumnos"].Rows.Count;
-            _selectedTeachersQuantity = dataSet.Tables["Profesores"].Rows.Count;
-    
-            // CLOSES CONNECTION
-            con.Close();
+                // CLOSES CONNECTION
+                con.Close();
 
-            ReconnectionToDB("All");
+                ReconnectionToDB("All");
+            }
         }
 
         public DataTable ImportSelectedDataTable(string selectedTable)
@@ -156,27 +157,45 @@ namespace Exercise_4
         // METHOD WHICH RECONNECTS TO THE DATABASE AND UPDATES IT
         private void ReconnectionToDB(string selectedTable)
         {
-            // RECONNECTS WITH THE DATA ADAPTER AND UPDATES THE DATABASE    
-            SqlCommandBuilder update = new SqlCommandBuilder(dataAdapter);
+            SqlConnection con = CreateSqlConnectionToDB();
 
-            if (selectedTable == "Profesores")
+            // CREATE A NEW ADAPTER TO AVOID CONNECTION STRING ISSUES
+            SqlDataAdapter dataAdapter = new SqlDataAdapter();
+
+            // SET THE SELECT COMMAND BASED ON THE SELECTED TABLE
+            string selectCommandText;
+
+            if (selectedTable == "All")
             {
-                dataAdapter.Update(dataSet, "Profesores");
+                selectCommandText = "SELECT * FROM Cursos; SELECT * FROM Alumnos; SELECT * FROM Profesores";
             }
-            else if (selectedTable == "Alumnos")
+            else
             {
-                dataAdapter.Update(dataSet, "Alumnos");
+                selectCommandText = "SELECT * FROM " + selectedTable;
             }
-            else if (selectedTable == "Cursos")
+
+            dataAdapter.SelectCommand = new SqlCommand(selectCommandText, con);
+
+            // USE COMMAND BUILDER TO AUTOMATICALLY GENERATE UPDATE COMMANDS
+            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
+
+            // OPEN THE CONNECTION
+            con.Open();
+
+            // UPDATE THE DATASET WITH CHANGES MADE TO THE SELECTED TABLE OR ALL TABLES
+            if (selectedTable == "All")
             {
                 dataAdapter.Update(dataSet, "Cursos");
-            }
-            else if (selectedTable == "All")
-            {
-                dataAdapter.Update(dataSet, "Cursos");
                 dataAdapter.Update(dataSet, "Alumnos");
                 dataAdapter.Update(dataSet, "Profesores");
             }
+            else
+            {
+                dataAdapter.Update(dataSet, selectedTable);
+            }
+
+            // CLOSE THE CONNECTION
+            con.Close();
         }
 
         /*--------------------------------- BASIC DB HANDLING FUNCTIONS END ------------------------------------*/
@@ -476,7 +495,7 @@ namespace Exercise_4
                 dNewRecord[5] = teacherToAdd.Password;
                 dNewRecord[6] = teacherToAdd.CourseCod;
 
-                if (!CheckAllDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email, selectedTable))
+                if (!CheckAllDuplicatedData(teacherToAdd.ID, teacherToAdd.Phone, teacherToAdd.Email, selectedTable) && CheckCourseExist(teacherToAdd.CourseCod))
                 {
                     // ADDS THE REGISTRY TO THE DATA SET
                     ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
@@ -502,7 +521,7 @@ namespace Exercise_4
                 dNewRecord[5] = alumnToAdd.Password;
                 dNewRecord[6] = alumnToAdd.CourseCod;
 
-                if (!CheckAllDuplicatedData(alumnToAdd.ID, alumnToAdd.Phone, alumnToAdd.Adress, selectedTable))
+                if (!CheckAllDuplicatedData(alumnToAdd.ID, alumnToAdd.Phone, alumnToAdd.Adress, selectedTable) && CheckCourseExist(alumnToAdd.CourseCod))
                 {
                     // ADDS THE REGISTRY TO THE DATA SET
                     ImportSelectedDataTable(selectedTable).Rows.Add(dNewRecord);
@@ -557,9 +576,8 @@ namespace Exercise_4
                 dUpdateRecord[5] = teacherToUpdate.Password;
                 dUpdateRecord[6] = teacherToUpdate.CourseCod;
 
-                if (!CheckAllDuplicatedData(teacherToUpdate.ID, teacherToUpdate.Phone.ToString(), teacherToUpdate.Email.ToString(), selectedTable))
+                if (!CheckAllDuplicatedData(teacherToUpdate.ID, teacherToUpdate.Phone.ToString(), teacherToUpdate.Email.ToString(), selectedTable) && CheckCourseExist(teacherToUpdate.CourseCod))
                 {
-
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
                     ReconnectionToDB(selectedTable);
                 }
@@ -575,7 +593,7 @@ namespace Exercise_4
                 dUpdateRecord[5] = alumnToUpdate.Password;
                 dUpdateRecord[6] = alumnToUpdate.CourseCod;
 
-                if (!CheckAllDuplicatedData(alumnToUpdate.ID, alumnToUpdate.Phone, alumnToUpdate.Adress, selectedTable))
+                if (!CheckAllDuplicatedData(alumnToUpdate.ID, alumnToUpdate.Phone, alumnToUpdate.Adress, selectedTable) && CheckCourseExist(alumnToUpdate.CourseCod))
                 {
                     // RECONNECTS WITH THE DATA ADAPTER AND UPDATE THE DATABASE
                     ReconnectionToDB(selectedTable);
@@ -602,13 +620,13 @@ namespace Exercise_4
             // GET THE ROW CORRESPONDING TO THE SELECTED OBJECT
             DataRow selectedRow = ImportSelectedDataTable(selectedTable).Rows[pos];
 
+            SqlConnection con = CreateSqlConnectionToDB();
+            con.Open();
+
             // VERIFY IF IT IS A COURSES TABLE
             if (selectedTable == "Cursos")
             {
                 string courseCode = selectedRow["Codigo"].ToString();
-
-                SqlConnection con = CreateSqlConnectionToDB();
-                con.Open();
 
                 // UPDATE THE PROFESSORS TABLE
                 string updateProfessorsQuery = "UPDATE Profesores SET Codigo = NULL WHERE Codigo = @CourseCode";
@@ -626,8 +644,6 @@ namespace Exercise_4
 
                 _selectedCoursesQuantity--;
 
-                con.Close();
-          
                 ReconnectionToDB("All");
             }
             else
@@ -644,7 +660,31 @@ namespace Exercise_4
 
                 ReconnectionToDB(selectedTable);
             }
+
+            con.Close();
         }
+
+        public bool CheckCourseExist(string course)
+        {
+            bool courseExist = false;
+
+            // GETS THE FULL TABLE DATA
+            DataTable tableToCheck = ImportSelectedDataTable("Cursos");
+
+            // SEARCHS IN THE ROWS FROM THE TABLE
+            for (int i = 0; i < tableToCheck.Rows.Count && !courseExist; i++)
+            {
+                DataRow row = tableToCheck.Rows[i];
+
+                // CHECK THE SELECTED ROW MATCHES THE INTRODUCED DATA
+                if (row["Codigo"].ToString() == course)
+                {
+                courseExist = true;
+                }
+            }
+            return courseExist;
+        }
+
 
         // FUNCTION WHICH COMPARE THE ACTUAL DATA WITH THE STORED ONE IN THE DB
         public bool CheckChangesStoredAndActualValues(int pos, string ID, string name, string surnames, string phone, string adressOrEmail, string password, string course, string selectedTable)

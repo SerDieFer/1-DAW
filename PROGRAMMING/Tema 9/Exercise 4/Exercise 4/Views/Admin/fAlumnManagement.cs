@@ -32,7 +32,7 @@ namespace Exercise_4
         // FORM LOADING HANDLING
         private void fAlumnManagement_Load(object sender, EventArgs e)
         {
-            dbHandler = new SqlDBHandler("Alumnos");
+            dbHandler = new SqlDBHandler();
             // SETS FIRST POSITION, UPDATES THE VISUALS AND CHECKS THE ACTUAL BUTTONS STATUS WHEN FIRST LOADED
             pos = 0;
             RecordPositionLabel(pos);
@@ -501,29 +501,36 @@ namespace Exercise_4
                     // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
                     if (!dbHandler.DuplicatedAdress(txtbAlumnAdress.Text, "Alumnos"))
                     {
-                        // CREATES THE ALUMN TO SAVE
-                        Alumn savedAlumn = Alumn.AlumnCreation(txtbAlumnID.Text,
-                                                               txtbAlumnName.Text,
-                                                               txtbAlumnSurnames.Text,
-                                                               txtbAlumnPhone.Text,
-                                                               txtbAlumnAdress.Text,
-                                                               txtbAlumnPassword.Text,
-                                                               txtbAlumnCourse.Text);
-
-                        // IF THIS ALUMN IS VALID IT WILL BE INSERTED INTO THE DB
-                        if (savedAlumn != null)
+                        if (dbHandler.CheckCourseExist(txtbAlumnCourse.Text))
                         {
-                            // FUNCTION WHICH CREATES A NEW ALUMN INTO THE DB
-                            // AFTER THAT UPDATES THE POSITION AND THE COUNT OF ALUMN'S RECORDS
-                            dbHandler.AddNewIdentity(savedAlumn, "Alumnos");
-                            pos = dbHandler.AlumnsQuantity - 1;
-                            RecordPositionLabel(pos);
-                            btnAlumnCancelAddRegistry.PerformClick();
-                            ButtonsCheck();
+                            // CREATES THE ALUMN TO SAVE
+                            Alumn savedAlumn = Alumn.AlumnCreation(txtbAlumnID.Text,
+                                                                   txtbAlumnName.Text,
+                                                                   txtbAlumnSurnames.Text,
+                                                                   txtbAlumnPhone.Text,
+                                                                   txtbAlumnAdress.Text,
+                                                                   txtbAlumnPassword.Text,
+                                                                   txtbAlumnCourse.Text);
+
+                            // IF THIS ALUMN IS VALID IT WILL BE INSERTED INTO THE DB
+                            if (savedAlumn != null)
+                            {
+                                // FUNCTION WHICH CREATES A NEW ALUMN INTO THE DB
+                                // AFTER THAT UPDATES THE POSITION AND THE COUNT OF ALUMN'S RECORDS
+                                dbHandler.AddNewIdentity(savedAlumn, "Alumnos");
+                                pos = dbHandler.AlumnsQuantity - 1;
+                                RecordPositionLabel(pos);
+                                btnAlumnCancelAddRegistry.PerformClick();
+                                ButtonsCheck();
+                            }
+                            else
+                            {
+                                MessageBox.Show(returnErrorInput());
+                            }
                         }
                         else
                         {
-                            MessageBox.Show(returnErrorInput());
+                            MessageBox.Show("This course doesn't exist, try another one");
                         }
                     }
                     else
@@ -568,21 +575,27 @@ namespace Exercise_4
                         {
                             if (!dbHandler.DuplicatedAdress(adress, "Alumnos") || adress == oldAlumnData.Adress)
                             {
-                                // CREATES A NEW ALUMN AS AN ALUMN TYPE ONE
-                                Identity selectedIdentityToUpdate = Alumn.AlumnCreation(ID, name, surnames, phone, adress, password, course);
-                                if (selectedIdentityToUpdate != null)
+                                if (dbHandler.CheckCourseExist(txtbAlumnCourse.Text))
                                 {
-                                    dbHandler.UpdateIdentity(selectedIdentityToUpdate, pos, "Alumnos");
-                                    ShowAlumnsRecords(pos);
-                                    RecordPositionLabel(pos);
-                                    changeDetected = false;
-                                    ButtonsCheck();
+                                    // CREATES A NEW ALUMN AS AN ALUMN TYPE ONE
+                                    Identity selectedIdentityToUpdate = Alumn.AlumnCreation(ID, name, surnames, phone, adress, password, course);
+                                    if (selectedIdentityToUpdate != null)
+                                    {
+                                        dbHandler.UpdateIdentity(selectedIdentityToUpdate, pos, "Alumnos");
+                                        ShowAlumnsRecords(pos);
+                                        RecordPositionLabel(pos);
+                                        changeDetected = false;
+                                        ButtonsCheck();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show(returnErrorInput());
+                                    }
                                 }
                                 else
                                 {
-                                    MessageBox.Show(returnErrorInput());
+                                    MessageBox.Show("This course doesn't exist, try another one");
                                 }
-
                             }
                             else
                             {
