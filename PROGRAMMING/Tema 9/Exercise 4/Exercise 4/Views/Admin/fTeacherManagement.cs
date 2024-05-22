@@ -31,7 +31,7 @@ namespace Exercise_4
         // FORM LOADING HANDLING
         private void fTeacherManagement_Load(object sender, EventArgs e)
         {
-            dbHandler = new SqlDBHandler("Profesores");
+            dbHandler = new SqlDBHandler();
             // SETS FIRST POSITION, UPDATES THE VISUALS AND CHECKS THE ACTUAL BUTTONS STATUS WHEN FIRST LOADED
             pos = 0;
             RecordPositionLabel(pos);
@@ -501,29 +501,36 @@ namespace Exercise_4
                     // CHECKS THAT THE ACTUAL TEXT BOX EMAIL TEXT IS NOT USED ALREADY IN THE DB
                     if (!dbHandler.DuplicatedEmail(txtbTeacherEmail.Text, "Profesores"))
                     {
-                        // CREATES THE TEACHER TO SAVE
-                        Teacher savedTeacher = Teacher.TeacherCreation(txtbTeacherID.Text,
-                                                                       txtbTeacherName.Text,
-                                                                       txtbTeacherSurnames.Text,
-                                                                       txtbTeacherPhone.Text,
-                                                                       txtbTeacherEmail.Text,
-                                                                       txtbTeacherPassword.Text,
-                                                                       txtbTeacherCourse.Text);
-
-                        // IF THIS IDENTITY IS VALID IT WILL BE INSERTED INTO THE DB
-                        if (savedTeacher != null)
+                        if (dbHandler.CheckCourseExist(txtbTeacherCourse.Text))
                         {
-                            // FUNCTION WHICH CREATES A NEW TEACHER INTO THE DB
-                            // AFTER THAT UPDATES THE POSITION AND THE COUNT OF TEACHER'S RECORDS
-                            dbHandler.AddNewIdentity(savedTeacher, "Profesores");
-                            pos = dbHandler.TeachersQuantity - 1;
-                            RecordPositionLabel(pos);
-                            btnTeacherCancelAddRegistry.PerformClick();
-                            ButtonsCheck();
+                            // CREATES THE TEACHER TO SAVE
+                            Teacher savedTeacher = Teacher.TeacherCreation(txtbTeacherID.Text,
+                                                                           txtbTeacherName.Text,
+                                                                           txtbTeacherSurnames.Text,
+                                                                           txtbTeacherPhone.Text,
+                                                                           txtbTeacherEmail.Text,
+                                                                           txtbTeacherPassword.Text,
+                                                                           txtbTeacherCourse.Text);
+
+                            // IF THIS IDENTITY IS VALID IT WILL BE INSERTED INTO THE DB
+                            if (savedTeacher != null)
+                            {
+                                // FUNCTION WHICH CREATES A NEW TEACHER INTO THE DB
+                                // AFTER THAT UPDATES THE POSITION AND THE COUNT OF TEACHER'S RECORDS
+                                dbHandler.AddNewIdentity(savedTeacher, "Profesores");
+                                pos = dbHandler.TeachersQuantity - 1;
+                                RecordPositionLabel(pos);
+                                btnTeacherCancelAddRegistry.PerformClick();
+                                ButtonsCheck();
+                            }
+                            else
+                            {
+                                MessageBox.Show(returnErrorInput());
+                            }
                         }
                         else
                         {
-                            MessageBox.Show(returnErrorInput());
+                            MessageBox.Show("This course doesn't exist, try another one");
                         }
                     }
                     else
@@ -568,21 +575,27 @@ namespace Exercise_4
                         {
                             if (!dbHandler.DuplicatedEmail(email, "Profesores") || email == oldTeacherData.Email)
                             {
-                                // CREATES A NEW IDENTITY AS A TEACHER TYPE ONE
-                                Identity selectedIdentityToUpdate = Teacher.TeacherCreation(ID, name, surnames, phone, email, password, course);
-                                if (selectedIdentityToUpdate != null)
+                                if (dbHandler.CheckCourseExist(txtbTeacherCourse.Text))
                                 {
-                                    dbHandler.UpdateIdentity(selectedIdentityToUpdate, pos, "Profesores");
-                                    ShowTeacherRecords(pos);
-                                    RecordPositionLabel(pos);
-                                    changeDetected = false;
-                                    ButtonsCheck();
+                                    // CREATES A NEW IDENTITY AS A TEACHER TYPE ONE
+                                    Identity selectedIdentityToUpdate = Teacher.TeacherCreation(ID, name, surnames, phone, email, password, course);
+                                    if (selectedIdentityToUpdate != null)
+                                    {
+                                        dbHandler.UpdateIdentity(selectedIdentityToUpdate, pos, "Profesores");
+                                        ShowTeacherRecords(pos);
+                                        RecordPositionLabel(pos);
+                                        changeDetected = false;
+                                        ButtonsCheck();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show(returnErrorInput());
+                                    }
                                 }
                                 else
                                 {
-                                    MessageBox.Show(returnErrorInput());
+                                    MessageBox.Show("This course doesn't exist, try another one");
                                 }
-
                             }
                             else
                             {
@@ -769,6 +782,7 @@ namespace Exercise_4
             btnTeacherClear.Enabled = recordsExist && !noRecordSelected;
             btnListTeachers.Enabled = recordsExist;
             btnSearchTeacher.Enabled = recordsExist;
+            btnSearchTeacherCourse.Enabled = recordsExist;
         }
 
         // THIS FUNCTION AUTO CHECKS THE CHANGES DETECTED IN THE FOLLOWING TEXT BOXES BETWEEN THE ORIGINAL STRING AND THE NEW CHANGED

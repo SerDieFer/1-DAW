@@ -1,4 +1,5 @@
 ﻿using Exercise_4;
+using Exercise_4.Models;
 using Exercise_4.Views.Admin;
 using Exercise_4.Views.Alumn;
 using System;
@@ -23,16 +24,30 @@ namespace Exercise_4
             MessageBox.Show("Welcome, " + alumnID + "!");
         }
 
+        // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
+        SqlDBHandler dbHandlerAlumns;
+
         private void fAlumn_Load(object sender, EventArgs e)
         {
+            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE ALUMNS AND TEACHERS TABLE
+            dbHandlerAlumns = new SqlDBHandler("Alumnos");
         }
 
         // LOADS COURSE DATA WHERE ALUMN IS INSCRIBED
         private void btnAlumnCourses_Click(object sender, EventArgs e)
         {
             string alumnID = this.Text;
-            fAlumnCheckCourse alumnOptions = new fAlumnCheckCourse(alumnID);
-            alumnOptions.ShowDialog();
+
+            string courseCod = GetCourse(alumnID);
+            if (string.IsNullOrEmpty(courseCod))
+            {
+                MessageBox.Show("You don't have a course asigned, talk with administrator.");
+            }
+            else
+            {
+                fAlumnCheckCourse alumnOptions = new fAlumnCheckCourse(alumnID);
+                alumnOptions.ShowDialog();
+            }
         }
 
         // LOADS ALUMNS OPTIONS
@@ -41,6 +56,15 @@ namespace Exercise_4
             string alumnID = this.Text;
             fAlumnOptions alumnOptions = new fAlumnOptions(alumnID);
             alumnOptions.ShowDialog();
+        }
+
+        private string GetCourse(string ID)
+        {
+            // QUERY THAT RETURNS THE COURSE COD FROM THAT ALUMN
+            string alumnID = this.Text;
+            string queryCourseCod = "SELECT Codigo FROM Alumnos WHERE DNI = '" + alumnID + "'";
+            string alumnCourseCod = dbHandlerAlumns.GetStringDataFromTable("Alumnos", queryCourseCod);
+            return alumnCourseCod;
         }
 
         // EVENT HANDLER TO CLOSE THE ACTUAL LOGIN INSTEAD A BUTTON

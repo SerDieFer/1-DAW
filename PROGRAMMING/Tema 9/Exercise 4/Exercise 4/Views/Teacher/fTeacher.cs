@@ -1,4 +1,6 @@
-﻿using Exercise_4.Views.Teacher;
+﻿using Exercise_4.Models;
+using Exercise_4.Views.Alumn;
+using Exercise_4.Views.Teacher;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,24 +23,48 @@ namespace Exercise_4
             MessageBox.Show("Welcome, " + this.Text + "!");
         }
 
+        // CALLING SQLBDHANDLER TO MANAGE DB FUNCTIONS
+        SqlDBHandler dbHandlerTeachers;
         private void fTeacher_Load(object sender, EventArgs e)
         {
+            // CONSTRUCTION OF THE DATABASE HANDLER FOR THE ALUMNS AND TEACHERS TABLE
+            dbHandlerTeachers = new SqlDBHandler("Profesores");
         }
 
         // LOADS ALUMNS MENU IN THE TEACHER COURSE
         private void btnCourseManaging_Click(object sender, EventArgs e)
         {
             string teacherID = this.Text;
-            fTeacherCheckCourse teacherCheckCourse = new fTeacherCheckCourse(teacherID);
-            teacherCheckCourse.ShowDialog();
+
+            string courseCod = GetCourse(teacherID);
+            if (string.IsNullOrEmpty(courseCod))
+            {
+                MessageBox.Show("You don't have a course asigned, talk with administrator.");
+            }
+            else
+            {
+                fTeacherCheckCourse teacherCheckCourse = new fTeacherCheckCourse(teacherID);
+                teacherCheckCourse.ShowDialog();
+            }
+
         }
 
         // LOADS TEACHER OPTIONS MENU
         private void btnTeacherOptions_Click(object sender, EventArgs e)
         {
             string teacherID = this.Text;
+
             fTeacherOptions teacherOptionsForm = new fTeacherOptions(teacherID);
             teacherOptionsForm.ShowDialog();
+        }
+
+        private string GetCourse(string ID)
+        {
+            // QUERY THAT RETURNS THE COURSE COD FROM THAT ALUMN
+            string teacherID = this.Text;
+            string queryCourseCod = "SELECT Codigo FROM Profesores WHERE DNI = '" + teacherID + "'";
+            string teacherCourseCod = dbHandlerTeachers.GetStringDataFromTable("Profesores", queryCourseCod);
+            return teacherCourseCod;
         }
 
 
