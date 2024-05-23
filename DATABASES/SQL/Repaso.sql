@@ -192,7 +192,6 @@ END
      CLOSE Cur_DatosEmpleado
 DEALLOCATE Cur_DatosEmpleado
 
-
 EXEC SP_HELP PRODUCTOS
 
 GO
@@ -240,3 +239,83 @@ D) Crea un trigger que se active cuando se inserte un nuevo cliente y que en cas
 	HIST_FORMA_PAGO cuando se actualice o borre algún registro de esta tabla.
 	La tabla HIST_FORMA_PAGO tendrá además la fecha de operación que corresponderá
 	con la fecha en la que se ejecute el trigger. */
+
+GO
+USE JARDINERIA
+
+EXEC SP_HELP CLIENTES
+
+GO
+CREATE OR ALTER TRIGGER TX_LIMITECREDITO_NUEVOCLIENTE ON CLIENTES
+INSTEAD OF INSERT
+AS
+BEGIN
+   BEGIN TRY
+
+         DECLARE @limiteCredito INT = 10000
+         DECLARE @transaccionPrevia INT = @@TRANCOUNT
+
+         IF (@transaccionPrevia = 0)
+         BEGIN TRAN
+
+            IF EXISTS (SELECT 1
+                         FROM INSERTED
+                        WHERE limite_credito > @limiteCredito)
+
+               INSERT INTO CLIENTES
+               SELECT *
+                 FROM INSERTED
+                WHERE limite_credito > @limiteCredito
+
+            ELSE
+                  PRINT CONCAT('El limite de credito debe ser superior a ', @limiteCredito, 
+                               ' por lo tanto el cliente no será insertado')
+
+         IF (@transaccionPrevia = 0)
+         COMMIT
+
+   END TRY
+   BEGIN CATCH
+      IF @transaccionPrevia = 0
+         ROLLBACK
+         PRINT CONCAT('CODIGO DE ERROR: ', ERROR_NUMBER(),
+                     ' MENSAJE DE ERROR: ', ERROR_MESSAGE(),
+                     ' LINEA DE ERROR: ', ERROR_LINE(),
+                     ' ERROR DE PROCEDIMIENTO: ', ERROR_PROCEDURE())
+   END CATCH
+END
+
+DECLARE @nuevoCliente INT;
+SET @nuevoCliente = ISNULL((SELECT MAX(codCliente)
+                              FROM CLIENTES), 0) + 1
+
+INSERT INTO CLIENTES
+VALUES (@nuevoCliente, 'Santi', 'Pls', 'Copion', '696969696', null, 'Argentina', null, 'Alicante', null, null, null, 15000),
+       (@nuevoCliente + 1, 'Pedro', 'Gómez', 'López', '666666666', null, 'España', null, 'Madrid', null, null, null, 8000),
+       (@nuevoCliente + 2, 'María', 'Fernández', 'García', '555555555', null, 'España', null, 'Barcelona', null, null, null, 12000),
+       (@nuevoCliente + 3, 'Laura', 'Martínez', 'Rodríguez', '777777777', null, 'España', null, 'Valencia', null, null, null, 9500);
+
+
+
+GO
+EXEC SP_HELP FORMA_PAGO
+
+SELECT * 
+  INTO FORMA_PAGO_BACKUP
+  FROM FORMA_PAGO
+ WHERE 1 = 0
+
+ ALTER TABLE FORMA_PAGO_BACKUP
+ ADD fechaModificacion SMALLDATETIME NOT NULL
+
+GO
+CREATE OR ALTER TRIGGER TX_FORMAPAGO_BACKUP ON FORMA_PAGO
+AFTER DELETE, UPDATE
+AS
+BEGIN
+   
+   INSERT INTO FORMA_PAGO_BACKUP
+   SELECT *, GETDATE()
+    FROM DELETED
+END
+GO
