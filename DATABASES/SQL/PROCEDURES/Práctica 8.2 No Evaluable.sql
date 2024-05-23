@@ -50,10 +50,8 @@ BEGIN
       RETURN -1
     END
 
-    BEGIN TRAN
       INSERT INTO CATEGORIAS(codCategoria, nombre)
       VALUES (@codCategoriaCrear, @nombreCategoriaCrear)
-    COMMIT
 
   END TRY
   BEGIN CATCH 
@@ -294,12 +292,9 @@ BEGIN
       RETURN -1
     END
 
-    BEGIN TRAN
-
     INSERT INTO VALORACIONES_PRODUCTOS
     VALUES (@codCli, @codProducto, @estre, @fecha, @coment)
 
-    COMMIT
   END TRY
   BEGIN CATCH
     IF @@TRANCOUNT > 0
@@ -399,8 +394,6 @@ BEGIN
       INSERT INTO PEDIDOS (codPedido, codCliente, codVendedor, codTransportista, costeEnvio, recogidaTiendaSN)
       VALUES(@codPedido, @codCliente, @codVendedor, @codTransportista, @costeEnvio, @recogidaTienda)
 
-      
-
     COMMIT
   END TRY
   BEGIN CATCH
@@ -481,7 +474,7 @@ BEGIN
       RETURN -1
     END
 
-    BEGIN TRANSACTION
+    BEGIN TRAN
     
     DECLARE @precioProducto DECIMAL(9,2)
     SET @precioProducto = (SELECT precioUnitario
@@ -491,8 +484,7 @@ BEGIN
     INSERT INTO LINEAS_PEDIDOS
     VALUES (@codPedidoLinea, @codProductoLinea, @precioProducto, @unidadesProductoLinea)
 
-    COMMIT TRANSACTION
-
+    COMMIT
   END TRY
   BEGIN CATCH
     IF @@TRANCOUNT > 0
@@ -622,7 +614,7 @@ CREATE OR ALTER FUNCTION getNumPedidos (@idCliente INT)
 RETURNS INT
 AS
 BEGIN
-  RETURN (SELECT COUNT(*)
+  RETURN (SELECT ISNULL(COUNT(*),0)
             FROM PEDIDOS
            WHERE codCliente = @idCliente)
 END
@@ -646,7 +638,7 @@ CREATE OR ALTER FUNCTION getCostePedidos (@idCliente INT)
 RETURNS DECIMAL(9,2)
 AS
 BEGIN
-  RETURN (SELECT SUM(totalLinea)
+  RETURN (SELECT ISNULL(SUM(totalLinea),0)
             FROM LINEAS_PEDIDOS
            WHERE codPedido IN (SELECT codPedido
                                  FROM PEDIDOS
@@ -674,7 +666,7 @@ CREATE OR ALTER FUNCTION ventasTotalesVendedor (@idVendedor INT)
 RETURNS DECIMAL(9,2)
 AS
 BEGIN
-  RETURN (SELECT SUM(totalLinea)
+  RETURN (SELECT ISNULL(SUM(totalLinea),0)
             FROM LINEAS_PEDIDOS
            WHERE codPedido IN (SELECT codPedido
                                  FROM PEDIDOS
@@ -685,7 +677,6 @@ GO
 SELECT codVendedor, dbo.ventasTotalesVendedor(codVendedor)
   FROM VENDEDORES
  WHERE codVendedor = 2
-
 
 -------------------------------------------------------------------------------------------
 -- 11. Ampliación Describe el funcionamiento e implementa un procedimiento que incluya 

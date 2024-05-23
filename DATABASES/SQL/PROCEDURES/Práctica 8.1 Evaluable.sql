@@ -119,7 +119,7 @@ BEGIN
 	BEGIN TRY 
 		IF NOT EXISTS (SELECT *
 						 FROM CLIENTES
-						WHERE codCliente = @cliCod)
+						WHERE codCliente = @cliCod) 
 		BEGIN
 			PRINT 'The selected client does not exist.';
 			RETURN -1
@@ -237,6 +237,7 @@ BEGIN
 		
 		INSERT INTO CATEGORIA_PRODUCTOS (codCategoria, nombre, descripcion_texto, descripcion_html, imagen)
 		VALUES (@categoryCod, @categoryName, @txt_description, @html_description, @image)
+		
 	END TRY
 	BEGIN CATCH
 		ROLLBACK

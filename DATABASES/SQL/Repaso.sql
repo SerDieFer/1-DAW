@@ -17,10 +17,10 @@ CREATE OR ALTER PROCEDURE crearPedidoActualizarPago (@fechaEsperada DATE,
 AS
 BEGIN
     BEGIN TRY
-        IF NOT EXISTS (SELECT *
-                         FROM PEDIDOS
-                        WHERE codCliente = @codCliente)
 
+      IF NOT EXISTS (SELECT *
+                       FROM PEDIDOS
+                      WHERE codCliente = @codCliente)
 		BEGIN
 			PRINT 'El cliente seleccionado no tiene pedidos.';
 			RETURN -1
@@ -32,25 +32,27 @@ BEGIN
            @codCliente IS NULL
         BEGIN
             PRINT 'Los parametros de entrada son erroneos.';
-			RETURN -1
-		END
+			   RETURN -1
+        END
 
         DECLARE @codPedidoUltimo INT = (SELECT TOP(1) codPedido
                                           FROM PEDIDOS
                                          ORDER BY codPedido DESC)
         SET @codPedidoUltimo = @codPedidoUltimo + 1
 
-        INSERT INTO PEDIDOS (codPedido, fecha_pedido, 
-                            fecha_esperada, fecha_entrega, 
-                            codEstado, comentarios, codCliente )
-                     VALUES (@codPedidoUltimo, GETDATE(), @fechaEsperada, 
-                            @fechaEntrega, @codEstado, @comentarios, @codCliente)
-
         BEGIN TRAN
-                UPDATE PAGOS
-                   SET codPedido = @codPedidoUltimo
-                 WHERE codPedido IS NULL
-                   AND codCliente = @codCliente
+
+            INSERT INTO PEDIDOS (codPedido, fecha_pedido, 
+                                 fecha_esperada, fecha_entrega, 
+                                 codEstado, comentarios, codCliente )
+                        VALUES (@codPedidoUltimo, GETDATE(), @fechaEsperada, 
+                                 @fechaEntrega, @codEstado, @comentarios, @codCliente)
+
+            UPDATE PAGOS
+               SET codPedido = @codPedidoUltimo
+             WHERE codPedido IS NULL
+               AND codCliente = @codCliente
+               
         COMMIT
 END TRY
 BEGIN CATCH
