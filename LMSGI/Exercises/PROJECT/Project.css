@@ -1,27 +1,29 @@
-/* -- DEFINICION GENERAL -- */
-
+/* EVITA LA SELECCION DE TEXTO POR PARTE DEL USUARIO PARA TODOS LOS ELEMENTOS */
 * {
   user-select: none;
 }
 
+/* ESTILOS PARA LOS ELEMENTOS BODY Y HTML */
 body, html {
   height: 100vh;
   padding: 2%;
   overflow: hidden;
   background-image: linear-gradient(#4c250941, #5e4c246a), url("./Media/Background.jpg");
-  background-size:cover; /* Ajusta la imagen al tamaño del cuerpo */
-  background-position: center; /* Centra la imagen */
-  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-clip: content-box;
 }
 
+/* ESTILOS PARA LOS ELEMETNOS DIV CON CLASE .FACTION Y SUS RESPECTIVOS HIJOS */
 div .Faction > * {
-  background-image:linear-gradient(#4c250941, #5e4c246a), url("./Media/DivBackground.jpg");
-  background-size: cover; /* Ajusta la imagen al tamaño del cuerpo */
-  background-position: center; /* Centra la imagen */
+  background-image: linear-gradient(#4c250941, #5e4c246a), url("./Media/DivBackground.jpg");
+  background-size: cover;
+  background-position: center;
   background-clip: padding-box;
 }
 
+/* ESTILOS PARA LAS IMAGENES */
 img {
   width: 100%;
   height: auto;
@@ -30,14 +32,14 @@ img {
   object-fit: cover;
 }
 
-/* -- DEFINICION DEL SLIDER -- */
-
+/* ESTILOS PARA ELEMENTOS CON ID DE SLIDER */
 #slider {
   height: 100vh;
   position: relative;
   overflow: hidden;
 }
 
+/* ESTILOS PARA LAS DIAPOSITIVAS DEL SLIDER */
 .slide {
   height: 85vh;
   display: none;
@@ -45,13 +47,12 @@ img {
   margin: 0 auto;
 }
 
+/* ESTILO PARA LA DIAPOSITIVA ACTIVA */
 .slide.active {
-  
   display: grid;
 }
 
-/* -- DEFINICION DE LOS GRID A USAR -- */
-
+/* ESTILOS GENERALES PARA LOS ELEMENTOS DENTRO DE .FACTION */
 .Faction > * {
   padding: 10px;
   border: 5px outset #b09064;
@@ -59,65 +60,35 @@ img {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* DEFINICION DEL GRID PARA LA CLASE .FACTION */
 .Faction {
   display: grid;
   grid-template-columns: 1.5fr 2.49fr 1fr 0fr;
-  grid-template-rows: repeat(9,1fr);
+  grid-template-rows: repeat(9, 1fr);
   gap: 1% 1%;
   grid-auto-flow: row;
   grid-template-areas:
-    " NombreFaccion NombreFaccion ImagenFaccion ImagenFaccion"
-    " DescripcionFaccion DescripcionFaccion ImagenFaccion ImagenFaccion "
-    " DescripcionFaccion DescripcionFaccion ImagenFaccion ImagenFaccion "
-    " NombreLider TituloLider ImagenLider ImagenLider "
-    " DescripcionLider DescripcionLider ImagenLider ImagenLider "
-    " DescripcionLider DescripcionLider ImagenLider ImagenLider "
-    " NombreUnidad TipoUnidad ImagenUnidad ImagenUnidad "
-    " DescripcionUnidad DescripcionUnidad ImagenUnidad ImagenUnidad "
-    " DescripcionUnidad DescripcionUnidad ImagenUnidad ImagenUnidad "
-    " DescripcionUnidad DescripcionUnidad ImagenUnidad ImagenUnidad ";
+    " fNombre fNombre fImg fImg"
+    " fDescr fDescr fImg fImg "
+    " fDescr fDescr fImg fImg "
+    " lNombre lTitulo lImg lImg "
+    " lDescr lDescr lImg lImg "
+    " lDescr lDescr lImg lImg "
+    " uNombre uTipo uImg uImg "
+    " uDescr uDescr uImg uImg "
+    " uDescr uDescr uImg uImg "
+    " uDescr uDescr uImg uImg ";
 }
 
-.NombreFaccion  { 
-  grid-area: NombreFaccion ; 
-}
-
-.DescripcionFaccion { 
-  grid-area: DescripcionFaccion; 
-}
-
-.ImagenFaccion { 
-  grid-area: ImagenFaccion; 
-}
-
-.NombreLider { 
-  grid-area: NombreLider; 
-}
-
-.TituloLider { 
-  grid-area: TituloLider; 
-}
-
-.DescripcionLider { 
-  grid-area: DescripcionLider; 
-}
-
-.ImagenLider { 
-  grid-area: ImagenLider; 
-}
-
-.NombreUnidad { 
-  grid-area: NombreUnidad; 
-}
-
-.TipoUnidad { 
-  grid-area: TipoUnidad; 
-}
-
-.DescripcionUnidad { 
-  grid-area: DescripcionUnidad; 
-}
-
-.ImagenUnidad { 
-  grid-area: ImagenUnidad; 
-}
+/* ASIGNACION DE AREAS DEL GRID .FACCION A OTRAS CLASES SELECCIONADAS */
+.NombreFaccion { grid-area: fNombre; }
+.DescripcionFaccion { grid-area: fDescr; }
+.ImagenFaccion { grid-area: fImg; }
+.NombreLider { grid-area: lNombre; }
+.TituloLider { grid-area: lTitulo; }
+.DescripcionLider { grid-area: lDescr; }
+.ImagenLider { grid-area: lImg; }
+.NombreUnidad { grid-area: uNombre; }
+.TipoUnidad { grid-area: uTipo; }
+.DescripcionUnidad { grid-area: uDescr; }
+.ImagenUnidad { grid-area: uImg; }

@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- HOJA DE ESTILO XSL -->
 <?xml-stylesheet type="text/xsl" href="Project.xsl"?>
-<!DOCTYPE warhammer40k SYSTEM "Project.dtd">
+
+<!-- VALIDACION DTD -->
+<!DOCTYPE warhammer40k SYSTEM "Project.dtd">    
 <warhammer40k>
 
-<!-- Humanidad -->
+<!-- HUMANIDAD -->
 <faccion nombre="Humanidad">
     <descripcion>El Imperio del Hombre lucha incansablemente por su supervivencia en el despiadado universo del 41º milenio. Enfrentándose a los horrores de la galaxia, sus defensores protegen a la humanidad y expanden su dominio a través de vastas extensiones estelares. La inquebrantable determinación del Emperador y la lealtad de sus guerreros son la última esperanza contra las tinieblas que amenazan con consumirlo todo.</descripcion>
     <foto>Imperio del Hombre.jpg</foto>
@@ -21,7 +25,7 @@
     </unidadDestacada>
 </faccion>
 
-<!-- Necrones -->
+<!-- NECRONES -->
 <faccion nombre="Necrones">
     <descripcion>Los Necrones, antiguos guardianes de la galaxia, emergen de un letargo milenario con un único propósito: restaurar su antiguo dominio. Implacables y metódicos, estos guerreros robóticos marchan inexorablemente hacia su objetivo, desafiando a cualquier ser que se atreva a interponerse en su camino.</descripcion>
     <foto>Necrones.jpg</foto>
@@ -39,7 +43,7 @@
     </unidadDestacada>
 </faccion>
 
-<!-- Orkos -->
+<!-- ORKOS -->
 <faccion nombre="Orkos">
     <descripcion>Los Orkos, una horda salvaje y beligerante, arrasan la galaxia en busca de batallas y botín. Impulsados por su insaciable sed de guerra, estos seres feroces y caóticos desatan el caos y la destrucción dondequiera que van, dejando a su paso una estela de devastación.</descripcion>
     <foto>Orkos.jpg</foto>
@@ -57,7 +61,7 @@
     </unidadDestacada>
 </faccion>
 
-<!-- Tiránidos -->
+<!-- TIRANIDOS -->
 <faccion nombre="Tiránidos">
     <descripcion>Los Tiránidos, una plaga insaciable de criaturas alienígenas, devoran mundos enteros en su búsqueda interminable de biomasa. Dirigidos por la voluntad de la colmena, esta horda voraz e implacable amenaza con consumir toda forma de vida a su paso.</descripcion>
     <foto>Tiránidos.jpg</foto>
@@ -75,6 +79,7 @@
     </unidadDestacada>
 </faccion>
 
+<!-- TAU -->
 <faccion nombre="Tau">
     <descripcion>Los Tau, una civilización tecnológicamente avanzada, luchan por la expansión de su imperio y el bienestar de su pueblo. Guiados por la filosofía del "Bien Mayor", emplean tácticas innovadoras y tecnología de vanguardia para alcanzar sus objetivos en un universo hostil.</descripcion>
     <foto>T'au.jpg</foto>
@@ -92,7 +97,7 @@
     </unidadDestacada>
 </faccion>
 
-<!-- Caos -->
+<!-- CAOS -->
 <faccion nombre="Caos">
     <descripcion>El Caos es una fuerza primordial de corrupción y destrucción, encarnada por demonios y traidores que se deleitan en el caos y la anarquía. Al servicio de los poderes ruinosos, estas entidades siniestras siembran el terror y la desesperación a lo largo y ancho de la galaxia, alimentándose de la miseria y el sufrimiento de los mortales.</descripcion>
     <foto>Caos.jpg</foto>
@@ -110,7 +115,7 @@
     </unidadDestacada>
 </faccion>
 
-<!-- Drukhari -->
+<!-- DRUKHARI -->
 <faccion nombre="Drukhari">
     <descripcion>Los Drukhari, conocidos también como Eldars Oscuros, son seres crueles y sádicos que sacian su sed de dolor y sufrimiento a través de incursiones mortales. Maestros de la astucia y la brutalidad, estos depredadores despiadados son temidos en toda la galaxia por su capacidad para infligir tormento y destrucción sin igual.</descripcion>
     <foto>Drukhari.jpg</foto>
@@ -128,7 +133,7 @@
     </unidadDestacada>
 </faccion>
 
-<!-- Aeldari -->
+<!-- AELDARI -->
 <faccion nombre="Aeldari">
     <descripcion>Los Aeldari, una antigua y orgullosa raza, luchan por la supervivencia de su civilización frente a las amenazas que acechan en la oscuridad del espacio. Maestros de la tecnología y la guerra psíquica, estos guerreros nobles y reservados son la última esperanza de su pueblo en un universo cada vez más hostil.</descripcion>
     <foto>Aeldari.jpg</foto>
