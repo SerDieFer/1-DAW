@@ -52,7 +52,7 @@ BEGIN
                SET codPedido = @codPedidoUltimo
              WHERE codPedido IS NULL
                AND codCliente = @codCliente
-               
+
         COMMIT
 END TRY
 BEGIN CATCH
@@ -259,19 +259,10 @@ BEGIN
 
          IF (@transaccionPrevia = 0)
          BEGIN TRAN
-
-            IF EXISTS (SELECT 1
-                         FROM INSERTED
-                        WHERE limite_credito > @limiteCredito)
-
                INSERT INTO CLIENTES
                SELECT *
                  FROM INSERTED
                 WHERE limite_credito > @limiteCredito
-
-            ELSE
-                  PRINT CONCAT('El limite de credito debe ser superior a ', @limiteCredito, 
-                               ' por lo tanto el cliente no será insertado')
 
          IF (@transaccionPrevia = 0)
          COMMIT
