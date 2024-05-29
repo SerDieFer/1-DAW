@@ -55,8 +55,6 @@ BEGIN
 
   END TRY
   BEGIN CATCH 
-    IF @@TRANCOUNT > 0
-    ROLLBACK
     PRINT CONCAT('ERROR:', ERROR_NUMBER(), CHAR(10),
                  'LINE: ', ERROR_LINE(), CHAR(10),
                  'MESSAGE: ', ERROR_MESSAGE(), CHAR(10),
@@ -122,21 +120,13 @@ BEGIN
       RETURN -1
     END
 
-    BEGIN TRAN
+    INSERT INTO SUBCATEGORIAS
+    VALUES (@codCategoriaCrear, @nombreSubcategoriaCrear)
 
-      INSERT INTO SUBCATEGORIAS
-      VALUES (@codCategoriaCrear, @nombreSubcategoriaCrear)
-
-      SET @codSubcategoriaCreado = SCOPE_IDENTITY()
-
-    COMMIT
+    SET @codSubcategoriaCreado = SCOPE_IDENTITY()
 
   END TRY
   BEGIN CATCH
-
-    IF @@TRANCOUNT > 0
-    ROLLBACK
-
     PRINT CONCAT('ERROR:', ERROR_NUMBER(), CHAR(10),
                  'LINE: ', ERROR_LINE(), CHAR(10), 
                  'MESSAGE: ', ERROR_MESSAGE(), CHAR(10), 
@@ -197,20 +187,14 @@ BEGIN
       PRINT 'Parametros obligatorios nulos o invalidos'
     END
 
-    BEGIN TRAN
-
       INSERT INTO PRODUCTOS
       VALUES (@nombreProducto, @precioProductoUnitario, @IVAproducto, @codSubCategoriaProducto)
 
       SET @codProductoCreado = SCOPE_IDENTITY()
 
-    COMMIT
-
   END TRY
   BEGIN CATCH
-  
-    IF @@TRANCOUNT > 0
-      ROLLBACK
+
       PRINT CONCAT('ERROR: ', ERROR_NUMBER(), CHAR(10),
                    'LINE: ', ERROR_LINE(),CHAR(10),
                    'MESSAGE: ', ERROR_MESSAGE(), CHAR(10),
@@ -297,8 +281,7 @@ BEGIN
 
   END TRY
   BEGIN CATCH
-    IF @@TRANCOUNT > 0
-      ROLLBACK
+
       PRINT CONCAT('ERROR: ', ERROR_NUMBER(), CHAR(10),
                    'LINEA: ', ERROR_LINE(), CHAR(10),
                    'PROCEDIMIENTO: ', ERROR_PROCEDURE(), CHAR(10),
@@ -635,7 +618,7 @@ SELECT codCliente, dbo.getNumPedidos(codCliente) AS NumPedidos
 EXEC SP_HELP LINEAS_PEDIDOS
 GO
 CREATE OR ALTER FUNCTION getCostePedidos (@idCliente INT)
-RETURNS DECIMAL(9,2)
+RETURNS DECIMAL(12,2)
 AS
 BEGIN
   RETURN (SELECT ISNULL(SUM(totalLinea),0)
@@ -663,7 +646,7 @@ EXEC SP_HELP PEDIDOS
 
 GO
 CREATE OR ALTER FUNCTION ventasTotalesVendedor (@idVendedor INT)
-RETURNS DECIMAL(9,2)
+RETURNS DECIMAL(12,2)
 AS
 BEGIN
   RETURN (SELECT ISNULL(SUM(totalLinea),0)
