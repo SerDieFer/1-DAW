@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="index.xsl"?>
+<TEMA>
+    <libreria nombre="Casa Del Libro" nivel="avanzado">
+        <primer_libro>
+            <nombre_libro>SERIE DESARROLLADORES: APLICACIONES XML CON XML SUITE</nombre_libro>
+            <isbn>ISBN9788493272074</isbn>
+            <autores>
+            <autor1>Varios</autor1>
+            </autores>
+            <editorial>DANYSOFT 2006</editorial>
+            <año>2006</año>
+            <link_web>https://www.casadellibro.com/libro-serie-desarrolladores-aplicaciones-xml-con-xml-suite/1096337/2900001128466</link_web>
+            <precio>50.96€</precio>
+        </primer_libro>
+        <segundo_libro>
+            <nombre_libro> LIBROS - XML PRACTICO. BASES ESENCIALES, CONCEPTOS Y CASOS PRACTICOS</nombre_libro>
+            <isbn>ISBN9782746049581</isbn>
+            <autores>
+            <autor1>BOULANGER</autor1>
+            <autor2>THIERRY</autor2>
+            </autores>
+            <editorial> ENI</editorial>
+            <año>2009</año>
+            <link_web>https://www.casadellibro.com/libro-xml-practico-bases-esenciales-conceptos-y-casos-practicos/1261538/2900001325392</link_web>
+            <precio>26.95€</precio>
+        </segundo_libro>
+    </libreria>
+     <libreria nombre="Casa Del Libro" nivel="intermedio">
+        <primer_libro>
+            <nombre_libro>DESARROLLO DE APLICACIONES WEB DINAMICAS XML Y JAVA</nombre_libro>
+            <isbn>ISBN9788441525924</isbn>
+            <autores>
+            <autor1>PARSONS</autor1>
+            <autor2>DAVID</autor2>
+            </autores>            
+            <editorial>ANAYA</editorial>
+            <año>2009</año>
+            <link_web>https://www.casadellibro.com/libro-desarrollo-de-aplicaciones-web-dinamicas-xml-y-java-incluye-cd-programacion/1260111/2900001323752</link_web>
+            <precio>52.70€</precio>
+        </primer_libro>
+        <segundo_libro>
+            <nombre_libro> LIBROS - XML PRACTICO. BASES ESENCIALES, CONCEPTOS Y CASOS PRACTICOS</nombre_libro>
+            <isbn>ISBN9788441524255</isbn>
+            <autor> , </autor>
+            <autores>
+            <autor1>PARSONS</autor1>
+            <autor2>DAVID</autor2>
+            </autores>
+            <editorial>ANAYA</editorial>
+            <año>2008</año>
+            <link_web>https://www.casadellibro.com/libro-indesign-con-xml-para-disenadores-diseno-y-creatividad/1205682/2900001260950</link_web>
+            <precio>25.60€</precio>
+        </segundo_libro>
+    </libreria>
+    <libreria nombre="Amazon" nivel="avanzado">
+        <primer_libro>
+            <nombre_libro>XML: Visual QuickStart Guide (2nd Edition)</nombre_libro>
+            <isbn>ISBN9780231559678</isbn>
+            <autores>
+            <autor1>Kevin Howard Goldberg</autor1>
+            </autores>
+            <editorial>PEACHPIT PRESS</editorial>
+            <año>2009</año>
+            <link_web>https://www.amazon.com/XML-Visual-QuickStart-Guide-2nd/dp/0321559673/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1253090976&amp;sr=1-1</link_web>
+            <precio>23.09$</precio>
+        </primer_libro>
+        <segundo_libro>
+            <nombre_libro>Beginning XML, 4th Edition</nombre_libro>
+            <isbn>ISBN9780470114872</isbn>
+            <autores>
+                <autor1>David Hunter</autor1>
+                <autor2>Jeff Rafter</autor2>
+                <autor3>Joe Fawcett</autor3>
+                <autor4>Eric van der Vlist</autor4>
+                <autor5>Danny Ayers</autor5>
+                <autor6>Jon Duckett</autor6>
+                <autor7>Andrew Watt</autor7>
+                <autor8>Linda McKinnon</autor8>
+            </autores>
+            <editorial>Wiley Publishing</editorial>
+            <año>2007</año>
+            <link_web>https://www.amazon.com/Beginning-XML-4th-Programmer/dp/0470114878/ref=sr_1_2?ie=UTF8&amp;s=books&amp;qid=1253090976&amp;sr=1-2</link_web>
+            <precio>26.39$</precio>
+        </segundo_libro>
+        <tercero_libro>
+            <nombre_libro>Learning XML, Second Edition</nombre_libro>
+            <isbn>ISBN9780596004200</isbn>
+            <autores>
+                <autor1>Erik Ray</autor1>
+            </autores>
+            <editorial>O'Reilly</editorial>
+            <año>2003</año>
+            <link_web>https://www.amazon.com/Learning-XML-Second-Erik-Ray/dp/0596004206/ref=sr_1_3?ie=UTF8&amp;s=books&amp;qid=1253090976&amp;sr=1-3#reader</link_web>
+            <precio>21.50$</precio>
+        </tercero_libro>
+    </libreria>
+</TEMA>

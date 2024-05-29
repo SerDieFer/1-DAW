@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="repaso2 foreach.xsl" type="text/xsl"?>
+<clientes>
+    <cliente>
+        <nombre>John Smith</nombre>
+        <direccion>123 Elm St. London. United Kingdom</direccion>
+        <telefono>(123) 456-7890</telefono>
+    </cliente>
+
+    <cliente>
+        <nombre>José García Fernández</nombre>
+        <direccion>La Paz, 34. Madrid. Spain</direccion>
+        <telefono>789 12 34 56</telefono>
+    </cliente>
+    
+    <cliente>
+        <nombre>Mary Jones</nombre>
+        <direccion>456 Oak Ave. Los Angeles (CA). USA</direccion>
+        <telefono>(156) 789-0123</telefono>
+    </cliente>
+</clientes>

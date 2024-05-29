@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet href="repaso4.xsl" type="text/xsl"?>
+
+<expediente alumno="José Rodriguez García">
+ <asignatura id="1">
+ <nombre>Programación</nombre>
+ <nota>Notable</nota>
+ </asignatura>
+
+ <asignatura id="2">
+ <nombre>Sistemas operativos</nombre>
+ <nota>Excelente</nota>
+ </asignatura>
+
+ <asignatura id="3">
+ <nombre>Diseño de interfaces</nombre>
+ <nota>Suspenso</nota>
+ </asignatura>
+
+ <asignatura id="4">
+ <nombre>Bases de datos</nombre>
+ <nota>Bien</nota>
+ </asignatura>
+ 
+</expediente>

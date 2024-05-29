@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="repaso4.xsl"?>
+<alumno nombre="Antonio Sala Monfort">
+    <numero_expediente>A1267</numero_expediente>
+    <expediente>
+        <asignatura>
+            <nombre>Matemáticas</nombre>
+            <nota>4.00</nota>
+        </asignatura>
+
+        <asignatura>
+            <nombre>Lengua</nombre>
+            <nota>7.00</nota>
+        </asignatura>
+
+        <asignatura>
+            <nombre>Historia</nombre>
+            <nota>9.50</nota>
+        </asignatura>
+
+        <asignatura>
+            <nombre>Física y Química</nombre>
+            <nota>5.00</nota>
+        </asignatura>
+
+    </expediente>
+</alumno>

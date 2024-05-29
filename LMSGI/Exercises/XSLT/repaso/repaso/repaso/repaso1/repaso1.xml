@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet href="repaso1.xsl" type="text/xsl"?>
+<strings>
+<s>
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+ eiusmod tempor incidunt ut labore et dolore magna aliqua.
+ </s>
+<s>
+ Ut enim ad minim veniam, quis nostrud exercitation ullamco
+ laboris nisi ut aliquid ex ea commodi consequat.
+ </s>
+<s>
+ Quis aute iure reprehenderit in voluptate velit esse cillum
+ dolore eu fugiat nulla pariatur. Excepteur sint obcaecat
+ cupiditat non proident, sunt in culpa qui officia deserunt
+ mollit anim id est laborum.
+ </s>
+</strings>

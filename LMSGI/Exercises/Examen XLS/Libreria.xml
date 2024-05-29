@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="Libreria.xsl"?>
+<libreria> 
+  <libro anyoPublicacion="2019">
+    <titulo ISBN="978-8413142715">Loba Negra</titulo>
+    <disponibleKindle>true</disponibleKindle>
+    <autor> 
+      <nombre>Juan</nombre> 
+      <apellido>Gómez-Jurado</apellido> 
+    </autor> 
+    <editorial>B de Bolsillo</editorial> 
+    <precio moneda="€">21.65</precio> 
+  </libro> 
+  <libro anyoPublicacion="2018">
+    <titulo ISBN="978-8466347174">La novia gitana</titulo>
+    <disponibleKindle>false</disponibleKindle>
+    <autor> 
+      <nombre>Carmen</nombre> 
+      <apellido>Mola</apellido> 
+    </autor> 
+    <editorial>DeBolsillo</editorial> 
+    <precio moneda="€">10.40</precio> 
+  </libro> 
+  <libro anyoPublicacion="2024">
+    <titulo ISBN="978-8467071320">Recupera tu mente, reconquista tu vida</titulo>
+    <disponibleKindle>true</disponibleKindle>
+    <autor> 
+      <nombre>Marian</nombre> 
+      <apellido>Rojas</apellido> 
+    </autor> 
+    <editorial>Espasa</editorial> 
+    <precio moneda="€">19.85</precio> 
+  </libro> 
+  <libro anyoPublicacion="2020">
+    <titulo ISBN="978-8418118036">Hábitos atómicos: Cambios pequeños, resultados extraordinarios</titulo>
+    <disponibleKindle>true</disponibleKindle>
+    <autor> 
+      <nombre>James</nombre> 
+      <apellido>Clear</apellido> 
+    </autor> 
+    <editorial>Diana</editorial> 
+    <precio moneda="€">18.95</precio> 
+  </libro> 
+  <instruccionesCompra>
+    <paso id="Paso1">Acceder al módulo de compra por ISBN</paso>
+    <paso id="Paso2">Introducir un ISBN</paso>
+    <paso id="Paso3">Pulsar en el botón de añadir a la cesta</paso>
+    <paso id="Paso4">Proceder a la compra mediante tarjeta de crédito o PayPal</paso>
+  </instruccionesCompra>
+</libreria>

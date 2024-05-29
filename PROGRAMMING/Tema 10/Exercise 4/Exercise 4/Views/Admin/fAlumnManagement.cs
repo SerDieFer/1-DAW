@@ -46,6 +46,7 @@ namespace Exercise_4
         // THESE ARE FOR DETECTING STRING CHANGES IN THE TEXT BOXES SINCE AN ORIGINAL
         // IS REQUIRED TO CHECK BETWEEN THAT ONE AND THE USER CHANGED INPUT
         private bool changeDetected = false;
+        private bool clearedRows = false;
 
 
         /* ---------------- POSITION HANDLING START --------------------- */
@@ -353,6 +354,10 @@ namespace Exercise_4
                     changesDetected = true;
                 }
             }
+            else
+            {
+                changesDetected = false;
+            }
             return changesDetected;
         }
 
@@ -372,9 +377,11 @@ namespace Exercise_4
 
         private void btnAlumnCancelAddRegistry_Click(object sender, EventArgs e)
         {
-            // RESET ORIGINAL POSITION
+            alumnosAdminBindingSource.CancelEdit();
             alumnosAdminBindingSource.Position = 0;
-
+            // RESET ORIGINAL POSITION
+            btnAlumnFirst.PerformClick();
+            clearedRows = false;
             ShowAlumnsRecords();
             RecordPositionLabel();
         }
@@ -382,20 +389,10 @@ namespace Exercise_4
         private void btnAlumnFirst_Click(object sender, EventArgs e)
         {
             int actualPos = alumnosAdminBindingSource.Position;
-
-            if (actualPos < 0)
-            {
-                // RESET ORIGINAL POSITION
-                alumnosAdminBindingSource.Position = 0;
-
-                RecordPositionLabel();
-                ShowAlumnsRecords();
-            }
-            else
-            {
+            clearedRows = false;
                 bool possiblyChangedValues = CheckValuesChanged();
 
-                if (possiblyChangedValues && (actualPos < 0))
+                if (!possiblyChangedValues)
                 {
                     // RESET ORIGINAL POSITION
                     alumnosAdminBindingSource.Position = 0;
@@ -413,15 +410,16 @@ namespace Exercise_4
                     RecordPositionLabel();
                     ShowAlumnsRecords();
                 }
-            }
+            
         }
 
         private void btnAlumnLast_Click(object sender, EventArgs e)
         {
             int actualPos = alumnosAdminBindingSource.Position;
             int alumnCount = alumnosAdminBindingSource.Count;
-
-            if (actualPos < 0)
+            clearedRows = false;
+            bool possiblyChangedValues = CheckValuesChanged();
+            if (!possiblyChangedValues)
             {
                 alumnosAdminBindingSource.Position = alumnCount - 1;
                 RecordPositionLabel();
@@ -429,38 +427,26 @@ namespace Exercise_4
             }
             else
             {
-                bool possiblyChangedValues = CheckValuesChanged();
-                if (possiblyChangedValues && (actualPos < 0))
-                {
-                    alumnosAdminBindingSource.Position = alumnCount - 1;
-                    RecordPositionLabel();
-                    ShowAlumnsRecords();
-                }
-                else
-                {
-                    askToUpdateIfChangesWereMade(possiblyChangedValues);
+                askToUpdateIfChangesWereMade(possiblyChangedValues);
 
-                    alumnosAdminBindingSource.Position = alumnCount - 1;
+                alumnosAdminBindingSource.Position = alumnCount - 1;
 
-                    RecordPositionLabel();
-                    ShowAlumnsRecords();
-                }
+                RecordPositionLabel();
+                ShowAlumnsRecords();
             }
+            
         }
 
         private void btnAlumnNext_Click(object sender, EventArgs e)
         {
             int actualPos = alumnosAdminBindingSource.Position;
             int alumnCount = alumnosAdminBindingSource.Count;
+            clearedRows = false;
 
-            if (actualPos < 0)
-            {
-                alumnosAdminBindingSource.MoveFirst();
-            }
-            else if (actualPos <= (alumnCount - 1))
+            if (actualPos <= (alumnCount - 1))
             {
                 bool possiblyChangedValues = CheckValuesChanged();
-                if (possiblyChangedValues && (actualPos < 0))
+                if (!possiblyChangedValues)
                 {
 
                     alumnosAdminBindingSource.MoveNext();
@@ -484,15 +470,11 @@ namespace Exercise_4
         {
             int actualPos = alumnosAdminBindingSource.Position;
             int alumnCount = alumnosAdminBindingSource.Count;
-
-            if (actualPos < 0)
-            {
-                alumnosAdminBindingSource.MoveFirst();
-            }
-            else if (actualPos <= (alumnCount - 1))
+            clearedRows = false;
+            if (actualPos <= (alumnCount - 1))
             {
                 bool possiblyChangedValues = CheckValuesChanged();
-                if (possiblyChangedValues && (actualPos < 0))
+                if (!possiblyChangedValues)
                 {
 
                     alumnosAdminBindingSource.MovePrevious();
@@ -514,14 +496,8 @@ namespace Exercise_4
 
         private void btnAlumnClear_Click(object sender, EventArgs e)
         {
-            txtbAlumnID.Clear();
-            txtbAlumnName.Clear();
-            txtbAlumnSurnames.Clear();
-            txtbAlumnPhone.Clear();
-            txtbAlumnAdress.Clear();
-            txtbAlumnPassword.Clear();
-            txtbAlumnCourse.Clear();
-            alumnosAdminBindingSource.Position = -1;
+            alumnosAdminBindingSource.AddNew();
+            clearedRows = true;
             lblRecord.Text = "";
             ButtonsCheck();
         }
@@ -561,7 +537,7 @@ namespace Exercise_4
                                 RecordPositionLabel();
 
                                 btnAlumnCancelAddRegistry.PerformClick();
-
+                                clearedRows = false;
                                 ButtonsCheck();
                             }
                             else
@@ -626,6 +602,7 @@ namespace Exercise_4
                                 // SAVE CHANGES
                                 alumnosAdminBindingSource.EndEdit();
                                 changeDetected = false;
+                                clearedRows = false;
                                 MessageBox.Show("Alumn updated successfully!");
                             }
                             else
@@ -669,6 +646,8 @@ namespace Exercise_4
                 if (deleteConfirmation == DialogResult.Yes)
                 {
                     alumnosAdminBindingSource.RemoveCurrent();
+                    RecordPositionLabel();
+                    ShowAlumnsRecords();
 
                     MessageBox.Show("Record deleted successfully!");
                 }
@@ -788,7 +767,7 @@ namespace Exercise_4
             int alumnPosition = alumnosAdminBindingSource.Position;
 
             bool recordsExist = (alumnCount > 0);
-            bool noRecordSelected = (alumnPosition == -1);
+            bool noRecordSelected = clearedRows;
 
             // ENABLE/DISABLE NAVIGATION BUTTONS
             btnAlumnNext.Enabled = (recordsExist && alumnPosition < (alumnCount - 1)) && !noRecordSelected;

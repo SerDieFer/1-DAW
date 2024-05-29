@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="index.xsl"?>
+<receta>
+<titulo>Churros</titulo>
+<tiempo_elaboracion t_medida= "minutos">30</tiempo_elaboracion>
+<cocina>España</cocina>
+<especialidad>Respostería</especialidad>
+ <comensales></comensales>
+<ingredientes comensales="10">
+<ingrediente categoria="principal">
+<nombre>Harina de trigo</nombre>
+<cantidad>300</cantidad>
+ <medida>gramos</medida>
+</ingrediente>
+<ingrediente categoria="principal">
+<nombre>Agua</nombre>
+<cantidad>440</cantidad>
+ <medida>mililitros</medida>
+</ingrediente>
+<ingrediente categoria="secundario">
+<nombre>Sal</nombre>
+<cantidad>3</cantidad>
+ <medida>punta de cuchara</medida>
+</ingrediente>
+<ingrediente categoria="principal">
+<nombre>Aceite vegetal suave</nombre>
+<cantidad>en abundancia</cantidad>
+ <medida></medida>
+</ingrediente>
+</ingredientes>
+<procedimiento>
+<paso>Poner a hervir el agua.</paso>
+<paso>Mezclar la harina con la sal.</paso>
+<paso>Echar el agua hirviendo sobre la harina (toda de una vez).</paso>
+<paso>Mover mucho, mucho, mucho, mucho...</paso>
+<paso>Poner la masa en la churrera y echar al aceite caliente.</paso>
+ <paso>Sacar de la freidora cuando estén doraditos.</paso>
+ <paso>
+ Servir y comer calientes. Opcionalmente, espolvorear azucar por
+ encima antes de comer.
+ </paso>
+</procedimiento>
+</receta>
